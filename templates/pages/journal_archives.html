@@ -5,28 +5,32 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     PAST ARCHIVES - COMPACT FULL-VIEWPORT FIT WITH ZERO-SCROLL TABLE
+     PAST ARCHIVES - REFINED VIEWPORT LAYOUT (FOOTER STRICTLY BELOW FOLD)
   =================================================================== */
   .archives-section {
+    min-height: calc(100vh - 70px);
     box-sizing: border-box;
-    padding: clamp(14px, 1.8vh, 22px) clamp(16px, 3vw, 40px) clamp(20px, 2.5vh, 32px) clamp(16px, 3vw, 40px);
+    padding: clamp(18px, 2.2vh, 28px) clamp(16px, 2.8vw, 40px) clamp(70px, 9vh, 110px) clamp(16px, 2.8vw, 40px);
     max-width: 1200px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .archives-titlebar {
-    margin-bottom: clamp(10px, 1.3vh, 16px);
+    margin-bottom: clamp(12px, 1.6vh, 20px);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
     border-bottom: 2px solid #bce4cc;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
   }
 
   .archives-titlebar h1 {
-    font-size: clamp(20px, 1.5vw, 24px);
+    font-size: clamp(22px, 1.7vw, 26px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
@@ -40,13 +44,13 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 6px 16px;
-    font-size: 13.5px;
+    padding: 7px 18px;
+    font-size: 14px;
     font-weight: 700;
     color: #0b3d20 !important;
     background: #e8f5ec;
     border: 1.5px solid #a8dfbc;
-    border-radius: 6px;
+    border-radius: 7px;
     text-decoration: none;
     transition: all 0.25s ease;
     white-space: nowrap;
@@ -63,9 +67,9 @@
   .archives-card {
     background: #ffffff;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(11,36,23,0.05);
-    padding: clamp(10px, 1.2vh, 16px) clamp(12px, 1.5vw, 18px);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
+    padding: clamp(14px, 1.8vw, 22px);
     box-sizing: border-box;
     width: 100%;
   }
@@ -81,31 +85,31 @@
     width: 100%;
     border-collapse: collapse;
     margin: 0;
-    font-size: clamp(13px, 0.9vw, 14.5px);
+    font-size: clamp(13.5px, 0.95vw, 15px);
   }
 
   .archives-table thead th {
     background: #e8f5ec;
     color: #0b3d20;
-    font-size: clamp(13.5px, 0.95vw, 15px);
+    font-size: clamp(14px, 1vw, 15.5px);
     font-weight: 800;
-    padding: clamp(8px, 1vh, 11px) clamp(12px, 1.2vw, 18px);
+    padding: clamp(10px, 1.3vh, 13px) clamp(14px, 1.3vw, 20px);
     border-bottom: 2px solid #c2e2cf;
     text-align: left;
     white-space: nowrap;
   }
 
   .archives-table thead th.col-sno {
-    width: 70px;
+    width: 75px;
     text-align: center;
   }
 
   .archives-table thead th.col-year {
-    width: 110px;
+    width: 115px;
   }
 
   .archives-table thead th.col-volume {
-    width: 150px;
+    width: 155px;
   }
 
   .archives-table thead th.col-issues {
@@ -126,27 +130,29 @@
   }
 
   .archives-table tbody td {
-    padding: clamp(6.5px, 0.85vh, 9px) clamp(12px, 1.2vw, 18px);
+    padding: clamp(8px, 1.1vh, 11px) clamp(14px, 1.3vw, 20px);
     vertical-align: middle;
     color: var(--text-main);
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .archives-table tbody td.col-sno {
     text-align: center;
     font-weight: 700;
     color: var(--deep-forest);
-    font-size: clamp(12.5px, 0.88vw, 14px);
+    font-size: clamp(13px, 0.9vw, 14.5px);
   }
 
   .archives-table tbody td.col-year {
     font-weight: 700;
     color: var(--deep-forest);
+    font-size: clamp(14px, 0.98vw, 15.5px);
   }
 
   .archives-table tbody td.col-volume {
     font-weight: 700;
     color: var(--deep-forest);
+    font-size: clamp(14px, 0.98vw, 15.5px);
   }
 
   .archives-table tbody td.col-issues {
