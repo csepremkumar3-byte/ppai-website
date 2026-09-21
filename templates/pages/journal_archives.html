@@ -2,133 +2,350 @@
 
 {% block title %}Past Archives - Indian Journal of Plant Protection (IJPP){% endblock %}
 
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     PAST ARCHIVES - CLEAN 3-COLUMN REFINED TABLE
+  =================================================================== */
+  .archives-section {
+    min-height: calc(100vh - 100px);
+    box-sizing: border-box;
+    padding: clamp(16px, 2.5vh, 28px) clamp(16px, 2.8vw, 40px) clamp(60px, 8vh, 90px) clamp(16px, 2.8vw, 40px);
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .archives-titlebar {
+    margin-bottom: clamp(14px, 2vh, 22px);
+    padding-bottom: 4px;
+  }
+
+  .archives-titlebar h1 {
+    font-size: clamp(20px, 1.5vw, 26px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: -0.02em;
+  }
+
+  .archives-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
+    padding: clamp(16px, 2vw, 24px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .archives-table-wrapper {
+    border: 1px solid #d0e5d8;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .archives-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: clamp(12.5px, 0.9vw, 13.5px);
+  }
+
+  .archives-table thead th {
+    background: #e8f5ec;
+    color: #0b3d20;
+    font-size: clamp(13px, 0.95vw, 14.5px);
+    font-weight: 800;
+    padding: clamp(10px, 1.3vh, 13px) clamp(14px, 1.3vw, 18px);
+    border-bottom: 2px solid #c2e2cf;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .archives-table thead th.col-year {
+    width: 110px;
+  }
+
+  .archives-table thead th.col-volume {
+    width: 150px;
+  }
+
+  .archives-table thead th.col-issues {
+    /* Takes remainder of table width */
+  }
+
+  .archives-table tbody tr {
+    border-bottom: 1px solid #e5eee8;
+    transition: background-color 0.15s ease;
+  }
+
+  .archives-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .archives-table tbody tr:hover {
+    background-color: #f7fbf8;
+  }
+
+  .archives-table tbody td {
+    padding: clamp(9px, 1.2vh, 12px) clamp(14px, 1.3vw, 18px);
+    vertical-align: middle;
+    color: var(--text-main);
+  }
+
+  .archives-table tbody td.col-year {
+    font-weight: 700;
+    color: var(--deep-forest);
+  }
+
+  .archives-table tbody td.col-volume {
+    font-weight: 700;
+    color: var(--deep-forest);
+  }
+
+  .archives-issue-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-archive-portal {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #0b3d20 !important;
+    background: #e8f5ec;
+    border: 1px solid #bce4cc;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(11,36,23,0.04);
+  }
+
+  .btn-archive-portal:hover {
+    background: #daf0e2;
+    border-color: #a3d9b7;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(11,36,23,0.08);
+  }
+
+  @media (max-width: 640px) {
+    .archives-issue-cell {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container inner-section" style="padding: 16px 20px 24px 20px; margin-bottom: 0px;">
+<section class="archives-section">
   <!-- Title Bar (Strictly 'Past Archives' Alone) -->
-  <div class="inner-title-bar" style="margin-bottom: 12px; padding-bottom: 4px;">
-    <h1 style="font-size: 22px; font-weight: 800; color: var(--deep-forest); margin: 0; display: flex; align-items: center; gap: 10px;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+  <div class="archives-titlebar">
+    <h1>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Past Archives
     </h1>
   </div>
 
   <!-- Unified Main Container Box -->
-  <div class="card-box" style="padding: 20px;">
-    
-    <!-- Top Notice Box -->
-    <div style="background: linear-gradient(135deg, rgba(0,178,114,0.06) 0%, rgba(11,36,23,0.02) 100%); border: 1px solid rgba(0,178,114,0.2); border-left: 4px solid var(--vibrant-green); border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-      <div>
-        <h2 style="font-size: 15px; font-weight: 800; color: var(--deep-forest); margin: 0 0 2px 0; border: none; padding: 0;">
-          ICAR e-Publications National Platform Archives
-        </h2>
-        <p style="font-size: 12px; line-height: 1.45; color: var(--text-main); margin: 0;">
-          36 online issues (Volume 42 to Volume 54, 2014–2026). Physical archives from 1972 preserved at ICAR-NBPGR RS, Hyderabad.
-        </p>
-      </div>
-      <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-action" style="padding: 6px 14px; font-size: 11.5px; white-space: nowrap;">
-        Visit ICAR e-Pubs Portal
-      </a>
+  <div class="archives-card">
+    <div class="archives-table-wrapper">
+      <table class="archives-table">
+        <thead>
+          <tr>
+            <th class="col-year">Year</th>
+            <th class="col-volume">Volume</th>
+            <th class="col-issues">Issues Available</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-year">2026</td>
+            <td class="col-volume">Volume 54</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2025</td>
+            <td class="col-volume">Volume 53</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2, No. 3, No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2024</td>
+            <td class="col-volume">Volume 52</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2, No. 3, No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2023</td>
+            <td class="col-volume">Volume 51</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, 2 &amp; 3 (combined), No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2022</td>
+            <td class="col-volume">Volume 50</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2 &amp; 3 (combined), No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2021</td>
+            <td class="col-volume">Volume 49</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2, No. 3, No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2020</td>
+            <td class="col-volume">Volume 48</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1-2 (combined), No. 3, No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2019</td>
+            <td class="col-volume">Volume 47</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1-2 (combined), No. 3-4 (combined)</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2018</td>
+            <td class="col-volume">Volume 46</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2-4 (combined)</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2017</td>
+            <td class="col-volume">Volume 45</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2, No. 3, No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2016</td>
+            <td class="col-volume">Volume 44</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 1, No. 2, No. 3, No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2015</td>
+            <td class="col-volume">Volume 43</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 2</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-year">2014</td>
+            <td class="col-volume">Volume 42</td>
+            <td>
+              <div class="archives-issue-cell">
+                <span>No. 4</span>
+                <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" rel="noopener" class="btn-archive-portal">
+                  Visit Portal
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <!-- Table Container (First Fold 100% Visible for Vol 54 to Vol 49, Remaining Scrollable Inside) -->
-    <div style="border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(11,36,23,0.03);">
-      <div style="max-height: 380px; overflow-y: auto;">
-        <table class="data-table" style="font-size: 12px; margin: 0; width: 100%; border: none;">
-          <thead style="position: sticky; top: 0; z-index: 10; background: var(--deep-forest); color: white;">
-            <tr>
-              <th style="width: 110px; color: white; background: var(--deep-forest);">Volume</th>
-              <th style="width: 80px; color: white; background: var(--deep-forest);">Year</th>
-              <th style="color: white; background: var(--deep-forest);">Issues Available in Online Archive</th>
-              <th style="width: 130px; text-align: right; color: white; background: var(--deep-forest);">Portal Access</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- First Fold Visible Rows (Vol 54 to Vol 49) -->
-            <tr>
-              <td><strong>Volume 54</strong></td>
-              <td>2026</td>
-              <td>No. 1, No. 2</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr>
-              <td><strong>Volume 53</strong></td>
-              <td>2025</td>
-              <td>No. 1, No. 2, No. 3, No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr>
-              <td><strong>Volume 52</strong></td>
-              <td>2024</td>
-              <td>No. 1, No. 2, No. 3, No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr>
-              <td><strong>Volume 51</strong></td>
-              <td>2023</td>
-              <td>No. 1, 2 &amp; 3 (combined), No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr>
-              <td><strong>Volume 50</strong></td>
-              <td>2022</td>
-              <td>No. 1, No. 2 &amp; 3 (combined), No. 4 <span class="badge-pill" style="font-size: 9px; margin-left: 4px; background: var(--deep-forest); color: white;">Golden Jubilee</span></td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr>
-              <td><strong>Volume 49</strong></td>
-              <td>2021</td>
-              <td>No. 1, No. 2, No. 3, No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-
-            <!-- Remaining Scrollable Rows (Vol 48 to Vol 42) -->
-            <tr style="background: rgba(11,36,23,0.02);">
-              <td><strong>Volume 48</strong></td>
-              <td>2020</td>
-              <td>No. 1-2 (combined), No. 3, No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr style="background: rgba(11,36,23,0.02);">
-              <td><strong>Volume 47</strong></td>
-              <td>2019</td>
-              <td>No. 1-2 (combined), No. 3-4 (combined)</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr style="background: rgba(11,36,23,0.02);">
-              <td><strong>Volume 46</strong></td>
-              <td>2018</td>
-              <td>No. 1, No. 2-4 (combined)</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr style="background: rgba(11,36,23,0.02);">
-              <td><strong>Volume 45</strong></td>
-              <td>2017</td>
-              <td>No. 1, No. 2, No. 3, No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr style="background: rgba(11,36,23,0.02);">
-              <td><strong>Volume 44</strong></td>
-              <td>2016</td>
-              <td>No. 1, No. 2, No. 3, No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr style="background: rgba(11,36,23,0.02);">
-              <td><strong>Volume 43</strong></td>
-              <td>2015</td>
-              <td>No. 2</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-            <tr style="background: rgba(11,36,23,0.02);">
-              <td><strong>Volume 42</strong></td>
-              <td>2014</td>
-              <td>No. 4</td>
-              <td style="text-align: right;"><a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-outline" style="padding: 3px 10px; font-size: 10.5px;">View on ICAR</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
   </div>
-</div>
+</section>
 {% endblock %}
