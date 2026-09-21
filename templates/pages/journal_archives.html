@@ -5,17 +5,13 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     PAST ARCHIVES - REFINED 3-COLUMN TABLE WITH PROMINENT PORTAL ACTION
+     PAST ARCHIVES - ENLARGED CLEAN TABLE WITH PROMINENT PORTAL ACTION
   =================================================================== */
   .archives-section {
-    min-height: calc(100vh - 100px);
     box-sizing: border-box;
-    padding: clamp(18px, 2.8vh, 32px) clamp(16px, 3vw, 48px) clamp(60px, 8vh, 90px) clamp(16px, 3vw, 48px);
-    max-width: 1300px;
+    padding: clamp(20px, 2.5vh, 32px) clamp(16px, 3vw, 40px) clamp(40px, 5vh, 60px) clamp(16px, 3vw, 40px);
+    max-width: 1200px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
   }
 
   .archives-titlebar {
@@ -44,8 +40,8 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 18px;
-    font-size: clamp(13px, 0.95vw, 14.5px);
+    padding: 9px 20px;
+    font-size: 14.5px;
     font-weight: 700;
     color: #0b3d20 !important;
     background: #e8f5ec;
@@ -85,18 +81,23 @@
     width: 100%;
     border-collapse: collapse;
     margin: 0;
-    font-size: clamp(13.5px, 1vw, 15px);
+    font-size: 15.5px;
   }
 
   .archives-table thead th {
     background: #e8f5ec;
     color: #0b3d20;
-    font-size: clamp(14px, 1.05vw, 16px);
+    font-size: 16px;
     font-weight: 800;
-    padding: clamp(12px, 1.5vh, 15px) clamp(16px, 1.5vw, 22px);
+    padding: 14px 20px;
     border-bottom: 2px solid #c2e2cf;
     text-align: left;
     white-space: nowrap;
+  }
+
+  .archives-table thead th.col-sno {
+    width: 80px;
+    text-align: center;
   }
 
   .archives-table thead th.col-year {
@@ -125,27 +126,35 @@
   }
 
   .archives-table tbody td {
-    padding: clamp(11px, 1.4vh, 14px) clamp(16px, 1.5vw, 22px);
+    padding: 13px 20px;
     vertical-align: middle;
     color: var(--text-main);
     line-height: 1.5;
   }
 
+  .archives-table tbody td.col-sno {
+    text-align: center;
+    font-weight: 700;
+    color: var(--deep-forest);
+    font-size: 15px;
+  }
+
   .archives-table tbody td.col-year {
     font-weight: 700;
     color: var(--deep-forest);
-    font-size: clamp(14px, 1.02vw, 15.5px);
+    font-size: 16px;
   }
 
   .archives-table tbody td.col-volume {
     font-weight: 700;
     color: var(--deep-forest);
-    font-size: clamp(14px, 1.02vw, 15.5px);
+    font-size: 16px;
   }
 
   .archives-table tbody td.col-issues {
-    color: var(--text-main);
+    color: #2d3748;
     font-weight: 500;
+    font-size: 15.5px;
   }
 </style>
 {% endblock %}
@@ -170,6 +179,7 @@
       <table class="archives-table">
         <thead>
           <tr>
+            <th class="col-sno">S.No.</th>
             <th class="col-year">Year</th>
             <th class="col-volume">Volume</th>
             <th class="col-issues">Issues Available</th>
@@ -177,66 +187,79 @@
         </thead>
         <tbody>
           <tr>
+            <td class="col-sno">1</td>
             <td class="col-year">2026</td>
             <td class="col-volume">Volume 54</td>
             <td class="col-issues">No. 1, No. 2</td>
           </tr>
           <tr>
+            <td class="col-sno">2</td>
             <td class="col-year">2025</td>
             <td class="col-volume">Volume 53</td>
             <td class="col-issues">No. 1, No. 2, No. 3, No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">3</td>
             <td class="col-year">2024</td>
             <td class="col-volume">Volume 52</td>
             <td class="col-issues">No. 1, No. 2, No. 3, No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">4</td>
             <td class="col-year">2023</td>
             <td class="col-volume">Volume 51</td>
             <td class="col-issues">No. 1, 2 &amp; 3 (combined), No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">5</td>
             <td class="col-year">2022</td>
             <td class="col-volume">Volume 50</td>
             <td class="col-issues">No. 1, No. 2 &amp; 3 (combined), No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">6</td>
             <td class="col-year">2021</td>
             <td class="col-volume">Volume 49</td>
             <td class="col-issues">No. 1, No. 2, No. 3, No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">7</td>
             <td class="col-year">2020</td>
             <td class="col-volume">Volume 48</td>
             <td class="col-issues">No. 1-2 (combined), No. 3, No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">8</td>
             <td class="col-year">2019</td>
             <td class="col-volume">Volume 47</td>
             <td class="col-issues">No. 1-2 (combined), No. 3-4 (combined)</td>
           </tr>
           <tr>
+            <td class="col-sno">9</td>
             <td class="col-year">2018</td>
             <td class="col-volume">Volume 46</td>
             <td class="col-issues">No. 1, No. 2-4 (combined)</td>
           </tr>
           <tr>
+            <td class="col-sno">10</td>
             <td class="col-year">2017</td>
             <td class="col-volume">Volume 45</td>
             <td class="col-issues">No. 1, No. 2, No. 3, No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">11</td>
             <td class="col-year">2016</td>
             <td class="col-volume">Volume 44</td>
             <td class="col-issues">No. 1, No. 2, No. 3, No. 4</td>
           </tr>
           <tr>
+            <td class="col-sno">12</td>
             <td class="col-year">2015</td>
             <td class="col-volume">Volume 43</td>
             <td class="col-issues">No. 2</td>
           </tr>
           <tr>
+            <td class="col-sno">13</td>
             <td class="col-year">2014</td>
             <td class="col-volume">Volume 42</td>
             <td class="col-issues">No. 4</td>
