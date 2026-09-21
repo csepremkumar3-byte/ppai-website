@@ -167,40 +167,36 @@
     margin: 0;
   }
 
-  /* Rich Table with Column Headers matching all other tables */
+  /* Rich Table with Increased Typography & Mild Green Header */
   .toc-table {
     font-size: clamp(12.5px, 0.92vw, 14px);
     margin: 0;
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid var(--border-color);
+    border: 1px solid #d0e5d8;
     border-radius: 8px;
     overflow: hidden;
     flex: 1;
   }
 
   .toc-table thead th {
-    background: var(--deep-forest);
-    color: #FFFFFF;
+    background: #e8f5ec;
+    color: #0b3d20;
     padding: clamp(9.5px, 1.25vh, 13px) clamp(12px, 1.2vw, 16px);
     font-size: clamp(13px, 0.95vw, 14.5px);
-    font-weight: 700;
+    font-weight: 800;
+    border-bottom: 2px solid #c2e2cf;
     text-align: left;
-    border: none;
   }
 
   .toc-table thead th.col-issue {
     width: 70px;
     text-align: center;
-    color: #FFFFFF;
-    background: var(--deep-forest);
   }
 
   .toc-table thead th.col-pages {
     width: 75px;
     text-align: right;
-    color: #FFFFFF;
-    background: var(--deep-forest);
   }
 
   .toc-table tbody tr {
@@ -303,7 +299,7 @@
 
       <div class="cover-action-btns">
         {% if issue_1_articles.first and issue_1_articles.first.pdf_file %}
-          <a href="{{ issue_1_articles.first.pdf_file.url }}" target="_blank" class="btn-action">
+          <a href="{{ issue_1_articles.first.pdf_file.url }}" target="_blank" class="btn-emerald">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Full Vol. 54 PDF
           </a>
@@ -312,7 +308,7 @@
             Download Vol. 54 PDF
           </a>
         {% else %}
-          <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-action">
+          <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-emerald">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Full Vol. 54 PDF
           </a>
