@@ -6,51 +6,23 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     CURRENT ISSUE - FULL-SCREEN VIEWPORT WITH BELOW-THE-FOLD FOOTER
+     CURRENT ISSUE - ENLARGED COVER ON LEFT & COMPACT TABLE ON RIGHT
   =================================================================== */
-  .current-issue-section {
-    min-height: calc(100vh - 100px);
-    box-sizing: border-box;
-    padding: clamp(20px, 3vh, 36px) clamp(16px, 3vw, 40px) clamp(60px, 8vh, 90px) clamp(16px, 3vw, 40px);
-    max-width: 1560px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
-  .current-issue-titlebar {
-    margin-bottom: clamp(14px, 2vh, 22px);
-    padding-bottom: 4px;
-  }
-
-  .current-issue-titlebar h1 {
-    font-size: clamp(20px, 1.6vw, 26px);
-    font-weight: 800;
-    color: var(--deep-forest);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    letter-spacing: -0.02em;
-  }
-
-  /* 2-Column Responsive Dashboard Grid: Expanded Cover on Left & Snug Table on Right */
   .current-issue-layout {
     display: grid;
-    grid-template-columns: clamp(380px, 34vw, 480px) 1fr;
-    gap: clamp(20px, 2.2vw, 36px);
-    align-items: stretch;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    align-items: start;
   }
 
-  /* Left Column: Enlarged Journal Cover Card */
+  /* Left Column: Enlarged Journal Cover (increased width towards right) */
   .cover-card {
-    padding: clamp(20px, 2.5vh, 30px);
+    padding: 20px;
     text-align: center;
     background: white;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(11,36,23,0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,10 +31,10 @@
 
   .cover-img-wrapper {
     position: relative;
-    margin-bottom: clamp(12px, 1.8vh, 18px);
+    margin-bottom: 14px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 6px 22px rgba(11,36,23,0.14);
+    box-shadow: 0 6px 20px rgba(11,36,23,0.14);
     border: 1px solid var(--border-color);
     background: #FAFDFB;
     width: 100%;
@@ -71,114 +43,77 @@
   .cover-img-wrapper img {
     width: 100%;
     height: auto;
-    max-height: clamp(380px, 50vh, 520px);
+    max-height: 460px;
     object-fit: contain;
     display: block;
     margin: 0 auto;
-    transition: transform 0.3s ease;
-  }
-
-  .cover-img-wrapper:hover img {
-    transform: scale(1.015);
-  }
-
-  .cover-meta-title {
-    font-size: clamp(14.5px, 1.05vw, 16.5px);
-    font-weight: 800;
-    color: var(--deep-forest);
-    margin-top: 6px;
-    margin-bottom: 2px;
-    line-height: 1.3;
-  }
-
-  .cover-meta-sub {
-    font-size: clamp(11.5px, 0.85vw, 13px);
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    line-height: 1.35;
   }
 
   .cover-action-btns {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 1.2vh, 12px);
-    margin-top: clamp(10px, 1.5vh, 16px);
+    gap: 10px;
+    margin-top: 14px;
   }
 
-  .cover-action-btns a {
-    padding: clamp(9px, 1.2vh, 12px) clamp(16px, 1.2vw, 20px);
-    font-size: clamp(12.5px, 0.9vw, 14px);
-    font-weight: 700;
-    justify-content: center;
-    border-radius: 8px;
-  }
-
-  /* Right Column: Table adapting snugly to text */
+  /* Right Column: Table adapting to text with mild green header and outer border */
   .toc-card {
-    padding: clamp(18px, 2.2vh, 28px) clamp(18px, 2vw, 28px);
+    padding: 16px 18px;
     background: white;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(11,36,23,0.05);
     width: fit-content;
     max-width: 100%;
   }
 
   .toc-header-bar {
-    margin-bottom: clamp(12px, 1.6vh, 16px);
+    margin-bottom: 12px;
     border-bottom: 2px solid #bce4cc;
     padding-bottom: 6px;
   }
 
   .toc-header-bar h2 {
-    font-size: clamp(16px, 1.2vw, 20px);
+    font-size: 16px;
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
   }
 
-  /* Table with Outer Lines & Mild Green Upper Column */
+  /* Table with outer lines and mild green upper column */
   .toc-table {
-    font-size: clamp(12px, 0.88vw, 13.5px);
+    font-size: 12px;
     margin: 0;
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #d0e5d8;
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
   }
 
   .toc-table thead th {
     background: #e8f5ec;
     color: #0b3d20;
-    padding: clamp(9px, 1.2vh, 13px) clamp(10px, 1.1vw, 14px);
-    font-size: clamp(12px, 0.88vw, 13.5px);
+    padding: 9px 12px;
+    font-size: 12px;
     font-weight: 700;
     border-bottom: 2px solid #c2e2cf;
     text-align: left;
   }
 
   .toc-table thead th.col-issue {
-    width: 65px;
+    width: 60px;
     text-align: center;
   }
 
   .toc-table thead th.col-pages {
-    width: 70px;
+    width: 65px;
     text-align: right;
   }
 
   .toc-table tbody tr {
     border-bottom: 1px solid #edf4f0;
-    transition: background 0.2s ease;
-  }
-
-  .toc-table tbody tr:hover {
-    background: #fafdfb;
   }
 
   .toc-table tbody tr:last-child {
@@ -186,54 +121,47 @@
   }
 
   .toc-table td {
-    padding: clamp(7.5px, 1vh, 11px) clamp(10px, 1.1vw, 14px);
+    padding: 7px 10px;
     vertical-align: middle;
   }
 
   .toc-table td.col-issue {
     text-align: center;
-    font-size: clamp(11px, 0.82vw, 12px);
+    font-size: 11px;
     color: var(--text-muted);
     font-weight: 600;
   }
 
   .toc-table td.col-content {
-    padding: clamp(7.5px, 1vh, 11px) clamp(10px, 1.1vw, 14px);
+    padding: 7px 14px;
   }
 
   .toc-table td.col-content strong {
     color: var(--deep-forest);
-    font-size: clamp(12px, 0.9vw, 13.5px);
-    line-height: 1.36;
+    font-size: 12.5px;
+    line-height: 1.35;
     display: block;
     margin-bottom: 2px;
   }
 
   .toc-table td.col-content div {
-    font-size: clamp(10.5px, 0.78vw, 11.5px);
+    font-size: 11px;
     color: var(--text-muted);
     font-weight: 600;
-    line-height: 1.25;
   }
 
   .toc-table td.col-pages {
     text-align: right;
     font-weight: 700;
-    font-size: clamp(11.5px, 0.85vw, 13px);
+    font-size: 12px;
     color: var(--deep-forest);
     white-space: nowrap;
-    padding-right: clamp(10px, 1.1vw, 14px);
+    padding-right: 12px;
   }
 
-  /* Responsive Stacking for Mobile/Tablet */
   @media (max-width: 980px) {
-    .current-issue-section {
-      min-height: auto;
-      padding: 20px 16px 48px 16px;
-    }
     .current-issue-layout {
       grid-template-columns: 1fr;
-      gap: 20px;
     }
     .toc-card {
       width: 100%;
@@ -246,49 +174,47 @@
 {% endblock %}
 
 {% block content %}
-<div class="current-issue-section">
+<div class="container inner-section" style="padding: 14px 20px 20px 20px; margin-bottom: 0px;">
   <!-- Title Bar -->
-  <div class="current-issue-titlebar">
-    <h1>
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+  <div class="inner-title-bar" style="margin-bottom: 14px; padding-bottom: 4px;">
+    <h1 style="font-size: 21px; font-weight: 800; color: var(--deep-forest); margin: 0; display: flex; align-items: center; gap: 8px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       Current Issue — Volume 54, Number 1 (March 2026)
     </h1>
   </div>
 
-  <!-- 2-Column Dashboard Layout: Expanded Cover on Left & Snug Table on Right -->
+  <!-- 2-Column Dashboard Layout: Cover on Left (Enlarged) & Table on Right -->
   <div class="current-issue-layout">
     
     <!-- Left Column: Enlarged Journal Cover Page & Action Buttons -->
     <div class="cover-card">
-      <div style="width: 100%;">
-        <div class="cover-img-wrapper">
-          <img src="{% static 'images/journal_cover.png' %}" alt="Indian Journal of Plant Protection Vol 54 Cover">
-        </div>
-        
-        <div class="cover-meta-title">
-          Vol. 54, No. 1 (March 2026)
-        </div>
-        <p class="cover-meta-sub">
-          Quarterly Scientific Journal of PPAI
-        </p>
+      <div class="cover-img-wrapper">
+        <img src="{% static 'images/journal_cover.png' %}" alt="Indian Journal of Plant Protection Vol 54 Cover">
       </div>
+      
+      <div style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin-top: 4px; margin-bottom: 2px;">
+        Vol. 54, No. 1 (March 2026)
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.35;">
+        Quarterly Scientific Journal of PPAI
+      </p>
 
       <div class="cover-action-btns">
         {% if issue_1_articles.first and issue_1_articles.first.pdf_file %}
-          <a href="{{ issue_1_articles.first.pdf_file.url }}" target="_blank" class="btn-action">
+          <a href="{{ issue_1_articles.first.pdf_file.url }}" target="_blank" class="btn-action" style="justify-content: center; padding: 10px 14px; font-size: 13px;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Full Vol. 54 PDF
           </a>
-          <a href="{{ issue_1_articles.first.pdf_file.url }}" download="IJPP_Vol54_2026_Complete.pdf" class="btn-outline" style="background: #FFF;">
+          <a href="{{ issue_1_articles.first.pdf_file.url }}" download="IJPP_Vol54_2026_Complete.pdf" class="btn-outline" style="justify-content: center; padding: 9px 14px; font-size: 12.5px; background: #FFF;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Vol. 54 PDF
           </a>
         {% else %}
-          <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-action">
+          <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-action" style="justify-content: center; padding: 10px 14px; font-size: 13px;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Full Vol. 54 PDF
           </a>
-          <a href="https://epubs.icar.org.in/index.php/IJPP" download class="btn-outline" style="background: #FFF;">
+          <a href="https://epubs.icar.org.in/index.php/IJPP" download class="btn-outline" style="justify-content: center; padding: 9px 14px; font-size: 12.5px; background: #FFF;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Vol. 54 PDF
           </a>
@@ -296,7 +222,7 @@
       </div>
     </div>
 
-    <!-- Right Column: Table adapting snugly to text -->
+    <!-- Right Column: Table of Contents adapting to text -->
     <div class="toc-card">
       <div class="toc-header-bar">
         <h2>Table of Contents</h2>
