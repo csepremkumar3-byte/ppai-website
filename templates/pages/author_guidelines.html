@@ -1,141 +1,415 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Author Guidelines — Indian Journal of Plant Protection{% endblock %}
+{% block title %}Author Guidelines - Indian Journal of Plant Protection (IJPP){% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     CLEAN LINE-SEPARATED EDITORIAL THEME - AUTHOR GUIDELINES
+     Matches the authoritative, distraction-free style of About Us
+  =================================================================== */
+  .guidelines-stream-wrapper {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: clamp(32px, 5vh, 60px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 100px) clamp(20px, 4vw, 40px);
+  }
+
+  /* Thin Section Divider Line */
+  .story-divider {
+    border: none;
+    height: 1px;
+    background: rgba(11, 36, 23, 0.12);
+    margin: clamp(32px, 4.5vh, 48px) 0;
+  }
+
+  /* Top Hero Section */
+  .story-hero {
+    margin-bottom: clamp(24px, 3.5vh, 36px);
+  }
+
+  .story-hero h1 {
+    font-size: clamp(30px, 3.5vw, 44px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .story-hero-lead {
+    font-size: clamp(16.5px, 1.2vw, 19px);
+    line-height: 1.72;
+    color: var(--text-main);
+    margin-bottom: 16px;
+  }
+
+  .story-meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    background: #f4faf6;
+    border: 1px solid #c8e8d4;
+    border-radius: 8px;
+    font-size: clamp(13px, 0.95vw, 14.5px);
+    color: var(--deep-forest);
+    font-weight: 600;
+  }
+
+  .story-meta-bar span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* One by One Story Sections */
+  .story-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .story-heading {
+    font-size: clamp(22px, 2.2vw, 27px);
+    font-weight: 700;
+    color: var(--deep-forest);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px 0;
+  }
+
+  .story-subheading {
+    font-size: clamp(16px, 1.3vw, 18.5px);
+    font-weight: 700;
+    color: var(--deep-forest);
+    margin: 14px 0 6px 0;
+  }
+
+  .story-body-p {
+    font-size: clamp(15.5px, 1.1vw, 17px);
+    line-height: 1.8;
+    color: var(--text-main);
+    margin: 0 0 14px 0;
+  }
+
+  .story-body-p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* Bullet / Pillar Points with Diamond Icon */
+  .story-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .story-pillar-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: clamp(15px, 1.05vw, 16.5px);
+    line-height: 1.65;
+    color: var(--text-main);
+  }
+
+  .story-pillar-row::before {
+    content: "◆";
+    font-size: 9px;
+    color: var(--deep-forest);
+    opacity: 0.6;
+    flex-shrink: 0;
+    position: relative;
+    top: -2px;
+  }
+
+  /* Reference Example Block */
+  .reference-box {
+    background: #fafcfb;
+    border-left: 3px solid #00b272;
+    padding: 14px 18px;
+    font-family: inherit;
+    font-size: clamp(13.5px, 0.95vw, 15px);
+    line-height: 1.65;
+    color: #2d3748;
+    margin-top: 10px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .reference-box p {
+    margin: 0 0 8px 0;
+    text-indent: -20px;
+    padding-left: 20px;
+  }
+
+  .reference-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Action Buttons Bar */
+  .story-action-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .btn-story-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0b3d20 !important;
+    background: #e8f5ec;
+    border: 1.5px solid #a8dfbc;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(11,36,23,0.06);
+  }
+
+  .btn-story-primary:hover {
+    background: #daf0e2;
+    border-color: #8ed2a7;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(11,36,23,0.12);
+  }
+
+  .btn-story-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--deep-forest) !important;
+    background: #ffffff;
+    border: 1.5px solid rgba(11,36,23,0.2);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .btn-story-secondary:hover {
+    background: #f7fbf8;
+    border-color: var(--deep-forest);
+    transform: translateY(-1px);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .guidelines-stream-wrapper {
+      padding: 24px 16px 48px 16px;
+    }
+
+    .story-divider {
+      margin: 24px 0;
+    }
+
+    .story-pillar-row {
+      gap: 10px;
+    }
+
+    .story-meta-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container inner-section" style="padding: 16px 20px 24px 20px; margin-bottom: 20px;">
-  <!-- Title Bar (Strictly 'Author Guidelines — Indian Journal of Plant Protection' Alone) -->
-  <div class="inner-title-bar" style="margin-bottom: 14px; padding-bottom: 6px;">
-    <h1 style="font-size: 22px; font-weight: 800; color: var(--deep-forest); margin: 0; display: flex; align-items: center; gap: 10px;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Author Guidelines — Indian Journal of Plant Protection
+<div class="guidelines-stream-wrapper">
+
+  <!-- Top Hero Title -->
+  <header class="story-hero">
+    <h1>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Author Guidelines
     </h1>
-  </div>
+    <p class="story-hero-lead">
+      The <em>Indian Journal of Plant Protection</em> (IJPP) is a peer-reviewed quarterly scientific journal published by the Plant Protection Association of India (PPAI) since 1972. It publishes original, high-quality applied research across entomology, plant pathology, nematology, weed science, rodent control, and pesticide application technology.
+    </p>
 
-  <!-- Unified Main Container Box (Full-Sized Readable 4-Card Dashboard) -->
-  <div class="card-box" style="padding: 20px 22px;">
-    
-    <!-- 4-Card Grid Dashboard (Full Readable Sizing) -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch;">
-      
-      <!-- Card 1: Scope & Membership Eligibility -->
-      <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
-        <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-            <h2 style="font-size: 15.5px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              1. Scope &amp; Active Membership Mandate
-            </h2>
-          </div>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin-bottom: 6px;">
-            All authors must maintain active PPAI membership. IJPP considers original research on applied plant protection (insect pests, mites, nematodes, diseases, rodents, weeds, equipment).
-          </p>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin: 0;">
-            Routine laboratory studies are discouraged; Integrated Pest Management (IPM) trials conducted for a minimum of two seasons receive evaluation priority.
-          </p>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 10px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--deep-forest); background: rgba(11,36,23,0.05); padding: 4px 8px; border-radius: 6px;">
-            ✓ Active PPAI Society Membership Required for All Authors
-          </div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 4px 8px; border-radius: 6px;">
-            ✓ Weightage for IPM Trials Conducted over Minimum 2 Seasons
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2: Manuscript Structure & Word Limit -->
-      <div style="background: #FFFFFF; border: 1px solid rgba(11, 36, 23, 0.2); border-left: 5px solid var(--deep-forest); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
-        <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-            <h2 style="font-size: 15.5px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              2. Manuscript Formatting &amp; Text Structure
-            </h2>
-          </div>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin-bottom: 6px;">
-            Typed double-spaced on A-4 size paper in MS Word (.docx), not exceeding 6000 words. Mandatory sections: Title Page, Abstract (200-250 words with keywords), Introduction, Materials &amp; Methods, Results &amp; Discussion.
-          </p>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin: 0;">
-            References must follow the standard Harvard system (e.g. Singh et al., 2002). Master's/Ph.D. thesis manuscripts must be routed through the guide.
-          </p>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 10px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--deep-forest); background: rgba(11,36,23,0.05); padding: 4px 8px; border-radius: 6px;">
-            ✓ Abstract 200–250 Words &amp; Harvard Reference Citation Protocol
-          </div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 4px 8px; border-radius: 6px;">
-            ✓ Headings: Primary (12pt Bold), Secondary &amp; Tertiary (10pt)
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3: Tables, Figures & Scientific Standards -->
-      <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
-        <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-            <h2 style="font-size: 15.5px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-              3. Tables, Figures &amp; Scientific Nomenclature
-            </h2>
-          </div>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin-bottom: 6px;">
-            Tables typed on separate sheets <strong>without vertical lines</strong>. Statistical tests (SE, LSD, CD) explicitly stated. Graphs prepared in MS Excel (83mm/176mm width).
-          </p>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin: 0;">
-            Scientific binomial names italicized with author citation on first mention (e.g. <em>Helicoverpa armigera</em> Hubner). Standard SI units (g/ha, a.i./ha, mm, ml) enforced.
-          </p>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 10px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--deep-forest); background: rgba(11,36,23,0.05); padding: 4px 8px; border-radius: 6px;">
-            ✓ Tables Without Vertical Lines &amp; Specified Statistical Tests
-          </div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 4px 8px; border-radius: 6px;">
-            ✓ Italicized Scientific Binomial Names &amp; Standard SI Units
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 4: Submission & Peer-Review Protocols -->
-      <div style="background: #FFFFFF; border: 1px solid rgba(11, 36, 23, 0.2); border-left: 5px solid var(--deep-forest); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
-        <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-            <h2 style="font-size: 15.5px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              4. Submission, Copyright &amp; Peer Review
-            </h2>
-          </div>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin-bottom: 6px;">
-            Softcopy manuscripts emailed to <strong>ijpp1972@yahoo.co.in</strong> or submitted via ICAR e-Pubs portal. Physical hard copies are not accepted.
-          </p>
-
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin: 0;">
-            All papers undergo double-blind peer review. Copyright resides with PPAI upon acceptance. No processing fee for active society members.
-          </p>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 10px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--deep-forest); background: rgba(11,36,23,0.05); padding: 4px 8px; border-radius: 6px;">
-            ✓ Official Softcopy Email Submission: ijpp1972@yahoo.co.in
-          </div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 4px 8px; border-radius: 6px;">
-            ✓ Double-Blind Peer Review &amp; ICAR e-Pubs National Indexing
-          </div>
-        </div>
-      </div>
-
+    <div class="story-meta-bar">
+      <span><strong>Indexed By:</strong> ICAR e-Publications National Platform</span>
+      <span><strong>Frequency:</strong> Quarterly (4 Issues / Year)</span>
+      <span><strong>Review Type:</strong> Double-Blind Peer Review</span>
+      <span><strong>Submission:</strong> Online Portal / Email</span>
     </div>
+  </header>
 
-  </div>
+  <hr class="story-divider">
+
+  <!-- Section 1: Scope & Membership Eligibility -->
+  <section class="story-section">
+    <h2 class="story-heading">1. Scope and Membership Mandate</h2>
+    <p class="story-body-p">
+      Publication in the <em>Indian Journal of Plant Protection</em> is open to members of the Plant Protection Association of India. All authors are required to ensure active membership of the society at the time of publication.
+    </p>
+    
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span><strong>Original Applied Research:</strong> Manuscripts must report original contributions in applied aspects of plant protection, including insect pests, plant diseases, nematodes, weeds, rodents, and application equipment.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Multi-Season Trials Preferred:</strong> Routine laboratory bioassays or single-season trials are strongly discouraged. Field studies on integrated pest management (IPM), crop loss assessment, and host plant resistance should ideally be conducted over a minimum of two experimental seasons.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Student Thesis Submissions:</strong> Research manuscripts originating from Master’s or Ph.D. thesis work must be routed through the student’s research guide or a member of the Journal’s Advisory Board.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Processing Charges:</strong> Nominal article processing charges apply for all accepted manuscripts as per society norms.</span>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="story-divider">
+
+  <!-- Section 2: Manuscript Preparation & Formatting -->
+  <section class="story-section">
+    <h2 class="story-heading">2. Manuscript Preparation and Structure</h2>
+    <p class="story-body-p">
+      Manuscripts must be written in clear, concise English and typed in double space on standard A-4 size paper with 2.5 cm margins on all sides. The total manuscript length should not exceed 6,000 words, including tables, figures, and references.
+    </p>
+
+    <h3 class="story-subheading">Typography & Formatting Specifications</h3>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span><strong>Title &amp; Headings:</strong> The paper title (14 pt) and all major section headings (12 pt) must be set in <strong>Arial Black</strong>.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Body Text:</strong> The text of all sections should be set in <strong>Times New Roman (10 pt)</strong>, double-spaced.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Heading Hierarchy:</strong> Primary headings (e.g., <em>Materials and Methods</em>) in 12 pt Arial Black; secondary headings in 10 pt bold; tertiary headings in 10 pt italic running directly into the paragraph.</span>
+      </li>
+    </ul>
+
+    <h3 class="story-subheading">Core Manuscript Sections</h3>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span><strong>Title Page:</strong> A concise, informative title with initial capitals for each principal word. Full names of authors, official affiliations, and email addresses. A running title of not more than 50 characters must be provided if the main title exceeds one line.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Abstract:</strong> A self-contained, structured summary of 200–250 words stating the research problem, methodology, key findings, and practical conclusions. Avoid abbreviations and reference citations in the abstract.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Keywords:</strong> 4 to 6 relevant keywords listed in alphabetical order immediately following the abstract.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Introduction:</strong> A brief description outlining the importance of the study, relevant background literature, the specific research gap addressed, and objectives of the investigation.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Materials and Methods:</strong> Clear and detailed description of experimental design, field location, climate data, sampling procedures, biological materials, treatments, and analytical protocols so that experiments can be replicated.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Results and Discussion:</strong> Results and discussion should be integrated to avoid repetition. Findings must be supported by empirical data presented in tables or figures and interpreted with reference to relevant published literature.</span>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="story-divider">
+
+  <!-- Section 3: Tables, Figures & Scientific Standards -->
+  <section class="story-section">
+    <h2 class="story-heading">3. Tables, Figures and Scientific Standards</h2>
+    <p class="story-body-p">
+      Data presentation must adhere to rigorous scientific standards to ensure clarity, accuracy, and international reproducibility.
+    </p>
+
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span><strong>Tables:</strong> Tables should be self-explanatory and typed on separate sheets. Headings must be placed at the top separated by a horizontal line. <strong>Vertical lines are strictly prohibited</strong> in all tables. Sized to fit single column (83 mm) or full page width (176 mm).</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Statistical Validity:</strong> Standard error of means (SEm±), Least Significant Difference (LSD), or Critical Difference (CD at P=0.05) must be clearly reported for all quantitative comparisons. Percentage data must indicate appropriate angular or arcsine transformations.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Figures &amp; Illustrations:</strong> High-resolution graphs and photographs (minimum 300 DPI) in TIFF, JPG, or vector formats. Line drawings and bar charts should be cleanly prepared in MS Excel or graphic software.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Scientific Nomenclature:</strong> Scientific binomial names must be italicized with the authority citation given upon first mention (e.g., <em>Helicoverpa armigera</em> Hübner, <em>Magnaporthe oryzae</em> Couch &amp; Kohn). Common names should follow standard entomological/pathological registries.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Units &amp; Abbreviations:</strong> Use standard International System of Units (SI) throughout (e.g., g/ha, kg/ha, a.i./ha, mm, mL, °C, h, min). Non-standard abbreviations must be defined at first mention in the text.</span>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="story-divider">
+
+  <!-- Section 4: References & Harvard Citation Style -->
+  <section class="story-section">
+    <h2 class="story-heading">4. References and Harvard Citation Style</h2>
+    <p class="story-body-p">
+      References must be cited in the text using the author-year Harvard format (e.g., <em>Singh, 2018</em>; <em>Sharma and Rao, 2021</em>; or <em>Patel et al., 2023</em> for three or more authors). The reference list at the end of the manuscript must be arranged alphabetically by first author surname.
+    </p>
+    <p class="story-body-p">
+      Journal titles must be abbreviated strictly according to the <em>World List of Scientific Periodicals</em> or standard international indexing conventions.
+    </p>
+
+    <h3 class="story-subheading">Reference Formatting Examples</h3>
+    <div class="reference-box">
+      <p><strong>Journal Article:</strong><br>
+      Reddy, K. M., Prasad, R. D. and Sarma, B. K. 2022. Biological management of soil-borne pathogens in oilseed crops using native <em>Trichoderma</em> isolates. <em>Indian Journal of Plant Protection</em>, 50(2): 112–119.</p>
+
+      <p><strong>Book:</strong><br>
+      Grafton-Cardwell, E. E. and Godfrey, L. D. 2018. <em>Integrated Pest Management for Citrus</em> (3rd ed.). University of California Agriculture and Natural Resources, Oakland, USA, 280 pp.</p>
+
+      <p><strong>Edited Book Chapter:</strong><br>
+      Venkateswarlu, B. and Rao, C. S. 2016. Climate change and pest management in rainfed agriculture. In: <em>Plant Protection in the 21st Century</em> (Eds. P. K. Singh and A. K. Misra), Academic Publishers, New Delhi, pp. 45–68.</p>
+
+      <p><strong>Conference Proceedings:</strong><br>
+      Kumar, P., Sridhar, V. and Sharma, K. 2021. Invasive pest surveillance and biosecurity protocols in South Asia. In: <em>Proceedings of the National Symposium on Plant Health Management</em>, Hyderabad, India, pp. 88–92.</p>
+    </div>
+  </section>
+
+  <hr class="story-divider">
+
+  <!-- Section 5: Submission & Peer-Review Workflow -->
+  <section class="story-section">
+    <h2 class="story-heading">5. Online Submission and Peer Review Workflow</h2>
+    <p class="story-body-p">
+      Authors can submit their manuscripts through the official ICAR e-Publications national journal portal or email softcopies directly to the editorial desk. All submissions undergo double-blind peer review by designated subject matter referees.
+    </p>
+
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span><strong>Double-Blind Peer Review:</strong> Every article is evaluated anonymously by two independent peer reviewers and the Editorial Board for scientific novelty, methodology, and relevance.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Ethical Standards &amp; Plagiarism:</strong> Authors must guarantee that the manuscript is original, has not been published previously, and is not under consideration elsewhere. Text similarity is verified via standard plagiarism detection systems.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Copyright:</strong> Upon acceptance of the manuscript, copyright is transferred to the Plant Protection Association of India.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span><strong>Editorial Communication:</strong> All editorial queries and softcopy submissions can be directed to the Chief Editor at <strong>ijpp1972@yahoo.co.in</strong>.</span>
+      </li>
+    </ul>
+
+    <div class="story-action-group">
+      <a href="https://epubs.icar.org.in/index.php/IJPP/about/submissions" target="_blank" rel="noopener" class="btn-story-primary">
+        Submit on ICAR e-Pubs Portal
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+      <a href="mailto:ijpp1972@yahoo.co.in" class="btn-story-secondary">
+        Email Editorial Desk (ijpp1972@yahoo.co.in)
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+    </div>
+  </section>
+
 </div>
 {% endblock %}
