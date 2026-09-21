@@ -1,109 +1,207 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Books &amp; Special Publications - Plant Protection Association of India (PPAI){% endblock %}
 
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     CLEAN LINE-SEPARATED EDITORIAL THEME - BOOKS & SPECIAL PUBLICATIONS
+     Strictly identical to About Us & Author Guidelines structure
+  =================================================================== */
+  .about-stream-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(32px, 5vh, 60px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 100px) clamp(20px, 4vw, 40px);
+  }
+
+  /* Thin Section Divider Line */
+  .story-divider {
+    border: none;
+    height: 1px;
+    background: rgba(11, 36, 23, 0.12);
+    margin: clamp(28px, 4vh, 42px) 0;
+  }
+
+  /* Top Hero Section */
+  .story-hero {
+    margin-bottom: clamp(16px, 2.5vh, 24px);
+  }
+
+  .story-hero h1 {
+    font-size: clamp(32px, 3.5vw, 48px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  /* One by One Story Sections */
+  .story-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .story-heading {
+    font-size: clamp(22px, 2.2vw, 28px);
+    font-weight: 700;
+    color: var(--deep-forest);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px 0;
+  }
+
+  .story-body-p {
+    font-size: clamp(15.5px, 1.1vw, 17.5px);
+    line-height: 1.8;
+    color: var(--text-main);
+    margin: 0 0 14px 0;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .story-body-p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* Objective Points */
+  .story-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .story-pillar-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: clamp(15px, 1.05vw, 16.5px);
+    line-height: 1.65;
+    color: var(--text-main);
+  }
+
+  .story-pillar-row span {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .story-pillar-row::before {
+    content: "◆";
+    font-size: 9px;
+    color: var(--deep-forest);
+    opacity: 0.6;
+    flex-shrink: 0;
+    position: relative;
+    top: -2px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .about-stream-wrapper {
+      padding: 24px 16px 48px 16px;
+    }
+
+    .story-divider {
+      margin: 24px 0;
+    }
+
+    .story-pillar-row {
+      gap: 10px;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container inner-section" style="padding: 20px 20px 24px 20px; margin-bottom: 280px;">
-  <!-- Title Bar (Strictly 'Books & Special Publications' Alone) -->
-  <div class="inner-title-bar" style="margin-bottom: 24px; padding-bottom: 8px;">
-    <h1 style="font-size: 24px; font-weight: 800; color: var(--deep-forest); margin: 0; display: flex; align-items: center; gap: 10px;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      Books &amp; Special Publications
-    </h1>
-  </div>
+<div class="about-stream-wrapper">
 
-  <!-- Unified Main Card Box (Positioned further down with margin-top: 40px) -->
-  <div class="card-box" style="padding: 24px 22px; margin-top: 40px;">
-    
-    <!-- 3-Column Book Cards Grid (Unified Green Styling) -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; align-items: stretch;">
-      
-      <!-- Book 1 (2016) -->
-      <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 20px 22px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; min-height: 220px;">
-        <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <h2 style="font-size: 15.5px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0;">
-              Plant Health Management for Food Security: Issues and Approaches
-            </h2>
-            <span class="badge-pill" style="font-size: 10px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green); flex-shrink: 0; margin-left: 6px;">2016</span>
-          </div>
+  <!-- 1. Primary Title Header -->
+  <section class="story-hero">
+    <h1>Books &amp; Special Publications</h1>
+  </section>
 
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin-bottom: 6px;">
-            Published by Plant Protection Association of India (PPAI), Rajendranagar, Hyderabad.
-          </p>
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-muted); margin: 0;">
-            Comprehensive scientific reference addressing emerging crop protection challenges, sustainable food security, bio-risk mitigation, and next-generation IPM paradigms in Indian agriculture.
-          </p>
-        </div>
+  <!-- Line Divider -->
+  <hr class="story-divider">
 
-        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 12px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--deep-forest); background: rgba(11,36,23,0.05); padding: 4px 8px; border-radius: 6px;">
-            ✓ Official Special Publication of PPAI
-          </div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 4px 8px; border-radius: 6px;">
-            ✓ Focus on Food Security &amp; Sustainable Crop Protection
-          </div>
-        </div>
-      </div>
+  <!-- 2. Book 1 (2016) -->
+  <section class="story-section">
+    <h2 class="story-heading">Plant Health Management for Food Security: Issues and Approaches (2016)</h2>
+    <p class="story-body-p">
+      Published by the Plant Protection Association of India (PPAI), Rajendranagar, Hyderabad, this comprehensive scientific volume addresses pressing national and global plant health challenges essential for safeguarding food security.
+    </p>
+    <p class="story-body-p">
+      The publication compiles peer-reviewed treatises on climate change impacts on pest dynamics, biosecurity protocols, transboundary pest incursions, and next-generation integrated pest management paradigms in Indian agriculture.
+    </p>
 
-      <!-- Book 2 (2002) -->
-      <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 20px 22px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; min-height: 220px;">
-        <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <h2 style="font-size: 15.5px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0;">
-              Resources Management in Plant Protection (Volumes I &amp; II)
-            </h2>
-            <span class="badge-pill" style="font-size: 10px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green); flex-shrink: 0; margin-left: 6px;">2002</span>
-          </div>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span>Scientific Scope: Evaluates sustainable crop protection strategies, ecological pest monitoring, bio-risk mitigation, and regulatory plant quarantine frameworks.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>National Impact: Serves as an authoritative technical reference for agricultural scientists, policy planners, extension specialists, and research scholars across ICAR institutes and State Agricultural Universities.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Publisher: Plant Protection Association of India (PPAI), Rajendranagar, Hyderabad.</span>
+      </li>
+    </ul>
+  </section>
 
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin-bottom: 6px;">
-            Published by Plant Protection Association of India (PPAI), Rajendranagar, Hyderabad.
-          </p>
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-muted); margin: 0;">
-            Two-volume landmark reference compiling extensive research on biological, botanical, chemical, and cultural resource management for sustainable pest control in the 21st century.
-          </p>
-        </div>
+  <!-- Line Divider -->
+  <hr class="story-divider">
 
-        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 12px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--deep-forest); background: rgba(11,36,23,0.05); padding: 4px 8px; border-radius: 6px;">
-            ✓ 2-Volume Landmark Reference Set
-          </div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 4px 8px; border-radius: 6px;">
-            ✓ Published on PPAI Milestone Anniversary
-          </div>
-        </div>
-      </div>
+  <!-- 3. Book 2 (2002) -->
+  <section class="story-section">
+    <h2 class="story-heading">Resources Management in Plant Protection (Volumes I &amp; II) (2002)</h2>
+    <p class="story-body-p">
+      Released as a landmark two-volume reference set, this major publication synthesizes research findings and practical methodologies for managing biological, botanical, chemical, and cultural resources in agricultural crop protection.
+    </p>
+    <p class="story-body-p">
+      The set provides a holistic framework for sustainable resource utilization, minimizing chemical pesticide reliance, and preserving natural biodiversity in agro-ecosystems across diverse Indian cropping regions.
+    </p>
 
-      <!-- Book 3 (1992) -->
-      <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 20px 22px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; min-height: 220px;">
-        <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <h2 style="font-size: 15.5px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0;">
-              Pests and Pest Management in India — The Changing Scenario
-            </h2>
-            <span class="badge-pill" style="font-size: 10.5px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green); flex-shrink: 0; margin-left: 6px;">1992</span>
-          </div>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span>Volume I: Focuses on biological control agents, microbial biopesticides, botanical formulations, host plant resistance, and cultural management strategies.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Volume II: Focuses on chemical management strategies, pesticide resistance monitoring, novel insecticide chemistries, advanced spray application technology, and environmental toxicology.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Publisher: Plant Protection Association of India (PPAI), Rajendranagar, Hyderabad.</span>
+      </li>
+    </ul>
+  </section>
 
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-main); margin-bottom: 6px;">
-            Published by Plant Protection Association of India (PPAI), Rajendranagar, Hyderabad.
-          </p>
-          <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-muted); margin: 0;">
-            Historical synthesis analyzing shifts in pest dynamics, vector-borne crop diseases, pesticide resistance, and national plant protection policies across India.
-          </p>
-        </div>
+  <!-- Line Divider -->
+  <hr class="story-divider">
 
-        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 12px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--deep-forest); background: rgba(11,36,23,0.05); padding: 4px 8px; border-radius: 6px;">
-            ✓ Historical Synthesis of Indian Pest Dynamics
-          </div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 4px 8px; border-radius: 6px;">
-            ✓ Published by PPAI National Headquarters
-          </div>
-        </div>
-      </div>
+  <!-- 4. Book 3 (1992) -->
+  <section class="story-section">
+    <h2 class="story-heading">Pests and Pest Management in India — The Changing Scenario (1992)</h2>
+    <p class="story-body-p">
+      This foundational volume provides a detailed historical synthesis analyzing long-term shifts in insect pest dynamics, vector-borne plant diseases, nematode infestations, and weed ecological shifts following the Green Revolution in India.
+    </p>
+    <p class="story-body-p">
+      The book documents historical pest outbreaks, pesticide usage patterns, resistance developments, and policy evolution, serving as an invaluable baseline for comparative epidemiological and entomological research.
+    </p>
 
-    </div>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span>Historical Analysis: Comprehensive retrospective on five decades of pest status shifts across cereal, pulse, oilseed, cotton, and horticultural cropping systems.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Policy Guidance: Outlines foundational guidelines for pesticide regulation, biological control integration, and national plant protection policy frameworks.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Publisher: Plant Protection Association of India (PPAI), Rajendranagar, Hyderabad.</span>
+      </li>
+    </ul>
+  </section>
 
-  </div>
 </div>
 {% endblock %}
