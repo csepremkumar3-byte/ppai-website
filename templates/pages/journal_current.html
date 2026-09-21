@@ -6,7 +6,7 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     CURRENT ISSUE - EQUAL HEIGHT RESPONSIVE DASHBOARD WITH HIDDEN FOOTER
+     CURRENT ISSUE - REFINED EQUAL HEIGHT DASHBOARD WITH EMERALD ACCENTS
   =================================================================== */
   .current-issue-section {
     min-height: calc(100vh - 100px);
@@ -60,26 +60,25 @@
     box-sizing: border-box;
   }
 
-  /* Cover Image fully visible without any cropping */
+  /* Cover Image frame matches exact image aspect ratio (no side white gaps) */
   .cover-img-wrapper {
     position: relative;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 18px rgba(11,36,23,0.12);
+    box-shadow: 0 6px 20px rgba(11,36,23,0.12);
     border: 1px solid rgba(11,36,23,0.1);
-    background: #FAFDFB;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: clamp(8px, 1.2vh, 14px);
+    background: transparent;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto clamp(8px, 1.2vh, 14px) auto;
+    line-height: 0;
   }
 
   .cover-img-wrapper img {
-    width: 100%;
+    width: auto;
     height: auto;
     max-height: clamp(340px, 48vh, 520px);
-    object-fit: contain;
+    max-width: 100%;
     display: block;
     margin: 0 auto;
     transition: transform 0.3s ease;
@@ -115,10 +114,29 @@
 
   .cover-action-btns a {
     padding: clamp(9px, 1.2vh, 12px) clamp(16px, 1.2vw, 20px);
-    font-size: clamp(12px, 0.88vw, 13.5px);
+    font-size: clamp(12.5px, 0.9vw, 14px);
     font-weight: 700;
     justify-content: center;
     border-radius: 8px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Emerald Light Green Button */
+  .btn-emerald {
+    background: #10b981;
+    color: #ffffff !important;
+    border: 1px solid #059669;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.28);
+    transition: all 0.25s ease;
+  }
+
+  .btn-emerald:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
   }
 
   /* Right Column: Equal-Height Table of Contents Card */
@@ -143,15 +161,15 @@
   }
 
   .toc-header-bar h2 {
-    font-size: clamp(16px, 1.2vw, 20px);
+    font-size: clamp(17px, 1.3vw, 21px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
   }
 
-  /* Table strictly adapted to text content with mild green header and clean outer border */
+  /* Rich Table with Increased Typography & Mild Green Header */
   .toc-table {
-    font-size: clamp(11.5px, 0.85vw, 13px);
+    font-size: clamp(12.5px, 0.92vw, 14px);
     margin: 0;
     width: 100%;
     border-collapse: collapse;
@@ -164,20 +182,20 @@
   .toc-table thead th {
     background: #e8f5ec;
     color: #0b3d20;
-    padding: clamp(8px, 1.1vh, 12px) clamp(10px, 1vw, 14px);
-    font-size: clamp(12px, 0.88vw, 13.5px);
-    font-weight: 700;
+    padding: clamp(9.5px, 1.25vh, 13px) clamp(12px, 1.2vw, 16px);
+    font-size: clamp(13px, 0.95vw, 14.5px);
+    font-weight: 800;
     border-bottom: 2px solid #c2e2cf;
     text-align: left;
   }
 
   .toc-table thead th.col-issue {
-    width: 65px;
+    width: 70px;
     text-align: center;
   }
 
   .toc-table thead th.col-pages {
-    width: 70px;
+    width: 75px;
     text-align: right;
   }
 
@@ -195,43 +213,43 @@
   }
 
   .toc-table td {
-    padding: clamp(7px, 1vh, 10.5px) clamp(10px, 1vw, 14px);
+    padding: clamp(8px, 1.1vh, 11.5px) clamp(12px, 1.2vw, 16px);
     vertical-align: middle;
   }
 
   .toc-table td.col-issue {
     text-align: center;
-    font-size: clamp(11px, 0.8vw, 12px);
+    font-size: clamp(12px, 0.88vw, 13px);
     color: var(--text-muted);
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .toc-table td.col-content {
-    padding: clamp(7px, 1vh, 10.5px) clamp(10px, 1vw, 14px);
+    padding: clamp(8px, 1.1vh, 11.5px) clamp(12px, 1.2vw, 16px);
   }
 
   .toc-table td.col-content strong {
     color: var(--deep-forest);
-    font-size: clamp(12px, 0.88vw, 13.5px);
-    line-height: 1.35;
+    font-size: clamp(13px, 0.96vw, 14.5px);
+    line-height: 1.38;
     display: block;
     margin-bottom: 2px;
   }
 
   .toc-table td.col-content div {
-    font-size: clamp(10.5px, 0.78vw, 11.5px);
+    font-size: clamp(11.5px, 0.85vw, 12.5px);
     color: var(--text-muted);
     font-weight: 600;
-    line-height: 1.25;
+    line-height: 1.28;
   }
 
   .toc-table td.col-pages {
     text-align: right;
-    font-weight: 700;
-    font-size: clamp(11.5px, 0.85vw, 13px);
+    font-weight: 800;
+    font-size: clamp(12.5px, 0.92vw, 14px);
     color: var(--deep-forest);
     white-space: nowrap;
-    padding-right: clamp(10px, 1vw, 14px);
+    padding-right: clamp(12px, 1.2vw, 16px);
   }
 
   /* Responsive Stacking for Mobile/Tablet */
@@ -281,8 +299,8 @@
 
       <div class="cover-action-btns">
         {% if issue_1_articles.first and issue_1_articles.first.pdf_file %}
-          <a href="{{ issue_1_articles.first.pdf_file.url }}" target="_blank" class="btn-action">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <a href="{{ issue_1_articles.first.pdf_file.url }}" target="_blank" class="btn-emerald">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Full Vol. 54 PDF
           </a>
           <a href="{{ issue_1_articles.first.pdf_file.url }}" download="IJPP_Vol54_2026_Complete.pdf" class="btn-outline" style="background: #FFF;">
@@ -290,8 +308,8 @@
             Download Vol. 54 PDF
           </a>
         {% else %}
-          <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-action">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-emerald">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Full Vol. 54 PDF
           </a>
           <a href="https://epubs.icar.org.in/index.php/IJPP" download class="btn-outline" style="background: #FFF;">
