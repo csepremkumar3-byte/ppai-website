@@ -6,12 +6,12 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     CURRENT ISSUE - FULL-SCREEN VIEWPORT WITH BELOW-THE-FOLD FOOTER
+     CURRENT ISSUE - EQUAL HEIGHT DASHBOARD WITH VISIBLE DOWNLOAD BUTTONS
   =================================================================== */
   .current-issue-section {
     min-height: calc(100vh - 100px);
     box-sizing: border-box;
-    padding: clamp(20px, 3vh, 36px) clamp(16px, 3vw, 40px) clamp(60px, 8vh, 90px) clamp(16px, 3vw, 40px);
+    padding: clamp(16px, 2.5vh, 32px) clamp(16px, 3vw, 40px) clamp(60px, 8vh, 90px) clamp(16px, 3vw, 40px);
     max-width: 1560px;
     margin: 0 auto;
     display: flex;
@@ -20,7 +20,7 @@
   }
 
   .current-issue-titlebar {
-    margin-bottom: clamp(14px, 2vh, 22px);
+    margin-bottom: clamp(12px, 1.8vh, 20px);
     padding-bottom: 4px;
   }
 
@@ -35,17 +35,17 @@
     letter-spacing: -0.02em;
   }
 
-  /* 2-Column Dashboard Grid: Aligns to Top so Table sits cleanly near horizontal line */
+  /* 2-Column Dashboard Grid: Equal Height Cards (align-items: stretch) */
   .current-issue-layout {
     display: grid;
     grid-template-columns: clamp(380px, 34vw, 480px) 1fr;
     gap: clamp(20px, 2.2vw, 36px);
-    align-items: start;
+    align-items: stretch;
   }
 
   /* Left Column: Enlarged Journal Cover Card */
   .cover-card {
-    padding: clamp(20px, 2.5vh, 28px);
+    padding: clamp(18px, 2.2vh, 26px) clamp(18px, 2vw, 26px);
     text-align: center;
     background: white;
     border: 1px solid var(--border-color);
@@ -53,27 +53,31 @@
     box-shadow: 0 4px 18px rgba(11,36,23,0.06);
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    height: 100%;
+    box-sizing: border-box;
   }
 
-  /* Cover Image fills its frame edge-to-edge with no white letterboxing */
+  /* Cover Image fills its frame edge-to-edge */
   .cover-img-wrapper {
     position: relative;
-    margin-bottom: clamp(12px, 1.6vh, 16px);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 6px 20px rgba(11,36,23,0.12);
+    box-shadow: 0 4px 18px rgba(11,36,23,0.12);
     border: 1px solid rgba(11,36,23,0.1);
     background: transparent;
     width: 100%;
     line-height: 0;
+    margin-bottom: clamp(8px, 1.2vh, 12px);
   }
 
   .cover-img-wrapper img {
     width: 100%;
     height: auto;
-    display: block;
+    max-height: clamp(320px, 44vh, 460px);
     object-fit: cover;
+    display: block;
     margin: 0;
     transition: transform 0.3s ease;
   }
@@ -94,7 +98,7 @@
   .cover-meta-sub {
     font-size: clamp(11.5px, 0.85vw, 13px);
     color: var(--text-muted);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     line-height: 1.35;
   }
 
@@ -102,8 +106,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 1.2vh, 12px);
-    margin-top: clamp(8px, 1.2vh, 14px);
+    gap: clamp(7px, 1vh, 10px);
+    margin-top: clamp(8px, 1.2vh, 12px);
   }
 
   .cover-action-btns a {
@@ -114,9 +118,9 @@
     border-radius: 8px;
   }
 
-  /* Right Column: Table placed directly near horizontal separator line */
+  /* Right Column: Equal-Height Table of Contents Card */
   .toc-card {
-    padding: clamp(18px, 2.2vh, 26px) clamp(18px, 2vw, 26px);
+    padding: clamp(18px, 2.2vh, 26px) clamp(18px, 2vw, 28px);
     background: white;
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -124,12 +128,12 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: fit-content;
-    max-width: 100%;
+    height: 100%;
+    box-sizing: border-box;
   }
 
   .toc-header-bar {
-    margin-bottom: 10px;
+    margin-bottom: clamp(10px, 1.4vh, 14px);
     border-bottom: 2px solid #bce4cc;
     padding-bottom: 6px;
   }
@@ -150,6 +154,7 @@
     border: 1px solid #d0e5d8;
     border-radius: 8px;
     overflow: hidden;
+    flex: 1;
   }
 
   .toc-table thead th {
@@ -186,7 +191,7 @@
   }
 
   .toc-table td {
-    padding: clamp(7.5px, 1vh, 11px) clamp(10px, 1.1vw, 14px);
+    padding: clamp(8px, 1.1vh, 11px) clamp(10px, 1.1vw, 14px);
     vertical-align: middle;
   }
 
@@ -198,7 +203,7 @@
   }
 
   .toc-table td.col-content {
-    padding: clamp(7.5px, 1vh, 11px) clamp(10px, 1.1vw, 14px);
+    padding: clamp(8px, 1.1vh, 11px) clamp(10px, 1.1vw, 14px);
   }
 
   .toc-table td.col-content strong {
@@ -235,8 +240,8 @@
       grid-template-columns: 1fr;
       gap: 20px;
     }
-    .toc-card {
-      width: 100%;
+    .cover-card, .toc-card {
+      height: auto;
     }
   }
 </style>
@@ -252,7 +257,7 @@
     </h1>
   </div>
 
-  <!-- 2-Column Dashboard Layout: Expanded Cover on Left & Snug Table on Right -->
+  <!-- 2-Column Dashboard Layout: Equal Height Cards -->
   <div class="current-issue-layout">
     
     <!-- Left Column: Enlarged Journal Cover Page & Action Buttons -->
@@ -293,7 +298,7 @@
       </div>
     </div>
 
-    <!-- Right Column: Table placed directly near horizontal separator line -->
+    <!-- Right Column: Equal-Height Table of Contents -->
     <div class="toc-card">
       <div class="toc-header-bar">
         <h2>Table of Contents</h2>
