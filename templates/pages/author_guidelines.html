@@ -20,12 +20,12 @@
     border: none;
     height: 1px;
     background: rgba(11, 36, 23, 0.12);
-    margin: clamp(32px, 4.5vh, 48px) 0;
+    margin: clamp(28px, 4vh, 42px) 0;
   }
 
   /* Top Hero Section */
   .story-hero {
-    margin-bottom: clamp(24px, 3.5vh, 36px);
+    margin-bottom: clamp(16px, 2.5vh, 24px);
   }
 
   .story-hero h1 {
@@ -34,20 +34,7 @@
     color: var(--deep-forest);
     line-height: 1.15;
     letter-spacing: -0.03em;
-    margin-bottom: 16px;
-  }
-
-  .story-hero-lead {
-    font-size: clamp(16.5px, 1.2vw, 19px);
-    line-height: 1.72;
-    color: var(--text-main);
-    margin-bottom: 14px;
-  }
-
-  .story-meta-text {
-    font-size: clamp(13px, 0.95vw, 14.5px);
-    color: var(--text-muted);
-    line-height: 1.5;
+    margin: 0;
   }
 
   /* One by One Story Sections */
@@ -71,6 +58,8 @@
     line-height: 1.8;
     color: var(--text-main);
     margin: 0 0 14px 0;
+    text-align: justify;
+    text-justify: inter-word;
   }
 
   .story-body-p:last-of-type {
@@ -94,6 +83,11 @@
     font-size: clamp(15px, 1.05vw, 16.5px);
     line-height: 1.65;
     color: var(--text-main);
+  }
+
+  .story-pillar-row span {
+    text-align: justify;
+    text-justify: inter-word;
   }
 
   .story-pillar-row::before {
@@ -129,12 +123,6 @@
   <!-- 1. Primary Title Header -->
   <section class="story-hero">
     <h1>Author Guidelines</h1>
-    <p class="story-hero-lead">
-      The Indian Journal of Plant Protection (IJPP) is a peer-reviewed quarterly scientific journal published by the Plant Protection Association of India (PPAI) since 1972, dedicated to publishing original research in all applied branches of plant protection.
-    </p>
-    <p class="story-meta-text">
-      (Print ISSN: 0253-4355) &bull; National Platform: ICAR e-Publications &bull; Frequency: Quarterly (March, June, September, December) &bull; Submissions: Online via ICAR Portal / ijpp1972@yahoo.co.in
-    </p>
   </section>
 
   <!-- Line Divider -->
