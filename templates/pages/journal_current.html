@@ -60,26 +60,28 @@
     box-sizing: border-box;
   }
 
-  /* Cover Image fills frame edge-to-edge */
+  /* Cover Image fully visible without any cropping */
   .cover-img-wrapper {
     position: relative;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 6px 20px rgba(11,36,23,0.12);
+    box-shadow: 0 4px 18px rgba(11,36,23,0.12);
     border: 1px solid rgba(11,36,23,0.1);
-    background: transparent;
+    background: #FAFDFB;
     width: 100%;
-    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: clamp(8px, 1.2vh, 14px);
   }
 
   .cover-img-wrapper img {
     width: 100%;
     height: auto;
-    max-height: clamp(320px, 44vh, 480px);
-    object-fit: cover;
+    max-height: clamp(340px, 48vh, 520px);
+    object-fit: contain;
     display: block;
-    margin: 0;
+    margin: 0 auto;
     transition: transform 0.3s ease;
   }
 
