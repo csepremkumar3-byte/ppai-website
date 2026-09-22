@@ -85,6 +85,7 @@ class EditorialBoardMember(models.Model):
         ('assoc_editor', 'Associate Editor'),
         ('member', 'Editorial Member'),
         ('intl_member', 'Editorial Member (International)'),
+        ('patron', 'Honorary Patron'),
     ]
     name = models.CharField(max_length=200)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)

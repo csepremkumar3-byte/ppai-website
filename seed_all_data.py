@@ -158,20 +158,19 @@ editors = [
 for name, tenure, aff, gender, order in editors:
     PastBearer.objects.create(role='editor', name=name, tenure=tenure, affiliation=aff, gender=gender, order=order)
 
-# 5. Editorial Board (Page 5 of document)
+# 5. Editorial Board Members & Honorary Patrons
 EditorialBoardMember.objects.all().delete()
 editorial_board_data = [
-    ('Dr. L. Saravanan', 'chief_editor', 'ICAR-NBPGR RS, Hyderabad', 1),
-    ('Dr. Kavitha Gupta', 'assoc_editor', 'ICAR-NBPGR, New Delhi', 2),
-    ('Dr. Prasanna Holajjer', 'assoc_editor', 'ICAR-NBPGR RS, Hyderabad', 3),
-    ('Dr. B. Sarath Babu', 'member', 'ICAR-NBPGR RS, Hyderabad', 4),
-    ('Dr. Celia Chalam', 'member', 'ICAR-NBPGR, New Delhi', 5),
-    ('Dr. M. Srinivas Prasad', 'member', 'ICAR-IIRR, Hyderabad', 6),
-    ('Dr. B. Parameswari', 'member', 'ICAR-SBI / NBPGR RS, Hyderabad', 7),
-    ('Dr. G. Sridevi', 'member', 'PJTSAU, Hyderabad', 8),
-    ('Dr. K. S. Varaprasad', 'member', 'Former Director, IIOR / NBPGR RS', 9),
-    ('Dr. D. V. R. Reddy', 'intl_member', 'ICRISAT / Georgia, USA', 10),
-    ('Dr. Hari C. Sharma', 'intl_member', 'Former DG, Dr. YS Parmar UHF / ICRISAT', 11),
+    ('Dr. J. Alice R. P. Sujeetha', 'member', 'National Institute of Plant Health Management (NIPHM), Hyderabad', 1),
+    ('Dr. Jameel Aktar', 'member', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 2),
+    ('Dr. Kuldeep Singh Jadon', 'member', 'ICAR-Central Arid Zone Research Institute, Jodhpur, Rajasthan', 3),
+    ('Dr. Jose Remeno Faleiro', 'member', 'FAO Expert (Red Palm Weevil), Goa', 4),
+    ('Dr. Hamadttu Abdel Farag Elshafie', 'member', 'Date Palm Research Center of Excellence, King Faisal University, Kingdom of Saudi Arabia', 5),
+    ('Dr. P. Anandhi', 'member', 'Tamil Nadu Rice Research Institute, Tamil Nadu Agricultural University, Aduthurai, Tamil Nadu', 6),
+    ('Dr. P. Raja', 'member', 'College of Horticultural and Forestry, Central Agricultural University, Arunachal Pradesh', 7),
+    ('Dr. A. K. Sinha', 'patron', 'Plant Protection Advisor, Directorate of Plant Protection, Quarantine & Storage, NH-IV, Faridabad, Haryana', 8),
+    ('Dr. K. S. R. K. Murthy', 'patron', 'Plot No. 192, Telecom Colony, Kanajiguda, Near AWHO, Ved Vihar, Trimulgherry, Secunderabad, Telangana', 9),
+    ('Mr. N. Sukumar', 'patron', 'Managing Director, Hyderabad Chemical Products Ltd., 24/25 APIE, Balanagar, Hyderabad, Telangana', 10),
 ]
 for name, role, inst, order in editorial_board_data:
     EditorialBoardMember.objects.create(name=name, role=role, institution=inst, order=order)
