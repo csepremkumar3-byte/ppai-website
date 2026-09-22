@@ -161,16 +161,16 @@ for name, tenure, aff, gender, order in editors:
 # 5. Editorial Board Members & Honorary Patrons
 EditorialBoardMember.objects.all().delete()
 editorial_board_data = [
-    ('Dr. J. Alice R. P. Sujeetha', 'member', 'National Institute of Plant Health Management (NIPHM), Hyderabad', 1),
+    ('Dr. J Alice R P Sujeetha', 'member', 'National Institute of Plant Health Management (NIPHM), Hyderabad', 1),
     ('Dr. Jameel Aktar', 'member', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 2),
     ('Dr. Kuldeep Singh Jadon', 'member', 'ICAR-Central Arid Zone Research Institute, Jodhpur, Rajasthan', 3),
     ('Dr. Jose Remeno Faleiro', 'member', 'FAO Expert (Red Palm Weevil), Goa', 4),
-    ('Dr. Hamadttu Abdel Farag Elshafie', 'member', 'Date Palm Research Center of Excellence, King Faisal University, Kingdom of Saudi Arabia', 5),
-    ('Dr. P. Anandhi', 'member', 'Tamil Nadu Rice Research Institute, Tamil Nadu Agricultural University, Aduthurai, Tamil Nadu', 6),
-    ('Dr. P. Raja', 'member', 'College of Horticultural and Forestry, Central Agricultural University, Arunachal Pradesh', 7),
-    ('Dr. A. K. Sinha', 'patron', 'Plant Protection Advisor, Directorate of Plant Protection, Quarantine & Storage, NH-IV, Faridabad, Haryana', 8),
-    ('Dr. K. S. R. K. Murthy', 'patron', 'Plot No. 192, Telecom Colony, Kanajiguda, Near AWHO, Ved Vihar, Trimulgherry, Secunderabad, Telangana', 9),
-    ('Mr. N. Sukumar', 'patron', 'Managing Director, Hyderabad Chemical Products Ltd., 24/25 APIE, Balanagar, Hyderabad, Telangana', 10),
+    ('Dr. Hamadttu Abdel Farag Elshafie', 'member', 'Senior Research Entomologist and Head IPM Program in Date Palm, King Faisal University Hofuf, Kingdom of Saudi Arabia', 5),
+    ('Dr. P Anandhi', 'member', 'Tamil Nadu Rice Research Institute, TNAU, Aduthurai, Tamil Nadu', 6),
+    ('Dr. P Raja', 'member', 'College of Horticultural and Forestry, CAU, Pasighat, Arunachal Pradesh', 7),
+    ('Dr. A K Sinha', 'patron', 'Plant Protection Advisor, Directorate of Plant Protection, Quarantine & Storage, Faridabad, Haryana', 8),
+    ('Dr. K S R K Murthy', 'patron', 'Telecom Colony, Ved Vihar, Secunderabad, Telangana', 9),
+    ('Mr. N Sukumar', 'patron', 'Managing Director, Hyderabad Chemical Products Ltd., Hyderabad, Telangana', 10),
 ]
 for name, role, inst, order in editorial_board_data:
     EditorialBoardMember.objects.create(name=name, role=role, institution=inst, order=order)
