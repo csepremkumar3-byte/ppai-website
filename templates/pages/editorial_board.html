@@ -2,160 +2,289 @@
 
 {% block title %}Editorial Board — Indian Journal of Plant Protection{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     EDITORIAL BOARD - 4, 3, 3 GRID LAYOUT WITH AMPLE SIDE SPACING
+  =================================================================== */
+  .editorial-section {
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(24px, 3vh, 36px) clamp(24px, 4.5vw, 64px) clamp(70px, 9vh, 110px) clamp(24px, 4.5vw, 64px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .editorial-titlebar {
+    margin-bottom: clamp(18px, 2.4vh, 26px);
+    padding-bottom: 6px;
+  }
+
+  .editorial-titlebar h1 {
+    font-size: clamp(22px, 1.8vw, 28px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .editorial-card-box {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
+    padding: clamp(20px, 2.5vw, 28px);
+    margin-bottom: clamp(20px, 2.6vh, 28px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .editorial-heading {
+    font-size: clamp(16px, 1.1vw, 18px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 clamp(16px, 2vh, 22px) 0;
+    border-bottom: 2px solid rgba(0, 178, 114, 0.2);
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* 4-in-Row Grid for First 4 Editorial Members */
+  .grid-row-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(14px, 1.4vw, 20px);
+    margin-bottom: clamp(14px, 1.4vw, 20px);
+  }
+
+  /* 3-in-Row Grid for Next 3 Editorial Members and Patrons (Centered) */
+  .grid-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(14px, 1.4vw, 20px);
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* Member Card Item */
+  .member-card-item {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: clamp(16px, 1.8vh, 20px) 14px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(11, 36, 23, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .member-card-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 178, 114, 0.12);
+    border-color: rgba(0, 178, 114, 0.4);
+  }
+
+  .avatar-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 10px;
+    background: rgba(0, 178, 114, 0.08);
+    border: 2.5px solid var(--vibrant-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);
+  }
+
+  .member-name {
+    font-size: clamp(14px, 0.98vw, 15px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 5px 0;
+    line-height: 1.3;
+  }
+
+  .member-affiliation {
+    font-size: clamp(11.5px, 0.82vw, 12.5px);
+    color: var(--text-muted);
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 1024px) {
+    .grid-row-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .grid-row-3 {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .editorial-section {
+      padding: 20px 16px 48px 16px;
+    }
+    .grid-row-4,
+    .grid-row-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container inner-section">
+<section class="editorial-section">
   <!-- Title Bar -->
-  <div class="inner-title-bar">
-    <h1 style="font-size: 24px; font-weight: 800; color: var(--deep-forest);">Editorial Board - Indian Journal of Plant Protection</h1>
+  <div class="editorial-titlebar">
+    <h1>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Editorial Board &mdash; Indian Journal of Plant Protection
+    </h1>
   </div>
 
   <!-- ===================================================================
-       SECTION: EDITORIAL BOARD MEMBERS (ALL 7, SINGLE HEADING)
+       SECTION: EDITORIAL BOARD MEMBERS (4 + 3)
   =================================================================== -->
-  <div class="card-box" style="padding: 20px; margin-bottom: 20px;">
-    <h2 style="font-size: 16px; font-weight: 800; color: var(--deep-forest); margin: 0 0 14px 0; border-bottom: 2px solid rgba(0, 178, 114, 0.2); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+  <div class="editorial-card-box">
+    <h2 class="editorial-heading">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
       Editorial Board Members
     </h2>
 
-    <div style="display: grid; max-width: 2000px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px;">
-
-      <!-- Dr J Alice R P Sujeetha -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Editorial Member</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. J. Alice R. P. Sujeetha</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">National Institute of Plant Health Management (NIPHM),<br>Hyderabad</p>
+    <!-- Row 1: 4 Members -->
+    <div class="grid-row-4">
+      <!-- 1. Dr. J. Alice R. P. Sujeetha -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Editorial Member</span>
+        <h3 class="member-name">Dr. J. Alice R. P. Sujeetha</h3>
+        <p class="member-affiliation">National Institute of Plant Health Management (NIPHM), Hyderabad</p>
       </div>
 
-      <!-- Dr Jameel Aktar -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Editorial Member</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. Jameel Aktar</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">ICAR-National Bureau of Plant Genetic Resources, Pusa Campus,<br>New Delhi</p>
+      <!-- 2. Dr. Jameel Aktar -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Editorial Member</span>
+        <h3 class="member-name">Dr. Jameel Aktar</h3>
+        <p class="member-affiliation">ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi</p>
       </div>
 
-      <!-- Dr Kuldeep Singh Jadon -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Editorial Member</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. Kuldeep Singh Jadon</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">ICAR-Central Arid Zone Research Institute, Jodhpur,<br>Rajasthan</p>
+      <!-- 3. Dr. Kuldeep Singh Jadon -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Editorial Member</span>
+        <h3 class="member-name">Dr. Kuldeep Singh Jadon</h3>
+        <p class="member-affiliation">ICAR-Central Arid Zone Research Institute, Jodhpur, Rajasthan</p>
       </div>
 
-      <!-- Dr Jose Remeno Faleiro -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Editorial Member</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. Jose Remeno Faleiro</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">FAO Expert (Red Palm Weevil),<br>Goa</p>
+      <!-- 4. Dr. Jose Remeno Faleiro -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Editorial Member</span>
+        <h3 class="member-name">Dr. Jose Remeno Faleiro</h3>
+        <p class="member-affiliation">FAO Expert (Red Palm Weevil), Goa</p>
+      </div>
+    </div>
+
+    <!-- Row 2: 3 Members (Centered) -->
+    <div class="grid-row-3">
+      <!-- 5. Dr. Hamadttu Abdel Farag Elshafie -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Editorial Member</span>
+        <h3 class="member-name">Dr. Hamadttu Abdel Farag Elshafie</h3>
+        <p class="member-affiliation">Date Palm Research Center of Excellence, King Faisal University, Saudi Arabia</p>
       </div>
 
-      <!-- Dr Hamadttu Abdel Farag Elshafie -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Editorial Member</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. Hamadttu Abdel Farag Elshafie</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">Senior Research Entomologist and Head, IPM Program in Date Palm, Date Palm Research Center of Excellence, King Faisal University, Kingdom of Saudi Arabia</p>
+      <!-- 6. Dr. P. Anandhi -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Editorial Member</span>
+        <h3 class="member-name">Dr. P. Anandhi</h3>
+        <p class="member-affiliation">Tamil Nadu Rice Research Institute, TNAU, Aduthurai, Tamil Nadu</p>
       </div>
 
-      <!-- Dr P Anandhi -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Editorial Member</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. P. Anandhi</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">Tamil Nadu Rice Research Institute, Tamil Nadu Agricultural University, Aduthurai,<br>Tamil Nadu</p>
+      <!-- 7. Dr. P. Raja -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Editorial Member</span>
+        <h3 class="member-name">Dr. P. Raja</h3>
+        <p class="member-affiliation">College of Horticultural and Forestry, CAU, Arunachal Pradesh</p>
       </div>
-
-      <!-- Dr P Raja -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Editorial Member</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. P. Raja</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">College of Horticultural and Forestry, Central Agricultural University,<br>Arunachal Pradesh</p>
-        </div>
-      </div>
-
     </div>
   </div>
 
   <!-- ===================================================================
-       SECTION: HONORARY PATRONS
+       SECTION: HONORARY PATRONS (3 Centered)
   =================================================================== -->
-  <div class="card-box" style="padding: 20px;">
-    <h2 style="font-size: 16px; font-weight: 800; color: var(--deep-forest); margin: 0 0 14px 0; border-bottom: 2px solid rgba(0, 178, 114, 0.2); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+  <div class="editorial-card-box">
+    <h2 class="editorial-heading">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
       Honorary Patrons
     </h2>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px;">
-
-      <!-- Dr A K Sinha -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Honorary Patron</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. A. K. Sinha</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">Plant Protection Advisor, Directorate of Plant Protection, Quarantine &amp; Storage, NH-IV, Faridabad,<br>Haryana</p>
+    <div class="grid-row-3">
+      <!-- 1. Dr. A. K. Sinha -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
+        <h3 class="member-name">Dr. A. K. Sinha</h3>
+        <p class="member-affiliation">Plant Protection Advisor, DPPQ&amp;S, Faridabad, Haryana</p>
       </div>
 
-      <!-- Dr K S R K Murthy -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Honorary Patron</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Dr. K. S. R. K. Murthy</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">Plot No. 192, Telecom Colony, Kanajiguda, Near AWHO, Ved Vihar, Trimulgherry, Secunderabad,<br>Telangana</p>
+      <!-- 2. Dr. K. S. R. K. Murthy -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
+        <h3 class="member-name">Dr. K. S. R. K. Murthy</h3>
+        <p class="member-affiliation">Telecom Colony, Ved Vihar, Secunderabad, Telangana</p>
       </div>
 
-      <!-- Mr N Sukumar -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-          <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          </div>
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">Honorary Patron</span>
-          <h3 style="font-size: 14.5px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">Mr. N. Sukumar</h3>
-          <p style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">Managing Director, Hyderabad Chemical Products Ltd., 24/25 APIE, Balanagar, Hyderabad,<br>Telangana</p>
+      <!-- 3. Mr. N. Sukumar -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
+        <h3 class="member-name">Mr. N. Sukumar</h3>
+        <p class="member-affiliation">Managing Director, Hyderabad Chemical Products Ltd., Hyderabad</p>
       </div>
-
     </div>
   </div>
-
-</div>
+</section>
 {% endblock %}
