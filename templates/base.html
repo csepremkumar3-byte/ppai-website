@@ -764,11 +764,12 @@
 
           <div style="margin-top: 14px;">
             <label style="display:block; font-weight:700; margin-bottom:6px; color:#fff;">Subscribe to Newsletter</label>
-            <form class="newsletter-form" action="#" method="post">
+            <form class="newsletter-form" id="footerNewsletterForm" action="{% url 'subscribe_newsletter' %}" method="post">
               {% csrf_token %}
-              <input type="email" name="email" placeholder="Your email address" required>
-              <button type="submit">Join</button>
+              <input type="email" name="email" id="newsletterEmail" placeholder="Your email address" required>
+              <button type="submit" id="newsletterSubmitBtn">Join</button>
             </form>
+            <div id="newsletterFeedback" style="display:none; font-size: 11.5px; margin-top: 6px; font-weight: 600; line-height: 1.3;"></div>
           </div>
         </div>
 
@@ -840,6 +841,51 @@
         });
       }
     });
+
+    // Handle AJAX Newsletter Subscription
+    const newsletterForm = document.getElementById('footerNewsletterForm');
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const emailInput = document.getElementById('newsletterEmail');
+        const feedback = document.getElementById('newsletterFeedback');
+        const submitBtn = document.getElementById('newsletterSubmitBtn');
+        const csrfToken = newsletterForm.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = '...';
+
+        fetch(newsletterForm.action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken
+          },
+          body: new URLSearchParams({ email: emailInput.value })
+        })
+        .then(res => res.json())
+        .then(data => {
+          feedback.style.display = 'block';
+          if (data.status === 'success' || data.status === 'info') {
+            feedback.style.color = '#7bc69f';
+            feedback.textContent = data.message;
+            emailInput.value = '';
+          } else {
+            feedback.style.color = '#ff8888';
+            feedback.textContent = data.message || 'Something went wrong.';
+          }
+        })
+        .catch(() => {
+          feedback.style.display = 'block';
+          feedback.style.color = '#ff8888';
+          feedback.textContent = 'Could not process subscription. Please try again.';
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Join';
+        });
+      });
+    }
   </script>
   {% block extra_js %}{% endblock %}
 </body>

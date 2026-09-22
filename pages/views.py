@@ -179,3 +179,24 @@ def search_view(request):
 def contact(request):
     context = get_common_context()
     return render(request, 'pages/contact.html', context)
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .models import NewsletterSubscriber
+
+@require_POST
+def subscribe_newsletter(request):
+    email = request.POST.get('email', '').strip().lower()
+    if not email or '@' not in email or '.' not in email.split('@')[-1]:
+        return JsonResponse({'status': 'error', 'message': 'Please provide a valid email address.'}, status=400)
+    
+    subscriber, created = NewsletterSubscriber.objects.get_or_create(email=email)
+    if not created:
+        if not subscriber.is_active:
+            subscriber.is_active = True
+            subscriber.save()
+            return JsonResponse({'status': 'success', 'message': 'Welcome back! Your subscription has been reactivated.'})
+        return JsonResponse({'status': 'info', 'message': 'You are already subscribed to PPAI updates.'})
+    
+    return JsonResponse({'status': 'success', 'message': 'Thank you! You have successfully subscribed to PPAI updates.'})
+

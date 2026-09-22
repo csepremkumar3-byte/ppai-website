@@ -161,3 +161,18 @@ class JournalArticle(models.Model):
 
     def __str__(self):
         return f"Vol {self.volume} No {self.issue}: {self.title[:50]}"
+
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True, verbose_name="Email Address")
+    subscribed_at = models.DateTimeField(auto_now_add=True, verbose_name="Subscribed On")
+    is_active = models.BooleanField(default=True, verbose_name="Active")
+
+    class Meta:
+        ordering = ['-subscribed_at']
+        verbose_name = 'Newsletter Subscriber'
+        verbose_name_plural = 'Newsletter Subscribers'
+
+    def __str__(self):
+        return self.email
+

@@ -21,5 +21,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('search/', views.search_view, name='search'),
     path('contact/', views.contact, name='contact'),
+    path('subscribe-newsletter/', views.subscribe_newsletter, name='subscribe_newsletter'),
 ]
+
 
