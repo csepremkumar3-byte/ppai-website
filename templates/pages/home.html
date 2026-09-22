@@ -1203,10 +1203,12 @@
 
           <div style="margin-top: 14px;">
             <label style="display:block; font-weight:700; margin-bottom:6px; color:#fff;">Subscribe to Newsletter</label>
-            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed to PPAI newsletter!');">
-              <input type="email" placeholder="Your email address" required>
-              <button type="submit">Join</button>
+            <form class="newsletter-form" id="homeNewsletterForm" action="{% url 'subscribe_newsletter' %}" method="post" onsubmit="event.preventDefault(); handleHomeNewsletterSubmit();">
+              {% csrf_token %}
+              <input type="text" inputmode="email" name="email" id="homeNewsletterEmail" placeholder="e.g. name@domain.com" maxlength="100" autocomplete="email">
+              <button type="button" id="homeNewsletterSubmitBtn" onclick="handleHomeNewsletterSubmit()">Join</button>
             </form>
+            <div id="homeNewsletterFeedback" style="display:none; font-size: 12px; margin-top: 7px; font-weight: 600; line-height: 1.3;"></div>
           </div>
         </div>
 
@@ -1257,7 +1259,7 @@
     </div>
   </footer>
 
-  <!-- Scripts for Mobile Menu & Carousel -->
+  <!-- Scripts for Mobile Menu & Carousel & Newsletter -->
   <script>
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
@@ -1303,6 +1305,89 @@
         currentIndex = (currentIndex + 1) % slides.length;
         updateCarousel(currentIndex);
       }, 4000);
+    }
+
+    // Custom Newsletter Subscription Handler for Home (No browser popup tooltips)
+    let homeNewsletterFeedbackTimer;
+    function handleHomeNewsletterSubmit() {
+      const emailInput = document.getElementById('homeNewsletterEmail');
+      const feedback = document.getElementById('homeNewsletterFeedback');
+      const submitBtn = document.getElementById('homeNewsletterSubmitBtn');
+      const form = document.getElementById('homeNewsletterForm');
+      const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+      const rawEmail = (emailInput.value || '').trim();
+
+      if (homeNewsletterFeedbackTimer) clearTimeout(homeNewsletterFeedbackTimer);
+
+      // Strict email format
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      if (!rawEmail) {
+        feedback.style.display = 'block';
+        feedback.style.color = '#f87171';
+        feedback.textContent = 'Email is required.';
+        emailInput.focus();
+        homeNewsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+        return;
+      }
+
+      if (!emailRegex.test(rawEmail)) {
+        feedback.style.display = 'block';
+        feedback.style.color = '#f87171';
+        feedback.textContent = 'Enter a valid email address.';
+        emailInput.focus();
+        homeNewsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = '...';
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': csrfToken
+        },
+        body: new URLSearchParams({ email: rawEmail })
+      })
+      .then(res => res.json())
+      .then(data => {
+        feedback.style.display = 'block';
+        if (data.status === 'success') {
+          feedback.style.color = '#4ade80';
+          feedback.textContent = data.message || 'Subscribed successfully!';
+          emailInput.value = '';
+        } else if (data.status === 'exists') {
+          feedback.style.color = '#facc15';
+          feedback.textContent = data.message || 'Email is already subscribed.';
+        } else {
+          feedback.style.color = '#f87171';
+          feedback.textContent = data.message || 'Enter a valid email address.';
+        }
+        homeNewsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+      })
+      .catch(() => {
+        feedback.style.display = 'block';
+        feedback.style.color = '#f87171';
+        feedback.textContent = 'Unable to subscribe. Please try again.';
+        homeNewsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Join';
+      });
+    }
+
+    // Also trigger on pressing Enter inside the home email input
+    const homeEmailField = document.getElementById('homeNewsletterEmail');
+    if (homeEmailField) {
+      homeEmailField.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleHomeNewsletterSubmit();
+        }
+      });
     }
   </script>
 </body>
