@@ -7,7 +7,7 @@
 <style>
   /* ===================================================================
      CLEAN LINE-SEPARATED EDITORIAL THEME - BOOKS & SPECIAL PUBLICATIONS
-     Refined web-design spacing with snug divider-to-heading hierarchy
+     Refined web-design spacing with reduced title size and snug dividers
   =================================================================== */
   .about-stream-wrapper {
     max-width: 960px;
@@ -15,8 +15,7 @@
     padding: clamp(28px, 4.5vh, 52px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 90px) clamp(20px, 4vw, 40px);
   }
 
-  /* Thin Section Divider Line with Asymmetrical Spacing:
-     Generous top space after previous content, snug space before the next heading */
+  /* Thin Section Divider Line with Asymmetrical Spacing */
   .story-divider {
     border: none;
     height: 1px;
@@ -30,12 +29,18 @@
   }
 
   .story-hero h1 {
-    font-size: clamp(30px, 3.2vw, 44px);
+    font-size: clamp(24px, 2.2vw, 30px);
     font-weight: 800;
     color: var(--deep-forest);
-    line-height: 1.15;
-    letter-spacing: -0.03em;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     margin: 0;
+  }
+
+  /* Reduced gap specifically between top hero title and the first separator */
+  .story-hero + .story-divider {
+    margin-top: clamp(10px, 1.4vh, 16px);
+    margin-bottom: clamp(10px, 1.4vh, 16px);
   }
 
   /* One by One Story Sections */
@@ -46,7 +51,7 @@
   }
 
   .story-heading {
-    font-size: clamp(21px, 1.8vw, 26px);
+    font-size: clamp(19px, 1.6vw, 23px);
     font-weight: 700;
     color: var(--deep-forest);
     line-height: 1.25;
@@ -105,6 +110,11 @@
   @media (max-width: 768px) {
     .about-stream-wrapper {
       padding: 24px 16px 48px 16px;
+    }
+
+    .story-hero + .story-divider {
+      margin-top: 8px;
+      margin-bottom: 10px;
     }
 
     .story-divider {

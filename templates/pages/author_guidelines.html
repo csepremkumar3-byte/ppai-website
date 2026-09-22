@@ -30,12 +30,18 @@
   }
 
   .story-hero h1 {
-    font-size: clamp(30px, 3.2vw, 44px);
+    font-size: clamp(26px, 2.6vw, 36px);
     font-weight: 800;
     color: var(--deep-forest);
     line-height: 1.15;
     letter-spacing: -0.03em;
     margin: 0;
+  }
+
+  /* Reduced gap specifically between top hero title and the first separator */
+  .story-hero + .story-divider {
+    margin-top: clamp(10px, 1.4vh, 16px);
+    margin-bottom: clamp(10px, 1.4vh, 16px);
   }
 
   /* One by One Story Sections */
