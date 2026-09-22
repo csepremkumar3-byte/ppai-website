@@ -19,46 +19,48 @@
   }
 
   .membership-titlebar {
-    margin-bottom: clamp(16px, 2.2vh, 24px);
-    text-align: center;
+    margin-bottom: clamp(14px, 2vh, 22px);
+    padding-bottom: 6px;
   }
 
   .membership-titlebar h1 {
-    font-size: clamp(24px, 2.2vw, 32px);
+    font-size: clamp(22px, 1.8vw, 28px);
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 6px 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     letter-spacing: -0.02em;
   }
 
-  .membership-titlebar p {
-    font-size: clamp(13px, 0.95vw, 14.5px);
-    color: var(--text-muted);
-    margin: 0;
-    font-weight: 500;
-  }
-
-  /* Scrollable / Flexible Tabs Navigation */
+  /* Scrollable Tabs Navigation (No scrollbars or arrows visible) */
   .membership-tabs-container {
     border-bottom: 2px solid rgba(0, 178, 114, 0.15);
-    margin-bottom: clamp(20px, 2.6vh, 28px);
+    margin-bottom: clamp(18px, 2.4vh, 26px);
     overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
     -webkit-overflow-scrolling: touch;
+  }
+
+  .membership-tabs-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
 
   .membership-tabs {
     display: flex;
     gap: clamp(4px, 1vw, 10px);
+    width: 100%;
     min-width: max-content;
-    margin: 0 auto;
-    justify-content: center;
   }
 
   .ppai-tab-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: clamp(10px, 1.4vh, 14px) clamp(14px, 1.4vw, 22px);
+    padding: clamp(10px, 1.4vh, 14px) clamp(14px, 1.4vw, 20px);
     font-size: clamp(13.5px, 0.95vw, 15px);
     font-weight: 700;
     color: var(--text-muted);
@@ -97,8 +99,15 @@
   /* Clean Tables */
   .membership-table-wrapper {
     overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
     width: 100%;
+  }
+
+  .membership-table-wrapper::-webkit-scrollbar {
+    display: none;
   }
 
   .membership-table {
@@ -122,7 +131,7 @@
   .membership-table thead th.col-right { text-align: right; }
 
   .membership-table tbody tr {
-    border-bottom: 1px solid #eef4f0;
+    border-bottom: 1.5px solid #eef4f0;
     transition: background-color 0.15s ease;
   }
 
@@ -144,11 +153,6 @@
     text-align: left;
     font-weight: 700;
     color: var(--deep-forest);
-  }
-
-  .membership-table tbody td.col-right {
-    text-align: right;
-    color: var(--text-main);
   }
 
   .membership-table tbody td.col-price-inland {
@@ -255,8 +259,10 @@
 <section class="membership-section">
   <!-- Title Bar -->
   <div class="membership-titlebar">
-    <h1>Membership Information</h1>
-    <p>Plant Protection Association of India</p>
+    <h1>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Membership Information
+    </h1>
   </div>
 
   <!-- Tab Bar -->
