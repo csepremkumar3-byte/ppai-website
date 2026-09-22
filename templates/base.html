@@ -764,12 +764,12 @@
 
           <div style="margin-top: 14px;">
             <label style="display:block; font-weight:700; margin-bottom:6px; color:#fff;">Subscribe to Newsletter</label>
-            <form class="newsletter-form" id="footerNewsletterForm" action="{% url 'subscribe_newsletter' %}" method="post" novalidate>
+            <form class="newsletter-form" id="footerNewsletterForm" action="{% url 'subscribe_newsletter' %}" method="post" onsubmit="event.preventDefault(); handleNewsletterSubmit();">
               {% csrf_token %}
-              <input type="email" name="email" id="newsletterEmail" placeholder="e.g. name@domain.com" maxlength="100" autocomplete="email" required>
-              <button type="submit" id="newsletterSubmitBtn">Join</button>
+              <input type="text" inputmode="email" name="email" id="newsletterEmail" placeholder="e.g. name@domain.com" maxlength="100" autocomplete="email">
+              <button type="button" id="newsletterSubmitBtn" onclick="handleNewsletterSubmit()">Join</button>
             </form>
-            <div id="newsletterFeedback" style="display:none; font-size: 11.5px; margin-top: 6px; font-weight: 600; line-height: 1.3;"></div>
+            <div id="newsletterFeedback" style="display:none; font-size: 12px; margin-top: 7px; font-weight: 600; line-height: 1.3;"></div>
           </div>
         </div>
 
@@ -842,79 +842,86 @@
       }
     });
 
-    // Handle AJAX Newsletter Subscription with Strict Validation & Crisp Feedback
-    const newsletterForm = document.getElementById('footerNewsletterForm');
-    let feedbackTimeout;
-    if (newsletterForm) {
-      newsletterForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const emailInput = document.getElementById('newsletterEmail');
-        const feedback = document.getElementById('newsletterFeedback');
-        const submitBtn = document.getElementById('newsletterSubmitBtn');
-        const csrfToken = newsletterForm.querySelector('[name=csrfmiddlewaretoken]').value;
-        const rawEmail = (emailInput.value || '').trim();
+    // Custom Newsletter Subscription Handler (No browser popup tooltips)
+    let newsletterFeedbackTimer;
+    function handleNewsletterSubmit() {
+      const emailInput = document.getElementById('newsletterEmail');
+      const feedback = document.getElementById('newsletterFeedback');
+      const submitBtn = document.getElementById('newsletterSubmitBtn');
+      const form = document.getElementById('footerNewsletterForm');
+      const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+      const rawEmail = (emailInput.value || '').trim();
 
-        // Clear any previous timeout
-        if (feedbackTimeout) clearTimeout(feedbackTimeout);
+      if (newsletterFeedbackTimer) clearTimeout(newsletterFeedbackTimer);
 
-        // Strict email regex
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      // Strict email format: valid text + @ + domain + at least 2 char TLD
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        if (!rawEmail) {
-          feedback.style.display = 'block';
+      if (!rawEmail) {
+        feedback.style.display = 'block';
+        feedback.style.color = '#f87171';
+        feedback.textContent = 'Email is required.';
+        emailInput.focus();
+        newsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+        return;
+      }
+
+      if (!emailRegex.test(rawEmail)) {
+        feedback.style.display = 'block';
+        feedback.style.color = '#f87171';
+        feedback.textContent = 'Enter a valid email address.';
+        emailInput.focus();
+        newsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = '...';
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': csrfToken
+        },
+        body: new URLSearchParams({ email: rawEmail })
+      })
+      .then(res => res.json())
+      .then(data => {
+        feedback.style.display = 'block';
+        if (data.status === 'success') {
+          feedback.style.color = '#4ade80';
+          feedback.textContent = data.message || 'Subscribed successfully!';
+          emailInput.value = '';
+        } else if (data.status === 'exists') {
+          feedback.style.color = '#facc15';
+          feedback.textContent = data.message || 'Email is already subscribed.';
+        } else {
           feedback.style.color = '#f87171';
-          feedback.textContent = 'Email is required.';
-          emailInput.focus();
-          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
-          return;
+          feedback.textContent = data.message || 'Enter a valid email address.';
         }
+        newsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+      })
+      .catch(() => {
+        feedback.style.display = 'block';
+        feedback.style.color = '#f87171';
+        feedback.textContent = 'Unable to subscribe. Please try again.';
+        newsletterFeedbackTimer = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Join';
+      });
+    }
 
-        if (!emailRegex.test(rawEmail)) {
-          feedback.style.display = 'block';
-          feedback.style.color = '#f87171';
-          feedback.textContent = 'Enter a valid email address.';
-          emailInput.focus();
-          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
-          return;
+    // Also trigger on pressing Enter inside the email input
+    const emailField = document.getElementById('newsletterEmail');
+    if (emailField) {
+      emailField.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleNewsletterSubmit();
         }
-
-        submitBtn.disabled = true;
-        submitBtn.innerText = '...';
-
-        fetch(newsletterForm.action, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': csrfToken
-          },
-          body: new URLSearchParams({ email: rawEmail })
-        })
-        .then(res => res.json())
-        .then(data => {
-          feedback.style.display = 'block';
-          if (data.status === 'success') {
-            feedback.style.color = '#4ade80';
-            feedback.textContent = data.message || 'Subscribed successfully!';
-            emailInput.value = '';
-          } else if (data.status === 'exists') {
-            feedback.style.color = '#facc15';
-            feedback.textContent = data.message || 'Email is already subscribed.';
-          } else {
-            feedback.style.color = '#f87171';
-            feedback.textContent = data.message || 'Enter a valid email address.';
-          }
-          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
-        })
-        .catch(() => {
-          feedback.style.display = 'block';
-          feedback.style.color = '#f87171';
-          feedback.textContent = 'Unable to subscribe. Please try again.';
-          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
-        })
-        .finally(() => {
-          submitBtn.disabled = false;
-          submitBtn.innerText = 'Join';
-        });
       });
     }
   </script>
