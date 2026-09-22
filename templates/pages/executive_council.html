@@ -10,17 +10,16 @@
   .council-section {
     min-height: calc(100vh - 70px);
     box-sizing: border-box;
-    max-width: 1180px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: clamp(24px, 3vh, 36px) clamp(24px, 4.5vw, 64px) clamp(70px, 9vh, 110px) clamp(24px, 4.5vw, 64px);
+    padding: clamp(24px, 3vh, 36px) clamp(24px, 4vw, 56px) clamp(70px, 9vh, 110px) clamp(24px, 4vw, 56px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
   }
 
   .council-titlebar {
-    margin-bottom: clamp(18px, 2.4vh, 26px);
-    padding-bottom: 6px;
+    margin-bottom: clamp(20px, 2.6vh, 28px);
   }
 
   .council-titlebar h1 {
@@ -28,9 +27,6 @@
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
     letter-spacing: -0.02em;
   }
 
@@ -39,7 +35,7 @@
     border: 1px solid var(--border-color);
     border-radius: 14px;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
-    padding: clamp(24px, 3vw, 38px) clamp(20px, 2.8vw, 34px) clamp(32px, 4vh, 46px) clamp(20px, 2.8vw, 34px);
+    padding: clamp(22px, 2.8vw, 34px);
     box-sizing: border-box;
     width: 100%;
   }
@@ -48,8 +44,8 @@
   .grid-row-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: clamp(16px, 1.8vw, 24px);
-    margin-bottom: clamp(20px, 2.6vh, 28px);
+    gap: clamp(14px, 1.4vw, 20px);
+    margin-bottom: clamp(18px, 2.4vh, 24px);
     align-items: stretch;
   }
 
@@ -57,8 +53,8 @@
   .grid-row-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: clamp(16px, 1.8vw, 24px);
-    max-width: 860px;
+    gap: clamp(14px, 1.4vw, 20px);
+    max-width: 960px;
     margin: 0 auto;
     align-items: stretch;
   }
@@ -68,16 +64,16 @@
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: clamp(20px, 2.5vh, 26px) clamp(16px, 1.5vw, 20px);
+    padding: clamp(18px, 2.2vh, 24px) clamp(12px, 1.2vw, 16px);
     text-align: center;
-    box-shadow: 0 2px 10px rgba(11, 36, 23, 0.04);
+    box-shadow: 0 2px 8px rgba(11, 36, 23, 0.04);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     height: 100%;
     box-sizing: border-box;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
   .member-card-item:hover {
@@ -87,8 +83,8 @@
   }
 
   .avatar-circle {
-    width: 76px;
-    height: 76px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 10px;
@@ -102,15 +98,15 @@
   }
 
   .member-name {
-    font-size: clamp(14px, 0.98vw, 15px);
+    font-size: clamp(13.5px, 0.92vw, 14.5px);
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 5px 0;
+    margin: 0 0 4px 0;
     line-height: 1.3;
   }
 
   .member-affiliation {
-    font-size: clamp(11.5px, 0.82vw, 12.5px);
+    font-size: clamp(11px, 0.8vw, 12px);
     color: var(--text-muted);
     font-weight: 500;
     margin: 0;
@@ -132,10 +128,13 @@
     .council-section {
       padding: 20px 16px 48px 16px;
     }
+    .council-card-box {
+      padding: 18px 14px;
+    }
     .grid-row-4,
     .grid-row-3 {
       grid-template-columns: 1fr;
-      max-width: 100%;
+      margin-bottom: 14px;
     }
   }
 </style>
@@ -145,10 +144,7 @@
 <section class="council-section">
   <!-- Title Bar -->
   <div class="council-titlebar">
-    <h1>
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      The Present Executive Council
-    </h1>
+    <h1>The Present Executive Council</h1>
   </div>
 
   <!-- Executive Council Grid (First 12 in 4-card rows, Last 3 in centered row) -->
