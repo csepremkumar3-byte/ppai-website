@@ -2,67 +2,165 @@
 
 {% block title %}Nomination for Election to the Executive Council — Plant Protection Association of India{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     ELECTION NOMINATION - CENTERED SNUG TABLE (FOOTER BELOW FOLD)
+  =================================================================== */
+  .election-section {
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(20px, 2.8vh, 32px) clamp(16px, 3vw, 40px) clamp(70px, 9vh, 110px) clamp(16px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .election-titlebar {
+    margin-bottom: clamp(14px, 2vh, 22px);
+    padding-bottom: 6px;
+  }
+
+  .election-titlebar h1 {
+    font-size: clamp(22px, 1.8vw, 28px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .election-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
+    padding: clamp(16px, 2vw, 24px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .election-table-wrapper {
+    border: 1px solid #d0e5d8;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .election-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+  }
+
+  .election-table tbody tr {
+    border-bottom: 1px solid #eef4f0;
+    transition: background-color 0.15s ease;
+  }
+
+  .election-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .election-table tbody tr:hover {
+    background-color: #f7fbf8;
+  }
+
+  .election-table td.col-label {
+    width: 240px;
+    padding: clamp(12px, 1.4vh, 16px) clamp(16px, 1.4vw, 20px);
+    font-weight: 700;
+    color: #0b3d20;
+    background: #e8f5ec;
+    border-right: 1px solid #d0e5d8;
+    vertical-align: middle;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    white-space: nowrap;
+  }
+
+  .election-table td.col-value {
+    padding: clamp(12px, 1.4vh, 16px) clamp(16px, 1.4vw, 20px);
+    color: var(--text-main);
+    line-height: 1.6;
+    vertical-align: middle;
+    font-size: clamp(14px, 0.98vw, 15px);
+  }
+
+  @media (max-width: 768px) {
+    .election-section {
+      padding: 20px 16px 48px 16px;
+    }
+
+    .election-table td.col-label {
+      width: 100%;
+      display: block;
+      border-right: none;
+      border-bottom: 1px solid #d0e5d8;
+      background: #f0faf3;
+      white-space: normal;
+    }
+
+    .election-table td.col-value {
+      width: 100%;
+      display: block;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container inner-section" style="padding: 16px 20px 24px 20px; margin-bottom: 240px; border-radius: 14px;">
+<section class="election-section">
   <!-- Title Bar -->
-  <div class="inner-title-bar" style="margin-bottom: 14px; padding-bottom: 6px;">
-    <h1 style="font-size: 22px; font-weight: 800; color: var(--deep-forest); margin: 0; display: flex; align-items: center; gap: 10px;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+  <div class="election-titlebar">
+    <h1>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Nomination for Election to the Executive Council
     </h1>
   </div>
 
-  <!-- Single Full-Width Card (Nomination for Election to Executive Council) -->
-  <div class="card-box" style="padding: 22px 24px; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green);">
-    <!-- Complete Structured Table with Green Shaded Side Column -->
-    <div style="overflow-x: auto; border: 1px solid rgba(0, 178, 114, 0.2); border-radius: 10px; overflow: hidden;">
-      <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin: 0;">
+  <!-- Single Centered Card -->
+  <div class="election-card">
+    <div class="election-table-wrapper" style="overflow-x: auto;">
+      <table class="election-table">
         <tbody>
           <tr>
-            <td style="padding: 12px 16px; font-weight: 700; color: var(--deep-forest); font-size: 12.5px; width: 230px; background: rgba(0, 178, 114, 0.08); border-right: 1px solid rgba(0, 178, 114, 0.15); border-bottom: 1px solid rgba(0, 178, 114, 0.15);">
-              Frequency of election
-            </td>
-            <td style="padding: 12px 16px; color: var(--text-main); border-bottom: 1px solid rgba(0, 178, 114, 0.15); line-height: 1.5; background: #FFFFFF;">
+            <td class="col-label">Frequency of election</td>
+            <td class="col-value">
               The Executive Council and the Editorial Board are elected once in two years.
             </td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: 700; color: var(--deep-forest); font-size: 12.5px; width: 230px; background: rgba(0, 178, 114, 0.08); border-right: 1px solid rgba(0, 178, 114, 0.15); border-bottom: 1px solid rgba(0, 178, 114, 0.15);">
-              Who may be nominated
-            </td>
-            <td style="padding: 12px 16px; color: var(--text-main); border-bottom: 1px solid rgba(0, 178, 114, 0.15); line-height: 1.5; background: #FFFFFF;">
+            <td class="col-label">Who may be nominated</td>
+            <td class="col-value">
               Members of the Association in good standing.
             </td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: 700; color: var(--deep-forest); font-size: 12.5px; width: 230px; background: rgba(0, 178, 114, 0.08); border-right: 1px solid rgba(0, 178, 114, 0.15); border-bottom: 1px solid rgba(0, 178, 114, 0.15);">
-              Nomination to be addressed to
-            </td>
-            <td style="padding: 12px 16px; color: var(--text-main); border-bottom: 1px solid rgba(0, 178, 114, 0.15); line-height: 1.5; background: #FFFFFF;">
+            <td class="col-label">Nomination to be addressed to</td>
+            <td class="col-value">
               The General Secretary of the Association.
             </td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: 700; color: var(--deep-forest); font-size: 12.5px; width: 230px; background: rgba(0, 178, 114, 0.08); border-right: 1px solid rgba(0, 178, 114, 0.15); border-bottom: 1px solid rgba(0, 178, 114, 0.15);">
-              Last date
-            </td>
-            <td style="padding: 12px 16px; color: var(--text-main); border-bottom: 1px solid rgba(0, 178, 114, 0.15); line-height: 1.5; background: #FFFFFF;">
+            <td class="col-label">Last date</td>
+            <td class="col-value">
               Not later than one month before the forthcoming General Body Meeting / Congress.
             </td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: 700; color: var(--deep-forest); font-size: 12.5px; width: 230px; background: rgba(0, 178, 114, 0.08); border-right: 1px solid rgba(0, 178, 114, 0.15); border-bottom: 1px solid rgba(0, 178, 114, 0.15);">
-              Circulation
-            </td>
-            <td style="padding: 12px 16px; color: var(--text-main); border-bottom: 1px solid rgba(0, 178, 114, 0.15); line-height: 1.5; background: #FFFFFF;">
+            <td class="col-label">Circulation</td>
+            <td class="col-value">
               The nominations received are circulated electronically to all members of the Association.
             </td>
           </tr>
           <tr>
-            <td style="padding: 12px 16px; font-weight: 700; color: var(--deep-forest); font-size: 12.5px; width: 230px; background: rgba(0, 178, 114, 0.08); border-right: 1px solid rgba(0, 178, 114, 0.15);">
-              Election
-            </td>
-            <td style="padding: 12px 16px; color: var(--text-main); line-height: 1.5; background: #FFFFFF;">
+            <td class="col-label">Election</td>
+            <td class="col-value">
               The new office bearers are elected by the members present at the General Body Meeting.
             </td>
           </tr>
@@ -70,5 +168,5 @@
       </table>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}
