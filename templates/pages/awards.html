@@ -2,96 +2,215 @@
 
 {% block title %}PPAI Society Awards — Plant Protection Association of India{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     AWARDS TABLE - CLEAN, SNUG & REFINED TYPOGRAPHY
+  =================================================================== */
+  .awards-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(20px, 3vh, 36px) clamp(16px, 3vw, 40px) clamp(60px, 8vh, 100px) clamp(16px, 3vw, 40px);
+    box-sizing: border-box;
+  }
+
+  .awards-titlebar {
+    margin-bottom: clamp(14px, 2vh, 22px);
+    padding-bottom: 6px;
+  }
+
+  .awards-titlebar h1 {
+    font-size: clamp(22px, 1.8vw, 28px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .awards-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
+    padding: clamp(16px, 2vw, 24px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .awards-table-wrapper {
+    border: 1px solid #d0e5d8;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .awards-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+  }
+
+  .awards-table thead th {
+    background: #e8f5ec;
+    color: #0b3d20;
+    font-size: clamp(14.5px, 1.05vw, 16px);
+    font-weight: 800;
+    padding: clamp(12px, 1.4vh, 15px) clamp(14px, 1.3vw, 18px);
+    border-bottom: 2px solid #c2e2cf;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .awards-table thead th.col-sno {
+    width: 70px;
+    text-align: center;
+  }
+
+  .awards-table thead th.col-title {
+    width: 320px;
+  }
+
+  .awards-table thead th.col-for {
+    /* Adapts snugly to text */
+  }
+
+  .awards-table thead th.col-category {
+    width: 140px;
+    text-align: center;
+  }
+
+  .awards-table tbody tr {
+    border-bottom: 1px solid #eef4f0;
+    transition: background-color 0.15s ease;
+  }
+
+  .awards-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .awards-table tbody tr:hover {
+    background-color: #f7fbf8;
+  }
+
+  .awards-table tbody td {
+    padding: clamp(12px, 1.4vh, 16px) clamp(14px, 1.3vw, 18px);
+    vertical-align: middle;
+    color: var(--text-main);
+    line-height: 1.5;
+  }
+
+  .awards-table tbody td.col-sno {
+    text-align: center;
+    font-weight: 700;
+    color: var(--deep-forest);
+    font-size: clamp(14px, 0.95vw, 15px);
+  }
+
+  .awards-table tbody td.col-title {
+    font-weight: 700;
+    color: var(--deep-forest);
+    font-size: clamp(14.5px, 1.02vw, 16px);
+  }
+
+  .awards-table tbody td.col-for {
+    color: #2d3748;
+    font-size: clamp(14px, 0.96vw, 15px);
+  }
+
+  .awards-table tbody td.col-category {
+    text-align: center;
+  }
+
+  .award-badge {
+    display: inline-block;
+    background: #e8f5ec;
+    color: #0b3d20;
+    border: 1px solid #bce4cc;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: clamp(11.5px, 0.85vw, 13px);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .awards-section {
+      padding: 20px 16px 48px 16px;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container inner-section" style="padding: 16px 20px 24px 20px; margin-bottom: 160px; border-radius: 14px;">
+<section class="awards-section">
   <!-- Title Bar -->
-  <div class="inner-title-bar" style="margin-bottom: 14px; padding-bottom: 6px;">
-    <h1 style="font-size: 22px; font-weight: 800; color: var(--deep-forest); margin: 0; display: flex; align-items: center; gap: 10px;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+  <div class="awards-titlebar">
+    <h1>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
       PPAI Society Awards
     </h1>
   </div>
 
   <!-- Main Content Card Box -->
-  <div class="card-box" style="padding: 22px 24px;">
-    <p style="font-size: 13px; color: var(--text-main); margin-bottom: 16px; line-height: 1.5;">
-      The Plant Protection Association of India gives awards to encourage scientists and to promote plant protection research and education in India. The following awards have been instituted and are conferred through the Association:
-    </p>
-
-    <div style="overflow-x: auto;">
-      <table class="data-table" style="width: 100%; border-collapse: collapse; font-size: 13px; margin: 0;">
+  <div class="awards-card">
+    <div class="awards-table-wrapper" style="overflow-x: auto;">
+      <table class="awards-table">
         <thead>
           <tr>
-            <th style="width: 60px; text-align: center; padding: 10px 12px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 12px; border-bottom: 2px solid rgba(0,178,114,0.2);">S.No.</th>
-            <th style="width: 320px; text-align: left; padding: 10px 14px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 12px; border-bottom: 2px solid rgba(0,178,114,0.2);">Award Title</th>
-            <th style="text-align: left; padding: 10px 14px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 12px; border-bottom: 2px solid rgba(0,178,114,0.2);">Conferred For</th>
-            <th style="width: 140px; text-align: center; padding: 10px 12px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 12px; border-bottom: 2px solid rgba(0,178,114,0.2);">Category</th>
+            <th class="col-sno">S.No.</th>
+            <th class="col-title">Award Title</th>
+            <th class="col-for">Conferred For</th>
+            <th class="col-category">Category</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="text-align: center; padding: 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color);">1</td>
-            <td style="padding: 12px 14px; font-weight: 700; color: var(--deep-forest); border-bottom: 1px solid var(--border-color);">
-              Dr. R. D. V. J. Prasada Rao Memorial Award
-            </td>
-            <td style="padding: 12px 14px; color: var(--text-main); border-bottom: 1px solid var(--border-color); line-height: 1.45;">
-              Contributions to plant virology and quarantine
-            </td>
-            <td style="text-align: center; padding: 12px; border-bottom: 1px solid var(--border-color);">
-              <span class="badge-pill" style="font-size: 11px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Memorial Award</span>
+            <td class="col-sno">1</td>
+            <td class="col-title">Dr. R. D. V. J. Prasada Rao Memorial Award</td>
+            <td class="col-for">Contributions to plant virology and quarantine</td>
+            <td class="col-category">
+              <span class="award-badge">Memorial Award</span>
             </td>
           </tr>
           <tr>
-            <td style="text-align: center; padding: 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color);">2</td>
-            <td style="padding: 12px 14px; font-weight: 700; color: var(--deep-forest); border-bottom: 1px solid var(--border-color);">
-              Sri Dodla Raghava Reddy Memorial Award
-            </td>
-            <td style="padding: 12px 14px; color: var(--text-main); border-bottom: 1px solid var(--border-color); line-height: 1.45;">
-              Outstanding contribution in plant protection
-            </td>
-            <td style="text-align: center; padding: 12px; border-bottom: 1px solid var(--border-color);">
-              <span class="badge-pill" style="font-size: 11px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Memorial Award</span>
+            <td class="col-sno">2</td>
+            <td class="col-title">Sri Dodla Raghava Reddy Memorial Award</td>
+            <td class="col-for">Outstanding contribution in plant protection</td>
+            <td class="col-category">
+              <span class="award-badge">Memorial Award</span>
             </td>
           </tr>
           <tr>
-            <td style="text-align: center; padding: 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color);">3</td>
-            <td style="padding: 12px 14px; font-weight: 700; color: var(--deep-forest); border-bottom: 1px solid var(--border-color);">
-              Dr. D. Bap Reddy Memorial Award
-            </td>
-            <td style="padding: 12px 14px; color: var(--text-main); border-bottom: 1px solid var(--border-color); line-height: 1.45;">
-              Outstanding work in Integrated Pest Management
-            </td>
-            <td style="text-align: center; padding: 12px; border-bottom: 1px solid var(--border-color);">
-              <span class="badge-pill" style="font-size: 11px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Memorial Award</span>
+            <td class="col-sno">3</td>
+            <td class="col-title">Dr. D. Bap Reddy Memorial Award</td>
+            <td class="col-for">Outstanding work in Integrated Pest Management</td>
+            <td class="col-category">
+              <span class="award-badge">Memorial Award</span>
             </td>
           </tr>
           <tr>
-            <td style="text-align: center; padding: 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color);">4</td>
-            <td style="padding: 12px 14px; font-weight: 700; color: var(--deep-forest); border-bottom: 1px solid var(--border-color);">
-              Smt. Kavuri Sarada Memorial Award
-            </td>
-            <td style="padding: 12px 14px; color: var(--text-main); border-bottom: 1px solid var(--border-color); line-height: 1.45;">
-              Best paper published in the Indian Journal of Plant Protection
-            </td>
-            <td style="text-align: center; padding: 12px; border-bottom: 1px solid var(--border-color);">
-              <span class="badge-pill" style="font-size: 11px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Best Paper</span>
+            <td class="col-sno">4</td>
+            <td class="col-title">Smt. Kavuri Sarada Memorial Award</td>
+            <td class="col-for">Best paper published in the Indian Journal of Plant Protection</td>
+            <td class="col-category">
+              <span class="award-badge">Best Paper</span>
             </td>
           </tr>
           <tr>
-            <td style="text-align: center; padding: 12px; font-weight: 700; color: var(--text-muted);">5</td>
-            <td style="padding: 12px 14px; font-weight: 700; color: var(--deep-forest);">
-              Fellow of the Plant Protection Association of India (FPPAI)
-            </td>
-            <td style="padding: 12px 14px; color: var(--text-main); line-height: 1.45;">
-              Eminent scientists with distinguished service to plant protection
-            </td>
-            <td style="text-align: center; padding: 12px;">
-              <span class="badge-pill" style="font-size: 11px; padding: 2px 8px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Fellowship</span>
+            <td class="col-sno">5</td>
+            <td class="col-title">Fellow of the Plant Protection Association of India (FPPAI)</td>
+            <td class="col-for">Eminent scientists with distinguished service to plant protection</td>
+            <td class="col-category">
+              <span class="award-badge">Fellowship</span>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}
