@@ -7,29 +7,30 @@
 <style>
   /* ===================================================================
      CLEAN LINE-SEPARATED EDITORIAL THEME - BOOKS & SPECIAL PUBLICATIONS
-     Strictly identical to About Us & Author Guidelines structure
+     Refined web-design spacing with snug divider-to-heading hierarchy
   =================================================================== */
   .about-stream-wrapper {
     max-width: 960px;
     margin: 0 auto;
-    padding: clamp(32px, 5vh, 60px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 100px) clamp(20px, 4vw, 40px);
+    padding: clamp(28px, 4.5vh, 52px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 90px) clamp(20px, 4vw, 40px);
   }
 
-  /* Thin Section Divider Line */
+  /* Thin Section Divider Line with Asymmetrical Spacing:
+     Generous top space after previous content, snug space before the next heading */
   .story-divider {
     border: none;
     height: 1px;
     background: rgba(11, 36, 23, 0.12);
-    margin: clamp(28px, 4vh, 42px) 0;
+    margin: clamp(24px, 3.2vh, 36px) 0 clamp(8px, 1.2vh, 14px) 0;
   }
 
   /* Top Hero Section */
   .story-hero {
-    margin-bottom: clamp(16px, 2.5vh, 24px);
+    margin-bottom: 0;
   }
 
   .story-hero h1 {
-    font-size: clamp(32px, 3.5vw, 48px);
+    font-size: clamp(30px, 3.2vw, 44px);
     font-weight: 800;
     color: var(--deep-forest);
     line-height: 1.15;
@@ -41,23 +42,23 @@
   .story-section {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0;
   }
 
   .story-heading {
-    font-size: clamp(22px, 2.2vw, 28px);
+    font-size: clamp(21px, 1.8vw, 26px);
     font-weight: 700;
     color: var(--deep-forest);
     line-height: 1.25;
     letter-spacing: -0.02em;
-    margin: 0 0 6px 0;
+    margin: 0 0 clamp(8px, 1.1vh, 12px) 0;
   }
 
   .story-body-p {
-    font-size: clamp(15.5px, 1.1vw, 17.5px);
-    line-height: 1.8;
+    font-size: clamp(15px, 1.05vw, 17px);
+    line-height: 1.78;
     color: var(--text-main);
-    margin: 0 0 14px 0;
+    margin: 0 0 clamp(10px, 1.3vh, 14px) 0;
     text-align: justify;
     text-justify: inter-word;
   }
@@ -70,8 +71,8 @@
   .story-pillars {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 8px;
+    gap: clamp(8px, 1.1vh, 12px);
+    margin-top: clamp(6px, 0.9vh, 10px);
     padding: 0;
     list-style: none;
   }
@@ -80,7 +81,7 @@
     display: flex;
     align-items: baseline;
     gap: 12px;
-    font-size: clamp(15px, 1.05vw, 16.5px);
+    font-size: clamp(14.5px, 1vw, 16px);
     line-height: 1.65;
     color: var(--text-main);
   }
@@ -107,7 +108,11 @@
     }
 
     .story-divider {
-      margin: 24px 0;
+      margin: 20px 0 8px 0;
+    }
+
+    .story-heading {
+      margin-bottom: 8px;
     }
 
     .story-pillar-row {
