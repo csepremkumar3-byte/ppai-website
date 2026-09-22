@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}The Present Executive Council — Plant Protection Association of India{% endblock %}
+{% block title %}Executive Council & Honorary Patrons — Plant Protection Association of India{% endblock %}
 
 {% block extra_css %}
 <style>
   /* ===================================================================
-     EXECUTIVE COUNCIL - 4-4-4-3 GRID LAYOUT WITH AMPLE SIDE SPACING
+     EXECUTIVE COUNCIL & HONORARY PATRONS - SEPARATE CARDS & 4/3 GRID
   =================================================================== */
   .council-section {
     min-height: calc(100vh - 70px);
@@ -30,14 +30,30 @@
     letter-spacing: -0.02em;
   }
 
+  /* Separate Section Box */
   .council-card-box {
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 14px;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     padding: clamp(22px, 2.8vw, 34px);
+    margin-bottom: clamp(28px, 3.5vh, 36px);
     box-sizing: border-box;
     width: 100%;
+  }
+
+  .council-card-box:last-child {
+    margin-bottom: 0;
+  }
+
+  .council-heading {
+    font-size: clamp(17px, 1.2vw, 20px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 clamp(18px, 2.2vh, 26px) 0;
+    border-bottom: 2px solid rgba(0, 178, 114, 0.18);
+    padding-bottom: 10px;
+    letter-spacing: -0.01em;
   }
 
   /* 4-in-Row Grid for First 12 Council Members */
@@ -49,7 +65,7 @@
     align-items: stretch;
   }
 
-  /* 3-in-Row Grid for Last 3 Council Members (Centered) */
+  /* 3-in-Row Grid for Last 3 Council Members & Patrons (Centered) */
   .grid-row-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -144,11 +160,63 @@
 <section class="council-section">
   <!-- Title Bar -->
   <div class="council-titlebar">
-    <h1>The Present Executive Council</h1>
+    <h1>Executive Council &amp; Honorary Patrons</h1>
   </div>
 
-  <!-- Executive Council Grid (First 12 in 4-card rows, Last 3 in centered row) -->
+  <!-- ===================================================================
+       CARD 1 (TOP): HONORARY PATRONS (3 Centered)
+  =================================================================== -->
   <div class="council-card-box">
+    <h2 class="council-heading">Honorary Patrons</h2>
+
+    <div class="grid-row-3">
+      <!-- 1. Dr. A K Sinha -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
+        <h3 class="member-name">Dr. A K Sinha</h3>
+        <p class="member-affiliation">Plant Protection Advisor, Directorate of Plant Protection, Quarantine &amp; Storage, Faridabad, Haryana</p>
+      </div>
+
+      <!-- 2. Dr. K S R K Murthy -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
+        <h3 class="member-name">Dr. K S R K Murthy</h3>
+        <p class="member-affiliation">Telecom Colony, Ved Vihar, Secunderabad, Telangana</p>
+      </div>
+
+      <!-- 3. Mr. N Sukumar -->
+      <div class="member-card-item">
+        <div class="avatar-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
+        <h3 class="member-name">Mr. N Sukumar</h3>
+        <p class="member-affiliation">Managing Director, Hyderabad Chemical Products Ltd., Hyderabad, Telangana</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       CARD 2: THE PRESENT EXECUTIVE COUNCIL (15 Members in 4-4-4-3 Grid)
+  =================================================================== -->
+  <div class="council-card-box">
+    <h2 class="council-heading">The Present Executive Council</h2>
+
     {% if council_members %}
       <!-- Rows 1 to 3: 4 Members each (First 12) -->
       <div class="grid-row-4">
@@ -223,5 +291,6 @@
       </div>
     {% endif %}
   </div>
+
 </section>
 {% endblock %}

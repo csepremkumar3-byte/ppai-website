@@ -5,7 +5,7 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     EDITORIAL BOARD - SEPARATE CARDS, 4/3/3 GRID, FLUID RESPONSIVE
+     EDITORIAL BOARD - 4/3 GRID, AMPLE SIDE SPACING, FLUID RESPONSIVE
   =================================================================== */
   .editorial-section {
     min-height: calc(100vh - 70px);
@@ -30,20 +30,15 @@
     letter-spacing: -0.02em;
   }
 
-  /* Separate Section Box */
+  /* Main Card Box */
   .editorial-card-box {
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 14px;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     padding: clamp(22px, 2.8vw, 34px);
-    margin-bottom: clamp(28px, 3.5vh, 36px);
     box-sizing: border-box;
     width: 100%;
-  }
-
-  .editorial-card-box:last-child {
-    margin-bottom: 0;
   }
 
   .editorial-heading {
@@ -65,7 +60,7 @@
     align-items: stretch;
   }
 
-  /* 3-in-Row Grid for Next 3 Editorial Members & Patrons (Centered) */
+  /* 3-in-Row Grid for Next 3 Editorial Members (Centered) */
   .grid-row-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -164,7 +159,7 @@
   </div>
 
   <!-- ===================================================================
-       CARD 1: EDITORIAL BOARD (7 MEMBERS: 4 in Row 1, 3 in Row 2)
+       EDITORIAL BOARD (7 MEMBERS: 4 in Row 1, 3 in Row 2)
   =================================================================== -->
   <div class="editorial-card-box">
     <h2 class="editorial-heading">Editorial Board</h2>
@@ -268,54 +263,5 @@
       </div>
     </div>
   </div>
-
-  <!-- ===================================================================
-       CARD 2: HONORARY PATRONS (3 Centered)
-  =================================================================== -->
-  <div class="editorial-card-box">
-    <h2 class="editorial-heading">Honorary Patrons</h2>
-
-    <div class="grid-row-3">
-      <!-- 1. Dr. A K Sinha -->
-      <div class="member-card-item">
-        <div class="avatar-circle">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
-        <h3 class="member-name">Dr. A K Sinha</h3>
-        <p class="member-affiliation">Plant Protection Advisor, Directorate of Plant Protection, Quarantine &amp; Storage, Faridabad, Haryana</p>
-      </div>
-
-      <!-- 2. Dr. K S R K Murthy -->
-      <div class="member-card-item">
-        <div class="avatar-circle">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
-        <h3 class="member-name">Dr. K S R K Murthy</h3>
-        <p class="member-affiliation">Telecom Colony, Ved Vihar, Secunderabad, Telangana</p>
-      </div>
-
-      <!-- 3. Mr. N Sukumar -->
-      <div class="member-card-item">
-        <div class="avatar-circle">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
-        <h3 class="member-name">Mr. N Sukumar</h3>
-        <p class="member-affiliation">Managing Director, Hyderabad Chemical Products Ltd., Hyderabad, Telangana</p>
-      </div>
-    </div>
-  </div>
-
 </section>
 {% endblock %}
