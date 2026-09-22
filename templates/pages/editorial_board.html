@@ -63,6 +63,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: clamp(14px, 1.4vw, 20px);
     margin-bottom: clamp(14px, 1.4vw, 20px);
+    align-items: stretch;
   }
 
   /* 3-in-Row Grid for Next 3 Editorial Members and Patrons (Centered) */
@@ -72,6 +73,7 @@
     gap: clamp(14px, 1.4vw, 20px);
     max-width: 820px;
     margin: 0 auto;
+    align-items: stretch;
   }
 
   /* Member Card Item */
@@ -86,6 +88,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    height: 100%;
+    box-sizing: border-box;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
