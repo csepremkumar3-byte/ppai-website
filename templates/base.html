@@ -842,8 +842,9 @@
       }
     });
 
-    // Handle AJAX Newsletter Subscription with Strict Validation
+    // Handle AJAX Newsletter Subscription with Strict Validation & Crisp Feedback
     const newsletterForm = document.getElementById('footerNewsletterForm');
+    let feedbackTimeout;
     if (newsletterForm) {
       newsletterForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -853,22 +854,27 @@
         const csrfToken = newsletterForm.querySelector('[name=csrfmiddlewaretoken]').value;
         const rawEmail = (emailInput.value || '').trim();
 
-        // Strict client-side email format regex
+        // Clear any previous timeout
+        if (feedbackTimeout) clearTimeout(feedbackTimeout);
+
+        // Strict email regex
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         if (!rawEmail) {
           feedback.style.display = 'block';
-          feedback.style.color = '#ff8888';
-          feedback.textContent = 'Please enter your email address.';
+          feedback.style.color = '#f87171';
+          feedback.textContent = 'Email is required.';
           emailInput.focus();
+          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
           return;
         }
 
         if (!emailRegex.test(rawEmail)) {
           feedback.style.display = 'block';
-          feedback.style.color = '#ff8888';
-          feedback.textContent = 'Please enter a valid email address (e.g. name@domain.com).';
+          feedback.style.color = '#f87171';
+          feedback.textContent = 'Enter a valid email address.';
           emailInput.focus();
+          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
           return;
         }
 
@@ -886,19 +892,24 @@
         .then(res => res.json())
         .then(data => {
           feedback.style.display = 'block';
-          if (data.status === 'success' || data.status === 'info') {
-            feedback.style.color = '#7bc69f';
-            feedback.textContent = data.message;
+          if (data.status === 'success') {
+            feedback.style.color = '#4ade80';
+            feedback.textContent = data.message || 'Subscribed successfully!';
             emailInput.value = '';
+          } else if (data.status === 'exists') {
+            feedback.style.color = '#facc15';
+            feedback.textContent = data.message || 'Email is already subscribed.';
           } else {
-            feedback.style.color = '#ff8888';
-            feedback.textContent = data.message || 'Please provide a valid email address.';
+            feedback.style.color = '#f87171';
+            feedback.textContent = data.message || 'Enter a valid email address.';
           }
+          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
         })
         .catch(() => {
           feedback.style.display = 'block';
-          feedback.style.color = '#ff8888';
-          feedback.textContent = 'Could not process subscription. Please try again.';
+          feedback.style.color = '#f87171';
+          feedback.textContent = 'Unable to subscribe. Please try again.';
+          feedbackTimeout = setTimeout(() => { feedback.style.display = 'none'; }, 4000);
         })
         .finally(() => {
           submitBtn.disabled = false;

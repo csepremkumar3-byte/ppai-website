@@ -194,34 +194,28 @@ def subscribe_newsletter(request):
     email = request.POST.get('email', '').strip().lower()
 
     if not email:
-        return JsonResponse({'status': 'error', 'message': 'Email address is required.'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'Email is required.'}, status=400)
 
     if len(email) > 100:
-        return JsonResponse({'status': 'error', 'message': 'Email address cannot exceed 100 characters.'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'Email is too long.'}, status=400)
 
-    # Strict regex check (valid user, valid domain, valid TLD of 2+ letters)
+    # Strict regex check
     if not EMAIL_REGEX.match(email):
-        return JsonResponse({'status': 'error', 'message': 'Please provide a valid email address (e.g. name@institution.org).'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'Enter a valid email address.'}, status=400)
 
     # Standard Django email validator check
     try:
         validate_email(email)
     except ValidationError:
-        return JsonResponse({'status': 'error', 'message': 'The email address entered is not valid.'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'Enter a valid email address.'}, status=400)
 
-    # Check for disposable/malformed domains with no dot
-    parts = email.split('@')
-    if len(parts) != 2 or '.' not in parts[1] or len(parts[1].split('.')[-1]) < 2:
-        return JsonResponse({'status': 'error', 'message': 'Please enter a complete email domain (e.g. .com, .in, .org).'}, status=400)
+    # Check if already subscribed (do not allow duplicate registration)
+    if NewsletterSubscriber.objects.filter(email=email).exists():
+        return JsonResponse({'status': 'exists', 'message': 'Email is already subscribed.'})
 
-    subscriber, created = NewsletterSubscriber.objects.get_or_create(email=email)
-    if not created:
-        if not subscriber.is_active:
-            subscriber.is_active = True
-            subscriber.save()
-            return JsonResponse({'status': 'success', 'message': 'Welcome back! Your newsletter subscription has been reactivated.'})
-        return JsonResponse({'status': 'info', 'message': 'This email address is already subscribed to PPAI updates.'})
+    # Register new subscriber
+    NewsletterSubscriber.objects.create(email=email)
+    return JsonResponse({'status': 'success', 'message': 'Subscribed successfully!'})
 
-    return JsonResponse({'status': 'success', 'message': 'Thank you! You have successfully subscribed to PPAI updates.'})
 
 
