@@ -764,9 +764,9 @@
 
           <div style="margin-top: 14px;">
             <label style="display:block; font-weight:700; margin-bottom:6px; color:#fff;">Subscribe to Newsletter</label>
-            <form class="newsletter-form" id="footerNewsletterForm" action="{% url 'subscribe_newsletter' %}" method="post">
+            <form class="newsletter-form" id="footerNewsletterForm" action="{% url 'subscribe_newsletter' %}" method="post" novalidate>
               {% csrf_token %}
-              <input type="email" name="email" id="newsletterEmail" placeholder="Your email address" required>
+              <input type="email" name="email" id="newsletterEmail" placeholder="e.g. name@domain.com" maxlength="100" autocomplete="email" required>
               <button type="submit" id="newsletterSubmitBtn">Join</button>
             </form>
             <div id="newsletterFeedback" style="display:none; font-size: 11.5px; margin-top: 6px; font-weight: 600; line-height: 1.3;"></div>
@@ -842,7 +842,7 @@
       }
     });
 
-    // Handle AJAX Newsletter Subscription
+    // Handle AJAX Newsletter Subscription with Strict Validation
     const newsletterForm = document.getElementById('footerNewsletterForm');
     if (newsletterForm) {
       newsletterForm.addEventListener('submit', function(e) {
@@ -851,6 +851,26 @@
         const feedback = document.getElementById('newsletterFeedback');
         const submitBtn = document.getElementById('newsletterSubmitBtn');
         const csrfToken = newsletterForm.querySelector('[name=csrfmiddlewaretoken]').value;
+        const rawEmail = (emailInput.value || '').trim();
+
+        // Strict client-side email format regex
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!rawEmail) {
+          feedback.style.display = 'block';
+          feedback.style.color = '#ff8888';
+          feedback.textContent = 'Please enter your email address.';
+          emailInput.focus();
+          return;
+        }
+
+        if (!emailRegex.test(rawEmail)) {
+          feedback.style.display = 'block';
+          feedback.style.color = '#ff8888';
+          feedback.textContent = 'Please enter a valid email address (e.g. name@domain.com).';
+          emailInput.focus();
+          return;
+        }
 
         submitBtn.disabled = true;
         submitBtn.innerText = '...';
@@ -861,7 +881,7 @@
             'Content-Type': 'application/x-www-form-urlencoded',
             'X-CSRFToken': csrfToken
           },
-          body: new URLSearchParams({ email: emailInput.value })
+          body: new URLSearchParams({ email: rawEmail })
         })
         .then(res => res.json())
         .then(data => {
@@ -872,7 +892,7 @@
             emailInput.value = '';
           } else {
             feedback.style.color = '#ff8888';
-            feedback.textContent = data.message || 'Something went wrong.';
+            feedback.textContent = data.message || 'Please provide a valid email address.';
           }
         })
         .catch(() => {
