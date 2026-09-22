@@ -1,61 +1,215 @@
 {% extends "base.html" %}
 
-{% block title %}Legends of PPAI - Plant Protection Association of India{% endblock %}
+{% block title %}Legends of PPAI — Plant Protection Association of India{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     LEGENDS OF PPAI - 5-COLUMN GRID WITH AMPLE SIDE SPACING (BELOW FOLD FOOTER)
+  =================================================================== */
+  .legends-section {
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(24px, 3vh, 36px) clamp(24px, 4vw, 56px) clamp(70px, 9vh, 110px) clamp(24px, 4vw, 56px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .legends-titlebar {
+    margin-bottom: clamp(18px, 2.4vh, 26px);
+    padding-bottom: 6px;
+  }
+
+  .legends-titlebar h1 {
+    font-size: clamp(22px, 1.8vw, 28px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .legends-card-box {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
+    padding: clamp(22px, 2.8vw, 32px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .legends-category {
+    margin-bottom: clamp(28px, 3.6vh, 38px);
+  }
+
+  .legends-category:last-child {
+    margin-bottom: 0;
+  }
+
+  .legends-heading {
+    font-size: clamp(16px, 1.1vw, 18px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 clamp(16px, 2vh, 22px) 0;
+    border-bottom: 2px solid rgba(0, 178, 114, 0.2);
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* 5-Column Grid */
+  .legends-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: clamp(14px, 1.3vw, 18px);
+    align-items: stretch;
+  }
+
+  /* Member Card Item */
+  .legend-card-item {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: clamp(16px, 1.8vh, 20px) clamp(10px, 1vw, 14px);
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(11, 36, 23, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .legend-card-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 178, 114, 0.12);
+    border-color: rgba(0, 178, 114, 0.4);
+  }
+
+  .avatar-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 10px;
+    background: rgba(0, 178, 114, 0.08);
+    border: 2.5px solid var(--vibrant-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);
+  }
+
+  .legend-name {
+    font-size: clamp(13.5px, 0.92vw, 14.5px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+  }
+
+  .legend-affiliation {
+    font-size: clamp(11px, 0.8vw, 12px);
+    color: var(--text-muted);
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 1200px) {
+    .legends-grid-5 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 960px) {
+    .legends-grid-5 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 680px) {
+    .legends-grid-5 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .legends-grid-5 {
+      grid-template-columns: 1fr;
+    }
+    .legends-section {
+      padding: 20px 16px 48px 16px;
+    }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container inner-section" style="padding-top: 14px; padding-bottom: 28px;">
-  <!-- Title Bar (No Subtitle) -->
-  <div class="inner-title-bar" style="margin-bottom: 16px;">
-    <h1 style="font-size: 24px; font-weight: 800; color: var(--deep-forest); margin: 0;">Legends of PPAI</h1>
+<section class="legends-section">
+  <!-- Title Bar -->
+  <div class="legends-titlebar">
+    <h1>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Legends of PPAI
+    </h1>
   </div>
 
-  <!-- Unified Card Box Container Matching Executive Council Architecture -->
-  <div class="card-box" style="padding: 24px 20px;">
+  <!-- Unified Container -->
+  <div class="legends-card-box">
     
     <!-- ===================================================================
-         SECTION 1: PAST PRESIDENTS (FIRST FOLD FULL VISIBILITY)
+         SECTION 1: PAST PRESIDENTS (5 PER ROW)
     =================================================================== -->
-    <div style="margin-bottom: 28px;">
-      <h2 style="font-size: 18px; font-weight: 800; color: var(--deep-forest); margin: 0 0 16px 0; border-bottom: 2px solid rgba(0, 178, 114, 0.2); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+    <div class="legends-category">
+      <h2 class="legends-heading">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Past Presidents
       </h2>
       
-      <!-- 5-Column Grid Replicating Executive Council Card Architecture -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px;">
+      <div class="legends-grid-5">
         {% if past_presidents %}
           {% for p in past_presidents %}
-          <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 12px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-              <!-- Circular Avatar with Green Ring -->
-              <div style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-                {% if p.image %}
-                  <img src="{{ p.image.url }}" alt="{{ p.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+          <div class="legend-card-item">
+            <div class="avatar-circle">
+              {% if p.image %}
+                <img src="{{ p.image.url }}" alt="{{ p.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+              {% else %}
+                {% if p.gender == 'female' %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+                    <path d="M18 21a6 6 0 0 0-12 0"></path>
+                    <circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle>
+                  </svg>
                 {% else %}
-                  {% if p.gender == 'female' %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
-                      <path d="M18 21a6 6 0 0 0-12 0"></path>
-                      <circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle>
-                    </svg>
-                  {% else %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                  {% endif %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
                 {% endif %}
-              </div>
-
-              <!-- Tenure Badge Pill -->
-              <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">{{ p.tenure }}</span>
-
-              <!-- Name -->
-              <h3 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">{{ p.name }}</h3>
-
-              <!-- Affiliation -->
-              <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">{{ p.affiliation }}</p>
+              {% endif %}
             </div>
+
+            <!-- Tenure Badge -->
+            <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ p.tenure }}</span>
+
+            <!-- Name -->
+            <h3 class="legend-name">{{ p.name }}</h3>
+
+            <!-- Affiliation -->
+            <p class="legend-affiliation">{{ p.affiliation }}</p>
           </div>
           {% endfor %}
         {% endif %}
@@ -63,34 +217,38 @@
     </div>
 
     <!-- ===================================================================
-         SECTION 2: PAST GENERAL SECRETARIES
+         SECTION 2: PAST GENERAL SECRETARIES (5 PER ROW)
     =================================================================== -->
-    <div style="margin-bottom: 28px;">
-      <h2 style="font-size: 18px; font-weight: 800; color: var(--deep-forest); margin: 0 0 16px 0; border-bottom: 2px solid rgba(0, 178, 114, 0.2); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+    <div class="legends-category">
+      <h2 class="legends-heading">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Past General Secretaries
       </h2>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px;">
+      <div class="legends-grid-5">
         {% if past_secretaries %}
           {% for s in past_secretaries %}
-          <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 12px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-              <div style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-                {% if s.image %}
-                  <img src="{{ s.image.url }}" alt="{{ s.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+          <div class="legend-card-item">
+            <div class="avatar-circle">
+              {% if s.image %}
+                <img src="{{ s.image.url }}" alt="{{ s.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+              {% else %}
+                {% if s.gender == 'female' %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
                 {% else %}
-                  {% if s.gender == 'female' %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
-                  {% else %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  {% endif %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 {% endif %}
-              </div>
-              <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">{{ s.tenure }}</span>
-              <h3 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">{{ s.name }}</h3>
-              <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">{{ s.affiliation }}</p>
+              {% endif %}
             </div>
+
+            <!-- Tenure Badge -->
+            <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ s.tenure }}</span>
+
+            <!-- Name -->
+            <h3 class="legend-name">{{ s.name }}</h3>
+
+            <!-- Affiliation -->
+            <p class="legend-affiliation">{{ s.affiliation }}</p>
           </div>
           {% endfor %}
         {% endif %}
@@ -98,34 +256,38 @@
     </div>
 
     <!-- ===================================================================
-         SECTION 3: PAST TREASURERS
+         SECTION 3: PAST TREASURERS (5 PER ROW)
     =================================================================== -->
-    <div style="margin-bottom: 28px;">
-      <h2 style="font-size: 18px; font-weight: 800; color: var(--deep-forest); margin: 0 0 16px 0; border-bottom: 2px solid rgba(0, 178, 114, 0.2); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+    <div class="legends-category">
+      <h2 class="legends-heading">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         Past Treasurers
       </h2>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px;">
+      <div class="legends-grid-5">
         {% if past_treasurers %}
           {% for t in past_treasurers %}
-          <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 12px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-              <div style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-                {% if t.image %}
-                  <img src="{{ t.image.url }}" alt="{{ t.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+          <div class="legend-card-item">
+            <div class="avatar-circle">
+              {% if t.image %}
+                <img src="{{ t.image.url }}" alt="{{ t.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+              {% else %}
+                {% if t.gender == 'female' %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
                 {% else %}
-                  {% if t.gender == 'female' %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
-                  {% else %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  {% endif %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 {% endif %}
-              </div>
-              <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">{{ t.tenure }}</span>
-              <h3 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">{{ t.name }}</h3>
-              <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">{{ t.affiliation }}</p>
+              {% endif %}
             </div>
+
+            <!-- Tenure Badge -->
+            <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ t.tenure }}</span>
+
+            <!-- Name -->
+            <h3 class="legend-name">{{ t.name }}</h3>
+
+            <!-- Affiliation -->
+            <p class="legend-affiliation">{{ t.affiliation }}</p>
           </div>
           {% endfor %}
         {% endif %}
@@ -133,34 +295,38 @@
     </div>
 
     <!-- ===================================================================
-         SECTION 4: PAST CHIEF EDITORS
+         SECTION 4: PAST CHIEF EDITORS (5 PER ROW)
     =================================================================== -->
-    <div>
-      <h2 style="font-size: 18px; font-weight: 800; color: var(--deep-forest); margin: 0 0 16px 0; border-bottom: 2px solid rgba(0, 178, 114, 0.2); padding-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+    <div class="legends-category">
+      <h2 class="legends-heading">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         Past Chief Editors
       </h2>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px;">
+      <div class="legends-grid-5">
         {% if past_editors %}
           {% for e in past_editors %}
-          <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 12px; text-align: center; box-shadow: 0 4px 12px rgba(11,36,23,0.04); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-              <div style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; margin-bottom: 10px; background: rgba(0, 178, 114, 0.08); border: 2.5px solid var(--vibrant-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);">
-                {% if e.image %}
-                  <img src="{{ e.image.url }}" alt="{{ e.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+          <div class="legend-card-item">
+            <div class="avatar-circle">
+              {% if e.image %}
+                <img src="{{ e.image.url }}" alt="{{ e.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+              {% else %}
+                {% if e.gender == 'female' %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
                 {% else %}
-                  {% if e.gender == 'female' %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M18 21a6 6 0 0 0-12 0"></path><circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle></svg>
-                  {% else %}
-                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  {% endif %}
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 {% endif %}
-              </div>
-              <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 3px 10px;">{{ e.tenure }}</span>
-              <h3 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin-bottom: 4px; line-height: 1.25;">{{ e.name }}</h3>
-              <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; line-height: 1.35;">{{ e.affiliation }}</p>
+              {% endif %}
             </div>
+
+            <!-- Tenure Badge -->
+            <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ e.tenure }}</span>
+
+            <!-- Name -->
+            <h3 class="legend-name">{{ e.name }}</h3>
+
+            <!-- Affiliation -->
+            <p class="legend-affiliation">{{ e.affiliation }}</p>
           </div>
           {% endfor %}
         {% endif %}
@@ -168,6 +334,5 @@
     </div>
 
   </div>
-</div>
+</section>
 {% endblock %}
-
