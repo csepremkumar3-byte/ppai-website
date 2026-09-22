@@ -2,192 +2,420 @@
 
 {% block title %}Membership Information — Plant Protection Association of India{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     MEMBERSHIP INFORMATION - TABBED EDITORIAL STYLE (FOOTER BELOW FOLD)
+  =================================================================== */
+  .membership-section {
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(20px, 2.8vh, 32px) clamp(16px, 3vw, 40px) clamp(70px, 9vh, 110px) clamp(16px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .membership-titlebar {
+    margin-bottom: clamp(16px, 2.2vh, 24px);
+    text-align: center;
+  }
+
+  .membership-titlebar h1 {
+    font-size: clamp(24px, 2.2vw, 32px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .membership-titlebar p {
+    font-size: clamp(13px, 0.95vw, 14.5px);
+    color: var(--text-muted);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Scrollable / Flexible Tabs Navigation */
+  .membership-tabs-container {
+    border-bottom: 2px solid rgba(0, 178, 114, 0.15);
+    margin-bottom: clamp(20px, 2.6vh, 28px);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .membership-tabs {
+    display: flex;
+    gap: clamp(4px, 1vw, 10px);
+    min-width: max-content;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .ppai-tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: clamp(10px, 1.4vh, 14px) clamp(14px, 1.4vw, 22px);
+    font-size: clamp(13.5px, 0.95vw, 15px);
+    font-weight: 700;
+    color: var(--text-muted);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ppai-tab-btn:hover {
+    color: var(--deep-forest);
+    background: rgba(0, 178, 114, 0.05);
+    border-radius: 6px 6px 0 0;
+  }
+
+  .ppai-tab-btn.active {
+    color: var(--vibrant-green);
+    border-bottom-color: var(--vibrant-green);
+    background: transparent;
+  }
+
+  /* Content Panels */
+  .ppai-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(11, 36, 23, 0.06);
+    padding: clamp(20px, 2.6vw, 32px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  /* Clean Tables */
+  .membership-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .membership-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    margin: 0;
+  }
+
+  .membership-table thead th {
+    padding: 0 0 12px 0;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: clamp(12px, 0.85vw, 13px);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid rgba(0, 178, 114, 0.25);
+  }
+
+  .membership-table thead th.col-left { text-align: left; }
+  .membership-table thead th.col-right { text-align: right; }
+
+  .membership-table tbody tr {
+    border-bottom: 1px solid #eef4f0;
+    transition: background-color 0.15s ease;
+  }
+
+  .membership-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .membership-table tbody tr:hover {
+    background-color: #f7fbf8;
+  }
+
+  .membership-table tbody td {
+    padding: clamp(12px, 1.4vh, 15px) 0;
+    vertical-align: middle;
+    line-height: 1.5;
+  }
+
+  .membership-table tbody td.col-left {
+    text-align: left;
+    font-weight: 700;
+    color: var(--deep-forest);
+  }
+
+  .membership-table tbody td.col-right {
+    text-align: right;
+    color: var(--text-main);
+  }
+
+  .membership-table tbody td.col-price-inland {
+    text-align: right;
+    color: var(--vibrant-green);
+    font-weight: 800;
+    font-size: clamp(14.5px, 1.05vw, 16px);
+  }
+
+  .membership-table tbody td.col-price-foreign {
+    text-align: right;
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  /* Application Step Cards */
+  .apply-step-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 1.6vh, 18px);
+    margin-bottom: clamp(22px, 2.8vh, 32px);
+  }
+
+  .apply-step-item {
+    display: flex;
+    gap: clamp(12px, 1.4vw, 18px);
+    align-items: flex-start;
+  }
+
+  .apply-step-number {
+    flex-shrink: 0;
+    width: clamp(28px, 2vw, 32px);
+    height: clamp(28px, 2vw, 32px);
+    border-radius: 50%;
+    background: rgba(0, 178, 114, 0.12);
+    color: var(--vibrant-green);
+    font-weight: 800;
+    font-size: clamp(13px, 0.9vw, 14px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .apply-step-text {
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    line-height: 1.6;
+    color: var(--text-main);
+    padding-top: 3px;
+  }
+
+  /* Bank Details Grid */
+  .bank-details-grid {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    row-gap: clamp(12px, 1.6vh, 16px);
+    column-gap: 16px;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    max-width: 650px;
+  }
+
+  .bank-label {
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: clamp(11.5px, 0.82vw, 12.5px);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-top: 2px;
+  }
+
+  .bank-value {
+    color: var(--text-main);
+    line-height: 1.55;
+  }
+
+  .bank-value-highlight {
+    color: var(--vibrant-green);
+    font-weight: 800;
+    font-size: clamp(15.5px, 1.1vw, 17px);
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 768px) {
+    .membership-section {
+      padding: 20px 16px 48px 16px;
+    }
+
+    .membership-tabs {
+      justify-content: flex-start;
+    }
+
+    .bank-details-grid {
+      grid-template-columns: 1fr;
+      row-gap: 8px;
+    }
+
+    .bank-label {
+      padding-top: 6px;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container inner-section" style="padding: 6px 18px 8px 18px; margin-bottom: 0px; border-radius: 14px; display: flex; flex-direction: column; min-height: calc(100vh - 128px); box-sizing: border-box;">
+<section class="membership-section">
   <!-- Title Bar -->
-  <div class="inner-title-bar" style="margin-bottom: 6px; padding-bottom: 2px; flex-shrink: 0;">
-    <h1 style="font-size: 19px; font-weight: 800; color: var(--deep-forest); margin: 0; display: flex; align-items: center; gap: 8px;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Membership Information
-    </h1>
+  <div class="membership-titlebar">
+    <h1>Membership Information</h1>
+    <p>Plant Protection Association of India</p>
   </div>
 
-  <!-- 4-Card Grid Dashboard (All unified vibrant green styling, zero black shades) -->
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-grow: 1; align-items: stretch; margin-bottom: 0px;">
-
-    <!-- Card 1: Membership Fees (Unified Green) -->
-    <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between;">
-      <div>
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-          <h2 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-            Membership Fees
-          </h2>
-          <span class="badge-pill" style="font-size: 9.5px; padding: 1px 7px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">PPAI Members</span>
-        </div>
-
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 2px;">
-          <thead>
-            <tr>
-              <th style="text-align: left; padding: 3px 5px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 10px; border-bottom: 1.5px solid rgba(0,178,114,0.2);">Category</th>
-              <th style="text-align: center; padding: 3px 5px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 10px; border-bottom: 1.5px solid rgba(0,178,114,0.2);">Inland</th>
-              <th style="text-align: center; padding: 3px 5px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 10px; border-bottom: 1.5px solid rgba(0,178,114,0.2);">Foreign</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding: 2.5px 5px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid #eee;">Life</td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px;">&#x20B9; 5,000</span></td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px; background: #f0f4f8; color: var(--text-main);">US$ 1,000</span></td>
-            </tr>
-            <tr>
-              <td style="padding: 2.5px 5px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid #eee;">Ordinary (Annual)</td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px;">&#x20B9; 1,000</span></td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px; background: #f0f4f8; color: var(--text-main);">US$ 100</span></td>
-            </tr>
-            <tr>
-              <td style="padding: 2.5px 5px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid #eee;">Institutional (Annual)</td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px;">&#x20B9; 5,000</span></td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px; background: #f0f4f8; color: var(--text-main);">US$ 50</span></td>
-            </tr>
-            <tr>
-              <td style="padding: 2.5px 5px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid #eee;">Students</td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px;">&#x20B9; 500</span></td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee; color: var(--text-muted);">-</td>
-            </tr>
-            <tr>
-              <td style="padding: 2.5px 5px; font-weight: 700; color: var(--text-main);">Admission fee (New)</td>
-              <td style="padding: 2.5px 5px; text-align: center;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px;">&#x20B9; 50</span></td>
-              <td style="padding: 2.5px 5px; text-align: center;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px; background: #f0f4f8; color: var(--text-main);">US$ 15</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <!-- Tab Bar -->
+  <div class="membership-tabs-container">
+    <div class="membership-tabs">
+      <button class="ppai-tab-btn active" data-tab="fees" onclick="ppaiShowTab('fees')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Membership Fees
+      </button>
+      <button class="ppai-tab-btn" data-tab="journal" onclick="ppaiShowTab('journal')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Journal Subscriptions
+      </button>
+      <button class="ppai-tab-btn" data-tab="apply" onclick="ppaiShowTab('apply')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        How to Apply
+      </button>
+      <button class="ppai-tab-btn" data-tab="bank" onclick="ppaiShowTab('bank')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/><path d="M8 14v4"/><path d="M12 14v4"/><path d="M16 14v4"/></svg>
+        Bank Details
+      </button>
     </div>
-
-    <!-- Card 2: Journal Subscription (Unified Green) -->
-    <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between;">
-      <div>
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-          <h2 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            Journal Subscriptions
-          </h2>
-          <span class="badge-pill" style="font-size: 9.5px; padding: 1px 7px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Non-Members</span>
-        </div>
-
-        <p style="font-size: 11px; color: var(--text-main); margin-bottom: 4px; line-height: 1.25;">
-          Subscription rates applicable to non-members (Libraries/Institution) for the <strong>Indian Journal of Plant Protection</strong>.
-        </p>
-
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 2px;">
-          <thead>
-            <tr>
-              <th style="text-align: left; padding: 3px 5px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 10px; border-bottom: 1.5px solid rgba(0,178,114,0.2);">Subscription Type</th>
-              <th style="text-align: center; padding: 3px 5px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 10px; border-bottom: 1.5px solid rgba(0,178,114,0.2);">Inland</th>
-              <th style="text-align: center; padding: 3px 5px; background: rgba(0,178,114,0.08); color: var(--deep-forest); font-weight: 700; font-size: 10px; border-bottom: 1.5px solid rgba(0,178,114,0.2);">Foreign</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding: 2.5px 5px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid #eee;">Annual Subscription</td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px;">&#x20B9; 4,000</span></td>
-              <td style="padding: 2.5px 5px; text-align: center; border-bottom: 1px solid #eee;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px; background: #f0f4f8; color: var(--text-main);">US$ 20</span></td>
-            </tr>
-            <tr>
-              <td style="padding: 2.5px 5px; font-weight: 700; color: var(--text-main);">Single Copy</td>
-              <td style="padding: 2.5px 5px; text-align: center;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px;">&#x20B9; 1,000</span></td>
-              <td style="padding: 2.5px 5px; text-align: center;"><span class="badge-pill" style="font-size: 10px; padding: 1px 6px; background: #f0f4f8; color: var(--text-main);">US$ 75</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 2px; margin-top: 4px;">
-        <div style="font-size: 10px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 3px 6px; border-radius: 6px;">
-          ✓ Earlier published issues are also supplied based on availability.
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 3: Application Procedure (Unified Green) -->
-    <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between;">
-      <div>
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-          <h2 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Application Procedure
-          </h2>
-          <span class="badge-pill" style="font-size: 9.5px; padding: 1px 7px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Contact Details</span>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 3px; margin-top: 2px;">
-          <div style="display: flex; align-items: flex-start; gap: 6px;">
-            <span class="badge-pill" style="font-size: 9px; padding: 1px 4px; min-width: 14px; text-align: center; flex-shrink: 0;">1</span>
-            <span style="font-size: 11px; line-height: 1.25; color: var(--text-main);">Download application form &amp; tick category with full postal address &amp; phone.</span>
-          </div>
-          <div style="display: flex; align-items: flex-start; gap: 6px;">
-            <span class="badge-pill" style="font-size: 9px; padding: 1px 4px; min-width: 14px; text-align: center; flex-shrink: 0;">2</span>
-            <span style="font-size: 11px; line-height: 1.25; color: var(--text-main);">Demand Draft in favour of <strong>"Treasurer or Secretary, PPAI"</strong> payable at Hyderabad.</span>
-          </div>
-          <div style="display: flex; align-items: flex-start; gap: 6px;">
-            <span class="badge-pill" style="font-size: 9px; padding: 1px 4px; min-width: 14px; text-align: center; flex-shrink: 0;">3</span>
-            <span style="font-size: 11px; line-height: 1.25; color: var(--text-main);">For online payment, mention Transaction Ref No to correlate and generate receipt.</span>
-          </div>
-          <div style="display: flex; align-items: flex-start; gap: 6px;">
-            <span class="badge-pill" style="font-size: 9px; padding: 1px 4px; min-width: 14px; text-align: center; flex-shrink: 0;">4</span>
-            <span style="font-size: 11px; line-height: 1.25; color: var(--text-main);"><strong>Mail to:</strong> General Secretary, PPAI, NBPGR - RS, Rajendranagar, Hyderabad-500030.</span>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top: 4px;">
-        <a href="mailto:ijpp1972@yahoo.co.in?subject=PPAI%20Membership%20Application" class="btn-action" style="width: 100%; justify-content: center; padding: 4px 8px; font-size: 11px;">
-          Email Application (ijpp1972@yahoo.co.in)
-        </a>
-      </div>
-    </div>
-
-    <!-- Card 4: Bank Details for Remittance (Unified Green) -->
-    <div style="background: #FFFFFF; border: 1px solid rgba(0, 178, 114, 0.25); border-left: 5px solid var(--vibrant-green); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between;">
-      <div>
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-          <h2 style="font-size: 14px; font-weight: 800; color: var(--deep-forest); margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/><path d="M8 14v4"/><path d="M12 14v4"/><path d="M16 14v4"/></svg>
-            Bank Account Details of PPAI
-          </h2>
-          <span class="badge-pill" style="font-size: 9.5px; padding: 1px 7px; background: rgba(0,178,114,0.12); color: var(--vibrant-green);">Savings A/c</span>
-        </div>
-
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 2px;">
-          <tbody>
-            <tr>
-              <td style="padding: 2px 4px; font-weight: 700; color: var(--text-muted); font-size: 10.5px; width: 110px; border-bottom: 1px solid #eee;">Account Name</td>
-              <td style="padding: 2px 4px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid #eee;">Plant Protection Association of India</td>
-            </tr>
-            <tr>
-              <td style="padding: 2px 4px; font-weight: 700; color: var(--text-muted); font-size: 10.5px; border-bottom: 1px solid #eee;">Account Number</td>
-              <td style="padding: 2px 4px; border-bottom: 1px solid #eee;"><strong style="color: var(--vibrant-green); font-size: 12px; letter-spacing: 0.5px;">52114974468</strong></td>
-            </tr>
-            <tr>
-              <td style="padding: 2px 4px; font-weight: 700; color: var(--text-muted); font-size: 10.5px; border-bottom: 1px solid #eee;">Bank &amp; Branch</td>
-              <td style="padding: 2px 4px; color: var(--text-main); border-bottom: 1px solid #eee;">State Bank of India. Budwel Branch, Extension Counter, Rajendranagar, Hyderabad - 500030.</td>
-            </tr>
-            <tr>
-              <td style="padding: 2px 4px; font-weight: 700; color: var(--text-muted); font-size: 10.5px;">IFSC Code</td>
-              <td style="padding: 2px 4px;"><strong style="color: var(--vibrant-green); font-size: 12px; letter-spacing: 0.5px;">SBIN0020378</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 2px; margin-top: 4px;">
-        <div style="font-size: 10px; font-weight: 700; color: var(--vibrant-green); background: rgba(0,178,114,0.08); padding: 3px 6px; border-radius: 6px;">
-          ✓ For NEFT / RTGS / IMPS Online Transfer
-        </div>
-      </div>
-    </div>
-
   </div>
-</div>
+
+  <!-- Panel: Membership Fees -->
+  <div id="ppai-panel-fees" class="ppai-panel">
+    <div class="membership-table-wrapper">
+      <table class="membership-table">
+        <thead>
+          <tr>
+            <th class="col-left">Category</th>
+            <th class="col-right">Inland</th>
+            <th class="col-right">Foreign</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-left">Life</td>
+            <td class="col-price-inland">&#x20B9; 5,000</td>
+            <td class="col-price-foreign">US$ 1,000</td>
+          </tr>
+          <tr>
+            <td class="col-left">Ordinary (Annual)</td>
+            <td class="col-price-inland">&#x20B9; 1,000</td>
+            <td class="col-price-foreign">US$ 100</td>
+          </tr>
+          <tr>
+            <td class="col-left">Institutional (Annual)</td>
+            <td class="col-price-inland">&#x20B9; 5,000</td>
+            <td class="col-price-foreign">US$ 50</td>
+          </tr>
+          <tr>
+            <td class="col-left">Students</td>
+            <td class="col-price-inland">&#x20B9; 500</td>
+            <td class="col-price-foreign" style="color: var(--text-muted);">&mdash;</td>
+          </tr>
+          <tr>
+            <td class="col-left">Admission fee (New)</td>
+            <td class="col-price-inland">&#x20B9; 50</td>
+            <td class="col-price-foreign">US$ 15</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Panel: Journal Subscriptions -->
+  <div id="ppai-panel-journal" class="ppai-panel" style="display: none;">
+    <p style="font-size: clamp(14px, 0.98vw, 15px); color: var(--text-main); line-height: 1.6; margin: 0 0 18px 0;">
+      Subscription rates applicable to non-members (libraries and institutions), for the <strong>Indian Journal of Plant Protection</strong>. Earlier published issues supplied subject to availability.
+    </p>
+    <div class="membership-table-wrapper">
+      <table class="membership-table">
+        <thead>
+          <tr>
+            <th class="col-left">Subscription</th>
+            <th class="col-right">Inland</th>
+            <th class="col-right">Foreign</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-left">Annual Subscription</td>
+            <td class="col-price-inland">&#x20B9; 4,000</td>
+            <td class="col-price-foreign">US$ 20</td>
+          </tr>
+          <tr>
+            <td class="col-left">Single Copy</td>
+            <td class="col-price-inland">&#x20B9; 1,000</td>
+            <td class="col-price-foreign">US$ 75</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Panel: Application Procedure -->
+  <div id="ppai-panel-apply" class="ppai-panel" style="display: none;">
+    <div class="apply-step-list">
+      <div class="apply-step-item">
+        <span class="apply-step-number">1</span>
+        <span class="apply-step-text">Download the application form and tick the category, with full postal address &amp; phone number.</span>
+      </div>
+      <div class="apply-step-item">
+        <span class="apply-step-number">2</span>
+        <span class="apply-step-text">Enclose a Demand Draft in favour of <strong>"Treasurer or Secretary, PPAI"</strong>, payable at Hyderabad.</span>
+      </div>
+      <div class="apply-step-item">
+        <span class="apply-step-number">3</span>
+        <span class="apply-step-text">For online payments, mention the Transaction Reference Number to correlate and generate a receipt.</span>
+      </div>
+      <div class="apply-step-item">
+        <span class="apply-step-number">4</span>
+        <span class="apply-step-text"><strong>Mail to:</strong> General Secretary, Plant Protection Association of India, ICAR-NBPGR RS, Rajendranagar, Hyderabad &ndash; 500 030.</span>
+      </div>
+    </div>
+    <a href="mailto:ijpp1972@yahoo.co.in?subject=PPAI%20Membership%20Application" class="btn-action" style="display: inline-flex; padding: clamp(10px, 1.3vh, 13px) clamp(18px, 1.8vw, 26px); font-size: clamp(13.5px, 0.95vw, 15px);">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email Application &nbsp;&bull;&nbsp; ijpp1972@yahoo.co.in
+    </a>
+  </div>
+
+  <!-- Panel: Bank Details -->
+  <div id="ppai-panel-bank" class="ppai-panel" style="display: none;">
+    <div class="bank-details-grid">
+      <span class="bank-label">Account Name</span>
+      <span class="bank-value" style="font-weight: 700; color: var(--deep-forest);">Plant Protection Association of India</span>
+
+      <span class="bank-label">Account No.</span>
+      <span class="bank-value-highlight">52114974468</span>
+
+      <span class="bank-label">Bank &amp; Branch</span>
+      <span class="bank-value">State Bank of India, Budwel Branch, Extension Counter, Rajendranagar, Hyderabad &ndash; 500 030.</span>
+
+      <span class="bank-label">IFSC Code</span>
+      <span class="bank-value-highlight">SBIN0020378</span>
+    </div>
+    <p style="margin: 20px 0 0 0; font-size: clamp(12.5px, 0.88vw, 13.5px); color: var(--text-muted); font-style: italic; border-top: 1px solid #eef4f0; padding-top: 14px;">
+      * In case of online payment, members are requested to mention the Transaction Reference Number to correlate and generate a receipt.
+    </p>
+  </div>
+</section>
+
+<script>
+function ppaiShowTab(name) {
+  document.querySelectorAll('.ppai-panel').forEach(function(p) { 
+    p.style.display = 'none'; 
+  });
+  var activePanel = document.getElementById('ppai-panel-' + name);
+  if (activePanel) {
+    activePanel.style.display = 'block';
+  }
+  document.querySelectorAll('.ppai-tab-btn').forEach(function(b) {
+    if (b.getAttribute('data-tab') === name) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+}
+</script>
 {% endblock %}
