@@ -1,71 +1,270 @@
 {% extends "base.html" %}
 
-{% block title %}Membership Directory - PPAI{% endblock %}
+{% block title %}Membership Directory — Plant Protection Association of India{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     MEMBERSHIP DIRECTORY - CLEAN TABLE & FLUID RESPONSIVE (FOOTER BELOW FOLD)
+  =================================================================== */
+  .directory-section {
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(20px, 2.8vh, 32px) clamp(16px, 3vw, 40px) clamp(70px, 9vh, 110px) clamp(16px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .directory-titlebar {
+    margin-bottom: clamp(14px, 2vh, 22px);
+    padding-bottom: 6px;
+  }
+
+  .directory-titlebar h1 {
+    font-size: clamp(22px, 1.8vw, 28px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .directory-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
+    padding: clamp(16px, 2vw, 24px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .directory-search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: clamp(16px, 2vh, 22px);
+    flex-wrap: wrap;
+  }
+
+  .directory-search-input {
+    flex: 1;
+    min-width: 240px;
+    padding: clamp(10px, 1.2vh, 13px) clamp(14px, 1.2vw, 18px);
+    border-radius: 8px;
+    border: 1.5px solid #d0e5d8;
+    background: #ffffff;
+    font-size: clamp(13.5px, 0.95vw, 15px);
+    color: var(--deep-forest);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .directory-search-input:focus {
+    border-color: var(--vibrant-green);
+    box-shadow: 0 0 0 3px rgba(0, 178, 114, 0.15);
+  }
+
+  .directory-search-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--vibrant-green);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: clamp(13.5px, 0.95vw, 15px);
+    padding: clamp(10px, 1.2vh, 13px) clamp(18px, 1.6vw, 26px);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .directory-search-btn:hover {
+    background: #009960;
+  }
+
+  .directory-table-wrapper {
+    border: 1px solid #d0e5d8;
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #ffffff;
+  }
+
+  .directory-table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+  }
+
+  .directory-table thead th {
+    background: #e8f5ec;
+    color: #0b3d20;
+    font-size: clamp(14.5px, 1.05vw, 16px);
+    font-weight: 800;
+    padding: clamp(12px, 1.4vh, 15px) clamp(16px, 1.4vw, 20px);
+    border-bottom: 2px solid #c2e2cf;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .directory-table tbody tr {
+    border-bottom: 1px solid #eef4f0;
+    transition: background-color 0.15s ease;
+  }
+
+  .directory-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .directory-table tbody tr:hover {
+    background-color: #f7fbf8;
+  }
+
+  .directory-table tbody td {
+    padding: clamp(12px, 1.4vh, 16px) clamp(16px, 1.4vw, 20px);
+    vertical-align: middle;
+    line-height: 1.55;
+    color: var(--text-main);
+  }
+
+  .directory-table tbody td.col-name {
+    font-weight: 700;
+    color: #0b3d20;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    white-space: nowrap;
+  }
+
+  .member-type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: clamp(12px, 0.85vw, 13px);
+    font-weight: 700;
+    border-radius: 20px;
+    background: #e8f5ec;
+    color: #0b3d20;
+    border: 1px solid #bce4cc;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .directory-section {
+      padding: 20px 16px 48px 16px;
+    }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container inner-section">
-  <div class="inner-title-bar">
+<section class="directory-section">
+  <!-- Title Bar -->
+  <div class="directory-titlebar">
     <h1>
-      <span class="badge-pill" style="font-size: 11px; padding: 3px 10px;">Membership</span>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Membership Directory
     </h1>
-    <span class="subtitle">Search Life Members &amp; Fellows</span>
   </div>
 
-  <div class="card-box" style="padding: 18px 20px;">
-    <div style="display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
-      <input type="text" placeholder="Search by name, institute, or state..." style="flex: 1; padding: 8px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border-color); outline: none; font-size: 13px; min-width: 220px;">
-      <button class="btn-action" style="padding: 8px 18px; font-size: 12.5px;">Search Member</button>
+  <!-- Main Directory Card Box -->
+  <div class="directory-card">
+    <!-- Search Bar -->
+    <div class="directory-search-bar">
+      <input type="text" id="memberSearchInput" class="directory-search-input" placeholder="Search by member name, designation, institute, or location..." onkeyup="filterMembers()">
+      <button class="directory-search-btn" onclick="filterMembers()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search Member
+      </button>
     </div>
 
-    <table class="data-table" style="font-size: 12px; margin: 0;">
-      <thead>
-        <tr>
-          <th style="width: 70px;">LM No.</th>
-          <th>Name of Member</th>
-          <th>Designation &amp; Affiliation</th>
-          <th>Location</th>
-          <th style="width: 110px;">Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="badge-pill">LM-001</span></td>
-          <td><strong>Dr. S. N. Sushil</strong></td>
-          <td>Director, ICAR-NBAIR</td>
-          <td>Bengaluru, Karnataka</td>
-          <td>Life Member</td>
-        </tr>
-        <tr>
-          <td><span class="badge-pill">LM-002</span></td>
-          <td><strong>Dr. G. Anitha</strong></td>
-          <td>Professor, PJTSAU</td>
-          <td>Hyderabad, Telangana</td>
-          <td>Life Member</td>
-        </tr>
-        <tr>
-          <td><span class="badge-pill">LM-003</span></td>
-          <td><strong>Dr. C. Chattopadhyay</strong></td>
-          <td>Former Director, ICAR-NCIPM</td>
-          <td>New Delhi</td>
-          <td>Life Member &amp; Fellow</td>
-        </tr>
-        <tr>
-          <td><span class="badge-pill">LM-004</span></td>
-          <td><strong>Dr. M. Nagesh</strong></td>
-          <td>Principal Scientist, ICAR-NBPGR RS</td>
-          <td>Hyderabad, Telangana</td>
-          <td>Life Member</td>
-        </tr>
-        <tr>
-          <td><span class="badge-pill">LM-005</span></td>
-          <td><strong>Dr. B. Sarath Babu</strong></td>
-          <td>Head, ICAR-NBPGR RS</td>
-          <td>Hyderabad, Telangana</td>
-          <td>Life Member &amp; Fellow</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Table Container -->
+    <div class="directory-table-wrapper">
+      <table class="directory-table" id="membersTable">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Name of Member</th>
+            <th style="width: 40%;">Designation &amp; Affiliation</th>
+            <th style="width: 20%;">Location</th>
+            <th style="width: 15%; text-align: center;">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-name">Dr. S. N. Sushil</td>
+            <td>Director, ICAR-NBAIR</td>
+            <td>Bengaluru, Karnataka</td>
+            <td style="text-align: center;"><span class="member-type-badge">Life Member</span></td>
+          </tr>
+          <tr>
+            <td class="col-name">Dr. G. Anitha</td>
+            <td>Professor, PJTSAU</td>
+            <td>Hyderabad, Telangana</td>
+            <td style="text-align: center;"><span class="member-type-badge">Life Member</span></td>
+          </tr>
+          <tr>
+            <td class="col-name">Dr. C. Chattopadhyay</td>
+            <td>Former Director, ICAR-NCIPM</td>
+            <td>New Delhi</td>
+            <td style="text-align: center;"><span class="member-type-badge">Life Member &amp; Fellow</span></td>
+          </tr>
+          <tr>
+            <td class="col-name">Dr. M. Nagesh</td>
+            <td>Principal Scientist, ICAR-NBPGR RS</td>
+            <td>Hyderabad, Telangana</td>
+            <td style="text-align: center;"><span class="member-type-badge">Life Member</span></td>
+          </tr>
+          <tr>
+            <td class="col-name">Dr. B. Sarath Babu</td>
+            <td>Head, ICAR-NBPGR RS</td>
+            <td>Hyderabad, Telangana</td>
+            <td style="text-align: center;"><span class="member-type-badge">Life Member &amp; Fellow</span></td>
+          </tr>
+          <tr>
+            <td class="col-name">Dr. K. Srinivas</td>
+            <td>Principal Scientist (Entomology), ICAR-IIRR</td>
+            <td>Hyderabad, Telangana</td>
+            <td style="text-align: center;"><span class="member-type-badge">Life Member</span></td>
+          </tr>
+          <tr>
+            <td class="col-name">Dr. P. C. Sharma</td>
+            <td>Director, ICAR-CSSRI</td>
+            <td>Karnal, Haryana</td>
+            <td style="text-align: center;"><span class="member-type-badge">Life Member &amp; Fellow</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+</section>
+
+<script>
+  function filterMembers() {
+    var input = document.getElementById("memberSearchInput");
+    var filter = input.value.toUpperCase();
+    var table = document.getElementById("membersTable");
+    var tr = table.getElementsByTagName("tr");
+
+    for (var i = 1; i < tr.length; i++) {
+      var tdList = tr[i].getElementsByTagName("td");
+      var match = false;
+      for (var j = 0; j < tdList.length; j++) {
+        if (tdList[j]) {
+          var txtValue = tdList[j].textContent || tdList[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            match = true;
+            break;
+          }
+        }
+      }
+      tr[i].style.display = match ? "" : "none";
+    }
+  }
+</script>
 {% endblock %}
