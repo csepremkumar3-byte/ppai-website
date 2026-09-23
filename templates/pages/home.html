@@ -630,53 +630,119 @@
       font-size: 14px;
     }
 
-    /* --- Impact Banner --- */
-    .impact-banner {
-      background: var(--deep-forest);
-      padding: 44px 32px;
+    /* --- Golden Jubilee & Community Showcase Banner --- */
+    .jubilee-banner {
+      background: linear-gradient(135deg, #071e13 0%, #0b2417 60%, #133824 100%);
+      padding: clamp(32px, 4.5vh, 48px) clamp(24px, 3.5vw, 44px);
       color: var(--surface-white);
       border-radius: var(--radius-lg);
       margin: 0 4% 50px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 16px 36px rgba(11, 36, 23, 0.12);
+      box-shadow: 0 16px 36px rgba(11, 36, 23, 0.15);
+      border: 1px solid rgba(234, 179, 8, 0.25);
     }
 
-    .impact-inner {
+    .jubilee-inner {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
+      gap: clamp(28px, 3.5vw, 48px);
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    .impact-text h2 {
-      font-size: clamp(24px, 2.8vw, 34px);
+    .jubilee-logo-wrapper {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(234, 179, 8, 0.2);
+    }
+
+    .jubilee-logo {
+      width: clamp(140px, 15vw, 190px);
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.3));
+    }
+
+    .jubilee-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .jubilee-title {
+      font-size: clamp(22px, 2.2vw, 28px);
       font-weight: 800;
-      margin-bottom: 8px;
       color: var(--accent-gold);
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
     }
 
-    .impact-text p {
-      font-size: 14.5px;
-      opacity: 0.9;
-      max-width: 480px;
+    .jubilee-text {
+      font-size: clamp(13.5px, 0.96vw, 15px);
+      line-height: 1.68;
+      color: rgba(255, 255, 255, 0.92);
+      margin: 0;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    .jubilee-action {
+      margin-top: 6px;
     }
 
     .btn-accent {
       background: var(--accent-gold);
       color: var(--deep-forest);
       font-size: 14.5px;
-      padding: 12px 26px;
+      padding: 12px 28px;
       box-shadow: 0 6px 20px rgba(234, 179, 8, 0.25);
       border-radius: var(--radius-pill);
       font-weight: 800;
       transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .btn-accent:hover {
       background: var(--accent-gold-hover);
       transform: translateY(-2px);
+    }
+
+    @media (max-width: 900px) {
+      .jubilee-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 22px;
+      }
+      .jubilee-text {
+        text-align: left;
+      }
+      .jubilee-logo-wrapper {
+        margin: 0 auto;
+      }
+      .jubilee-action {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .jubilee-banner {
+        margin: 0 16px 36px;
+        padding: 24px 18px;
+      }
+      .jubilee-logo {
+        width: 130px;
+      }
     }
 
     /* --- Compact Footer --- */
@@ -957,7 +1023,7 @@
         <div class="header-auth">
           <div class="header-auth-buttons">
             <a href="{% url 'login' %}" class="btn-auth-login">Login</a>
-            <a href="{% url 'register' %}" class="btn-auth-register">Membership Registration</a>
+            <a href="{% url 'register' %}" class="btn-auth-register">Apply For Membership</a>
           </div>
           <div class="header-auth-socials">
             <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="social-icon facebook" aria-label="Facebook">
@@ -1173,15 +1239,22 @@
     </div>
   </section>
 
-  <!-- Impact Banner -->
-  <section class="impact-banner">
-    <div class="container impact-inner">
-      <div class="impact-text">
-        <h2>Ready to make an impact?</h2>
-        <p>Join the leading voice for plant health, crop protection, and agricultural sustainability in India.</p>
+  <!-- Golden Jubilee & Community Showcase Banner -->
+  <section class="jubilee-banner">
+    <div class="container jubilee-inner">
+      <div class="jubilee-logo-wrapper">
+        <img src="{% static 'images/golden_jubilee_logo.png' %}" alt="PPAI Golden Jubilee 1972 - 2022" class="jubilee-logo">
       </div>
-      <div>
-        <a href="{% url 'membership_info' %}" class="btn btn-accent">Apply for Membership</a>
+      <div class="jubilee-content">
+        <p class="jubilee-text">
+          PPAI celebrated its landmark Golden Jubilee (1972–2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.
+        </p>
+        <p class="jubilee-text">
+          Today, the Association represents a national community of over 1,900 life member scientists, faculty members, research scholars, and extension professionals across ICAR institutes, State Agricultural Universities, and partner agricultural bodies nationwide.
+        </p>
+        <div class="jubilee-action">
+          <a href="{% url 'membership_info' %}" class="btn btn-accent">Apply for Membership</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1234,7 +1307,8 @@
           <h4 class="footer-heading">Connect</h4>
           <p style="color: #fff; font-weight:600; margin-bottom:4px;">General Secretary, PPAI</p>
           <p style="font-size:12px; margin-bottom:6px;">ICAR-NBPGR Regional Station, Rajendranagar, Hyderabad – 500 030</p>
-          <p><a href="mailto:ijpp1972@yahoo.co.in" style="color: var(--accent-gold);">ijpp1972@yahoo.co.in</a></p>
+          <p style="margin-bottom:3px;"><a href="mailto:secretary@ppai.org.in" style="color: var(--accent-gold);">secretary@ppai.org.in</a></p>
+          <p><a href="mailto:contact@ppai.org.in" style="color: var(--accent-gold);">contact@ppai.org.in</a></p>
 
           <div class="footer-socials">
             <a href="https://epubs.icar.org.in/index.php/IJPP/ppai" target="_blank" rel="noopener" class="social-icon" title="ICAR ePubs Portal" aria-label="ICAR ePubs Portal">
