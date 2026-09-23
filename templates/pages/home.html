@@ -254,7 +254,7 @@
       display: flex;
       align-items: center;
       height: 100%;
-      gap: clamp(20px, 2.2vw, 34px);
+      gap: clamp(28px, 3.2vw, 48px);
     }
 
     .nav-item {
@@ -632,15 +632,15 @@
 
     /* --- Golden Jubilee & Community Showcase Banner --- */
     .jubilee-banner {
-      background: linear-gradient(135deg, #071e13 0%, #0b2417 60%, #133824 100%);
+      background: #ffffff;
       padding: clamp(32px, 4.5vh, 48px) clamp(24px, 3.5vw, 44px);
-      color: var(--surface-white);
+      color: var(--text-main);
       border-radius: var(--radius-lg);
       margin: 0 4% 50px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 16px 36px rgba(11, 36, 23, 0.15);
-      border: 1px solid rgba(234, 179, 8, 0.25);
+      box-shadow: 0 4px 24px rgba(11, 36, 23, 0.07);
+      border: 1px solid var(--border-color);
     }
 
     .jubilee-inner {
@@ -659,15 +659,14 @@
       background: #EFF7F3;
       padding: clamp(14px, 1.8vw, 20px) clamp(16px, 2.2vw, 24px);
       border-radius: 16px;
-      border: 1.5px solid rgba(0, 178, 114, 0.3);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      border: 1.5px solid rgba(0, 178, 114, 0.25);
+      box-shadow: 0 4px 14px rgba(0, 178, 114, 0.08);
     }
 
     .jubilee-logo {
       width: clamp(140px, 15vw, 190px);
       height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.3));
     }
 
     .jubilee-content {
@@ -680,16 +679,16 @@
     .jubilee-title {
       font-size: clamp(22px, 2.2vw, 28px);
       font-weight: 800;
-      color: var(--accent-gold);
+      color: var(--deep-forest);
       margin: 0;
       letter-spacing: -0.02em;
       line-height: 1.25;
     }
 
     .jubilee-text {
-      font-size: clamp(13.5px, 0.96vw, 15px);
-      line-height: 1.68;
-      color: rgba(255, 255, 255, 0.92);
+      font-size: clamp(14px, 0.98vw, 15.5px);
+      line-height: 1.72;
+      color: var(--text-main);
       margin: 0;
       text-align: justify;
       text-justify: inter-word;
