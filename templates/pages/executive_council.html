@@ -85,31 +85,41 @@
   }
 
   .avatar-circle {
-    width: clamp(92px, 6.5vw, 108px);
-    height: clamp(92px, 6.5vw, 108px);
+    width: clamp(86px, 6vw, 98px);
+    height: clamp(86px, 6vw, 98px);
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 12px;
     background: rgba(0, 178, 114, 0.08);
-    border: 3px solid var(--vibrant-green);
+    border: 2.5px solid var(--vibrant-green);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 6px 16px rgba(0, 178, 114, 0.16);
+    box-shadow: 0 4px 12px rgba(0, 178, 114, 0.12);
+    transition: transform 0.2s ease;
+  }
+
+  .avatar-circle.has-photo {
+    width: clamp(114px, 8.5vw, 138px);
+    height: clamp(128px, 9.8vw, 156px);
+    border-radius: 12px;
+    border: 2.5px solid var(--vibrant-green);
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 178, 114, 0.18);
   }
 
   .avatar-circle img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 15%;
+    object-position: center top;
     display: block;
   }
 
   .avatar-circle svg {
-    width: 54px;
-    height: 54px;
+    width: 50px;
+    height: 50px;
   }
 
   .member-name {
@@ -172,9 +182,9 @@
         {% for m in council_members|slice:":12" %}
         <div class="member-card-item">
           <!-- Avatar / Photo -->
-          <div class="avatar-circle">
+          <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
             {% if m.image %}
-              <img src="{{ m.image.url }}" alt="{{ m.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="{{ m.image.url }}" alt="{{ m.name }}">
             {% else %}
               {% if m.gender == 'female' %}
                 <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -208,9 +218,9 @@
         {% for m in council_members|slice:"12:" %}
         <div class="member-card-item">
           <!-- Avatar / Photo -->
-          <div class="avatar-circle">
+          <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
             {% if m.image %}
-              <img src="{{ m.image.url }}" alt="{{ m.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="{{ m.image.url }}" alt="{{ m.name }}">
             {% else %}
               {% if m.gender == 'female' %}
                 <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
