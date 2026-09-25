@@ -85,18 +85,31 @@
   }
 
   .avatar-circle {
-    width: 72px;
-    height: 72px;
+    width: clamp(92px, 6.5vw, 108px);
+    height: clamp(92px, 6.5vw, 108px);
     border-radius: 50%;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     background: rgba(0, 178, 114, 0.08);
-    border: 2.5px solid var(--vibrant-green);
+    border: 3px solid var(--vibrant-green);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);
+    box-shadow: 0 6px 16px rgba(0, 178, 114, 0.16);
+  }
+
+  .avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    display: block;
+  }
+
+  .avatar-circle svg {
+    width: 54px;
+    height: 54px;
   }
 
   .member-name {
