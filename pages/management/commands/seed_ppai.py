@@ -50,24 +50,24 @@ class Command(BaseCommand):
         # 3. Executive Council (Page 2 of document - Dr. B. Sarath Babu is PRESIDENT)
         ExecutiveMember.objects.all().delete()
         executive_members_data = [
-            ('Dr. B Sarath Babu', 'President', 'Principal Scientist & Former Head, ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'President of PPAI.', 1),
-            ('Dr. Jagadeeshwar', 'Vice-President', 'Professor, Jayashankar Telangana State Agricultural University, Hyderabad', 'male', 'Vice-President.', 2),
-            ('Dr. Celia Challam', 'Vice-President', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 'female', 'Vice-President.', 3),
-            ('Dr. M Srinivas Prasad', 'Vice-President', 'ICAR-Indian Institute of Rice Research, Hyderabad', 'male', 'Vice-President.', 4),
-            ('Dr. B Parameshwari', 'General Secretary', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'female', 'General Secretary.', 5),
-            ('Dr. V Prakasam', 'Assistant Secretary', 'ICAR-Indian Institute of Rice Research, Hyderabad', 'male', 'Assistant Secretary.', 6),
-            ('Dr. B Bhaskar', 'Treasurer', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Treasurer.', 7),
-            ('Prof. T V K Singh', 'Chief Editor', 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.', 'male', 'Chief Editor.', 8),
-            ('Dr. Kavita Gupta', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, New Delhi', 'female', 'Associate Editor.', 9),
-            ('Dr. Prasanna Holajjer', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Associate Editor.', 10),
-            ('Dr. B S Gotyal', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 11),
-            ('Dr. Alpesh Kumar Valjibhai Khanpara', 'Councillor', 'Department of Entomology, Junagadh Agricultural University, Junagadh, Gujarat', 'male', 'Councillor.', 12),
-            ('Dr. D Sagar', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 13),
-            ('Dr. K Rameash', 'Councillor', 'ICAR-Central Institute of Cotton Research, Regional Station, Coimbatore', 'male', 'Councillor.', 14),
-            ('Dr. J Stanley', 'Councillor', 'ICAR-Indian Institute of Millet Research, Hyderabad, Telangana', 'male', 'Councillor.', 15),
+            ('Dr. B Sarath Babu', 'President', 'Principal Scientist & Former Head, ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'President of PPAI.', 'council/dr_b_sarath_babu.jpg', 1),
+            ('Dr. Jagadeeshwar', 'Vice-President', 'Professor, Jayashankar Telangana State Agricultural University, Hyderabad', 'male', 'Vice-President.', None, 2),
+            ('Dr. Celia Challam', 'Vice-President', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 'female', 'Vice-President.', None, 3),
+            ('Dr. M Srinivas Prasad', 'Vice-President', 'ICAR-Indian Institute of Rice Research, Hyderabad', 'male', 'Vice-President.', None, 4),
+            ('Dr. B Parameshwari', 'General Secretary', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'female', 'General Secretary.', None, 5),
+            ('Dr. V Prakasam', 'Assistant Secretary', 'ICAR-Indian Institute of Rice Research, Hyderabad', 'male', 'Assistant Secretary.', None, 6),
+            ('Dr. B Bhaskar', 'Treasurer', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Treasurer.', None, 7),
+            ('Prof. T V K Singh', 'Chief Editor', 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.', 'male', 'Chief Editor.', None, 8),
+            ('Dr. Kavita Gupta', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, New Delhi', 'female', 'Associate Editor.', None, 9),
+            ('Dr. Prasanna Holajjer', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Associate Editor.', None, 10),
+            ('Dr. B S Gotyal', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', None, 11),
+            ('Dr. Alpesh Kumar Valjibhai Khanpara', 'Councillor', 'Department of Entomology, Junagadh Agricultural University, Junagadh, Gujarat', 'male', 'Councillor.', None, 12),
+            ('Dr. D Sagar', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', None, 13),
+            ('Dr. K Rameash', 'Councillor', 'ICAR-Central Institute of Cotton Research, Regional Station, Coimbatore', 'male', 'Councillor.', None, 14),
+            ('Dr. J Stanley', 'Councillor', 'ICAR-Indian Institute of Millet Research, Hyderabad, Telangana', 'male', 'Councillor.', None, 15),
         ]
-        for name, desig, aff, gender, bio, order in executive_members_data:
-            ExecutiveMember.objects.create(name=name, designation=desig, affiliation=aff, gender=gender, bio=bio, order=order)
+        for name, desig, aff, gender, bio, img, order in executive_members_data:
+            ExecutiveMember.objects.create(name=name, designation=desig, affiliation=aff, gender=gender, bio=bio, image=img, order=order)
 
         # 4. Past Office Bearers (Pages 3 & 4 of document)
         PastBearer.objects.all().delete()
