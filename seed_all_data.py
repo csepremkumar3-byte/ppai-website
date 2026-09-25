@@ -57,11 +57,12 @@ site.save()
 # 2. Carousel Slides
 CarouselSlide.objects.all().delete()
 slides_data = [
-    (0, 'carousel/journal_cover.png', 'Indian Journal of Plant Protection Vol 54 No 1 Cover'),
-    (1, 'carousel/slide1.jpg', 'Agricultural Research and Entomology'),
-    (2, 'carousel/slide2.jpg', 'Biological Pest Control & Ladybird Beetle'),
-    (3, 'carousel/slide3.jpg', 'Plant Disease Management and Phytopathology'),
-    (4, 'carousel/slide4.jpg', 'Sustainable Agriculture and Plant Health'),
+    (0, 'carousel/golden_jubilee_banner.png', 'PPAI Golden Jubilee (1972–2022) 50 Years Celebration'),
+    (1, 'carousel/journal_cover.png', 'Indian Journal of Plant Protection Vol 54 No 1 Cover'),
+    (2, 'carousel/slide1.jpg', 'Agricultural Research and Entomology'),
+    (3, 'carousel/slide2.jpg', 'Biological Pest Control & Ladybird Beetle'),
+    (4, 'carousel/slide3.jpg', 'Plant Disease Management and Phytopathology'),
+    (5, 'carousel/slide4.jpg', 'Sustainable Agriculture and Plant Health'),
 ]
 for order, img, title in slides_data:
     CarouselSlide.objects.create(order=order, image=img, title=title, is_active=True)
