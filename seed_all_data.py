@@ -70,11 +70,11 @@ for order, img, title in slides_data:
 # 3. Executive Council (Page 2 of document)
 ExecutiveMember.objects.all().delete()
 executive_members_data = [
-    ('Dr. B Sarath Babu', 'President', 'Principal Scientist & Former Head, ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'President of PPAI.', 'council/dr_b_sarath_babu.jpg', 1),
-    ('Dr. Jagadeeshwar', 'Vice-President', 'Professor, Jayashankar Telangana State Agricultural University, Hyderabad', 'male', 'Vice-President.', None, 2),
-    ('Dr. Celia Challam', 'Vice-President', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 'female', 'Vice-President.', None, 3),
-    ('Dr. M Srinivas Prasad', 'Vice-President', 'ICAR-Indian Institute of Rice Research, Hyderabad', 'male', 'Vice-President.', None, 4),
-    ('Dr. B Parameshwari', 'General Secretary', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'female', 'General Secretary.', None, 5),
+    ('Dr. B Sarath Babu', 'President', 'Principal Scientist & Former Head, ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'President of PPAI.', 'council/dr_b_sarath_babu.png', 1),
+    ('Dr. Jagadeeshwar', 'Vice-President', 'Professor, Jayashankar Telangana State Agricultural University, Hyderabad', 'male', 'Vice-President.', 'council/dr_jagadeeshwar.png', 2),
+    ('Dr. Celia Challam', 'Vice-President', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 'female', 'Vice-President.', 'council/dr_celia_challam.png', 3),
+    ('Dr. M Srinivas Prasad', 'Vice-President', 'ICAR-Indian Institute of Rice Research, Hyderabad', 'male', 'Vice-President.', 'council/dr_m_srinivas_prasad.jpg', 4),
+    ('Dr. B Parameshwari', 'General Secretary', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'female', 'General Secretary.', 'council/dr_b_parameshwari.png', 5),
     ('Dr. V Prakasam', 'Assistant Secretary', 'ICAR-Indian Institute of Rice Research, Hyderabad', 'male', 'Assistant Secretary.', None, 6),
     ('Dr. B Bhaskar', 'Treasurer', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Treasurer.', None, 7),
     ('Prof. T V K Singh', 'Chief Editor', 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.', 'male', 'Chief Editor.', None, 8),
