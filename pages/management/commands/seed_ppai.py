@@ -60,11 +60,11 @@ class Command(BaseCommand):
             ('Prof. T V K Singh', 'Chief Editor', 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.', 'male', 'Chief Editor.', 'council/prof_t_v_k_singh.png', 8),
             ('Dr. Kavita Gupta', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, New Delhi', 'female', 'Associate Editor.', 'council/dr_kavita_gupta.png', 9),
             ('Dr. Prasanna Holajjer', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Associate Editor.', 'council/dr_prasanna_holajjer.jpg', 10),
-            ('Dr. B S Gotyal', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', None, 11),
-            ('Dr. Alpesh Kumar Valjibhai Khanpara', 'Councillor', 'Department of Entomology, Junagadh Agricultural University, Junagadh, Gujarat', 'male', 'Councillor.', None, 12),
-            ('Dr. D Sagar', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', None, 13),
+            ('Dr. B S Gotyal', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 'council/dr_b_s_gotyal.png', 11),
+            ('Dr. Alpesh Kumar Valjibhai Khanpara', 'Councillor', 'Department of Entomology, Junagadh Agricultural University, Junagadh, Gujarat', 'male', 'Councillor.', 'council/dr_alpesh_kumar.png', 12),
+            ('Dr. D Sagar', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 'council/dr_d_sagar.png', 13),
             ('Dr. K Rameash', 'Councillor', 'ICAR-Central Institute of Cotton Research, Regional Station, Coimbatore', 'male', 'Councillor.', None, 14),
-            ('Dr. J Stanley', 'Councillor', 'ICAR-Indian Institute of Millet Research, Hyderabad, Telangana', 'male', 'Councillor.', None, 15),
+            ('Dr. J Stanley', 'Councillor', 'ICAR-Indian Institute of Millet Research, Hyderabad, Telangana', 'male', 'Councillor.', 'council/dr_j_stanley.png', 15),
         ]
         for name, desig, aff, gender, bio, img, order in executive_members_data:
             ExecutiveMember.objects.create(name=name, designation=desig, affiliation=aff, gender=gender, bio=bio, image=img, order=order)
