@@ -82,50 +82,50 @@ class Command(BaseCommand):
         # 4. Past Office Bearers (Pages 3 & 4 of document)
         PastBearer.objects.all().delete()
         presidents = [
-            ('Dr. K. K. Nirula', 'Founder President (1972 – 1978)', 'CPPTI, Hyderabad', 'male', 1),
-            ('Dr. N. C. Joshi', '1979 – 1980', 'CPPTI, Hyderabad', 'male', 2),
-            ('Dr. K. D. Paharia', '1981 – 1984', 'CPPTI, Hyderabad', 'male', 3),
-            ('Dr. N. C. Joshi', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 4),
-            ('Dr. D. Bap Reddy', '1987 – 1988', 'FAO Representative', 'male', 5),
-            ('Dr. S. Jayaraj', '1989 – 1990', 'TNAU, Coimbatore', 'male', 6),
-            ('Dr. D. V. R. Reddy', '1991 – 1997', 'ICRISAT, Patancheru', 'male', 7),
-            ('Dr. K. Krishnaiah', '1997 – 1999', 'DRR (ICAR-IIRR), Hyderabad', 'male', 8),
-            ('Dr. P. S. Chandukar', '2000 – 2002', 'PPA to Govt. of India', 'male', 9),
-            ('Dr. Y. L. Nene', '2003 – 2006', 'ICRISAT / Asian Agri-History Foundation', 'male', 10),
+            ('Dr. K K Nirula', 'Founder President (1972 – 1978)', 'CPPTI, Hyderabad', 'male', 1),
+            ('Dr. N C Joshi', '1979 – 1980', 'CPPTI, Hyderabad', 'male', 2),
+            ('Dr. K D Paharia', '1981 – 1984', 'CPPTI, Hyderabad', 'male', 3),
+            ('Dr. N C Joshi', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 4),
+            ('Dr. D Bap Reddy', '1987 – 1988', 'FAO Representative', 'male', 5),
+            ('Dr. S Jayaraj', '1989 – 1990', 'TNAU, Coimbatore', 'male', 6),
+            ('Dr. D V R Reddy', '1991 – 1997', 'ICRISAT, Patancheru', 'male', 7),
+            ('Dr. K Krishnaiah', '1997 – 1999', 'DRR (ICAR-IIRR), Hyderabad', 'male', 8),
+            ('Dr. P S Chandukar', '2000 – 2002', 'PPA to Govt. of India', 'male', 9),
+            ('Dr. Y L Nene', '2003 – 2006', 'ICRISAT / Asian Agri-History Foundation', 'male', 10),
             ('Dr. K S R K Murthy', '2007 – 2009', 'ANGRAU, Hyderabad', 'male', 11),
-            ('Dr. K. S. Varaprasad', '2010 – 2012', 'ICAR-NBPGR RS / IIOR', 'male', 12),
-            ('Dr. B. Sarath Babu', '2018 – 2022', 'ICAR-NBPGR RS, Hyderabad', 'male', 13),
+            ('Dr. K S Varaprasad', '2010 – 2012', 'ICAR-NBPGR RS / IIOR', 'male', 12),
+            ('Dr. B Sarath Babu', '2018 – 2022', 'ICAR-NBPGR RS, Hyderabad', 'male', 13),
         ]
         for name, tenure, aff, gender, order in presidents:
             PastBearer.objects.create(role='president', name=name, tenure=tenure, affiliation=aff, gender=gender, order=order)
 
         secretaries = [
-            ('Dr. S. S. Hussaine', '1972 – 1974', 'CPPTI, Hyderabad', 'male', 1),
-            ('Dr. V. Lakshminarayana', '1975 – 1976, 1979 – 1980', 'CPPTI, Hyderabad', 'male', 2),
+            ('Dr. S S Hussaine', '1972 – 1974', 'CPPTI, Hyderabad', 'male', 1),
+            ('Dr. V Lakshminarayana', '1975 – 1976, 1979 – 1980', 'CPPTI, Hyderabad', 'male', 2),
             ('Dr. Basu Chaudhary', '1977 – 1978', 'CPPTI, Hyderabad', 'male', 3),
-            ('Dr. V. Raghunathan', '1981 – 1984', 'Central Plant Protection Station', 'male', 4),
-            ('Shri B. Govinda Naik', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 5),
-            ('Dr. B. J. Divakar', '1987 – 1997', 'Directorate of Plant Protection', 'male', 6),
+            ('Dr. V Raghunathan', '1981 – 1984', 'Central Plant Protection Station', 'male', 4),
+            ('Shri B Govinda Naik', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 5),
+            ('Dr. B J Divakar', '1987 – 1997', 'Directorate of Plant Protection', 'male', 6),
             ('Dr. Renu Sharma', '1997 – 1999', 'ICAR-NBPGR RS, Hyderabad', 'female', 7),
-            ('Dr. R. D. V. J. Prasada Rao', '2000 – 2006', 'ICAR-NBPGR RS, Hyderabad', 'male', 8),
-            ('Dr. S. K. Chakrabarty', '2007 – 2009', 'ICAR-NBPGR RS, Hyderabad', 'male', 9),
-            ('Dr. B. Sarath Babu', '2010 – 2012', 'ICAR-NBPGR RS, Hyderabad', 'male', 10),
-            ('Dr. R. Jagadeeshwar', '2018 – 2020', 'PJTSAU, Hyderabad', 'male', 11),
-            ('Dr. B. Parameswari', '2020 – 2022', 'ICAR-NBPGR RS, Hyderabad', 'female', 12),
+            ('Dr. R D V J Prasada Rao', '2000 – 2006', 'ICAR-NBPGR RS, Hyderabad', 'male', 8),
+            ('Dr. S K Chakrabarty', '2007 – 2009', 'ICAR-NBPGR RS, Hyderabad', 'male', 9),
+            ('Dr. B Sarath Babu', '2010 – 2012', 'ICAR-NBPGR RS, Hyderabad', 'male', 10),
+            ('Dr. R Jagadeeshwar', '2018 – 2020', 'PJTSAU, Hyderabad', 'male', 11),
+            ('Dr. B Parameswari', '2020 – 2022', 'ICAR-NBPGR RS, Hyderabad', 'female', 12),
         ]
         for name, tenure, aff, gender, order in secretaries:
             PastBearer.objects.create(role='secretary', name=name, tenure=tenure, affiliation=aff, gender=gender, order=order)
 
         treasurers = [
-            ('Shri P. K. Menon', '1972 – 1974', 'CPPTI, Hyderabad', 'male', 1),
-            ('Shri S. S. Lal', '1975 – 1976', 'CPPTI, Hyderabad', 'male', 2),
-            ('Shri T. Rengarajan', '1977 – 1980, 1987 – 1990', 'CPPTI, Hyderabad', 'male', 3),
-            ('Dr. A. Jayaprakash', '1981 – 1984', 'CPPTI, Hyderabad', 'male', 4),
-            ('Dr. B. J. Divakar', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 5),
-            ('Mr. D. Chatterjee', '1991 – 1993', 'CPPTI, Hyderabad', 'male', 6),
-            ('Mr. C. V. Rama Rao', '1993 – 1999', 'ANGRAU, Hyderabad', 'male', 7),
-            ('Dr. K. Anitha', '2000 – 2004', 'ICAR-NBPGR RS, Hyderabad', 'female', 8),
-            ('Dr. S. K. Chakrabarty', '2005 – 2006, 2010 – 2012', 'ICAR-NBPGR RS, Hyderabad', 'male', 9),
+            ('Shri P K Menon', '1972 – 1974', 'CPPTI, Hyderabad', 'male', 1),
+            ('Shri S S Lal', '1975 – 1976', 'CPPTI, Hyderabad', 'male', 2),
+            ('Shri T Rengarajan', '1977 – 1980, 1987 – 1990', 'CPPTI, Hyderabad', 'male', 3),
+            ('Dr. A Jayaprakash', '1981 – 1984', 'CPPTI, Hyderabad', 'male', 4),
+            ('Dr. B J Divakar', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 5),
+            ('Mr. D Chatterjee', '1991 – 1993', 'CPPTI, Hyderabad', 'male', 6),
+            ('Mr. C V Rama Rao', '1993 – 1999', 'ANGRAU, Hyderabad', 'male', 7),
+            ('Dr. K Anitha', '2000 – 2004', 'ICAR-NBPGR RS, Hyderabad', 'female', 8),
+            ('Dr. S K Chakrabarty', '2005 – 2006, 2010 – 2012', 'ICAR-NBPGR RS, Hyderabad', 'male', 9),
             ('Dr. Kamala Venkateswaran', '2007 – 2009', 'ICAR-NBPGR RS, Hyderabad', 'female', 10),
             ('Dr. Prasanna Holajjer', '2018 – 2020', 'ICAR-NBPGR RS, Hyderabad', 'male', 11),
             ('Dr. Bhasker Bajaru', '2020 – 2022', 'ICAR-NBPGR RS, Hyderabad', 'male', 12),
@@ -134,17 +134,17 @@ class Command(BaseCommand):
             PastBearer.objects.create(role='treasurer', name=name, tenure=tenure, affiliation=aff, gender=gender, order=order)
 
         editors = [
-            ('Shri B. K. Verma', '1972 – 1976', 'CPPTI, Hyderabad', 'male', 1),
-            ('Dr. V. Lakshminarayana', '1977 – 1978', 'CPPTI, Hyderabad', 'male', 2),
-            ('Dr. K. K. Nirula', '1979 – 1982', 'CPPTI, Hyderabad', 'male', 3),
-            ('Dr. M. Veerabhadra Rao', '1983 – 1993', 'CPPTI / ANGRAU', 'male', 4),
-            ('Dr. H. C. Sharma', '1993 – 1995', 'ICRISAT, Patancheru', 'male', 5),
-            ('Dr. T. B. Gour', '1995 – 1999', 'ANGRAU, Hyderabad', 'male', 6),
-            ('Dr. K. S. Varaprasad', '2000 – 2004', 'ICAR-NBPGR RS, Hyderabad', 'male', 7),
-            ('Dr. B. Sarath Babu', '2005 – 2009', 'ICAR-NBPGR RS, Hyderabad', 'male', 8),
+            ('Shri B K Verma', '1972 – 1976', 'CPPTI, Hyderabad', 'male', 1),
+            ('Dr. V Lakshminarayana', '1977 – 1978', 'CPPTI, Hyderabad', 'male', 2),
+            ('Dr. K K Nirula', '1979 – 1982', 'CPPTI, Hyderabad', 'male', 3),
+            ('Dr. M Veerabhadra Rao', '1983 – 1993', 'CPPTI / ANGRAU', 'male', 4),
+            ('Dr. H C Sharma', '1993 – 1995', 'ICRISAT, Patancheru', 'male', 5),
+            ('Dr. T B Gour', '1995 – 1999', 'ANGRAU, Hyderabad', 'male', 6),
+            ('Dr. K S Varaprasad', '2000 – 2004', 'ICAR-NBPGR RS, Hyderabad', 'male', 7),
+            ('Dr. B Sarath Babu', '2005 – 2009', 'ICAR-NBPGR RS, Hyderabad', 'male', 8),
             ('Dr. Gururaj Katti', '2010 – 2012', 'DRR (ICAR-IIRR), Hyderabad', 'male', 9),
-            ('Dr. G. Sridevi', '2018 – 2020', 'PJTSAU, Hyderabad', 'female', 10),
-            ('Dr. L. Saravanan', '2020 – 2022', 'ICAR-NBPGR RS, Hyderabad', 'male', 11),
+            ('Dr. G Sridevi', '2018 – 2020', 'PJTSAU, Hyderabad', 'female', 10),
+            ('Dr. L Saravanan', '2020 – 2022', 'ICAR-NBPGR RS, Hyderabad', 'male', 11),
         ]
         for name, tenure, aff, gender, order in editors:
             PastBearer.objects.create(role='editor', name=name, tenure=tenure, affiliation=aff, gender=gender, order=order)
@@ -175,10 +175,10 @@ class Command(BaseCommand):
         # 6. Special Publications & Monographs (Page 6 of document)
         PublicationBook.objects.all().delete()
         books_data = [
-            (1986, 'Plant Protection in the Year 2000 AD (Eds. S. Jayaraj, B.K. Verma, D. Bap Reddy)'),
-            (1993, 'Integrated Pest Management in Crops (Eds. M. Veerabhadra Rao, H.C. Sharma, T.B. Gour)'),
-            (2012, 'Plant Protection in Agriculture: Challenges & Opportunities (Eds. K.S. Varaprasad, B. Sarath Babu)'),
-            (2016, 'Plant Health Management in Organic Agriculture (Eds. B. Sarath Babu, B. Parameswari, G. Sridevi)'),
+            (1986, 'Plant Protection in the Year 2000 AD (Eds. S Jayaraj, B K Verma, D Bap Reddy)'),
+            (1993, 'Integrated Pest Management in Crops (Eds. M Veerabhadra Rao, H C Sharma, T B Gour)'),
+            (2012, 'Plant Protection in Agriculture: Challenges & Opportunities (Eds. K S Varaprasad, B Sarath Babu)'),
+            (2016, 'Plant Health Management in Organic Agriculture (Eds. B Sarath Babu, B Parameswari, G Sridevi)'),
         ]
         for year, title in books_data:
             PublicationBook.objects.create(year=year, title=title)
@@ -207,10 +207,10 @@ class Command(BaseCommand):
         # 8. PPAI Society Awards & Fellowship (Page 7 of document)
         SocietyAward.objects.all().delete()
         awards_data = [
-            ('Dr. D. Bap Reddy Memorial Award', 'Conferred on an eminent scientist for outstanding research and contributions in the field of Plant Protection / Agricultural Entomology.'),
-            ('Dr. S.B. Chattopadhyay Memorial Award', 'Conferred on a distinguished scientist for outstanding contributions in Plant Pathology and crop disease management.'),
-            ('Dr. S.N. Banerjee Memorial Award', 'Conferred for exceptional research accomplishments in Integrated Pest Management (IPM) and ecological crop protection.'),
-            ('Dr. K. Ramakrishnan Memorial Award', 'Conferred for exemplary contributions in basic and applied Plant Pathology and quarantine science.'),
+            ('Dr. D Bap Reddy Memorial Award', 'Conferred on an eminent scientist for outstanding research and contributions in the field of Plant Protection / Agricultural Entomology.'),
+            ('Dr. S B Chattopadhyay Memorial Award', 'Conferred on a distinguished scientist for outstanding contributions in Plant Pathology and crop disease management.'),
+            ('Dr. S N Banerjee Memorial Award', 'Conferred for exceptional research accomplishments in Integrated Pest Management (IPM) and ecological crop protection.'),
+            ('Dr. K Ramakrishnan Memorial Award', 'Conferred for exemplary contributions in basic and applied Plant Pathology and quarantine science.'),
             ('Fellow of Plant Protection Association of India (FPPAI)', 'Conferred on distinguished members in recognition of significant contributions to plant protection research, education, and the Association.'),
         ]
         for name, desc in awards_data:
