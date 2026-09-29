@@ -59,7 +59,7 @@ class Command(BaseCommand):
             ('Dr. B Bhaskar', 'Treasurer', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Treasurer.', 'council/dr_b_bhaskar.png', 7),
             ('Prof. T V K Singh', 'Chief Editor', 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.', 'male', 'Chief Editor.', 'council/prof_t_v_k_singh.png', 8),
             ('Dr. Kavita Gupta', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, New Delhi', 'female', 'Associate Editor.', 'council/dr_kavita_gupta.png', 9),
-            ('Dr. Prasanna Holajjer', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Associate Editor.', 'council/dr_prasanna_holajjer.jpg', 10),
+            ('Dr. Prasanna Holajjer', 'Associate Editor', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'Associate Editor.', 'council/dr_prasanna_holajjer.png', 10),
             ('Dr. B S Gotyal', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 'council/dr_b_s_gotyal.png', 11),
             ('Dr. Alpesh Kumar Valjibhai Khanpara', 'Councillor', 'Department of Entomology, Junagadh Agricultural University, Junagadh, Gujarat', 'male', 'Councillor.', 'council/dr_alpesh_kumar.png', 12),
             ('Dr. D Sagar', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 'council/dr_d_sagar.png', 13),
