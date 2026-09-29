@@ -104,7 +104,7 @@ class Command(BaseCommand):
             ('Dr. V Lakshminarayana', '1975 – 1976, 1979 – 1980', 'CPPTI, Hyderabad', 'male', 2),
             ('Dr. Basu Chaudhary', '1977 – 1978', 'CPPTI, Hyderabad', 'male', 3),
             ('Dr. V Raghunathan', '1981 – 1984', 'Central Plant Protection Station', 'male', 4),
-            ('Shri B Govinda Naik', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 5),
+            ('Shri. B Govinda Naik', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 5),
             ('Dr. B J Divakar', '1987 – 1997', 'Directorate of Plant Protection', 'male', 6),
             ('Dr. Renu Sharma', '1997 – 1999', 'ICAR-NBPGR RS, Hyderabad', 'female', 7),
             ('Dr. R D V J Prasada Rao', '2000 – 2006', 'ICAR-NBPGR RS, Hyderabad', 'male', 8),
@@ -117,9 +117,9 @@ class Command(BaseCommand):
             PastBearer.objects.create(role='secretary', name=name, tenure=tenure, affiliation=aff, gender=gender, order=order)
 
         treasurers = [
-            ('Shri P K Menon', '1972 – 1974', 'CPPTI, Hyderabad', 'male', 1),
-            ('Shri S S Lal', '1975 – 1976', 'CPPTI, Hyderabad', 'male', 2),
-            ('Shri T Rengarajan', '1977 – 1980, 1987 – 1990', 'CPPTI, Hyderabad', 'male', 3),
+            ('Shri. P K Menon', '1972 – 1974', 'CPPTI, Hyderabad', 'male', 1),
+            ('Shri. S S Lal', '1975 – 1976', 'CPPTI, Hyderabad', 'male', 2),
+            ('Shri. T Rengarajan', '1977 – 1980, 1987 – 1990', 'CPPTI, Hyderabad', 'male', 3),
             ('Dr. A Jayaprakash', '1981 – 1984', 'CPPTI, Hyderabad', 'male', 4),
             ('Dr. B J Divakar', '1985 – 1986', 'CPPTI, Hyderabad', 'male', 5),
             ('Mr. D Chatterjee', '1991 – 1993', 'CPPTI, Hyderabad', 'male', 6),
@@ -134,7 +134,7 @@ class Command(BaseCommand):
             PastBearer.objects.create(role='treasurer', name=name, tenure=tenure, affiliation=aff, gender=gender, order=order)
 
         editors = [
-            ('Shri B K Verma', '1972 – 1976', 'CPPTI, Hyderabad', 'male', 1),
+            ('Shri. B K Verma', '1972 – 1976', 'CPPTI, Hyderabad', 'male', 1),
             ('Dr. V Lakshminarayana', '1977 – 1978', 'CPPTI, Hyderabad', 'male', 2),
             ('Dr. K K Nirula', '1979 – 1982', 'CPPTI, Hyderabad', 'male', 3),
             ('Dr. M Veerabhadra Rao', '1983 – 1993', 'CPPTI / ANGRAU', 'male', 4),
