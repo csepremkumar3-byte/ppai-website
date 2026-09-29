@@ -232,7 +232,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      height: clamp(36px, 4.2vh, 42px);
+      height: clamp(40px, 4.6vh, 46px);
       width: 100%;
     }
 
@@ -240,7 +240,7 @@
       display: flex;
       align-items: center;
       height: 100%;
-      gap: clamp(28px, 3.2vw, 48px);
+      gap: clamp(22px, 2.5vw, 42px);
     }
 
     .nav-item {
@@ -252,12 +252,13 @@
 
     .nav-item > a {
       font-weight: 700;
-      font-size: clamp(12.5px, 0.95vw, 14px);
+      font-size: clamp(14px, 1.05vw, 15.5px);
       color: var(--deep-forest);
       transition: var(--transition);
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      letter-spacing: -0.01em;
     }
 
     .nav-item:hover > a,
@@ -273,7 +274,7 @@
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
       box-shadow: var(--shadow-soft);
-      min-width: 220px;
+      min-width: 230px;
       padding: 8px 0;
       opacity: 0;
       visibility: hidden;
@@ -291,10 +292,10 @@
     }
 
     .dropdown a {
-      padding: 8px 18px;
+      padding: 9px 20px;
       color: var(--text-main);
-      font-weight: 500;
-      font-size: 13px;
+      font-weight: 600;
+      font-size: 14px;
       white-space: nowrap;
       display: block;
     }
@@ -305,8 +306,8 @@
     }
 
     .caret {
-      width: 11px;
-      height: 11px;
+      width: 12px;
+      height: 12px;
       transition: transform 0.3s ease;
     }
 
