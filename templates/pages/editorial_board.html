@@ -90,24 +90,24 @@
   }
 
   .avatar-circle {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
+    width: clamp(100px, 7.5vw, 120px);
+    height: clamp(112px, 8.5vw, 134px);
+    border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 10px;
-    background: rgba(0, 178, 114, 0.08);
+    margin-bottom: 12px;
+    background: rgba(0, 178, 114, 0.06);
     border: 2px solid var(--vibrant-green);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(0, 178, 114, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 178, 114, 0.12);
   }
 
   .avatar-circle.has-photo {
     background: #ffffff;
     border: 2.5px solid var(--vibrant-green);
-    box-shadow: 0 4px 12px rgba(0, 178, 114, 0.16);
+    box-shadow: 0 6px 16px rgba(0, 178, 114, 0.18);
   }
 
   .avatar-circle img {
@@ -116,6 +116,11 @@
     object-fit: cover;
     object-position: center top;
     display: block;
+  }
+
+  .avatar-circle svg {
+    width: 48px;
+    height: 48px;
   }
 
   .member-name {
