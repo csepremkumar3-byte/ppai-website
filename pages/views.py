@@ -49,7 +49,9 @@ def journal_archives(request):
 
 def editorial_board(request):
     context = get_common_context()
-    context['board_members'] = EditorialBoardMember.objects.all()
+    context['chief_editors'] = EditorialBoardMember.objects.filter(role__in=['chief_editor', 'assoc_editor']).order_by('order', 'id')
+    context['board_members'] = EditorialBoardMember.objects.filter(role__in=['member', 'intl_member']).order_by('order', 'id')
+    context['patrons'] = EditorialBoardMember.objects.filter(role='patron').order_by('order', 'id')
     return render(request, 'pages/editorial_board.html', context)
 
 def author_guidelines(request):

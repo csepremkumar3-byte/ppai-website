@@ -27,10 +27,21 @@ from pages.models import (
     SocietyAward, JournalVolume, JournalArticle
 )
 
+import shutil
+
 db_engine = settings.DATABASES['default']['ENGINE'].split('.')[-1]
 db_name = settings.DATABASES['default']['NAME']
 print(f"Connected to Database Engine: [{db_engine}], Database: [{db_name}]")
 print("Seeding full dataset from official document...")
+
+# Copy static council & editorial images to media directory
+for folder in ['council', 'editorial']:
+    src_dir = os.path.join(settings.BASE_DIR, 'static', 'images', folder)
+    dst_dir = os.path.join(settings.MEDIA_ROOT, folder)
+    if os.path.exists(src_dir):
+        os.makedirs(dst_dir, exist_ok=True)
+        for fname in os.listdir(src_dir):
+            shutil.copy2(os.path.join(src_dir, fname), os.path.join(dst_dir, fname))
 
 # Clear existing ExecutiveMember and PastBearer to ensure clean sync with 8-page document
 ExecutiveMember.objects.all().delete()
@@ -162,22 +173,25 @@ for name, tenure, aff, gender, order in editors:
 # 5. Editorial Board Members & Honorary Patrons
 EditorialBoardMember.objects.all().delete()
 editorial_board_data = [
-    ('Prof. T V K Singh', 'chief_editor', 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.', 1),
-    ('Dr. Kavita Gupta', 'assoc_editor', 'ICAR-National Bureau of Plant Genetic Resources, New Delhi', 2),
-    ('Dr. Prasanna Holajjer', 'assoc_editor', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 3),
-    ('Dr. J Alice R P Sujeetha', 'member', 'National Institute of Plant Health Management (NIPHM), Hyderabad', 4),
-    ('Dr. Jameel Aktar', 'member', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 5),
-    ('Dr. Kuldeep Singh Jadon', 'member', 'ICAR-Central Arid Zone Research Institute, Jodhpur, Rajasthan', 6),
-    ('Dr. Jose Remeno Faleiro', 'member', 'FAO Expert (Red Palm Weevil), Goa', 7),
-    ('Dr. Hamadttu Abdel Farag Elshafie', 'member', 'Senior Research Entomologist and Head IPM Program in Date Palm, King Faisal University Hofuf, Kingdom of Saudi Arabia', 8),
-    ('Dr. P Anandhi', 'member', 'Tamil Nadu Rice Research Institute, TNAU, Aduthurai, Tamil Nadu', 9),
-    ('Dr. P Raja', 'member', 'College of Horticultural and Forestry, CAU, Pasighat, Arunachal Pradesh', 10),
-    ('Dr. A K Sinha', 'patron', 'Plant Protection Advisor, Directorate of Plant Protection, Quarantine & Storage, Faridabad, Haryana', 11),
-    ('Dr. K S R K Murthy', 'patron', 'Telecom Colony, Ved Vihar, Secunderabad, Telangana', 12),
-    ('Mr. N Sukumar', 'patron', 'Managing Director, Hyderabad Chemical Products Ltd., Hyderabad, Telangana', 13),
+    ('Prof. T V K Singh', 'chief_editor', 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.', 'male', 'editorial/prof_t_v_k_singh.png', 1),
+    ('Dr. Kavita Gupta', 'assoc_editor', 'ICAR-National Bureau of Plant Genetic Resources, New Delhi', 'female', 'editorial/dr_kavita_gupta.png', 2),
+    ('Dr. Prasanna Holajjer', 'assoc_editor', 'ICAR-National Bureau of Plant Genetic Resources, Regional Station, Hyderabad', 'male', 'editorial/dr_prasanna_holajjer.png', 3),
+    ('Dr. J Alice R P Sujeetha', 'member', 'National Institute of Plant Health Management (NIPHM), Hyderabad', 'female', None, 4),
+    ('Dr. Jameel Aktar', 'member', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 'male', 'editorial/dr_jameel_aktar.png', 5),
+    ('Dr. Kuldeep Singh Jadon', 'member', 'ICAR-Central Arid Zone Research Institute, Jodhpur, Rajasthan', 'male', 'editorial/dr_kuldeep_singh_jadon.png', 6),
+    ('Dr. Jose Remeno Faleiro', 'member', 'FAO Expert (Red Palm Weevil), Goa', 'male', None, 7),
+    ('Dr. Hamadttu Abdel Farag Elshafie', 'member', 'Senior Research Entomologist and Head IPM Program in Date Palm, King Faisal University Hofuf, Kingdom of Saudi Arabia', 'male', 'editorial/dr_hamadttu_abdel_farag_elshafie.png', 8),
+    ('Dr. P Anandhi', 'member', 'Tamil Nadu Rice Research Institute, TNAU, Aduthurai, Tamil Nadu', 'female', 'editorial/dr_p_anandhi.png', 9),
+    ('Dr. P Raja', 'member', 'College of Horticultural and Forestry, CAU, Pasighat, Arunachal Pradesh', 'male', 'editorial/dr_p_raja.png', 10),
+    ('Dr. A K Sinha', 'patron', 'Plant Protection Advisor, Directorate of Plant Protection, Quarantine & Storage, Faridabad, Haryana', 'male', None, 11),
+    ('Dr. K S R K Murthy', 'patron', 'Telecom Colony, Ved Vihar, Secunderabad, Telangana', 'male', None, 12),
+    ('Mr. N Sukumar', 'patron', 'Managing Director, Hyderabad Chemical Products Ltd., Hyderabad, Telangana', 'male', None, 13),
 ]
-for name, role, inst, order in editorial_board_data:
-    EditorialBoardMember.objects.create(name=name, role=role, institution=inst, order=order)
+for name, role, inst, gender, img, order in editorial_board_data:
+    kwargs = {'name': name, 'role': role, 'institution': inst, 'gender': gender, 'order': order}
+    if img:
+        kwargs['image'] = img
+    EditorialBoardMember.objects.create(**kwargs)
 
 # 6. Special Publications & Monographs (Page 6 of document)
 PublicationBook.objects.all().delete()

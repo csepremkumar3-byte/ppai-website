@@ -49,8 +49,10 @@ class PastBearerAdmin(admin.ModelAdmin):
 
 @admin.register(EditorialBoardMember)
 class EditorialBoardMemberAdmin(admin.ModelAdmin):
-    list_display = ('name', 'role', 'institution', 'order')
-    list_filter = ('role',)
+    list_display = ('name', 'role', 'gender', 'institution', 'order')
+    list_editable = ('order',)
+    list_filter = ('role', 'gender')
+    search_fields = ('name', 'institution')
 
 @admin.register(PublicationBook)
 class PublicationBookAdmin(admin.ModelAdmin):

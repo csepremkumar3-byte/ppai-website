@@ -81,7 +81,7 @@ class PastBearer(models.Model):
 
 class EditorialBoardMember(models.Model):
     ROLE_CHOICES = [
-        ('chief_editor', 'Editor-in-Chief'),
+        ('chief_editor', 'Chief Editor'),
         ('assoc_editor', 'Associate Editor'),
         ('member', 'Editorial Member'),
         ('intl_member', 'Editorial Member (International)'),
@@ -90,10 +90,13 @@ class EditorialBoardMember(models.Model):
     name = models.CharField(max_length=200)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     institution = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='editorial/', blank=True, null=True, help_text="Upload editor photo. Defaults to gender avatar if blank.")
+    gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], default='male')
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Editorial Board Member'
 
     def __str__(self):
         return f"{self.get_role_display()}: {self.name}"
