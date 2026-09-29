@@ -63,7 +63,7 @@ class Command(BaseCommand):
             ('Dr. B S Gotyal', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 'council/dr_b_s_gotyal.png', 11),
             ('Dr. Alpesh Kumar Valjibhai Khanpara', 'Councillor', 'Department of Entomology, Junagadh Agricultural University, Junagadh, Gujarat', 'male', 'Councillor.', 'council/dr_alpesh_kumar.png', 12),
             ('Dr. D Sagar', 'Councillor', 'ICAR- National Bureau of Agricultural Insect Resources, Bengaluru', 'male', 'Councillor.', 'council/dr_d_sagar.png', 13),
-            ('Dr. K Rameash', 'Councillor', 'ICAR-Central Institute of Cotton Research, Regional Station, Coimbatore', 'male', 'Councillor.', None, 14),
+            ('Dr. K Rameash', 'Councillor', 'ICAR-Central Institute of Cotton Research, Regional Station, Coimbatore', 'male', 'Councillor.', 'council/dr_k_rameash.jpg', 14),
             ('Dr. J Stanley', 'Councillor', 'ICAR-Indian Institute of Millet Research, Hyderabad, Telangana', 'male', 'Councillor.', 'council/dr_j_stanley.png', 15),
         ]
         for name, desig, aff, gender, bio, img, order in executive_members_data:
