@@ -158,7 +158,7 @@ class Command(BaseCommand):
             ('Dr. J Alice R P Sujeetha', 'member', 'National Institute of Plant Health Management (NIPHM), Hyderabad', 'female', None, 4),
             ('Dr. Jameel Akhtar', 'member', 'ICAR-National Bureau of Plant Genetic Resources, Pusa Campus, New Delhi', 'male', 'editorial/dr_jameel_akhtar.png', 5),
             ('Dr. Kuldeep Singh Jadon', 'member', 'ICAR-Central Arid Zone Research Institute, Jodhpur, Rajasthan', 'male', 'editorial/dr_kuldeep_singh_jadon.png', 6),
-            ('Dr. Jose Romeno Faleiro', 'member', 'FAO Expert (Red Palm Weevil), Goa', 'male', None, 7),
+            ('Dr. Jose Romeno Faleiro', 'member', 'FAO Expert (Red Palm Weevil), Goa', 'male', 'editorial/dr_jose_romeno_faleiro.png', 7),
             ('Dr. Hamadttu Abdel Farag Elshafie', 'member', 'Senior Research Entomologist and Head IPM Program in Date Palm, King Faisal University Hofuf, Kingdom of Saudi Arabia', 'male', 'editorial/dr_hamadttu_abdel_farag_elshafie.png', 8),
             ('Dr. P Anandhi', 'member', 'Tamil Nadu Rice Research Institute, TNAU, Aduthurai, Tamil Nadu', 'female', 'editorial/dr_p_anandhi.png', 9),
             ('Dr. P Raja', 'member', 'College of Horticultural and Forestry, CAU, Pasighat, Arunachal Pradesh', 'male', 'editorial/dr_p_raja.png', 10),
