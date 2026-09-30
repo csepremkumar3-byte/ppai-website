@@ -6,8 +6,8 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     CLEAN LINE-SEPARATED EDITORIAL THEME - ABOUT US
-     Refined web-design spacing with snug divider-to-heading hierarchy
+     CLEAN EDITORIAL THEME - ABOUT US
+     High-legibility typography, clear hierarchy, subtle green accents
   =================================================================== */
   .about-stream-wrapper {
     max-width: 960px;
@@ -15,12 +15,12 @@
     padding: clamp(28px, 4.5vh, 52px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 90px) clamp(20px, 4vw, 40px);
   }
 
-  /* Thin Section Divider Line with Asymmetrical Spacing */
+  /* Thin Section Divider Line */
   .story-divider {
     border: none;
     height: 1px;
     background: rgba(11, 36, 23, 0.12);
-    margin: clamp(24px, 3.2vh, 36px) 0 clamp(8px, 1.2vh, 14px) 0;
+    margin: clamp(24px, 3.2vh, 36px) 0 clamp(16px, 2vh, 22px) 0;
   }
 
   /* Top Hero Section */
@@ -37,13 +37,12 @@
     margin: 0;
   }
 
-  /* Reduced gap specifically between top hero title and the first separator */
   .story-hero + .story-divider {
     margin-top: clamp(10px, 1.4vh, 16px);
-    margin-bottom: clamp(10px, 1.4vh, 16px);
+    margin-bottom: clamp(14px, 1.8vh, 20px);
   }
 
-  /* One by One Story Sections */
+  /* Story Sections */
   .story-section {
     display: flex;
     flex-direction: column;
@@ -56,14 +55,14 @@
     color: var(--deep-forest);
     line-height: 1.25;
     letter-spacing: -0.02em;
-    margin: 0 0 clamp(8px, 1.1vh, 12px) 0;
+    margin: 0 0 clamp(10px, 1.3vh, 14px) 0;
   }
 
   .story-body-p {
-    font-size: clamp(15px, 1.05vw, 17px);
+    font-size: clamp(15px, 1.05vw, 16.5px);
     line-height: 1.78;
     color: var(--text-main);
-    margin: 0 0 clamp(10px, 1.3vh, 14px) 0;
+    margin: 0 0 clamp(12px, 1.5vh, 16px) 0;
     text-align: justify;
     text-justify: inter-word;
   }
@@ -72,12 +71,12 @@
     margin-bottom: 0;
   }
 
-  /* Objective Points */
+  /* Pillar / Bullet Points */
   .story-pillars {
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 1.1vh, 12px);
-    margin-top: clamp(6px, 0.9vh, 10px);
+    gap: clamp(10px, 1.3vh, 14px);
+    margin-top: clamp(8px, 1.1vh, 12px);
     padding: 0;
     list-style: none;
   }
@@ -87,7 +86,7 @@
     align-items: baseline;
     gap: 12px;
     font-size: clamp(14.5px, 1vw, 16px);
-    line-height: 1.65;
+    line-height: 1.68;
     color: var(--text-main);
   }
 
@@ -99,11 +98,81 @@
   .story-pillar-row::before {
     content: "◆";
     font-size: 9px;
-    color: var(--deep-forest);
-    opacity: 0.6;
+    color: var(--vibrant-green);
+    opacity: 0.85;
     flex-shrink: 0;
     position: relative;
     top: -2px;
+  }
+
+  /* Numbered List Structure */
+  .story-ordered-list {
+    list-style: none;
+    counter-reset: custom-counter;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 1.5vh, 16px);
+    margin-top: clamp(10px, 1.3vh, 14px);
+    padding: 0;
+  }
+
+  .story-ordered-item {
+    counter-increment: custom-counter;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: clamp(14.5px, 1vw, 16px);
+    line-height: 1.72;
+    color: var(--text-main);
+  }
+
+  .story-ordered-item::before {
+    content: counter(custom-counter) ".";
+    font-weight: 700;
+    color: var(--deep-forest);
+    flex-shrink: 0;
+    min-width: 20px;
+  }
+
+  .story-ordered-item > div {
+    flex: 1;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Sub-numbered list for Roman numerals (i, ii, iii...) */
+  .story-sub-list {
+    list-style: none;
+    counter-reset: sub-counter;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+    padding-left: 8px;
+  }
+
+  .story-sub-item {
+    counter-increment: sub-counter;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    line-height: 1.65;
+    color: var(--text-main);
+  }
+
+  .story-sub-item::before {
+    content: counter(sub-counter, lower-roman) ")";
+    font-weight: 600;
+    color: var(--deep-forest);
+    flex-shrink: 0;
+    min-width: 24px;
+  }
+
+  .story-sub-item span {
+    flex: 1;
+    text-align: justify;
+    text-justify: inter-word;
   }
 
   /* Responsive Adjustments */
@@ -114,18 +183,19 @@
 
     .story-hero + .story-divider {
       margin-top: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .story-divider {
-      margin: 20px 0 8px 0;
+      margin: 20px 0 12px 0;
     }
 
     .story-heading {
       margin-bottom: 8px;
     }
 
-    .story-pillar-row {
+    .story-pillar-row,
+    .story-ordered-item {
       gap: 10px;
     }
   }
@@ -137,78 +207,132 @@
 
   <!-- 1. Primary Title Header -->
   <section class="story-hero">
-    <h1>About us</h1>
+    <h1>Plant Protection Association of India (PPAI)</h1>
   </section>
 
   <!-- Line Divider -->
   <hr class="story-divider">
 
-  <!-- 2. Genesis & Foundation -->
+  <!-- 2. Brief History -->
   <section class="story-section">
-    <h2 class="story-heading">Genesis &amp; Founding Leadership</h2>
+    <h2 class="story-heading">Brief History</h2>
     <p class="story-body-p">
-      The Plant Protection Association of India was founded on 4th December 1972 at the Central Plant Protection Training Institute (CPPTI), Rajendranagar, Hyderabad. Registered under the Andhra Pradesh Public Societies Registration Act, 1350 Fasli (Registration No. S399), the society was conceived by Founder President Dr. K K Nirula alongside distinguished plant protection specialists to address pressing national challenges in crop health and pest management.
+      The Plant Protection Association of India (PPAI) is a scientific society established in 1972. It is non-profit organization, registered under the Andhra Pradesh (Telangana Area) Public Societies Registration Act, 1350 Fasli (Act I of 1350 F.) on 4th December, 1972. Its membership is open to all those scientists interested in promotion of Plant Protection and is dedicated for that cause.
     </p>
     <p class="story-body-p">
-      With its permanent national headquarters located at the ICAR-NBPGR Regional Station, Rajendranagar, Hyderabad, the Association coordinates scientific consultations, national policy recommendations, and research initiatives with central and state agricultural institutions.
-    </p>
-  </section>
-
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 3. Golden Jubilee & Scientific Community -->
-  <section class="story-section">
-    <h2 class="story-heading">Over 50 Years of National Scientific Service</h2>
-    <p class="story-body-p">
-      PPAI celebrated its landmark Golden Jubilee (1972–2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.
-    </p>
-    <p class="story-body-p">
-      Today, the Association represents a national community of over 1,900 life member scientists, faculty members, research scholars, and extension professionals across ICAR institutes, State Agricultural Universities, and partner agricultural bodies nationwide.
+      As per the 1972 memorandum, it was decided that the permanent headquarters of PPAI would be Hyderabad. The Association started functioning from the location of Central Plant Protection Training Institute and set up its office in the premises of the institute. In 1998, the office set up was shifted to ICAR – National Bureau of Plant Genetic Resources and since then has been continuing to operate from this institute till this day. In 2017, PPAI was permitted to construct its own building in an area located under the jurisdiction of Professor Jayashankar Telangana State Agricultural University, Hyderabad. All the set ups of the Association will be gradually shifted to the new building and PPAI new premises will be fully operational by January 2025.
     </p>
   </section>
 
   <!-- Line Divider -->
   <hr class="story-divider">
 
-  <!-- 4. Official Publication (IJPP) -->
+  <!-- 3. Aims and Objectives of the Association -->
   <section class="story-section">
-    <h2 class="story-heading">Indian Journal of Plant Protection</h2>
+    <h2 class="story-heading">Aims and Objectives of the Association</h2>
     <p class="story-body-p">
-      The Association publishes the double-blind peer-reviewed Indian Journal of Plant Protection (IJPP) quarterly in March, June, September, and December (Print ISSN: 0253-4355). Digitally hosted on the official ICAR ePubs portal, IJPP publishes original research articles, comprehensive scientific reviews, and short communications on applied plant protection and integrated pest management.
-    </p>
-    <p class="story-body-p">
-      The journal is indexed in leading national and international bibliographic databases, including the UGC-CARE List, CABI Abstracts, Indian Citation Index (ICI), Chemical Abstracts, and FAO Agrindex.
-    </p>
-  </section>
-
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 5. Scientific Mandate & Core Objectives -->
-  <section class="story-section">
-    <h2 class="story-heading">Core Mandate &amp; Objectives</h2>
-    <p class="story-body-p">
-      The activities of the Plant Protection Association of India are directed toward achieving key agricultural and scientific objectives:
+      Since inception, the aims and objectives mentioned in PPAI memorandum have been based on a set of core underlying aspirations of advancing the cause of plant protection research and development, disseminate plant protection knowledge and maintain a consistent link among the plant protection workers belonging to diverse organizations in the country. These objectives have undergone revision and modifications to align with advances in research and development, technologies as well as infrastructure growth in areas related to plant protection. Following are the existing objectives of the Association:
     </p>
 
     <ul class="story-pillars">
       <li class="story-pillar-row">
-        <span>Integrated Pest Management: Promoting sustainable, bio-intensive pest and disease management technologies that safeguard environmental and human health.</span>
+        <span>To advance the cause of plant protection by encouraging and promoting plant protection research and education in the country.</span>
       </li>
       <li class="story-pillar-row">
-        <span>Scientific Dissemination: Publishing quarterly issues of IJPP, specialized symposia proceedings, and technical monographs.</span>
+        <span>To provide a forum for dissemination of information related to plant protection through a journal.</span>
       </li>
       <li class="story-pillar-row">
-        <span>Conferences &amp; Symposia: Organizing biennial national conferences, seminars, and consultative workshops on emerging plant protection issues.</span>
+        <span>To bring about exchange of views and ideas on plant protection by organising lectures, discussion, seminars, symposia etc.</span>
       </li>
       <li class="story-pillar-row">
-        <span>Recognition &amp; Fellowships: Honoring distinguished scientists with Fellow of PPAI (FPPAI) recognition, honorary fellowships, and lifetime achievement awards.</span>
+        <span>To maintain a link between plant protection workers in India.</span>
       </li>
       <li class="story-pillar-row">
-        <span>Academic Mentorship: Sponsoring annual awards for the Best M.Sc. and Ph.D. Theses in plant protection disciplines to encourage young agricultural researchers.</span>
+        <span>To involve in any such activity which will be useful for the advancement and adoption of plant protection techniques developed by the scientific community.</span>
       </li>
     </ul>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 4. Executive Council of PPAI -->
+  <section class="story-section">
+    <h2 class="story-heading">Executive Council of PPAI</h2>
+    <ol class="story-ordered-list">
+      <li class="story-ordered-item">
+        <div>There is an executive council responsible to carry on all affairs of the association.</div>
+      </li>
+      <li class="story-ordered-item">
+        <div>The executive council consists of Honorary Patron, the President; Vice President; General Secretary; Assistant Secretary; Treasurer and Eight councillors. All except the Honorary Patron (Plant Protection Adviser to the Government of India) will be elected by the General body. All the office bearers are elected for a period of two years.</div>
+      </li>
+      <li class="story-ordered-item">
+        <div>The general secretary is responsible for recording the proceedings of the meetings of the association and of the council and for conducting day to day business of the association. The assistant secretary assists the secretary in all matters connected with the association, and shall be in charge in the absence of the secretary. The treasurer maintains the account, receive deposits and disburses money on behalf of the association according to directions of the council.</div>
+      </li>
+      <li class="story-ordered-item">
+        <div>The funds are spent only to the attainment of the objects of the society and no portion thereof shall be paid or transferred directly or indirectly to any of its members through any means.</div>
+      </li>
+      <li class="story-ordered-item">
+        <div>The funds of the association are in the name of the Plant Protection Association of India operated jointly by General Secretary and Treasurer and the latter shall make payments endorsed by the secretary in respect of bills not exceeding ₹100/- at a time, Bills for sums in excess of this amount shall be jointly endorsed by the secretary and the president to the extent of ₹1000/- before they will be valid for payment by the treasurer.</div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <div>There is a reserve fund of the association governed as follows:</div>
+          <ul class="story-sub-list">
+            <li class="story-sub-item">
+              <span>There is a reserve fund of the association.</span>
+            </li>
+            <li class="story-sub-item">
+              <span>The reserve fund is not used on recurring items.</span>
+            </li>
+            <li class="story-sub-item">
+              <span>All the admission fees and 50% of life membership fee received form the reserve fund.</span>
+            </li>
+            <li class="story-sub-item">
+              <span>The executive council by decision of the general body by two thirds majority, can sanction any expenditure out of the reserve fund but not exceeding 50%.</span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>All accounts of the association are audited annually by an accountant nominated by the executive council. The treasurer submits to the accountant by the end of April each year the accounts of the association for the previous year for the purpose of auditing. The auditor’s statement of accounts are circulated to all members before the annual general body meeting.</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 5. Meeting of the Council -->
+  <section class="story-section">
+    <h2 class="story-heading">Meeting of the Council</h2>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span>Council meetings are held periodically at the discretion of the president or at the request of 1/3 of the members of council.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>The date and time of holding each meeting of the council are notified by the secretary to each member of the council at least 2 weeks before the date on which such meetings are to be held. Non-receipt of such notice by any member of the council in no way invalidate the proceedings of the meeting. One-third of the members of the executive council form the quorum.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Extraordinary meetings of the council are called by the president on a requisition signed by the members of the council.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 6. Meetings of the Association -->
+  <section class="story-section">
+    <h2 class="story-heading">Meetings of the Association</h2>
+    <ol class="story-ordered-list">
+      <li class="story-ordered-item">
+        <div>Ordinary meetings of the association are presided over by the President or in his absence by one of the Vice-Presidents or by one of the members of the council present or by member elected at the meetings.</div>
+      </li>
+      <li class="story-ordered-item">
+        <div>An extraordinary meeting of the association is called if one third of the ordinary members of the association send a signed requisition to the general secretary for such meeting.</div>
+      </li>
+    </ol>
   </section>
 
 </div>
