@@ -27,7 +27,10 @@ def agbm(request):
 
 def executive_council(request):
     context = get_common_context()
-    context['council_members'] = ExecutiveMember.objects.all()
+    context['presidents_group'] = ExecutiveMember.objects.filter(order__in=[1, 2, 3, 4])
+    context['secretaries_group'] = ExecutiveMember.objects.filter(order__in=[5, 6, 7])
+    context['editors_group'] = ExecutiveMember.objects.filter(order__in=[8, 9, 10])
+    context['councillors_group'] = ExecutiveMember.objects.filter(order__in=[11, 12, 13, 14, 15])
     return render(request, 'pages/executive_council.html', context)
 
 def legends(request):

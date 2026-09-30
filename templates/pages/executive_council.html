@@ -5,7 +5,7 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     EXECUTIVE COUNCIL & HONORARY PATRONS - OUTSIDE HEADINGS & 4/3 GRID
+     EXECUTIVE COUNCIL - HIERARCHICAL GROUPED LAYOUT (NO PATRONS)
   =================================================================== */
   .council-section {
     min-height: calc(100vh - 70px);
@@ -22,8 +22,7 @@
     margin-bottom: clamp(16px, 2.2vh, 22px);
   }
 
-  .council-titlebar h1,
-  .council-titlebar h2 {
+  .council-titlebar h1 {
     font-size: clamp(22px, 1.8vw, 28px);
     font-weight: 800;
     color: var(--deep-forest);
@@ -40,24 +39,61 @@
     padding: clamp(22px, 2.8vw, 34px);
     box-sizing: border-box;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 3.2vh, 36px);
   }
 
-  /* 4-in-Row Grid for First 12 Council Members */
+  /* Group Headers inside the box */
+  .council-group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: clamp(14px, 1.8vh, 18px);
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid rgba(0, 178, 114, 0.2);
+  }
+
+  .council-group-header h2 {
+    font-size: clamp(16px, 1.25vw, 19px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .council-group-header .group-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--vibrant-green);
+    flex-shrink: 0;
+  }
+
+  /* 4-in-Row Grid for President & Vice Presidents */
   .grid-row-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: clamp(14px, 1.4vw, 20px);
-    margin-bottom: clamp(18px, 2.4vh, 24px);
     align-items: stretch;
   }
 
-  /* 3-in-Row Grid for Last 3 Council Members & Patrons (Centered) */
+  /* 3-in-Row Grid for Secretariat & Editorial */
   .grid-row-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: clamp(14px, 1.4vw, 20px);
-    max-width: 960px;
+    max-width: 980px;
     margin: 0 auto;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  /* 5-in-Row Grid for Councillors */
+  .grid-row-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: clamp(12px, 1.2vw, 18px);
     align-items: stretch;
   }
 
@@ -66,7 +102,7 @@
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: clamp(18px, 2.2vh, 24px) clamp(12px, 1.2vw, 16px);
+    padding: clamp(18px, 2.2vh, 24px) clamp(10px, 1vw, 14px);
     text-align: center;
     box-shadow: 0 2px 8px rgba(11, 36, 23, 0.04);
     display: flex;
@@ -85,8 +121,8 @@
   }
 
   .avatar-circle {
-    width: clamp(100px, 7.5vw, 120px);
-    height: clamp(112px, 8.5vw, 134px);
+    width: clamp(96px, 7vw, 116px);
+    height: clamp(108px, 8vw, 130px);
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 12px;
@@ -114,12 +150,12 @@
   }
 
   .avatar-circle svg {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
   }
 
   .member-name {
-    font-size: clamp(13.5px, 0.92vw, 14.5px);
+    font-size: clamp(13px, 0.88vw, 14.5px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0 0 4px 0;
@@ -127,7 +163,7 @@
   }
 
   .member-affiliation {
-    font-size: clamp(11px, 0.8vw, 12px);
+    font-size: clamp(11px, 0.78vw, 12px);
     color: var(--text-muted);
     font-weight: 500;
     margin: 0;
@@ -135,6 +171,12 @@
   }
 
   /* Responsive Rules */
+  @media (max-width: 1120px) {
+    .grid-row-5 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
   @media (max-width: 1024px) {
     .grid-row-4 {
       grid-template-columns: repeat(2, 1fr);
@@ -142,6 +184,9 @@
     .grid-row-3 {
       grid-template-columns: repeat(2, 1fr);
       max-width: 100%;
+    }
+    .grid-row-5 {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -153,9 +198,9 @@
       padding: 18px 14px;
     }
     .grid-row-4,
-    .grid-row-3 {
+    .grid-row-3,
+    .grid-row-5 {
       grid-template-columns: 1fr;
-      margin-bottom: 14px;
     }
   }
 </style>
@@ -164,20 +209,22 @@
 {% block content %}
 <section class="council-section">
 
-  <!-- ===================================================================
-       SECTION 1: THE PRESENT EXECUTIVE COUNCIL (Heading OUTSIDE card)
-  =================================================================== -->
+  <!-- Main Title -->
   <div class="council-titlebar">
     <h1>The Present Executive Council</h1>
   </div>
 
   <div class="council-card-box">
-    {% if council_members %}
-      <!-- Rows 1 to 3: 4 Members each (First 12) -->
+
+    <!-- Group 1: President & Vice-Presidents -->
+    <div class="council-group-block">
+      <div class="council-group-header">
+        <span class="group-dot"></span>
+        <h2>President &amp; Vice-Presidents</h2>
+      </div>
       <div class="grid-row-4">
-        {% for m in council_members|slice:":12" %}
+        {% for m in presidents_group %}
         <div class="member-card-item">
-          <!-- Avatar / Photo -->
           <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
             {% if m.image %}
               <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
@@ -196,105 +243,119 @@
               {% endif %}
             {% endif %}
           </div>
-
-          <!-- Designation Badge -->
           <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
-
-          <!-- Name -->
           <h3 class="member-name">{{ m.name }}</h3>
-
-          <!-- Affiliation -->
           <p class="member-affiliation">{{ m.affiliation }}</p>
         </div>
         {% endfor %}
-      </div>
-
-      <!-- Row 4: Last 3 Members (Centered) -->
-      <div class="grid-row-3">
-        {% for m in council_members|slice:"12:" %}
-        <div class="member-card-item">
-          <!-- Avatar / Photo -->
-          <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
-            {% if m.image %}
-              <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
-            {% else %}
-              {% if m.gender == 'female' %}
-                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
-                  <path d="M18 21a6 6 0 0 0-12 0"></path>
-                  <circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle>
-                </svg>
-              {% else %}
-                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              {% endif %}
-            {% endif %}
-          </div>
-
-          <!-- Designation Badge -->
-          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
-
-          <!-- Name -->
-          <h3 class="member-name">{{ m.name }}</h3>
-
-          <!-- Affiliation -->
-          <p class="member-affiliation">{{ m.affiliation }}</p>
-        </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  </div>
-
-  <!-- ===================================================================
-       SECTION 2: HONORARY PATRONS (Heading OUTSIDE card)
-  =================================================================== -->
-  <div class="council-titlebar" style="margin-top: clamp(34px, 4.8vh, 52px);">
-    <h2>Honorary Patrons</h2>
-  </div>
-
-  <div class="council-card-box">
-    <div class="grid-row-3">
-      <!-- 1. Dr. A K Sinha -->
-      <div class="member-card-item">
-        <div class="avatar-circle">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
-        <h3 class="member-name">Dr. A K Sinha</h3>
-        <p class="member-affiliation">Plant Protection Advisor, Directorate of Plant Protection, Quarantine &amp; Storage, Faridabad, Haryana</p>
-      </div>
-
-      <!-- 2. Dr. K S R K Murthy -->
-      <div class="member-card-item">
-        <div class="avatar-circle">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
-        <h3 class="member-name">Dr. K S R K Murthy</h3>
-        <p class="member-affiliation">Telecom Colony, Ved Vihar, Secunderabad, Telangana</p>
-      </div>
-
-      <!-- 3. Mr. N Sukumar -->
-      <div class="member-card-item">
-        <div class="avatar-circle">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </div>
-        <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">Honorary Patron</span>
-        <h3 class="member-name">Mr. N Sukumar</h3>
-        <p class="member-affiliation">Managing Director, Hyderabad Chemical Products Ltd., Hyderabad, Telangana</p>
       </div>
     </div>
+
+    <!-- Group 2: General Secretary, Assistant Secretary & Treasurer -->
+    <div class="council-group-block">
+      <div class="council-group-header">
+        <span class="group-dot"></span>
+        <h2>General Secretary, Assistant Secretary &amp; Treasurer</h2>
+      </div>
+      <div class="grid-row-3">
+        {% for m in secretaries_group %}
+        <div class="member-card-item">
+          <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
+            {% if m.image %}
+              <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
+            {% else %}
+              {% if m.gender == 'female' %}
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+                  <path d="M18 21a6 6 0 0 0-12 0"></path>
+                  <circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle>
+                </svg>
+              {% else %}
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              {% endif %}
+            {% endif %}
+          </div>
+          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
+          <h3 class="member-name">{{ m.name }}</h3>
+          <p class="member-affiliation">{{ m.affiliation }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Group 3: Chief Editor & Associate Editors -->
+    <div class="council-group-block">
+      <div class="council-group-header">
+        <span class="group-dot"></span>
+        <h2>Chief Editor &amp; Associate Editors</h2>
+      </div>
+      <div class="grid-row-3">
+        {% for m in editors_group %}
+        <div class="member-card-item">
+          <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
+            {% if m.image %}
+              <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
+            {% else %}
+              {% if m.gender == 'female' %}
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+                  <path d="M18 21a6 6 0 0 0-12 0"></path>
+                  <circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle>
+                </svg>
+              {% else %}
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              {% endif %}
+            {% endif %}
+          </div>
+          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
+          <h3 class="member-name">{{ m.name }}</h3>
+          <p class="member-affiliation">{{ m.affiliation }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Group 4: Councillors -->
+    <div class="council-group-block">
+      <div class="council-group-header">
+        <span class="group-dot"></span>
+        <h2>Councillors</h2>
+      </div>
+      <div class="grid-row-5">
+        {% for m in councillors_group %}
+        <div class="member-card-item">
+          <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
+            {% if m.image %}
+              <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
+            {% else %}
+              {% if m.gender == 'female' %}
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+                  <path d="M18 21a6 6 0 0 0-12 0"></path>
+                  <circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle>
+                </svg>
+              {% else %}
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              {% endif %}
+            {% endif %}
+          </div>
+          <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
+          <h3 class="member-name">{{ m.name }}</h3>
+          <p class="member-affiliation">{{ m.affiliation }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
   </div>
 
 </section>
