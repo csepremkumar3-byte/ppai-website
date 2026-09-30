@@ -1,35 +1,46 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About us - Plant Protection Association of India (PPAI){% endblock %}
+{% block title %}About Us - Plant Protection Association of India (PPAI){% endblock %}
 
 {% block extra_css %}
 <style>
   /* ===================================================================
-     CLEAN EDITORIAL THEME - ABOUT US
-     High-legibility typography, clear hierarchy, subtle green accents
+     MODERN CLEAN EDITORIAL THEME - ABOUT US
+     Executive governance cards, crisp icon badges, high readability
   =================================================================== */
-  .about-stream-wrapper {
-    max-width: 960px;
+  .about-page-container {
+    max-width: 1040px;
     margin: 0 auto;
-    padding: clamp(28px, 4.5vh, 52px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 90px) clamp(20px, 4vw, 40px);
+    padding: clamp(32px, 4.5vh, 56px) clamp(20px, 4vw, 40px) clamp(64px, 8vh, 96px) clamp(20px, 4vw, 40px);
   }
 
-  /* Thin Section Divider Line */
-  .story-divider {
-    border: none;
-    height: 1px;
-    background: rgba(11, 36, 23, 0.12);
-    margin: clamp(24px, 3.2vh, 36px) 0 clamp(16px, 2vh, 22px) 0;
+  /* Header Section */
+  .about-hero-header {
+    margin-bottom: clamp(24px, 3vh, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  /* Top Hero Section */
-  .story-hero {
-    margin-bottom: 0;
+  .about-hero-header .badge-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--vibrant-green);
+    background: rgba(0, 178, 114, 0.08);
+    border: 1px solid rgba(0, 178, 114, 0.2);
+    padding: 4px 12px;
+    border-radius: 100px;
+    width: fit-content;
   }
 
-  .story-hero h1 {
-    font-size: clamp(26px, 2.6vw, 36px);
+  .about-hero-header h1 {
+    font-size: clamp(28px, 2.8vw, 38px);
     font-weight: 800;
     color: var(--deep-forest);
     line-height: 1.15;
@@ -37,106 +48,291 @@
     margin: 0;
   }
 
-  .story-hero + .story-divider {
-    margin-top: clamp(10px, 1.4vh, 16px);
-    margin-bottom: clamp(14px, 1.8vh, 20px);
+  /* Section Card Styling */
+  .content-section {
+    margin-bottom: clamp(32px, 4vh, 48px);
   }
 
-  /* Story Sections */
-  .story-section {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .story-heading {
-    font-size: clamp(20px, 1.7vw, 24px);
+  .section-title {
+    font-size: clamp(20px, 1.8vw, 24px);
     font-weight: 700;
     color: var(--deep-forest);
-    line-height: 1.25;
     letter-spacing: -0.02em;
-    margin: 0 0 clamp(10px, 1.3vh, 14px) 0;
+    margin: 0 0 clamp(14px, 1.8vh, 18px) 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .story-body-p {
+  .section-title-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(11, 36, 23, 0.1);
+  }
+
+  /* Narrative Paragraphs */
+  .narrative-p {
     font-size: clamp(15px, 1.05vw, 16.5px);
-    line-height: 1.78;
+    line-height: 1.8;
     color: var(--text-main);
-    margin: 0 0 clamp(12px, 1.5vh, 16px) 0;
+    margin: 0 0 16px 0;
     text-align: justify;
     text-justify: inter-word;
   }
 
-  .story-body-p:last-of-type {
+  .narrative-p:last-child {
     margin-bottom: 0;
   }
 
-  /* Diamond Bullet Point Lists */
-  .story-pillars {
+  /* Highlight Banner / Card */
+  .info-highlight-card {
+    background: linear-gradient(135deg, rgba(0, 178, 114, 0.04) 0%, rgba(11, 36, 23, 0.02) 100%);
+    border: 1px solid rgba(0, 178, 114, 0.18);
+    border-left: 4px solid var(--vibrant-green);
+    border-radius: 12px;
+    padding: clamp(16px, 2vh, 20px) clamp(18px, 2.5vw, 24px);
+    margin-top: 16px;
     display: flex;
-    flex-direction: column;
-    gap: clamp(10px, 1.3vh, 14px);
-    margin-top: clamp(8px, 1.1vh, 12px);
-    padding: 0;
-    list-style: none;
+    gap: 14px;
+    align-items: flex-start;
   }
 
-  .story-pillar-row {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    font-size: clamp(14.5px, 1vw, 16px);
-    line-height: 1.68;
-    color: var(--text-main);
-  }
-
-  .story-pillar-row > div,
-  .story-pillar-row > span {
-    flex: 1;
-    text-align: justify;
-    text-justify: inter-word;
-  }
-
-  .story-pillar-row::before {
-    content: "◆";
-    font-size: 9px;
-    color: var(--vibrant-green);
-    opacity: 0.85;
+  .info-highlight-card .icon-wrap {
     flex-shrink: 0;
-    position: relative;
-    top: -2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(0, 178, 114, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--vibrant-green);
   }
 
-  /* Sub-bullet list for nested items */
-  .story-sub-pillars {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 8px;
-    padding-left: 6px;
-    list-style: none;
-  }
-
-  .story-sub-pillar-row {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    font-size: clamp(14px, 0.98vw, 15.5px);
+  .info-highlight-card p {
+    margin: 0;
+    font-size: 14.5px;
     line-height: 1.65;
     color: var(--text-main);
   }
 
-  .story-sub-pillar-row::before {
-    content: "◆";
-    font-size: 7px;
+  /* Aims & Objectives Grid */
+  .objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .objective-card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: clamp(18px, 2.2vh, 22px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 4px 14px rgba(11, 36, 23, 0.03);
+  }
+
+  .objective-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 178, 114, 0.35);
+    box-shadow: 0 8px 24px rgba(11, 36, 23, 0.06);
+  }
+
+  .objective-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .objective-icon-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(0, 178, 114, 0.1);
     color: var(--vibrant-green);
-    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .objective-num-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .objective-card p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--text-main);
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Governance Clause List */
+  .governance-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .governance-card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: clamp(16px, 2vh, 20px) clamp(18px, 2.5vw, 22px);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(11, 36, 23, 0.02);
+  }
+
+  .clause-pill {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--deep-forest);
+    background: rgba(11, 36, 23, 0.06);
+    padding: 3px 9px;
+    border-radius: 6px;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  .governance-body {
+    flex: 1;
+  }
+
+  .governance-body p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-main);
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Reserve Fund Sub-Card */
+  .reserve-fund-box {
+    margin-top: 12px;
+    background: rgba(0, 178, 114, 0.03);
+    border: 1px solid rgba(0, 178, 114, 0.15);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .reserve-fund-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--deep-forest);
+    margin-bottom: 2px;
+  }
+
+  .reserve-sub-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-main);
+  }
+
+  .reserve-sub-row .check-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--vibrant-green);
     flex-shrink: 0;
     position: relative;
     top: -2px;
   }
 
-  .story-sub-pillar-row span {
+  /* Meetings Side-by-Side Grid */
+  .meetings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-top: 16px;
+  }
+
+  .meeting-panel {
+    background: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: clamp(20px, 2.5vh, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 4px 14px rgba(11, 36, 23, 0.03);
+  }
+
+  .meeting-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(11, 36, 23, 0.06);
+  }
+
+  .meeting-panel-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(11, 36, 23, 0.05);
+    color: var(--deep-forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .meeting-panel-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--deep-forest);
+  }
+
+  .meeting-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .meeting-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--text-main);
+  }
+
+  .meeting-item .item-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--vibrant-green);
+    flex-shrink: 0;
+    margin-top: 9px;
+  }
+
+  .meeting-item span {
     flex: 1;
     text-align: justify;
     text-justify: inter-word;
@@ -144,161 +340,288 @@
 
   /* Responsive Adjustments */
   @media (max-width: 768px) {
-    .about-stream-wrapper {
+    .about-page-container {
       padding: 24px 16px 48px 16px;
     }
 
-    .story-hero + .story-divider {
-      margin-top: 8px;
-      margin-bottom: 12px;
+    .governance-card {
+      padding: 14px;
+      gap: 12px;
     }
 
-    .story-divider {
-      margin: 20px 0 12px 0;
+    .meetings-grid {
+      grid-template-columns: 1fr;
     }
 
-    .story-heading {
-      margin-bottom: 8px;
-    }
-
-    .story-pillar-row {
-      gap: 10px;
+    .objectives-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="about-stream-wrapper">
+<div class="about-page-container">
 
-  <!-- 1. Primary Title Header -->
-  <section class="story-hero">
+  <!-- Page Header -->
+  <header class="about-hero-header">
+    <div class="badge-tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      Scientific Society • Estd. 1972
+    </div>
     <h1>About Us</h1>
-  </section>
+  </header>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 2. History -->
-  <section class="story-section">
-    <h2 class="story-heading">History</h2>
-    <p class="story-body-p">
+  <!-- 1. History Section -->
+  <section class="content-section">
+    <div class="section-title">
+      <span>History</span>
+      <div class="section-title-line"></div>
+    </div>
+    
+    <p class="narrative-p">
       The Plant Protection Association of India (PPAI) is a scientific society established in 1972. It is non-profit organization, registered under the Andhra Pradesh (Telangana Area) Public Societies Registration Act, 1350 Fasli (Act I of 1350 F.) on 4th December, 1972. Its membership is open to all those scientists interested in promotion of Plant Protection and is dedicated for that cause.
     </p>
-    <p class="story-body-p">
+    <p class="narrative-p">
       As per the 1972 memorandum, it was decided that the permanent headquarters of PPAI would be Hyderabad. The Association started functioning from the location of Central Plant Protection Training Institute and set up its office in the premises of the institute. In 1998, the office set up was shifted to ICAR – National Bureau of Plant Genetic Resources and since then has been continuing to operate from this institute till this day. In 2017, PPAI was permitted to construct its own building in an area located under the jurisdiction of Professor Jayashankar Telangana State Agricultural University, Hyderabad. All the set ups of the Association will be gradually shifted to the new building and PPAI new premises will be fully operational by January 2025.
     </p>
   </section>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 3. Aims and Objectives of the Association -->
-  <section class="story-section">
-    <h2 class="story-heading">Aims and Objectives of the Association</h2>
-    <p class="story-body-p">
+  <!-- 2. Aims and Objectives Section -->
+  <section class="content-section">
+    <div class="section-title">
+      <span>Aims &amp; Objectives of the Association</span>
+      <div class="section-title-line"></div>
+    </div>
+    
+    <p class="narrative-p">
       Since inception, the aims and objectives mentioned in PPAI memorandum have been based on a set of core underlying aspirations of advancing the cause of plant protection research and development, disseminate plant protection knowledge and maintain a consistent link among the plant protection workers belonging to diverse organizations in the country. These objectives have undergone revision and modifications to align with advances in research and development, technologies as well as infrastructure growth in areas related to plant protection. Following are the existing objectives of the Association:
     </p>
 
-    <ul class="story-pillars">
-      <li class="story-pillar-row">
-        <span>To advance the cause of plant protection by encouraging and promoting plant protection research and education in the country.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>To provide a forum for dissemination of information related to plant protection through a journal.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>To bring about exchange of views and ideas on plant protection by organising lectures, discussion, seminars, symposia etc.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>To maintain a link between plant protection workers in India.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>To involve in any such activity which will be useful for the advancement and adoption of plant protection techniques developed by the scientific community.</span>
-      </li>
-    </ul>
-  </section>
-
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 4. Executive Council of PPAI -->
-  <section class="story-section">
-    <h2 class="story-heading">Executive Council of PPAI</h2>
-    <ul class="story-pillars">
-      <li class="story-pillar-row">
-        <span>There is an executive council responsible to carry on all affairs of the association.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>The executive council consists of Honorary Patron, the President; Vice President; General Secretary; Assistant Secretary; Treasurer and Eight councillors. All except the Honorary Patron (Plant Protection Adviser to the Government of India) will be elected by the General body. All the office bearers are elected for a period of two years.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>The general secretary is responsible for recording the proceedings of the meetings of the association and of the council and for conducting day to day business of the association. The assistant secretary assists the secretary in all matters connected with the association, and shall be in charge in the absence of the secretary. The treasurer maintains the account, receive deposits and disburses money on behalf of the association according to directions of the council.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>The funds are spent only to the attainment of the objects of the society and no portion thereof shall be paid or transferred directly or indirectly to any of its members through any means.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>The funds of the association are in the name of the Plant Protection Association of India operated jointly by General Secretary and Treasurer and the latter shall make payments endorsed by the secretary in respect of bills not exceeding ₹100/- at a time, Bills for sums in excess of this amount shall be jointly endorsed by the secretary and the president to the extent of ₹1000/- before they will be valid for payment by the treasurer.</span>
-      </li>
-      <li class="story-pillar-row">
-        <div>
-          <span>There is a reserve fund of the association governed as follows:</span>
-          <ul class="story-sub-pillars">
-            <li class="story-sub-pillar-row">
-              <span>There is a reserve fund of the association.</span>
-            </li>
-            <li class="story-sub-pillar-row">
-              <span>The reserve fund is not used on recurring items.</span>
-            </li>
-            <li class="story-sub-pillar-row">
-              <span>All the admission fees and 50% of life membership fee received form the reserve fund.</span>
-            </li>
-            <li class="story-sub-pillar-row">
-              <span>The executive council by decision of the general body by two thirds majority, can sanction any expenditure out of the reserve fund but not exceeding 50%.</span>
-            </li>
-          </ul>
+    <div class="objectives-grid">
+      <!-- Objective 1 -->
+      <div class="objective-card">
+        <div class="objective-card-top">
+          <div class="objective-icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <span class="objective-num-tag">Research &amp; Education</span>
         </div>
-      </li>
-      <li class="story-pillar-row">
-        <span>All accounts of the association are audited annually by an accountant nominated by the executive council. The treasurer submits to the accountant by the end of April each year the accounts of the association for the previous year for the purpose of auditing. The auditor’s statement of accounts are circulated to all members before the annual general body meeting.</span>
-      </li>
-    </ul>
+        <p>To advance the cause of plant protection by encouraging and promoting plant protection research and education in the country.</p>
+      </div>
+
+      <!-- Objective 2 -->
+      <div class="objective-card">
+        <div class="objective-card-top">
+          <div class="objective-icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+          </div>
+          <span class="objective-num-tag">Scientific Journal</span>
+        </div>
+        <p>To provide a forum for dissemination of information related to plant protection through a journal.</p>
+      </div>
+
+      <!-- Objective 3 -->
+      <div class="objective-card">
+        <div class="objective-card-top">
+          <div class="objective-icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <span class="objective-num-tag">Conferences &amp; Seminars</span>
+        </div>
+        <p>To bring about exchange of views and ideas on plant protection by organising lectures, discussion, seminars, symposia etc.</p>
+      </div>
+
+      <!-- Objective 4 -->
+      <div class="objective-card">
+        <div class="objective-card-top">
+          <div class="objective-icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </div>
+          <span class="objective-num-tag">National Linkage</span>
+        </div>
+        <p>To maintain a link between plant protection workers in India.</p>
+      </div>
+
+      <!-- Objective 5 -->
+      <div class="objective-card">
+        <div class="objective-card-top">
+          <div class="objective-icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+          <span class="objective-num-tag">Technique Adoption</span>
+        </div>
+        <p>To involve in any such activity which will be useful for the advancement and adoption of plant protection techniques developed by the scientific community.</p>
+      </div>
+    </div>
   </section>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
+  <!-- 3. Executive Council Governance Section -->
+  <section class="content-section">
+    <div class="section-title">
+      <span>Executive Council of PPAI</span>
+      <div class="section-title-line"></div>
+    </div>
 
-  <!-- 5. Meeting of the Council -->
-  <section class="story-section">
-    <h2 class="story-heading">Meeting of the Council</h2>
-    <ul class="story-pillars">
-      <li class="story-pillar-row">
-        <span>Council meetings are held periodically at the discretion of the president or at the request of 1/3 of the members of council.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>The date and time of holding each meeting of the council are notified by the secretary to each member of the council at least 2 weeks before the date on which such meetings are to be held. Non-receipt of such notice by any member of the council in no way invalidate the proceedings of the meeting. One-third of the members of the executive council form the quorum.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>Extraordinary meetings of the council are called by the president on a requisition signed by the members of the council.</span>
-      </li>
-    </ul>
+    <div class="governance-stack">
+      <!-- Clause 1 -->
+      <div class="governance-card">
+        <span class="clause-pill">01</span>
+        <div class="governance-body">
+          <p>There is an executive council responsible to carry on all affairs of the association.</p>
+        </div>
+      </div>
+
+      <!-- Clause 2 -->
+      <div class="governance-card">
+        <span class="clause-pill">02</span>
+        <div class="governance-body">
+          <p>The executive council consists of Honorary Patron, the President; Vice President; General Secretary; Assistant Secretary; Treasurer and Eight councillors. All except the Honorary Patron (Plant Protection Adviser to the Government of India) will be elected by the General body. All the office bearers are elected for a period of two years.</p>
+        </div>
+      </div>
+
+      <!-- Clause 3 -->
+      <div class="governance-card">
+        <span class="clause-pill">03</span>
+        <div class="governance-body">
+          <p>The general secretary is responsible for recording the proceedings of the meetings of the association and of the council and for conducting day to day business of the association. The assistant secretary assists the secretary in all matters connected with the association, and shall be in charge in the absence of the secretary. The treasurer maintains the account, receive deposits and disburses money on behalf of the association according to directions of the council.</p>
+        </div>
+      </div>
+
+      <!-- Clause 4 -->
+      <div class="governance-card">
+        <span class="clause-pill">04</span>
+        <div class="governance-body">
+          <p>The funds are spent only to the attainment of the objects of the society and no portion thereof shall be paid or transferred directly or indirectly to any of its members through any means.</p>
+        </div>
+      </div>
+
+      <!-- Clause 5 -->
+      <div class="governance-card">
+        <span class="clause-pill">05</span>
+        <div class="governance-body">
+          <p>The funds of the association are in the name of the Plant Protection Association of India operated jointly by General Secretary and Treasurer and the latter shall make payments endorsed by the secretary in respect of bills not exceeding ₹100/- at a time, Bills for sums in excess of this amount shall be jointly endorsed by the secretary and the president to the extent of ₹1000/- before they will be valid for payment by the treasurer.</p>
+        </div>
+      </div>
+
+      <!-- Clause 6 -->
+      <div class="governance-card">
+        <span class="clause-pill">06</span>
+        <div class="governance-body">
+          <p><strong>Reserve Fund of the Association:</strong></p>
+          <div class="reserve-fund-box">
+            <div class="reserve-sub-row">
+              <span class="check-bullet"></span>
+              <span>There is a reserve fund of the association.</span>
+            </div>
+            <div class="reserve-sub-row">
+              <span class="check-bullet"></span>
+              <span>The reserve fund is not used on recurring items.</span>
+            </div>
+            <div class="reserve-sub-row">
+              <span class="check-bullet"></span>
+              <span>All the admission fees and 50% of life membership fee received form the reserve fund.</span>
+            </div>
+            <div class="reserve-sub-row">
+              <span class="check-bullet"></span>
+              <span>The executive council by decision of the general body by two thirds majority, can sanction any expenditure out of the reserve fund but not exceeding 50%.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clause 7 -->
+      <div class="governance-card">
+        <span class="clause-pill">07</span>
+        <div class="governance-body">
+          <p>All accounts of the association are audited annually by an accountant nominated by the executive council. The treasurer submits to the accountant by the end of April each year the accounts of the association for the previous year for the purpose of auditing. The auditor’s statement of accounts are circulated to all members before the annual general body meeting.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
+  <!-- 4. Meetings Governance Section -->
+  <section class="content-section">
+    <div class="section-title">
+      <span>Meetings &amp; Governance Procedures</span>
+      <div class="section-title-line"></div>
+    </div>
 
-  <!-- 6. Meetings of the Association -->
-  <section class="story-section">
-    <h2 class="story-heading">Meetings of the Association</h2>
-    <ul class="story-pillars">
-      <li class="story-pillar-row">
-        <span>Ordinary meetings of the association are presided over by the President or in his absence by one of the Vice-Presidents or by one of the members of the council present or by member elected at the meetings.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>An extraordinary meeting of the association is called if one third of the ordinary members of the association send a signed requisition to the general secretary for such meeting.</span>
-      </li>
-    </ul>
+    <div class="meetings-grid">
+      <!-- Meeting of the Council -->
+      <div class="meeting-panel">
+        <div class="meeting-panel-header">
+          <div class="meeting-panel-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <h3>Meeting of the Council</h3>
+        </div>
+        <ul class="meeting-list">
+          <li class="meeting-item">
+            <span class="item-dot"></span>
+            <span>Council meetings are held periodically at the discretion of the president or at the request of 1/3 of the members of council.</span>
+          </li>
+          <li class="meeting-item">
+            <span class="item-dot"></span>
+            <span>The date and time of holding each meeting of the council are notified by the secretary to each member of the council at least 2 weeks before the date on which such meetings are to be held. Non-receipt of such notice by any member of the council in no way invalidate the proceedings of the meeting. One-third of the members of the executive council form the quorum.</span>
+          </li>
+          <li class="meeting-item">
+            <span class="item-dot"></span>
+            <span>Extraordinary meetings of the council are called by the president on a requisition signed by the members of the council.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Meetings of the Association -->
+      <div class="meeting-panel">
+        <div class="meeting-panel-header">
+          <div class="meeting-panel-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3>Meetings of the Association</h3>
+        </div>
+        <ul class="meeting-list">
+          <li class="meeting-item">
+            <span class="item-dot"></span>
+            <span>Ordinary meetings of the association are presided over by the President or in his absence by one of the Vice-Presidents or by one of the members of the council present or by member elected at the meetings.</span>
+          </li>
+          <li class="meeting-item">
+            <span class="item-dot"></span>
+            <span>An extraordinary meeting of the association is called if one third of the ordinary members of the association send a signed requisition to the general secretary for such meeting.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
   </section>
 
 </div>
