@@ -13,6 +13,7 @@ c = Client()
 routes = [
     '',
     'about/',
+    'annual-general-body-meeting/',
     'executive-council/',
     'legends/',
     'journal/current/',

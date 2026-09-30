@@ -21,6 +21,10 @@ def about(request):
     context = get_common_context()
     return render(request, 'pages/about.html', context)
 
+def agbm(request):
+    context = get_common_context()
+    return render(request, 'pages/agbm.html', context)
+
 def executive_council(request):
     context = get_common_context()
     context['council_members'] = ExecutiveMember.objects.all()
