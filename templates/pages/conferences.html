@@ -5,7 +5,7 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     CONFERENCES & SEMINARS - CLEAN TABLE (NO SLIDER, FOOTER BELOW FOLD)
+     CONFERENCES & SEMINARS - CLEAN TABLE & EDITORIAL THEME
   =================================================================== */
   .conferences-section {
     min-height: calc(100vh - 70px);
@@ -19,7 +19,7 @@
   }
 
   .conferences-titlebar {
-    margin-bottom: clamp(14px, 2vh, 22px);
+    margin-bottom: clamp(14px, 2vh, 20px);
     padding-bottom: 6px;
   }
 
@@ -32,6 +32,70 @@
     align-items: center;
     gap: 12px;
     letter-spacing: -0.02em;
+  }
+
+  /* Intro Section */
+  .conferences-intro-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--vibrant-green);
+    border-radius: 12px;
+    padding: clamp(16px, 2vh, 20px) clamp(18px, 2.5vw, 24px);
+    margin-bottom: clamp(20px, 2.5vh, 28px);
+    box-shadow: 0 4px 18px rgba(11, 36, 23, 0.04);
+  }
+
+  .conferences-intro-card h2 {
+    font-size: clamp(17px, 1.3vw, 20px);
+    font-weight: 700;
+    color: var(--deep-forest);
+    margin: 0 0 10px 0;
+  }
+
+  .conferences-intro-p {
+    font-size: clamp(14.5px, 1vw, 15.5px);
+    line-height: 1.7;
+    color: var(--text-main);
+    margin: 0 0 10px 0;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .conferences-intro-p:last-child {
+    margin-bottom: 0;
+  }
+
+  .conferences-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .conferences-pillar-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    line-height: 1.65;
+    color: var(--text-main);
+  }
+
+  .conferences-pillar-row span {
+    flex: 1;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .conferences-pillar-row::before {
+    content: "◆";
+    font-size: 8px;
+    color: var(--vibrant-green);
+    flex-shrink: 0;
+    position: relative;
+    top: -2px;
   }
 
   .conferences-card {
@@ -121,6 +185,17 @@
     </h1>
   </div>
 
+  <!-- Organization Overview & Mandate -->
+  <div class="conferences-intro-card">
+    <h2>Organisation of National / International Conferences, Symposia, Workshops &amp; Brainstorming Sessions</h2>
+    <p class="conferences-intro-p">
+      Plant Protection Association of India (PPAI) regularly organizes workshops and seminars on various themes related to plant health management. It also conducts meetings of plant protection workers affiliated to ICAR institutes, SAUs, state departments of agriculture, private sector agencies, and other stakeholders associated with plant protection activities.
+    </p>
+    <p class="conferences-intro-p">
+      The Society also arranges popular lectures every now and then by eminent scientists and plant protection research workers for the benefit of its members and conducts an annual General Body Meeting with a technical session.
+    </p>
+  </div>
+
   <!-- Main Content Card Box -->
   <div class="conferences-card">
     <div class="conferences-table-wrapper" style="overflow-x: auto;">
@@ -128,45 +203,45 @@
         <thead>
           <tr>
             <th class="col-year">Year</th>
-            <th class="col-event">Conference, Seminar &amp; Symposia Event</th>
+            <th class="col-event">Conference, Workshop, Symposia &amp; Brainstorming Event</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="col-year">2023</td>
-            <td class="col-event">International Conference on Plant Health Management (ICPHM 2023) &mdash; Innovation and Sustainability, at PJTSAU, Hyderabad</td>
+            <td class="col-event">International Conference on Plant Health Management (ICPHM 2023): Innovation and Sustainability, at PJTSAU, Hyderabad (15-18 November, 2023)</td>
+          </tr>
+          <tr>
+            <td class="col-year">2023</td>
+            <td class="col-event">Brain Storming Session on Integrated pest management of invasive black thrips (<em>Thrips parvispinus</em>) in chilli in Telangana and Andhra Pradesh (28th January, 2023)</td>
           </tr>
           <tr>
             <td class="col-year">2019</td>
-            <td class="col-event">Associated in organising the XIX International Plant Protection Congress (IPPC 2019)</td>
+            <td class="col-event">Association in organizing “XIX International Plant Protection Congress” (IPPC2019)</td>
           </tr>
           <tr>
             <td class="col-year">2019</td>
-            <td class="col-event">Red Palm Weevil Symposium &mdash; Outsmarting the Red Palm Weevil: A Global Challenge, during IPPC 2019</td>
+            <td class="col-event">Red Palm Weevil Symposium: - Outsmarting the Red Palm weevil: A Global Challenge during XIX International Plant Protection Congress (IPPC2019)</td>
           </tr>
           <tr>
             <td class="col-year">2018</td>
-            <td class="col-event">Brainstorming session on Emerging Plant Protection Technologies: Opportunities and Challenges</td>
+            <td class="col-event">Brain Storming Session on Emerging Plant Protection Technologies: Opportunities and Challenges (20th April, 2018)</td>
           </tr>
           <tr>
             <td class="col-year">2016</td>
-            <td class="col-event">Conference on National Priorities in Plant Health Management</td>
+            <td class="col-event">National Conference on Plant Health Management (at Tirupati)</td>
           </tr>
           <tr>
             <td class="col-year">2012</td>
-            <td class="col-event">International Conference on Plant Health Management for Food Security</td>
+            <td class="col-event">International Conference on Plant Health Management for Food Security (28-30th November, 2012)</td>
           </tr>
           <tr>
             <td class="col-year">2007</td>
-            <td class="col-event">Use of Organic Waste Utilization and Eco-friendly Technologies for Crop Protection</td>
-          </tr>
-          <tr>
-            <td class="col-year">2002</td>
-            <td class="col-event">Resources Management in Plant Protection During 21st Century</td>
+            <td class="col-event">National Conference on Organic Waste Utilization and Eco Friendly Technologies For Crop Protection</td>
           </tr>
           <tr>
             <td class="col-year">1997</td>
-            <td class="col-event">Plant Protection Towards Sustainability</td>
+            <td class="col-event">National Seminar on Plant Protection Towards Sustainability</td>
           </tr>
           <tr>
             <td class="col-year">1995</td>
@@ -174,15 +249,15 @@
           </tr>
           <tr>
             <td class="col-year">1994</td>
-            <td class="col-event">National Workshop on Use of Pheromones in Integrated Pest Management</td>
+            <td class="col-event">National Workshop on use of Pheromones in Integrated Pest Management</td>
           </tr>
           <tr>
             <td class="col-year">1992</td>
-            <td class="col-event">National Seminar on Changing Scenario in Pests and Pest Management</td>
+            <td class="col-event">National Seminar on Changing Scenario in Pest and Pest Management</td>
           </tr>
           <tr>
             <td class="col-year">1988</td>
-            <td class="col-event">National Workshop on Plant Protection in Horticultural Crops</td>
+            <td class="col-event">National Workshop on Plant Protection in Horticultural crops</td>
           </tr>
           <tr>
             <td class="col-year">1986</td>
