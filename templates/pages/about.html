@@ -71,7 +71,7 @@
     margin-bottom: 0;
   }
 
-  /* Pillar / Bullet Points */
+  /* Diamond Bullet Point Lists */
   .story-pillars {
     display: flex;
     flex-direction: column;
@@ -90,7 +90,9 @@
     color: var(--text-main);
   }
 
-  .story-pillar-row span {
+  .story-pillar-row > div,
+  .story-pillar-row > span {
+    flex: 1;
     text-align: justify;
     text-justify: inter-word;
   }
@@ -105,54 +107,17 @@
     top: -2px;
   }
 
-  /* Numbered List Structure */
-  .story-ordered-list {
-    list-style: none;
-    counter-reset: custom-counter;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(12px, 1.5vh, 16px);
-    margin-top: clamp(10px, 1.3vh, 14px);
-    padding: 0;
-  }
-
-  .story-ordered-item {
-    counter-increment: custom-counter;
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    font-size: clamp(14.5px, 1vw, 16px);
-    line-height: 1.72;
-    color: var(--text-main);
-  }
-
-  .story-ordered-item::before {
-    content: counter(custom-counter) ".";
-    font-weight: 700;
-    color: var(--deep-forest);
-    flex-shrink: 0;
-    min-width: 20px;
-  }
-
-  .story-ordered-item > div {
-    flex: 1;
-    text-align: justify;
-    text-justify: inter-word;
-  }
-
-  /* Sub-numbered list for Roman numerals (i, ii, iii...) */
-  .story-sub-list {
-    list-style: none;
-    counter-reset: sub-counter;
+  /* Sub-bullet list for nested items */
+  .story-sub-pillars {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-top: 8px;
-    padding-left: 8px;
+    padding-left: 6px;
+    list-style: none;
   }
 
-  .story-sub-item {
-    counter-increment: sub-counter;
+  .story-sub-pillar-row {
     display: flex;
     align-items: baseline;
     gap: 10px;
@@ -161,15 +126,17 @@
     color: var(--text-main);
   }
 
-  .story-sub-item::before {
-    content: counter(sub-counter, lower-roman) ")";
-    font-weight: 600;
-    color: var(--deep-forest);
+  .story-sub-pillar-row::before {
+    content: "◆";
+    font-size: 7px;
+    color: var(--vibrant-green);
+    opacity: 0.7;
     flex-shrink: 0;
-    min-width: 24px;
+    position: relative;
+    top: -2px;
   }
 
-  .story-sub-item span {
+  .story-sub-pillar-row span {
     flex: 1;
     text-align: justify;
     text-justify: inter-word;
@@ -194,8 +161,7 @@
       margin-bottom: 8px;
     }
 
-    .story-pillar-row,
-    .story-ordered-item {
+    .story-pillar-row {
       gap: 10px;
     }
   }
@@ -207,15 +173,15 @@
 
   <!-- 1. Primary Title Header -->
   <section class="story-hero">
-    <h1>Plant Protection Association of India (PPAI)</h1>
+    <h1>About Us</h1>
   </section>
 
   <!-- Line Divider -->
   <hr class="story-divider">
 
-  <!-- 2. Brief History -->
+  <!-- 2. History -->
   <section class="story-section">
-    <h2 class="story-heading">Brief History</h2>
+    <h2 class="story-heading">History</h2>
     <p class="story-body-p">
       The Plant Protection Association of India (PPAI) is a scientific society established in 1972. It is non-profit organization, registered under the Andhra Pradesh (Telangana Area) Public Societies Registration Act, 1350 Fasli (Act I of 1350 F.) on 4th December, 1972. Its membership is open to all those scientists interested in promotion of Plant Protection and is dedicated for that cause.
     </p>
@@ -259,45 +225,45 @@
   <!-- 4. Executive Council of PPAI -->
   <section class="story-section">
     <h2 class="story-heading">Executive Council of PPAI</h2>
-    <ol class="story-ordered-list">
-      <li class="story-ordered-item">
-        <div>There is an executive council responsible to carry on all affairs of the association.</div>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span>There is an executive council responsible to carry on all affairs of the association.</span>
       </li>
-      <li class="story-ordered-item">
-        <div>The executive council consists of Honorary Patron, the President; Vice President; General Secretary; Assistant Secretary; Treasurer and Eight councillors. All except the Honorary Patron (Plant Protection Adviser to the Government of India) will be elected by the General body. All the office bearers are elected for a period of two years.</div>
+      <li class="story-pillar-row">
+        <span>The executive council consists of Honorary Patron, the President; Vice President; General Secretary; Assistant Secretary; Treasurer and Eight councillors. All except the Honorary Patron (Plant Protection Adviser to the Government of India) will be elected by the General body. All the office bearers are elected for a period of two years.</span>
       </li>
-      <li class="story-ordered-item">
-        <div>The general secretary is responsible for recording the proceedings of the meetings of the association and of the council and for conducting day to day business of the association. The assistant secretary assists the secretary in all matters connected with the association, and shall be in charge in the absence of the secretary. The treasurer maintains the account, receive deposits and disburses money on behalf of the association according to directions of the council.</div>
+      <li class="story-pillar-row">
+        <span>The general secretary is responsible for recording the proceedings of the meetings of the association and of the council and for conducting day to day business of the association. The assistant secretary assists the secretary in all matters connected with the association, and shall be in charge in the absence of the secretary. The treasurer maintains the account, receive deposits and disburses money on behalf of the association according to directions of the council.</span>
       </li>
-      <li class="story-ordered-item">
-        <div>The funds are spent only to the attainment of the objects of the society and no portion thereof shall be paid or transferred directly or indirectly to any of its members through any means.</div>
+      <li class="story-pillar-row">
+        <span>The funds are spent only to the attainment of the objects of the society and no portion thereof shall be paid or transferred directly or indirectly to any of its members through any means.</span>
       </li>
-      <li class="story-ordered-item">
-        <div>The funds of the association are in the name of the Plant Protection Association of India operated jointly by General Secretary and Treasurer and the latter shall make payments endorsed by the secretary in respect of bills not exceeding ₹100/- at a time, Bills for sums in excess of this amount shall be jointly endorsed by the secretary and the president to the extent of ₹1000/- before they will be valid for payment by the treasurer.</div>
+      <li class="story-pillar-row">
+        <span>The funds of the association are in the name of the Plant Protection Association of India operated jointly by General Secretary and Treasurer and the latter shall make payments endorsed by the secretary in respect of bills not exceeding ₹100/- at a time, Bills for sums in excess of this amount shall be jointly endorsed by the secretary and the president to the extent of ₹1000/- before they will be valid for payment by the treasurer.</span>
       </li>
-      <li class="story-ordered-item">
+      <li class="story-pillar-row">
         <div>
-          <div>There is a reserve fund of the association governed as follows:</div>
-          <ul class="story-sub-list">
-            <li class="story-sub-item">
+          <span>There is a reserve fund of the association governed as follows:</span>
+          <ul class="story-sub-pillars">
+            <li class="story-sub-pillar-row">
               <span>There is a reserve fund of the association.</span>
             </li>
-            <li class="story-sub-item">
+            <li class="story-sub-pillar-row">
               <span>The reserve fund is not used on recurring items.</span>
             </li>
-            <li class="story-sub-item">
+            <li class="story-sub-pillar-row">
               <span>All the admission fees and 50% of life membership fee received form the reserve fund.</span>
             </li>
-            <li class="story-sub-item">
+            <li class="story-sub-pillar-row">
               <span>The executive council by decision of the general body by two thirds majority, can sanction any expenditure out of the reserve fund but not exceeding 50%.</span>
             </li>
           </ul>
         </div>
       </li>
-      <li class="story-ordered-item">
-        <div>All accounts of the association are audited annually by an accountant nominated by the executive council. The treasurer submits to the accountant by the end of April each year the accounts of the association for the previous year for the purpose of auditing. The auditor’s statement of accounts are circulated to all members before the annual general body meeting.</div>
+      <li class="story-pillar-row">
+        <span>All accounts of the association are audited annually by an accountant nominated by the executive council. The treasurer submits to the accountant by the end of April each year the accounts of the association for the previous year for the purpose of auditing. The auditor’s statement of accounts are circulated to all members before the annual general body meeting.</span>
       </li>
-    </ol>
+    </ul>
   </section>
 
   <!-- Line Divider -->
@@ -325,14 +291,14 @@
   <!-- 6. Meetings of the Association -->
   <section class="story-section">
     <h2 class="story-heading">Meetings of the Association</h2>
-    <ol class="story-ordered-list">
-      <li class="story-ordered-item">
-        <div>Ordinary meetings of the association are presided over by the President or in his absence by one of the Vice-Presidents or by one of the members of the council present or by member elected at the meetings.</div>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span>Ordinary meetings of the association are presided over by the President or in his absence by one of the Vice-Presidents or by one of the members of the council present or by member elected at the meetings.</span>
       </li>
-      <li class="story-ordered-item">
-        <div>An extraordinary meeting of the association is called if one third of the ordinary members of the association send a signed requisition to the general secretary for such meeting.</div>
+      <li class="story-pillar-row">
+        <span>An extraordinary meeting of the association is called if one third of the ordinary members of the association send a signed requisition to the general secretary for such meeting.</span>
       </li>
-    </ol>
+    </ul>
   </section>
 
 </div>
