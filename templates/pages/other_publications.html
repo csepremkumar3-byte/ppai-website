@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Other Publications - Plant Protection Association of India (PPAI){% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     CLEAN LINE-SEPARATED EDITORIAL THEME - OTHER PUBLICATIONS
+  =================================================================== */
+  .about-stream-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(28px, 4.5vh, 52px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 90px) clamp(20px, 4vw, 40px);
+  }
+
+  /* Thin Section Divider Line with Asymmetrical Spacing */
+  .story-divider {
+    border: none;
+    height: 1px;
+    background: rgba(11, 36, 23, 0.12);
+    margin: clamp(24px, 3.2vh, 36px) 0 clamp(8px, 1.2vh, 14px) 0;
+  }
+
+  /* Top Hero Section */
+  .story-hero {
+    margin-bottom: 0;
+  }
+
+  .story-hero h1 {
+    font-size: clamp(26px, 2.6vw, 36px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  /* Reduced gap specifically between top hero title and the first separator */
+  .story-hero + .story-divider {
+    margin-top: clamp(10px, 1.4vh, 16px);
+    margin-bottom: clamp(10px, 1.4vh, 16px);
+  }
+
+  /* One by One Story Sections */
+  .story-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .story-heading {
+    font-size: clamp(20px, 1.7vw, 24px);
+    font-weight: 700;
+    color: var(--deep-forest);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 clamp(8px, 1.1vh, 12px) 0;
+  }
+
+  .story-body-p {
+    font-size: clamp(15px, 1.05vw, 17px);
+    line-height: 1.78;
+    color: var(--text-main);
+    margin: 0 0 clamp(10px, 1.3vh, 14px) 0;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .story-body-p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* Clean Green Diamond Bullet Points */
+  .story-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.1vh, 12px);
+    margin-top: clamp(6px, 0.9vh, 10px);
+    padding: 0;
+    list-style: none;
+  }
+
+  .story-pillar-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: clamp(14.5px, 1vw, 16px);
+    line-height: 1.65;
+    color: var(--text-main);
+  }
+
+  .story-pillar-row span {
+    flex: 1;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .story-pillar-row::before {
+    content: "◆";
+    font-size: 9px;
+    color: var(--vibrant-green);
+    flex-shrink: 0;
+    position: relative;
+    top: -2px;
+  }
+
+  /* Clean Numbered List Structure */
+  .story-ordered-list {
+    list-style: none;
+    counter-reset: custom-counter;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 1.5vh, 16px);
+    margin-top: clamp(8px, 1.1vh, 12px);
+    padding: 0;
+  }
+
+  .story-ordered-item {
+    counter-increment: custom-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: clamp(14.5px, 1vw, 16px);
+    line-height: 1.72;
+    color: var(--text-main);
+  }
+
+  .story-ordered-item::before {
+    content: counter(custom-counter) ".";
+    font-weight: 700;
+    color: var(--deep-forest);
+    flex-shrink: 0;
+    min-width: 22px;
+  }
+
+  .story-ordered-item > div {
+    flex: 1;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .pub-title {
+    font-weight: 700;
+    color: var(--deep-forest);
+  }
+
+  .pub-meta {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .about-stream-wrapper {
+      padding: 24px 16px 48px 16px;
+    }
+
+    .story-hero + .story-divider {
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+
+    .story-divider {
+      margin: 20px 0 8px 0;
+    }
+
+    .story-heading {
+      margin-bottom: 8px;
+    }
+
+    .story-pillar-row,
+    .story-ordered-item {
+      gap: 10px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-stream-wrapper">
+
+  <!-- 1. Primary Title Header -->
+  <section class="story-hero">
+    <h1>Other Publications</h1>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 2. Overview Section -->
+  <section class="story-section">
+    <h2 class="story-heading">Books &amp; Proceedings of Conferences</h2>
+    <p class="story-body-p">
+      The Plant Protection Association of India (PPAI) has released several important publications during its national and international group events. Advances made in the field of plant protection have been compiled and published for the benefit of students, researchers, state agriculture department personnel, and farmers.
+    </p>
+
+    <ol class="story-ordered-list">
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Indian Journal of Plant Protection</span>
+          <div class="pub-meta">50 Volumes published till 2022 (Quarterly research journal established in 1973).</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Plant Health Management for Food Security – Issues and Approaches (2016)</span>
+          <div class="pub-meta">Plant Protection Association of India, NBPGR Hyderabad &amp; Astraa Publications. Eds. Gururaj Katti, K. Anitha, G.S. Laha, N. Somasekhar, B. Sharat Babu and K.S. Varaprasad (Eds.). (Proceedings of the International Conference on Plant Health Management for Food Security 2012).</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Extended Summaries of the National Conference on Organic Waste Utilization and Eco-Friendly Technologies for Crop Protection (2007)</span>
+          <div class="pub-meta">Published by Plant Protection Association of India, Hyderabad.</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Resource Management in Plant Protection During Twenty First Century (2002)</span>
+          <div class="pub-meta">Proceedings of the National Conference in 2002 (Published in Two Volumes).</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Forty Years of Plant Protection in India</span>
+          <div class="pub-meta">Commemorative Special Publication by Plant Protection Association of India.</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Plant Protection Towards Sustainability (1997)</span>
+          <div class="pub-meta">Proceedings of the National Symposium, 1997 — Special Issue of the Indian Journal of Plant Protection (IJPP).</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Plant Protection and Environment (1995)</span>
+          <div class="pub-meta">Proceedings of the National Symposium on Integrated Pest Management and Environment, 1995.</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Pheromones in Integrated Pest Management (1994)</span>
+          <div class="pub-meta">Proceedings of the National Workshop on Use of Pheromones in IPM, 1994.</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Pests and Pest Management – Changing Scenario (1992)</span>
+          <div class="pub-meta">Proceedings of the National Seminar, 1992.</div>
+        </div>
+      </li>
+      <li class="story-ordered-item">
+        <div>
+          <span class="pub-title">Plant Protection in Field Crops (1986)</span>
+          <div class="pub-meta">Proceedings of the National Seminar on Plant Protection in Field Crops, 1986.</div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+</div>
+{% endblock %}

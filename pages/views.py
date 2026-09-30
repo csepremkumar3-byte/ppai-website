@@ -67,9 +67,11 @@ def author_guidelines(request):
     return render(request, 'pages/author_guidelines.html', context)
 
 def books(request):
+    return redirect('other_publications')
+
+def other_publications(request):
     context = get_common_context()
-    context['books_list'] = PublicationBook.objects.all()
-    return render(request, 'pages/books.html', context)
+    return render(request, 'pages/other_publications.html', context)
 
 def membership_info(request):
     context = get_common_context()

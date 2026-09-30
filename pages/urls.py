@@ -18,6 +18,7 @@ urlpatterns = [
     path('awards/', views.awards, name='awards'),
     path('awards/nomination/', views.awards_nomination, name='awards_nomination'),
     path('conferences/', views.conferences, name='conferences'),
+    path('events/other-publications/', views.other_publications, name='other_publications'),
     path('events/election/', views.election, name='election'),
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),

@@ -27,6 +27,7 @@ routes = [
     'awards/',
     'awards/nomination/',
     'conferences/',
+    'events/other-publications/',
     'events/election/',
     'register/',
     'login/',

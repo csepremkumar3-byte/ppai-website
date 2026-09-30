@@ -714,7 +714,6 @@
             <a href="{% url 'journal_archives' %}">Archives</a>
             <a href="{% url 'editorial_board' %}">Editorial Board</a>
             <a href="{% url 'author_guidelines' %}">Author Guidelines</a>
-            <a href="{% url 'books' %}">Books</a>
           </div>
         </div>
 
@@ -739,11 +738,12 @@
         </div>
 
         <div class="nav-item">
-          <a href="{% url 'conferences' %}" class="{% if request.resolver_match.url_name in 'conferences,election' %}active{% endif %}">Events
+          <a href="{% url 'conferences' %}" class="{% if request.resolver_match.url_name in 'conferences,other_publications,election' %}active{% endif %}">Events
             <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </a>
           <div class="dropdown">
             <a href="{% url 'conferences' %}">Conferences &amp; Seminars</a>
+            <a href="{% url 'other_publications' %}">Other Publications</a>
             <a href="{% url 'election' %}">Election</a>
           </div>
         </div>
