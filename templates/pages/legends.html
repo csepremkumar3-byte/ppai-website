@@ -538,13 +538,10 @@
     btn.dataset.period = period;
 
     btn.addEventListener('mouseenter', () => showTable(period));
-    btn.addEventListener('click', () => showTable(period));
+    btn.addEventListener('mouseleave', hideTable);
 
     buttonsContainer.appendChild(btn);
   });
-
-  // Hide when mouse leaves the interactive card box
-  cardEl.addEventListener('mouseleave', hideTable);
 </script>
 {% endblock %}
 
