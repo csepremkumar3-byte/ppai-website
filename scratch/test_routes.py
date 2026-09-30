@@ -16,6 +16,7 @@ routes = [
     'annual-general-body-meeting/',
     'executive-council/',
     'legends/',
+    'journal/about/',
     'journal/current/',
     'journal/archives/',
     'journal/editorial-board/',

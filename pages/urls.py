@@ -7,6 +7,7 @@ urlpatterns = [
     path('annual-general-body-meeting/', views.agbm, name='agbm'),
     path('executive-council/', views.executive_council, name='executive_council'),
     path('legends/', views.legends, name='legends'),
+    path('journal/about/', views.journal_about, name='journal_about'),
     path('journal/current/', views.journal_current, name='journal_current'),
     path('journal/archives/', views.journal_archives, name='journal_archives'),
     path('journal/editorial-board/', views.editorial_board, name='editorial_board'),

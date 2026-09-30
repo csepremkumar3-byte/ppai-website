@@ -38,6 +38,10 @@ def legends(request):
     context['past_editors'] = PastBearer.objects.filter(role='editor')
     return render(request, 'pages/legends.html', context)
 
+def journal_about(request):
+    context = get_common_context()
+    return render(request, 'pages/journal_about.html', context)
+
 def journal_current(request):
     context = get_common_context()
     # Vol 54 (2026) Issues 1 & 2

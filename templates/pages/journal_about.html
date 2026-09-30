@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About the Journal - Indian Journal of Plant Protection (IJPP){% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ===================================================================
+     CLEAN LINE-SEPARATED EDITORIAL THEME - ABOUT THE JOURNAL
+     Refined web-design spacing with snug divider-to-heading hierarchy
+  =================================================================== */
+  .about-stream-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(28px, 4.5vh, 52px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 90px) clamp(20px, 4vw, 40px);
+  }
+
+  /* Thin Section Divider Line with Asymmetrical Spacing */
+  .story-divider {
+    border: none;
+    height: 1px;
+    background: rgba(11, 36, 23, 0.12);
+    margin: clamp(24px, 3.2vh, 36px) 0 clamp(8px, 1.2vh, 14px) 0;
+  }
+
+  /* Top Hero Section */
+  .story-hero {
+    margin-bottom: 0;
+  }
+
+  .story-hero h1 {
+    font-size: clamp(26px, 2.6vw, 36px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  /* Reduced gap specifically between top hero title and the first separator */
+  .story-hero + .story-divider {
+    margin-top: clamp(10px, 1.4vh, 16px);
+    margin-bottom: clamp(10px, 1.4vh, 16px);
+  }
+
+  /* One by One Story Sections */
+  .story-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .story-heading {
+    font-size: clamp(20px, 1.7vw, 24px);
+    font-weight: 700;
+    color: var(--deep-forest);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 clamp(8px, 1.1vh, 12px) 0;
+  }
+
+  .story-body-p {
+    font-size: clamp(15px, 1.05vw, 17px);
+    line-height: 1.78;
+    color: var(--text-main);
+    margin: 0 0 clamp(10px, 1.3vh, 14px) 0;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .story-body-p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* Clean Green Diamond Bullet Points */
+  .story-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.1vh, 12px);
+    margin-top: clamp(6px, 0.9vh, 10px);
+    padding: 0;
+    list-style: none;
+  }
+
+  .story-pillar-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: clamp(14.5px, 1vw, 16px);
+    line-height: 1.65;
+    color: var(--text-main);
+  }
+
+  .story-pillar-row span {
+    flex: 1;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .story-pillar-row::before {
+    content: "◆";
+    font-size: 9px;
+    color: var(--vibrant-green);
+    flex-shrink: 0;
+    position: relative;
+    top: -2px;
+  }
+
+  .link-highlight {
+    color: var(--vibrant-green);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .link-highlight:hover {
+    color: var(--vibrant-green-hover);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .about-stream-wrapper {
+      padding: 24px 16px 48px 16px;
+    }
+
+    .story-hero + .story-divider {
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+
+    .story-divider {
+      margin: 20px 0 8px 0;
+    }
+
+    .story-heading {
+      margin-bottom: 8px;
+    }
+
+    .story-pillar-row {
+      gap: 10px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-stream-wrapper">
+
+  <!-- 1. Primary Title Header -->
+  <section class="story-hero">
+    <h1>About the Journal: Indian Journal of Plant Protection</h1>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 2. Focus and Scope -->
+  <section class="story-section">
+    <h2 class="story-heading">Focus and Scope</h2>
+    <p class="story-body-p">
+      Original research papers on applied aspects of plant protection (insect pests, mites, nematodes, diseases, rodents, weeds and plant protection equipment) are considered for publication. Papers on routine laboratory/ field studies are discouraged. Research articles based on Integrated Pest Management trials conducted for a minimum of two seasons shall be given due weightage. Field data especially on assessment of crop losses, control trials and host plant resistance should be for a minimum of two seasons.
+    </p>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 3. Peer Review Process -->
+  <section class="story-section">
+    <h2 class="story-heading">Peer Review Process</h2>
+    <ul class="story-pillars">
+      <li class="story-pillar-row">
+        <span>Editor/Associate Editor completes the preliminary screening/editing, which includes checking format (Title, affiliations, present address, abstract, scientific nomenclature, text and reference presentation).</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>The referees will be selected based on expertise in one or more areas and should be able to think clearly and logically, and also write a good critique.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Each paper submitted for publication is sent to one independent referee for peer review. In few cases it will be sent to two independent referees.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Referees are expected to respond to the editor's request for advice within a stipulated period (15 days), which is clearly stated by the editor. If the review process is not completed within the stipulated time, reminder will be sent to the referee twice at weekly interval.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>Evaluation sheet is also provided to the referee for seeking advice on all aspects of the article. The referee is advised to give willingness for reviewing immediately. If it is not feasible to review the manuscript within the stipulated period, the reviewer should express his/her inability to take up the task to the editor. The editor can send the article to another referee without further delay.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>On receipt of comments from the referee, Associate Editor/ Chief Editor takes suitable action and paper is sent to author for modification along with the comments of referee/ Associate Editor/ Chief Editor.</span>
+      </li>
+      <li class="story-pillar-row">
+        <span>If the reports of referees disagree with regard to the suitability of the paper for publication, Chief Editor will take final decision independently or in consultation with Associate Editor/Editorial board on the rejection of the paper and advice of a second referee is also sought, if required.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 4. Publication Frequency -->
+  <section class="story-section">
+    <h2 class="story-heading">Publication Frequency</h2>
+    <p class="story-body-p">
+      Four issues of the journal are published every year in March, June, September and December respectively.
+    </p>
+  </section>
+
+  <!-- Line Divider -->
+  <hr class="story-divider">
+
+  <!-- 5. Publication Platform and Open Access Policy -->
+  <section class="story-section">
+    <h2 class="story-heading">Publication platform and open access policy</h2>
+    <p class="story-body-p">
+      The online version of journal is published in Online Journal publishing system for Research Journals in Indian Council of Agricultural Research and it is available in <a href="https://epubs.icar.org.in/ejournal/" target="_blank" rel="noopener" class="link-highlight">https://epubs.icar.org.in/ejournal/</a>. This journal provides immediate open access to its content on the principle that making research freely available to the public supports a greater global exchange of knowledge.
+    </p>
+  </section>
+
+</div>
+{% endblock %}
