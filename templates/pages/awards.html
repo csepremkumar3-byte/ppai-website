@@ -5,217 +5,575 @@
 {% block extra_css %}
 <style>
   /* ===================================================================
-     AWARDS TABLE - CLEAN, SNUG & REFINED TYPOGRAPHY (FOOTER BELOW FOLD)
+     PPAI SOCIETY AWARDS - MODERN SPLIT-PANEL INTERACTIVE PORTAL
   =================================================================== */
-  .awards-section {
+  .awards-page-section {
     min-height: calc(100vh - 70px);
     box-sizing: border-box;
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: clamp(20px, 2.8vh, 32px) clamp(16px, 3vw, 40px) clamp(70px, 9vh, 110px) clamp(16px, 3vw, 40px);
+    padding: clamp(24px, 3vh, 36px) clamp(20px, 3.5vw, 48px) clamp(70px, 9vh, 110px) clamp(20px, 3.5vw, 48px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
   }
 
-  .awards-titlebar {
-    margin-bottom: clamp(14px, 2vh, 22px);
-    padding-bottom: 6px;
+  .awards-page-titlebar {
+    margin-bottom: clamp(16px, 2.2vh, 22px);
   }
 
-  .awards-titlebar h1 {
+  .awards-page-titlebar h1 {
     font-size: clamp(22px, 1.8vw, 28px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
     letter-spacing: -0.02em;
   }
 
-  .awards-card {
+  /* Main Split-Panel Card */
+  .awards-portal-container {
     background: #ffffff;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(11,36,23,0.06);
-    padding: clamp(16px, 2vw, 24px);
-    box-sizing: border-box;
-    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    min-height: 640px;
+    overflow: hidden;
   }
 
-  .awards-table-wrapper {
-    border: 1px solid #d0e5d8;
-    border-radius: 8px;
-    overflow: hidden;
+  /* Left Sidebar: Categories List */
+  .awards-sidebar {
+    background: #fbfdfc;
+    border-right: 1px solid #e2ece5;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .award-nav-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid #eef4f0;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.18s ease;
+    background: transparent;
+    text-align: left;
+    border-left: 4px solid transparent;
+  }
+
+  .award-nav-item:hover {
+    background: #f2f8f4;
+  }
+
+  .award-nav-item.active {
+    background: #eef7f1;
+    border-left-color: var(--vibrant-green);
+  }
+
+  .award-nav-title {
+    font-size: clamp(13.5px, 0.92vw, 15px);
+    font-weight: 700;
+    color: var(--deep-forest);
+    margin: 0 0 4px 0;
+    line-height: 1.35;
+  }
+
+  .award-nav-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  /* Right Panel: Content Area */
+  .awards-content-panel {
+    padding: clamp(24px, 3vw, 36px);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
     background: #ffffff;
   }
 
-  .awards-table {
-    width: 100%;
-    min-width: 620px;
-    border-collapse: collapse;
-    margin: 0;
-    font-size: clamp(14px, 0.98vw, 15.5px);
-  }
-
-  .awards-table thead th {
-    background: #e8f5ec;
-    color: #0b3d20;
-    font-size: clamp(14.5px, 1.05vw, 16px);
+  .panel-header-title {
+    font-size: clamp(18px, 1.4vw, 22px);
     font-weight: 800;
-    padding: clamp(12px, 1.4vh, 15px) clamp(14px, 1.3vw, 18px);
-    border-bottom: 2px solid #c2e2cf;
-    text-align: left;
-    white-space: nowrap;
+    color: var(--deep-forest);
+    margin: 0 0 6px 0;
+    line-height: 1.3;
   }
 
-  .awards-table thead th.col-sno {
-    width: 70px;
-    text-align: center;
-  }
-
-  .awards-table thead th.col-title {
-    width: 320px;
-  }
-
-  .awards-table thead th.col-for {
-    /* Adapts snugly to text */
-  }
-
-  .awards-table thead th.col-category {
-    width: 140px;
-    text-align: center;
-  }
-
-  .awards-table tbody tr {
-    border-bottom: 1px solid #eef4f0;
-    transition: background-color 0.15s ease;
-  }
-
-  .awards-table tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  .awards-table tbody tr:hover {
-    background-color: #f7fbf8;
-  }
-
-  .awards-table tbody td {
-    padding: clamp(12px, 1.4vh, 16px) clamp(14px, 1.3vw, 18px);
-    vertical-align: middle;
-    color: var(--text-main);
+  .panel-header-desc {
+    font-size: clamp(12.5px, 0.88vw, 14px);
+    color: var(--text-muted);
+    margin: 0 0 clamp(18px, 2.4vh, 24px) 0;
     line-height: 1.5;
   }
 
-  .awards-table tbody td.col-sno {
-    text-align: center;
-    font-weight: 700;
-    color: var(--deep-forest);
-    font-size: clamp(14px, 0.95vw, 15px);
+  /* Controls: Search & Period Filter Pills */
+  .awards-controls-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: clamp(14px, 1.8vh, 18px);
   }
 
-  .awards-table tbody td.col-title {
-    font-weight: 700;
-    color: var(--deep-forest);
-    font-size: clamp(14.5px, 1.02vw, 16px);
+  .search-input-box {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
   }
 
-  .awards-table tbody td.col-for {
-    color: #2d3748;
-    font-size: clamp(14px, 0.96vw, 15px);
-  }
-
-  .awards-table tbody td.col-category {
-    text-align: center;
-  }
-
-  .award-badge {
-    display: inline-block;
-    background: #e8f5ec;
-    color: #0b3d20;
-    border: 1px solid #bce4cc;
-    padding: 4px 12px;
+  .search-input-box input {
+    width: 100%;
+    padding: 8px 14px 8px 34px;
+    font-size: 13px;
+    border: 1px solid #d0e2d6;
     border-radius: 20px;
-    font-weight: 700;
-    font-size: clamp(11.5px, 0.85vw, 13px);
-    white-space: nowrap;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    font-family: inherit;
+    background: #fafdfb;
   }
 
-  @media (max-width: 768px) {
-    .awards-section {
-      padding: 20px 16px 48px 16px;
+  .search-input-box input:focus {
+    border-color: var(--vibrant-green);
+    background: #ffffff;
+  }
+
+  .search-input-box svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8da396;
+    pointer-events: none;
+  }
+
+  .period-filter-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-pill {
+    background: #ffffff;
+    border: 1px solid #c8ded0;
+    border-radius: 18px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #245638;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    font-family: inherit;
+  }
+
+  .filter-pill:hover {
+    background: #eef7f1;
+    border-color: var(--vibrant-green);
+  }
+
+  .filter-pill.active {
+    background: #175434;
+    border-color: #175434;
+    color: #ffffff;
+  }
+
+  .awardees-counter {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+    font-weight: 600;
+  }
+
+  /* Awardees List Container (Scrollable) */
+  .awardees-list-container {
+    border: 1px solid #e1eee6;
+    border-radius: 10px;
+    overflow-y: auto;
+    max-height: 520px;
+    background: #ffffff;
+  }
+
+  .awardee-row-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    padding: 13px 18px;
+    border-bottom: 1px solid #eef4f0;
+    align-items: center;
+    transition: background-color 0.15s ease;
+  }
+
+  .awardee-row-item:last-child {
+    border-bottom: none;
+  }
+
+  .awardee-row-item:hover {
+    background: #f7fbf8;
+  }
+
+  .awardee-year {
+    font-weight: 800;
+    color: var(--vibrant-green);
+    font-size: 13.5px;
+  }
+
+  .awardee-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--deep-forest);
+    line-height: 1.45;
+  }
+
+  .awardee-details {
+    font-size: 12px;
+    color: #55695e;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  .no-data-notice {
+    padding: 36px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    border: 1px dashed #d5e5db;
+    border-radius: 10px;
+  }
+
+  /* Responsive Media Queries */
+  @media (max-width: 900px) {
+    .awards-portal-container {
+      grid-template-columns: 1fr;
+    }
+    .awards-sidebar {
+      border-right: none;
+      border-bottom: 1px solid #e2ece5;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .awardee-row-item {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .awards-controls-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .awards-content-panel {
+      padding: 18px 14px;
     }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="awards-section">
+<section class="awards-page-section">
   <!-- Title Bar -->
-  <div class="awards-titlebar">
-    <h1>
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-      PPAI Society Awards
-    </h1>
+  <div class="awards-page-titlebar">
+    <h1>PPAI Society Awards</h1>
   </div>
 
-  <!-- Main Content Card Box -->
-  <div class="awards-card">
-    <div class="awards-table-wrapper" style="overflow-x: auto;">
-      <table class="awards-table">
-        <thead>
-          <tr>
-            <th class="col-sno">S.No.</th>
-            <th class="col-title">Award Title</th>
-            <th class="col-for">Conferred For</th>
-            <th class="col-category">Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="col-sno">1</td>
-            <td class="col-title">Dr. R D V J Prasada Rao Memorial Award</td>
-            <td class="col-for">Contributions to plant virology and quarantine</td>
-            <td class="col-category">
-              <span class="award-badge">Memorial Award</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-sno">2</td>
-            <td class="col-title">Sri Dodla Raghava Reddy Memorial Award</td>
-            <td class="col-for">Outstanding contribution in plant protection</td>
-            <td class="col-category">
-              <span class="award-badge">Memorial Award</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-sno">3</td>
-            <td class="col-title">Dr. D Bap Reddy Memorial Award</td>
-            <td class="col-for">Outstanding work in Integrated Pest Management</td>
-            <td class="col-category">
-              <span class="award-badge">Memorial Award</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-sno">4</td>
-            <td class="col-title">Smt. Kavuri Sarada Memorial Award</td>
-            <td class="col-for">Best paper published in the Indian Journal of Plant Protection</td>
-            <td class="col-category">
-              <span class="award-badge">Best Paper</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-sno">5</td>
-            <td class="col-title">Fellow of the Plant Protection Association of India (FPPAI)</td>
-            <td class="col-for">Eminent scientists with distinguished service to plant protection</td>
-            <td class="col-category">
-              <span class="award-badge">Fellowship</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- Interactive Portal Card -->
+  <div class="awards-portal-container">
+    
+    <!-- Left Category Navigation Sidebar -->
+    <div class="awards-sidebar" id="awardsSidebar">
+      <!-- Generated dynamically by JS -->
     </div>
+
+    <!-- Right Content Area -->
+    <div class="awards-content-panel">
+      <h2 class="panel-header-title" id="panelAwardTitle">Award Title</h2>
+      <p class="panel-header-desc" id="panelAwardDesc">Award Description</p>
+
+      <!-- Search & Period Filter Pills -->
+      <div class="awards-controls-bar">
+        <div class="search-input-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="awardeeSearch" placeholder="Search name or details..." autocomplete="off">
+        </div>
+
+        <div class="period-filter-pills" id="periodFilterPills">
+          <button class="filter-pill active" data-period="all">All</button>
+          <button class="filter-pill" data-period="pre-2000">Up to 2000</button>
+          <button class="filter-pill" data-period="2001-2010">2001–2010</button>
+          <button class="filter-pill" data-period="2011-2023">2011–2023</button>
+        </div>
+      </div>
+
+      <!-- Counter -->
+      <div class="awardees-counter" id="awardeesCounter">Loading awardees...</div>
+
+      <!-- Awardees List -->
+      <div class="awardees-list-container" id="awardeesListContainer">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </div>
+
   </div>
 </section>
+
+<script>
+  // Complete Dataset from the Official Golden Jubilee Souvenir Document (Pages 49-59)
+  const awardsDataset = [
+    {
+      id: "dr-d-bap-reddy",
+      title: "Dr. D Bap Reddy Memorial Award",
+      desc: "Outstanding work in Integrated Pest Management (IPM). Instituted over three decades ago for bi-annual contribution.",
+      awardees: [
+        { year: "1986–88", name: "Dr K Krishnaiah", details: "Integrated Pest Management" },
+        { year: "1988–90", name: "Dr A D Pawar", details: "Biological and Cultural Control" },
+        { year: "1990–92", name: "Dr S Uthamasamy", details: "Host Plant Resistance and IPM" },
+        { year: "1992–94", name: "Dr T M Manjunath", details: "Biological Control & IPM" },
+        { year: "1994–96", name: "Dr V Muniappa", details: "Vector Management & Plant Virology" },
+        { year: "1998–2000", name: "Dr H C Sharma", details: "Host Plant Resistance to Insects" },
+        { year: "2000–02", name: "Dr I C Pasalu and Team", details: "Rice IPM Systems" },
+        { year: "2002–04", name: "Dr B Srinivasulu", details: "Disease Management in Palms & Field Crops" },
+        { year: "2006–08", name: "Dr N P Eswar Reddy", details: "Plant Pathology & Biocontrol" },
+        { year: "2008–10", name: "Dr S Suresh", details: "Agricultural Entomology & IPM" },
+        { year: "2010–12", name: "Dr Y G Prasad", details: "Climate Resilient Pest Management" },
+        { year: "2014–16", name: "Dr U Sreedhar", details: "Tobacco & Field Crop IPM" },
+        { year: "2016–18", name: "Dr S Vennila", details: "Agro-ecosystem Analysis & Pest Surveillance" },
+        { year: "2018–20", name: "Dr Jameel Akthar", details: "Plant Quarantine & Fungal Pathology" },
+        { year: "2020–22", name: "Dr NBV Chalapathi Rao", details: "Biological Suppression of Invasive Pests" }
+      ]
+    },
+    {
+      id: "dodla-raghava-reddy",
+      title: "Sri Dodla Raghava Reddy Memorial Award",
+      desc: "Instituted in 1983 by Dr D V R Reddy for outstanding contributions in the field of Plant Protection.",
+      awardees: [
+        { year: "1997", name: "Dr A Appa Rao", details: "Plant Pathology Leadership & Research" },
+        { year: "2006–08", name: "Dr C D Mayee", details: "Cotton Pathology & Agricultural Biotechnology" },
+        { year: "2008–10", name: "Dr K S Varaprasad", details: "Plant Nematology & Biosecurity" },
+        { year: "2010–12", name: "Dr T Ramesh Babu", details: "Pesticide Residues & Agricultural Entomology" },
+        { year: "2014–16", name: "Dr P Anand Kumar", details: "Insect Molecular Biology & Transgenics" },
+        { year: "2016–18", name: "Dr A G Sreenivas", details: "Entomological Research & Crop Protection" },
+        { year: "2018–20", name: "Dr M Srinivasa Rao", details: "Climate Change Impacts on Insect Pests" },
+        { year: "2020–22", name: "Dr Basava Prabhu Patil", details: "Plant Pathology & Disease Diagnostics" }
+      ]
+    },
+    {
+      id: "dr-rdvj-prasada-rao",
+      title: "Dr. R D V J Prasada Rao Memorial Award",
+      desc: "Conferred for eminent scientific contributions to plant virology, biosecurity, and plant quarantine.",
+      awardees: [
+        { year: "2012", name: "Dr V Celia Chalam", details: "Division of Plant Quarantine, ICAR-NBPGR, New Delhi" },
+        { year: "2016", name: "Dr Kavita Gupta", details: "ICAR-National Bureau of Plant Genetic Resources, New Delhi" }
+      ]
+    },
+    {
+      id: "kavuri-sarada",
+      title: "Smt. Kavuri Sarada Memorial Award",
+      desc: "Awarded annually by the Screening Committee for the Best Research Paper published in the Indian Journal of Plant Protection.",
+      awardees: [
+        { year: "1988", name: "Dr K Abbaiah and Dr M Sugunakara Reddy", details: "Research on Pulse Disease Management" },
+        { year: "1989", name: "Dr D V Singh, Dr P Arora, Dr K D Srivastava, Dr S Nagarajan, Dr R Agarwal", details: "Wheat Rust & Foliar Blight Investigations" },
+        { year: "1992–93", name: "Dr M Veerabhadra Rao", details: "Microbiology & Applied Crop Pathology" },
+        { year: "1993–94", name: "Dr C Pramod Chandra Kumar", details: "Insect Physiology & Toxicological Studies" },
+        { year: "1994–95", name: "Dr B J Divakar, Dr P V Sharma, Dr V Raghunathan, Dr B V David, Dr G R S Reddy, Sri S V Swamy", details: "IPM & Field Efficacy of Biopesticides" },
+        { year: "1995–96", name: "Dr P P Shastry", details: "Cotton Pathology & Disease Control" },
+        { year: "1996–97", name: "Dr T P Sriharan", details: "Insect Pests of Plantation Crops" },
+        { year: "2001", name: "Dr V Markandeya, Dr V Vasu, Dr PS Chandurkar, Dr T Rangarajan, Dr B J Divakar", details: "Pesticide Formulation & Quality Control" },
+        { year: "2002", name: "Dr M Mani and Dr A Krishnamoorthy", details: "Biological Suppression of Horticultural Pests" },
+        { year: "2004", name: "Dr T K S Latha", details: "Fungal Plant Pathogens & Biological Control" },
+        { year: "2007", name: "Dr Satya Vir", details: "Neem Genetic Diversity in India and its Use as Biopesticide and Biofertilizer (Vol. 35)" },
+        { year: "2008", name: "Dr V Ramesh Babu", details: "F2 Screen Estimation of Alleles Population of Diamondback Moth (Vol. 36)" },
+        { year: "2010", name: "Dr V Manoj Kumar", details: "Management economics of foot and stem rot of mesta incited by Phytophthora parasitica (Vol. 38)" },
+        { year: "2011", name: "Dr N Ramakrishnan", details: "Standardization of X-Ray Radiography Methodology for hidden infestation in cereals (Vol. 39)" },
+        { year: "2012", name: "Dr Ratna Bhimineni", details: "Molecular Characterization of Plant Pathogens" },
+        { year: "2013", name: "Dr P A Ahila Devi & Dr V Prakasam", details: "RAPD-based Genetic Variation among Colletotrichum Isolates causing Chilli Anthracnose (Vol. 41)" },
+        { year: "2014", name: "Dr A Kandan, J Akhtar, B Singh, U Dev, R Goley, D Chand, A Roy, S Rajkumar, P C Agarwal", details: "Genetic diversity of Alternaria alternata isolates infecting different crops (Vol. 42)" },
+        { year: "2015", name: "Dr D Balakrishna, K S Babu, B V Bhat, R Vinod, M Sreedhar, G Shyamprasad, D B Pawar, Shekharappa, M O M Ilyas, J V Patil", details: "Improved shoot fly resistant sources by gamma irradiation in sorghum (Vol. 43)" },
+        { year: "2016", name: "Dr K Susheela and Dr N Sathyanarayana", details: "Weed risk assessment of Ambrosia psilostachya for its invasiveness and endangered areas in India (Vol. 44)" },
+        { year: "2019", name: "Isha Sharma, Mohinder Singh and P L Sharma", details: "Efficacy of entomopathogenic nematodes against white grub Brahmina coriacea (Vol. 47)" },
+        { year: "2019", name: "S Vijay Kumar, M Srinivas Prasad, R Rambabu, B Bhaskar, R M Sundaram, V Prakasam, D Ladhalakshmi, G S Laha, M Sheshu Madhav", details: "Marker assisted introgression of blast resistance gene Pi-2 into Samba Mahsuri (Vol. 47)" },
+        { year: "2020", name: "E Sree Latha, S Jesurajan and Ch. Sreenivasa Rao", details: "Ecological engineering in Cucurbitaceae for pest management and beneficial insects (Vol. 48)" },
+        { year: "2020", name: "Shambhu Singh, A K Dave, D Padhee and Aman", details: "Design and development of a mono wheel operated sprayer cum weeder (Vol. 48)" },
+        { year: "2021", name: "B Sai Sushma, B Vidya Sagar, S Triveni, G Uma Devi", details: "Isolation, characterization of endophytic bacteria against early blight of tomato (Vol. 49)" },
+        { year: "2021", name: "K Selvaraj and B V Sumalatha", details: "Distribution, biology and dynamics of invasive woolly whitefly on guava (Vol. 49)" },
+        { year: "2022", name: "Prasanna Holajjer, Bharat H Gawade, Z Khan and N Sivaraj", details: "Prediction of potential geographic distribution of exotic nematode in India based on MaxEnt (Vol. 50)" },
+        { year: "2022", name: "C D Mayee, B Chaudhary, R Panchbhai, A R Annepu and R D Kapur", details: "Mega-field demonstration of pink bollworm management using mating disruption technology (Vol. 50)" }
+      ]
+    },
+    {
+      id: "fellows-fppai",
+      title: "Fellow of the Plant Protection Association of India (FPPAI)",
+      desc: "Conferred to eminent scientists with 5+ years continuous membership and distinguished services to plant protection.",
+      awardees: [
+        { year: "Before 2003", name: "Dr D Bap Reddy, Dr N C Joshi, Dr B V David, Dr K Krishnaiah, Dr V C S Sastry, Dr B J Divakar, Dr H C Sharma, Dr L V Gangwane, Dr Viswanath, Dr S M A Rizvi", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr S S Lateef, Dr O P Singh, Dr A D Pawar, Dr K P Srivastava, Dr D J Patel, Dr S S Misra, Dr A R Solayappan, Dr K Natarajan, Dr A K Garg, Dr Allahnoor", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr S K Gangwar, Dr S K Srivastava, Dr G Arjanan, Dr M Balasubramanian, Dr D Kumaresan, Dr M. Veerabhadra Rao, Dr G Maruthi Ram, Dr K C Bhagat, Dr V K Kalra, Dr K S R K Murthy", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr Shashi Verma, Dr K C D Urs, Dr R C Joshi, Dr S R Das, Dr G Balasubramanian, Dr H P Patnaik, Dr S Kumarasamy, Dr Rambabu Gaur, Dr P V Sarma, Dr G T Gujar", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr T V K Singh, Dr V Raghunathan, Dr S P Singh, Dr T B Gour, Dr K C S Rao, Dr H R Patel, Dr Raghunatha Rao, Dr Sanjay Kumar, Dr I V Dhruj, Dr R T Gahukar", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr B Senapathi, Dr G Ramaprasad, Dr S V Damdhere, Dr N C Misra, Dr R P Thakur, Dr S B Sharma, Dr Renu Sharma, Dr Meera Gupta, Dr Amrit Phokela, Dr S Jayaraj", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr K Abbaiah, Dr B K Sontakke, Dr P S Chandurkar, Dr N Venugopal Rao, Dr G V Subbarathnam, Dr Suresh Pande, Dr S K Pal, Dr Mangal Sain, Dr S P Sharma, Dr S S Bhardwaj", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr C P C Kumar, Dr S Uthamasamy, Dr B Padmanabhan, Dr M P Singh, Dr P R M Rao, Dr T M Manjunath, Dr R D V J Prasada Rao, Dr T Ramesh Babu, Dr P R Misra, Dr Ravi Prakash Maurya", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr A J Tamhankar, Dr V R Bhagwat, Dr M K Naik, Dr Prakash P Shastry, Mr Satish Parsai, Dr Madhuban Gopal, Mr J Kannaiyan, Dr M Mani, Dr Chirantan Chattopadhyay, Dr P V Krishnayya", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "Before 2003", name: "Dr D Jagadishwar Reddy, Dr K K Pandey, Prof S V Sarode, Prof A Regupathy, Dr B K Mishra, Dr Ashok Krishna, Dr H P Mishra, Dr (Mrs) Saxena, Mr V Ambethgar", details: "Founding & Senior Fellows (1972–2002)" },
+        { year: "2003", name: "Dr U Sreedhar, Dr Prem Raj Gupta, Dr Kanchan Baral, Dr B K Sahoo, Dr Rajgopal", details: "Elected Fellows 2003" },
+        { year: "2005", name: "Dr M A Raoof, Dr V B Nargund, Dr Gururaj Katti, Dr Asif Tanweer, Dr P Nagaraja Rao", details: "Elected Fellows 2005" },
+        { year: "2006", name: "Dr S Desai, Dr Subrata Satpathy, Dr P Sreerama Kumar, Dr Ladu Kishore Rath, Dr Anitha Kodaru", details: "Elected Fellows 2006" },
+        { year: "2010", name: "Dr A Rajareddy, Dr Satya Vir, Dr V Ramesh Babu, Dr RW Alexander Jesudasan, Dr S Manickavasagam, Dr V Jayalakshmi, Dr Yashoda R Hegde, Dr Pankaj Sharma, Prof Ram Singh", details: "Elected Fellows 2010" },
+        { year: "2010", name: "Dr V Selvanarayanan, Dr Rajesh Pratap Singh, Dr S Jeyarani, Dr R Velazhahan, Dr PS Vimaladevi, Dr Mukesh K Dhillon, Dr J Jayakumar, Dr Abhishek Shukla, Dr T V K Singh", details: "Elected Fellows 2010" },
+        { year: "2012", name: "Dr T S K Patro, Dr P C Rath, Dr P D Meena, Dr Kavita Gupta, Dr S R Pandravada, Dr B Sree laxmi, Dr T Saravanan, Dr G Shyam Prasad, Dr P G Padmaja, Dr Chandish R Ballal", details: "Elected Fellows 2012" },
+        { year: "2012", name: "Dr G M V Prasad, Dr Dewa Ram Bajya, Dr S Ramakrishnan, Dr N Somasekhar, Dr Arjun Lal, Dr A P Padma Kumari, Dr M Prabhakar, Dr P K Behera, Dr Sashi Bhalla, Dr V Kamala", details: "Elected Fellows 2012" },
+        { year: "2016", name: "Dr V Lakshminarayanamma, Dr Ch Padmavathi, Dr Bharati N Bhat, Dr K Shankarganesh, Dr M Rajasri, Dr R Jagadeeshwar, Dr G Sridevi, Dr K Karthikeyal, Dr M Visalakshmi, Dr B Bhavani", details: "Elected Fellows 2016" },
+        { year: "2016", name: "Dr Ashish Kumar Tripathi, Dr Aravindnath Singh, Dr D Karthikeyan, Dr T V Prasad, Dr K Rameash", details: "Elected Fellows 2016" },
+        { year: "2017–23", name: "Dr Srinivas Parimi, Dr C Alice Retna Packia Sujeetha, Dr M Srinivas Prasad, Dr Suresh Kumar Khinchi, Dr A Muthu Kumar, Dr Jameel Akhtar, Dr M Alagar, Dr K P Manju", details: "Golden Jubilee Fellows (2017–2023)" },
+        { year: "2017–23", name: "Dr V Prakasam, Dr R Maruthadurai, Dr Pardeep Kumar, Dr D Ladhalakshmi, Dr Prasanna Holajjer, Dr Veghra Durga Prasad Rao Nimmakayala, Dr L Saravanan, Dr M Punithavalli", details: "Golden Jubilee Fellows (2017–2023)" },
+        { year: "2017–23", name: "Dr B S Gotyal, Dr K Selvaraj, Dr Kuldeep Singh Jadon, Dr P Duraimurugan, Dr Issai Aruna Sri, Dr V Jhansi Lakshmi, Dr Kiran Babu Talluri, Dr Satish Kumar Sain", details: "Golden Jubilee Fellows (2017–2023)" },
+        { year: "2017–23", name: "Dr SVS Gopala Swamy, Dr Girish Anantrao Gunjotikar, Dr K Vemana, Dr MH Kodandaram, Dr Bonthagorla Subbarayudu, Dr J Gulsar Banu, Dr M Visalakshi, Dr D Krishnaveni, Dr S Subramanian, Dr MK Jyosthna, Dr D Anitha Kumari", details: "Golden Jubilee Fellows (2017–2023)" }
+      ]
+    },
+    {
+      id: "best-scientist-awards",
+      title: "Best Scientist Awards (Instituted 2023)",
+      desc: "Instituted on the occasion of the PPAI Golden Jubilee in Young (<=40 yrs) and Senior (40-60 yrs) categories across Entomology, Pathology, Nematology & Digital Agriculture.",
+      awardees: [
+        { year: "2023", name: "Dr Shravan M Haldhar", details: "Best Scientist Award (Senior Category) — Entomology" },
+        { year: "2023", name: "Dr K Selvaraj", details: "Best Scientist Award (Senior Category) — Entomology" },
+        { year: "2023", name: "Dr V Bhuvaneswari", details: "Best Scientist Award (Senior Category) — Plant Pathology" },
+        { year: "2023", name: "Dr N Somasekhar", details: "Best Scientist Award (Senior Category) — Nematology" },
+        { year: "2023", name: "Dr Gadratagi Basana Gowda", details: "Best Scientist Award (Young Category) — Entomology" },
+        { year: "2023", name: "Dr K Sakthivel", details: "Best Scientist Award (Young Category) — Plant Pathology" },
+        { year: "2023", name: "Dr Satish N Chavan", details: "Best Scientist Award (Young Category) — Nematology" },
+        { year: "2023", name: "Dr Srikanth Rupavathara", details: "Best Scientist Award — Digital Agriculture" }
+      ]
+    },
+    {
+      id: "recognition-awards",
+      title: "PPAI Recognition & Distinction Awards",
+      desc: "Conferred during Golden Jubilee ICPHM 2023 for Lifetime Contribution, Outstanding Services, and National Agricultural Leadership (1972–2022).",
+      awardees: [
+        { year: "1972–22", name: "Dr Dodla V Raghava Reddy, Dr V Raghunathan, Dr P S Chandurkar, Dr K S Varaprasad, Dr K Krishnaiah, Dr KSRK Murthy, Dr B Sarath Babu", details: "Lifetime Contribution Award" },
+        { year: "1972–22", name: "Dr M Veera Bhadra Rao, Dr B Julius Divakar, Dr T B Gour, Dr Rajan Sharma, Dr T Ramesh Babu, Dr Anitha Kodaru", details: "Outstanding Contribution Award" },
+        { year: "1972–22", name: "Dr B Govinda Naik, Dr Renu Sharma, Dr S K Chakrabarty, Dr R Jagadeeshwar, Dr B Parameswari, Dr R K Khetarpal, Dr Harvir Singh, Dr Gururaj Katti, Dr A Raja Reddy, Dr V Celia Chalam, Dr M Srinivas Prasad, Dr H C Sharma, Dr L Saravanan, Dr K M Azam, Dr S Sithanantham, Dr C Pramod Chandra Kumar, Dr G Sreedevi, Dr Prasanna Holajjer, Dr Bhaskar Bajaru", details: "Golden Jubilee Recognition Award" },
+        { year: "1972–22", name: "Dr S N Puri, Dr C D Mayee, Dr Chelliah, Dr Anupam Varma, Dr A K Dhawan, Dr A N Mukhopadhyay, Dr Srikant Kulkarni, Dr J S Prasad, Dr H S Gaur", details: "PPAI Award of Distinction" },
+        { year: "1972–22", name: "Dr S N Sushil, Dr J P Singh", details: "PPAI Golden Jubilee Special Award" },
+        { year: "1972–22", name: "Mr Vinod Kumar Samanthula", details: "PPAI Posthumous Award" }
+      ]
+    }
+  ];
+
+  let currentCategoryIndex = 0;
+  let currentPeriodFilter = "all";
+  let searchQuery = "";
+
+  const sidebarEl = document.getElementById("awardsSidebar");
+  const titleEl = document.getElementById("panelAwardTitle");
+  const descEl = document.getElementById("panelAwardDesc");
+  const counterEl = document.getElementById("awardeesCounter");
+  const listContainerEl = document.getElementById("awardeesListContainer");
+  const searchInput = document.getElementById("awardeeSearch");
+  const filterPills = document.querySelectorAll(".filter-pill");
+
+  function renderSidebar() {
+    sidebarEl.innerHTML = awardsDataset.map((cat, idx) => `
+      <div class="award-nav-item ${idx === currentCategoryIndex ? 'active' : ''}" data-index="${idx}">
+        <h3 class="award-nav-title">${cat.title}</h3>
+        <p class="award-nav-count">${cat.awardees.length} awardee${cat.awardees.length === 1 ? '' : 's'}</p>
+      </div>
+    `).join('');
+
+    sidebarEl.querySelectorAll(".award-nav-item").forEach(item => {
+      item.addEventListener("click", () => {
+        currentCategoryIndex = parseInt(item.dataset.index);
+        searchQuery = "";
+        searchInput.value = "";
+        currentPeriodFilter = "all";
+        updatePillsState();
+        renderSidebar();
+        renderContent();
+      });
+    });
+  }
+
+  function updatePillsState() {
+    filterPills.forEach(pill => {
+      pill.classList.toggle("active", pill.dataset.period === currentPeriodFilter);
+    });
+  }
+
+  function matchesPeriod(yearStr, period) {
+    if (period === "all") return true;
+    
+    // Extract numbers from yearStr like "1986–88", "1997", "2012", "Before 2003", "2017–23"
+    const numbers = yearStr.match(/\d{4}/g);
+    let startYear = 1970;
+    if (numbers && numbers.length > 0) {
+      startYear = parseInt(numbers[0]);
+    } else if (yearStr.toLowerCase().includes("before 2003")) {
+      startYear = 1990;
+    }
+
+    if (period === "pre-2000") return startYear <= 2000;
+    if (period === "2001-2010") return startYear >= 2001 && startYear <= 2010;
+    if (period === "2011-2023") return startYear >= 2011;
+    return true;
+  }
+
+  function renderContent() {
+    const category = awardsDataset[currentCategoryIndex];
+    titleEl.textContent = category.title;
+    descEl.textContent = category.desc;
+
+    let filtered = category.awardees.filter(item => {
+      const matchSearch = searchQuery === "" || 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.details.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.year.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchPeriod = matchesPeriod(item.year, currentPeriodFilter);
+      return matchSearch && matchPeriod;
+    });
+
+    counterEl.textContent = `${filtered.length} of ${category.awardees.length} awardees`;
+
+    if (filtered.length === 0) {
+      listContainerEl.innerHTML = `
+        <div class="no-data-notice">
+          No awardees found matching "${searchQuery || currentPeriodFilter}".
+        </div>
+      `;
+    } else {
+      listContainerEl.innerHTML = filtered.map(item => `
+        <div class="awardee-row-item">
+          <div class="awardee-year">${item.year}</div>
+          <div>
+            <div class="awardee-name">${item.name}</div>
+            <div class="awardee-details">${item.details}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  // Filter Pill clicks
+  filterPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      currentPeriodFilter = pill.dataset.period;
+      updatePillsState();
+      renderContent();
+    });
+  });
+
+  // Search input
+  searchInput.addEventListener("input", (e) => {
+    searchQuery = e.target.value.trim();
+    renderContent();
+  });
+
+  // Init
+  renderSidebar();
+  renderContent();
+</script>
 {% endblock %}
