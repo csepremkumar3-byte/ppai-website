@@ -96,7 +96,7 @@ html_template = """{% extends "base.html" %}
     overflow: hidden;
   }
 
-  /* Award Description Box */
+  /* Award Description Box with Justified Text */
   .award-description-card {
     background: #f4f9f6;
     border: 1px solid #d2e6dc;
@@ -106,10 +106,21 @@ html_template = """{% extends "base.html" %}
     margin-bottom: clamp(10px, 1.4vh, 14px);
   }
 
+  .award-description-card h3 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--deep-forest);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 6px 0;
+  }
+
   .award-description-card p {
     font-size: clamp(12.5px, 0.85vw, 13.5px);
     color: #2c4235;
-    line-height: 1.5;
+    line-height: 1.55;
+    text-align: justify;
+    text-justify: inter-word;
     margin: 0;
   }
 
@@ -296,8 +307,9 @@ html_template = """{% extends "base.html" %}
     <!-- Right Content Area -->
     <div class="awards-content-panel">
       
-      <!-- Award Description -->
+      <!-- Award Description Box with Justification -->
       <div class="award-description-card" id="awardDescCard">
+        <h3>About the Award</h3>
         <p id="panelAwardDesc"></p>
       </div>
 

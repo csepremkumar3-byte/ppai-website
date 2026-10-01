@@ -299,25 +299,14 @@
       </div>
 
       <div class="cover-action-btns">
-        {% if issue_1_articles.first and issue_1_articles.first.pdf_file %}
-          <a href="{{ issue_1_articles.first.pdf_file.url }}" target="_blank" class="btn-emerald">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View Full Vol. 54 PDF
-          </a>
-          <a href="{{ issue_1_articles.first.pdf_file.url }}" download="IJPP_Vol54_2026_Complete.pdf" class="btn-outline" style="background: #FFF;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download Vol. 54 PDF
-          </a>
-        {% else %}
-          <a href="https://epubs.icar.org.in/index.php/IJPP" target="_blank" class="btn-emerald">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View Full Vol. 54 PDF
-          </a>
-          <a href="https://epubs.icar.org.in/index.php/IJPP" download class="btn-outline" style="background: #FFF;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download Vol. 54 PDF
-          </a>
-        {% endif %}
+        <a href="{% static 'documents/IJPP_Vol_54_No_1_March_2026.pdf' %}" target="_blank" class="btn-emerald">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          View Full Vol. 54 PDF
+        </a>
+        <a href="{% static 'documents/IJPP_Vol_54_No_1_March_2026.pdf' %}" download="IJPP_Vol54_No1_March_2026.pdf" class="btn-outline" style="background: #FFF;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Vol. 54 PDF
+        </a>
       </div>
     </div>
 
