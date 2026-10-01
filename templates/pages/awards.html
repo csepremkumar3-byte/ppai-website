@@ -241,9 +241,9 @@
     <div class="awards-content-panel">
       <h2 class="panel-header-title" id="panelAwardTitle">Award Title</h2>
       
-      <!-- Award Description & Guidelines from Document -->
+      <!-- Award Description & Background from Document -->
       <div class="award-description-card">
-        <h3>Description &amp; Guidelines</h3>
+        <h3>About the Award</h3>
         <p id="panelAwardDesc">Award Description</p>
       </div>
 
@@ -403,7 +403,7 @@
     sidebarEl.innerHTML = awardsDataset.map((cat, idx) => `
       <div class="award-nav-item ${idx === currentCategoryIndex ? 'active' : ''}" data-index="${idx}">
         <h3 class="award-nav-title">${cat.title}</h3>
-        <p class="award-nav-count">${cat.awardees.length} recipient entry${cat.awardees.length === 1 ? '' : 'ies'}</p>
+        <p class="award-nav-count">${cat.awardees.length} recipient${cat.awardees.length === 1 ? '' : 's'}</p>
       </div>
     `).join('');
 
