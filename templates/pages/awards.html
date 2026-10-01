@@ -38,7 +38,7 @@
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     display: grid;
     grid-template-columns: 340px 1fr;
-    min-height: 600px;
+    min-height: 480px;
     overflow: hidden;
   }
 
@@ -51,7 +51,7 @@
   }
 
   .award-nav-item {
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-bottom: 1px solid #eef4f0;
     cursor: pointer;
     position: relative;
@@ -67,7 +67,7 @@
 
   .award-nav-item.active {
     background: #eef7f1;
-    border-left-color: var(--vibrant-green);
+    border-left-color: #059669;
   }
 
   .award-nav-title {
@@ -87,7 +87,7 @@
 
   /* Right Panel: Content Area */
   .awards-content-panel {
-    padding: clamp(24px, 3vw, 36px);
+    padding: clamp(20px, 2.5vw, 28px);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -96,45 +96,45 @@
   }
 
   .panel-header-title {
-    font-size: clamp(19px, 1.45vw, 24px);
+    font-size: clamp(18px, 1.35vw, 22px);
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 16px 0;
+    margin: 0 0 12px 0;
     line-height: 1.3;
   }
 
   /* Award Description Box */
   .award-description-card {
-    background: #f7faf8;
-    border: 1px solid #d6e8dd;
-    border-left: 4px solid var(--vibrant-green);
+    background: #f4f9f6;
+    border: 1px solid #d2e6dc;
+    border-left: 4px solid #059669;
     border-radius: 8px;
-    padding: 16px 20px;
-    margin-bottom: clamp(20px, 2.6vh, 26px);
+    padding: 12px 16px;
+    margin-bottom: 16px;
   }
 
   .award-description-card h3 {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 800;
     color: var(--deep-forest);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    margin: 0 0 8px 0;
+    margin: 0 0 6px 0;
   }
 
   .award-description-card p {
-    font-size: clamp(13px, 0.9vw, 14.5px);
+    font-size: 13.5px;
     color: #2c4235;
-    line-height: 1.6;
+    line-height: 1.55;
     margin: 0;
   }
 
   /* Recipients Section */
   .recipients-section-title {
-    font-size: clamp(16px, 1.15vw, 18px);
+    font-size: 16px;
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 12px 0;
+    margin: 0 0 10px 0;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -144,26 +144,46 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--vibrant-green);
+    background: #059669;
     display: inline-block;
   }
 
-  /* Awardees List Container */
+  /* Awardees List Container - Sized for 4-6 rows with clean internal scrolling */
   .awardees-list-container {
-    border: 1px solid #e1eee6;
-    border-radius: 10px;
+    border: 1px solid #d5e5dc;
+    border-radius: 8px;
     overflow-y: auto;
-    max-height: 480px;
+    max-height: 295px;
     background: #ffffff;
-    box-shadow: 0 1px 4px rgba(11, 36, 23, 0.03);
+    box-shadow: 0 1px 3px rgba(11, 36, 23, 0.04);
+    scrollbar-width: thin;
+    scrollbar-color: #8bbfa3 #f0f6f2;
+  }
+
+  .awardees-list-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .awardees-list-container::-webkit-scrollbar-track {
+    background: #f0f6f2;
+    border-radius: 4px;
+  }
+
+  .awardees-list-container::-webkit-scrollbar-thumb {
+    background: #8bbfa3;
+    border-radius: 4px;
+  }
+
+  .awardees-list-container::-webkit-scrollbar-thumb:hover {
+    background: #059669;
   }
 
   .awardee-row-item {
     display: grid;
-    grid-template-columns: 130px 1fr;
-    padding: 14px 20px;
-    border-bottom: 1px solid #eef4f0;
-    align-items: flex-start;
+    grid-template-columns: 145px 1fr;
+    padding: 12px 18px;
+    border-bottom: 1px solid #edf4f0;
+    align-items: center;
     transition: background-color 0.15s ease;
   }
 
@@ -172,13 +192,14 @@
   }
 
   .awardee-row-item:hover {
-    background: #f7fbf8;
+    background: #f4faf6;
   }
 
   .awardee-year {
     font-weight: 800;
-    color: var(--vibrant-green);
-    font-size: 13.5px;
+    color: #059669;
+    font-size: 14px;
+    letter-spacing: 0.02em;
     line-height: 1.4;
   }
 
@@ -192,9 +213,9 @@
   .awardee-details {
     font-size: 12.5px;
     color: #4a6354;
-    font-weight: 400;
-    margin-top: 4px;
-    line-height: 1.45;
+    font-weight: 500;
+    margin-top: 3px;
+    line-height: 1.4;
   }
 
   /* Responsive Media Queries */
@@ -216,7 +237,7 @@
       gap: 4px;
     }
     .awards-content-panel {
-      padding: 18px 14px;
+      padding: 16px 12px;
     }
   }
 </style>
