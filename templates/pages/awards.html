@@ -51,7 +51,7 @@
   }
 
   .award-nav-item {
-    padding: 14px 18px;
+    padding: 16px 20px;
     border-bottom: 1px solid #eef4f0;
     cursor: pointer;
     position: relative;
@@ -74,15 +74,8 @@
     font-size: clamp(13.5px, 0.92vw, 15px);
     font-weight: 700;
     color: var(--deep-forest);
-    margin: 0 0 4px 0;
-    line-height: 1.35;
-  }
-
-  .award-nav-count {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 500;
     margin: 0;
+    line-height: 1.35;
   }
 
   /* Right Panel: Content Area */
@@ -110,7 +103,7 @@
     border-left: 4px solid #059669;
     border-radius: 8px;
     padding: 12px 16px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .award-description-card h3 {
@@ -129,9 +122,45 @@
     margin: 0;
   }
 
+  /* Era Filter Bar */
+  .era-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .era-filter-btn {
+    appearance: none;
+    background: #f4faf6;
+    border: 1px solid #cce2d6;
+    color: #1e3a29;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    outline: none;
+  }
+
+  .era-filter-btn:hover {
+    background: #e6f4ec;
+    border-color: #059669;
+    color: #059669;
+  }
+
+  .era-filter-btn.active {
+    background: #059669;
+    border-color: #059669;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+  }
+
   /* Recipients Section */
   .recipients-section-title {
-    font-size: 16px;
+    font-size: 15.5px;
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0 0 10px 0;
@@ -268,6 +297,14 @@
         <p id="panelAwardDesc">Award Description</p>
       </div>
 
+      <!-- Era Filter Pills -->
+      <div class="era-filter-bar">
+        <button class="era-filter-btn active" data-era="all">All</button>
+        <button class="era-filter-btn" data-era="upto-2000">Up to 2000</button>
+        <button class="era-filter-btn" data-era="2001-2010">2001 – 2010</button>
+        <button class="era-filter-btn" data-era="2011-2023">2011 – 2023</button>
+      </div>
+
       <!-- Recipients Section -->
       <div>
         <h3 class="recipients-section-title">
@@ -286,134 +323,1355 @@
 </section>
 
 <script>
-  // Complete Dataset from the Official Golden Jubilee Souvenir Document (Pages 33-36 & 49-59)
+  // Complete Dataset from the Official Golden Jubilee Souvenir Document
   const awardsDataset = [
-    {
-      id: "dodla-raghava-reddy",
-      title: "Dodla Raghava Reddy Memorial Gold Medal Award",
-      desc: "This award was instituted by Dr D V R Reddy, former President of PPAI and former Principal Scientist and Leader of Virology, International Crops Research Institute for the Semi-Arid Tropics (ICRISAT) in the year 1983 in memory of his late father Shri Dodla Raghava Reddy for outstanding contributions in the field of Plant Protection. The award is given to Indian citizens once in three years constituting a gold medal and a certificate from interest accrued from a fund of ₹3,00,000/- (Rupees three lakhs only).",
-      awardees: [
-        { year: "1997", name: "Dr A Appa Rao" },
-        { year: "2006 – 2008", name: "Dr C D Mayee" },
-        { year: "2008 – 2010", name: "Dr K S Varaprasad" },
-        { year: "2010 – 2012", name: "Dr T Ramesh Babu" },
-        { year: "2014 – 2016", name: "Dr P Anand Kumar" },
-        { year: "2016 – 2018", name: "Dr A G Sreenivas" },
-        { year: "2018 – 2020", name: "Dr M Srinivasa Rao" },
-        { year: "2020 – 2022", name: "Dr Basava Prabhu Patil" }
-      ]
-    },
-    {
-      id: "dr-d-bap-reddy",
-      title: "Dr. Bap Reddy Award for Integrated Pest Management",
-      desc: "Dr Bap Reddy, an eminent scientist who contributed immensely for pest management in India and Asia Pacific for nearly 40 years and retired as FAO representative after serving the United Nations for two years, donated ₹15,000/- over three decades ago for instituting this award. The interest accrued from this amount is given as an award once in two years. The award constitutes a plaque, a certificate and cash. The purpose of the award is to promote the concept of Integrated Pest Management (IPM).",
-      awardees: [
-        { year: "1986 – 1988", name: "Dr K Krishnaiah" },
-        { year: "1988 – 1990", name: "Dr A D Pawar" },
-        { year: "1990 – 1992", name: "Dr S Uthamasamy" },
-        { year: "1992 – 1994", name: "Dr T M Manjunath" },
-        { year: "1994 – 1996", name: "Dr V Muniappa" },
-        { year: "1998 – 2000", name: "Dr H C Sharma" },
-        { year: "2000 – 2002", name: "Dr I C Pasalu and Team" },
-        { year: "2002 – 2004", name: "Dr B Srinivasulu" },
-        { year: "2006 – 2008", name: "Dr N P Eswar Reddy" },
-        { year: "2008 – 2010", name: "Dr S Suresh" },
-        { year: "2010 – 2012", name: "Dr Y G Prasad" },
-        { year: "2014 – 2016", name: "Dr U Sreedhar" },
-        { year: "2016 – 2018", name: "Dr S Vennila" },
-        { year: "2018 – 2020", name: "Dr Jameel Akthar" },
-        { year: "2020 – 2022", name: "Dr NBV Chalapathi Rao" }
-      ]
-    },
-    {
-      id: "fellows-fppai",
-      title: "Fellows of Plant Protection Association of India (FPPAI)",
-      desc: "Fellowship is conferred on distinguished individuals and scientists having completed five years of continuous membership in the Plant Protection Association of India in recognition of their valuable service and contributions to the cause of plant protection.",
-      awardees: [
-        { year: "Before 2003", name: "Dr D Bap Reddy, Dr N C Joshi, Dr B V David, Dr K Krishnaiah, Dr V C S Sastry, Dr B J Divakar, Dr H C Sharma, Dr L V Gangwane, Dr Viswanath, Dr S M A Rizvi, Dr S S Lateef, Dr O P Singh, Dr A D Pawar, Dr K P Srivastava, Dr D J Patel, Dr S S Misra, Dr A R Solayappan, Dr K Natarajan, Dr A K Garg, Dr Allahnoor, Dr S K Gangwar, Dr S K Srivastava, Dr G Arjanan, Dr M Balasubramanian, Dr D Kumaresan, Dr M. Veerabhadra Rao, Dr G Maruthi Ram, Dr K C Bhagat, Dr V K Kalra, Dr K S R K Murthy, Dr Shashi Verma, Dr K C D Urs, Dr R C Joshi, Dr S R Das, Dr G Balasubramanian, Dr H P Patnaik, Dr S Kumarasamy, Dr Rambabu Gaur, Dr P V Sarma, Dr G T Gujar, Dr T V K Singh, Dr V Raghunathan, Dr S P Singh, Dr T B Gour, Dr K C S Rao, Dr H R Patel, Dr Raghunatha Rao, Dr Sanjay Kumar, Dr I V Dhruj, Dr R T Gahukar, Dr B Senapthi, Dr G Ramaprasad, Dr S V Damdhere, Dr N C Misra, Dr R P Thakur, Dr S B Sharma, Dr Renu Sharma, Dr Meera Gupta, Dr Amrit Phokela, Dr S Jayaraj, Dr K Abbaiah, Dr B K Sontakke, Dr P S Chandukar, Dr N Venugopal Rao, Dr G V Subbarathnam, Dr Suresh Pande, Dr S K Pal, Dr Mangal Sain, Dr S P Sharma, Dr S S Bhardwaj, Dr C P C Kumar, Dr S Uthamasamy, Dr B Padmanabhan, Dr M P Singh, Dr P R M Rao, Dr T M Manjunath, Dr R D V J Prasada Rao, Dr T Ramesh Babu, Dr P R Misra, Dr Ravi Prakash Maurya, Dr A J Tamhankar, Dr V R Bhagwat, Dr M K Naik, Dr Prakash P Shastry, Mr Satish Parsai, Dr Madhuban Gopal, Mr J Kannaiyan, Dr M Mani, Dr Chirantan Chattopadhyay, Dr P V Krishnayya, Dr D Jagadishwar Reddy, Dr K K Pandey, Prof S V Sarode, Prof A Regupathy, Dr B K Mishra, Dr Ashok Krishna, Dr H P Mishra, Dr (Mrs) Saxena, Mr V Ambethgar" },
-        { year: "2003", name: "Dr U Sreedhar, Dr Prem Raj Gupta, Dr Kanchan Baral, Dr B K Sahoo and Dr Rajgopal" },
-        { year: "2005", name: "Dr M A Raoof, Dr V B Nargund, Dr Gururaj Katti, Dr Asif Tanweer and Dr P Nagaraja Rao" },
-        { year: "2006", name: "Dr S Desai, Dr Subrata Satpathy, Dr P Sreerama Kumar, Dr Ladu Kishore Rath and Dr Anitha Kodaru" },
-        { year: "2010", name: "Dr A Rajareddy, Dr Satya Vir, Dr V Ramesh Babu, Dr RW Alexander Jesudasan, Dr S Manickavasagam, Dr V Jayalakshmi, Dr Yashoda R Hegde, Dr Pankaj Sharma, Prof Ram Singh, Dr V Selvanarayanan, Dr Rajesh Pratap Singh, Dr S Jeyarani, Dr R Velazhahan, Dr PS Vimaladevi, Dr Mukesh K Dhillon, Dr J Jayakumar, Dr Abhishek Shukla and Dr T V K Singh" },
-        { year: "2012", name: "Dr T S K Patro, Dr P C Rath, Dr P D Meena, Dr Kavita Gupta, Dr S R Pandravada, Dr B Sree laxmi, Dr T Saravanan, Dr G Shyam Prasad, Dr P G Padmaja, Dr Chandish R Ballal, Dr G M V Prasad, Dr Dewa Ram Bajya, Dr S Ramakrishnan, Dr N Somasekhar, Dr Arjun Lal, Dr A P Padma Kumari, Dr M Prabhakar, Dr P K Behera, Dr Sashi Bhalla and Dr V Kamala" },
-        { year: "2016", name: "Dr V Lakshminarayanamma, Dr Ch Padmavathi, Dr Bharati N Bhat, Dr K Shankarganesh, Dr M Rajasri, Dr R Jagadeeshwar, Dr G Sridevi, Dr K Karthikeyal, Dr M Visalakshmi, Dr B Bhavani, Dr Ashish Kumar Tripathi, Dr Aravindnath Singh, Dr D Karthikeyan, Dr T V Prasad and Dr K Rameash" },
-        { year: "2017 – 2023", name: "Dr Srinivas Parimi, Dr C Alice Retna Packia Sujeetha, Dr M Srinivas Prasad, Dr Suresh Kumar Khinchi, Dr A Muthu Kumar, Dr Jameel Akhtar, Dr M Alagar, Dr K P Manju, Dr V Prakasam, Dr R Maruthadurai, Dr Pardeep Kumar, Dr D Ladhalakshmi, Dr Prasanna Holajjer, Dr Veghra Durga Prasad Rao Nimmakayala, Dr L Saravanan, Dr M Punithavalli, Dr B S Gotyal, Dr K Selvaraj, Dr Kuldeep Singh Jadon, Dr P Duraimurugan, Dr Issai Aruna Sri, Dr V Jhansi Lakshmi, Dr Kiran Babu Talluri, Dr Satish Kumar Sain, Dr SVS Gopala Swamy, Dr Girish Anantrao Gunjotikar, Dr K Vemana, Dr MH Kodandaram, Dr Bonthagorla Subbarayudu, Dr J Gulsar Banu, Dr M Visalakshi, Dr D Krishnaveni, Dr S Subramanian, Dr MK Jyosthna, Dr D Anitha Kumari" }
-      ]
-    },
-    {
-      id: "kavuri-sarada",
-      title: "Smt. Kavuri Sarada Memorial Award",
-      desc: "Candidates are not required to send proposals for this award as the screening committee appointed by Plant Protection Association of India chooses the Best Research Papers published in the Indian Journal of Plant Protection every year. The award consists of a certificate to each of the authors of the chosen research paper.",
-      awardees: [
-        { year: "1988", name: "Dr K Abbaiah and Dr M Sugunakara Reddy" },
-        { year: "1989", name: "Dr D V Singh, Dr P Arora, Dr K D Srivastava, Dr S Nagarajan and Dr R Agarwal" },
-        { year: "1992 – 1993", name: "Dr M Veerabhadra Rao" },
-        { year: "1993 – 1994", name: "Dr C Pramod Chandra Kumar" },
-        { year: "1994 – 1995", name: "Dr B J Divakar, Dr P V Sharma, Dr V Raghunathan, Dr B V David, Dr G R S Reddy and Sri S V Swamy" },
-        { year: "1995 – 1996", name: "Dr P P Shastry" },
-        { year: "1996 – 1997", name: "Dr T P Sriharan" },
-        { year: "2001", name: "Dr V Markandeya, Dr V Vasu, Dr PS Chandurkar, Dr T Rangarajan and Dr B J Divakar" },
-        { year: "2002", name: "Dr M Mani and Dr A Krishnamoorthy" },
-        { year: "2004", name: "Dr T K S Latha" },
-        { year: "2007", name: "Satya Vir (2007)", details: "Neem Genetic Diversity in India and its Use as Biopesticide and Biofertilizer (IJPP Vol. 35)" },
-        { year: "2008", name: "V Ramesh Babu (2008)", details: "F2 Screen Estimation of Alleles Population of Diamondback Moth (Plutella xylostella Linn.) (IJPP Vol. 36)" },
-        { year: "2010", name: "V Manoj Kumar (2010)", details: "Management economics of foot and stem rot of mesta incited by Phytophthora parasitica (IJPP Vol. 38)" },
-        { year: "2011", name: "N Ramakrishnan (2011)", details: "Standardization of X-Ray Radiography Methodology for the detection of hidden infestation in cereals (IJPP Vol. 39)" },
-        { year: "2012", name: "Ratna Bhimineni" },
-        { year: "2013", name: "P A Ahila Devi & V Prakasam (2013)", details: "RAPD-based Genetic Variation among Colletotrichum Isolates causing Chilli Anthracnose (IJPP 41(3): 244-248)" },
-        { year: "2014", name: "A Kandan, J Akhtar, B Singh, U Dev, R Goley, D Chand, A Roy, S Rajkumar, and P C Agarwal (2014)", details: "Genetic diversity analysis of Alternaria alternata isolates infecting different crops using URP and ISSR markers (IJPP 42 (3): 229-236)" },
-        { year: "2015", name: "D Balakrishna, K Srinivasa Babu, B Venkatesh Bhat, R Vinod, M Sreedhar, G Shyamprasad, D B Pawar, Shekharappa, M O Mohammed Ilyas and J V Patil (2015)", details: "Improved shoot fly resistant sources by gamma irradiation induced mutation in sorghum (IJPP Vol 43 (4))" },
-        { year: "2016", name: "K Susheela and N Sathyanarayana (2016)", details: "Weed risk assessment of Ambrosia psilostachya for its invasiveness and potential endangered areas in India (IJPP Vol 44 (1))" },
-        { year: "2019", name: "Isha Sharma, Mohinder Singh and P L Sharma", details: "Efficacy of indigenous strains of entomopathogenic nematodes against white grub Brahmina coriacea (IJPP Vol. 47 No. 1&2, 21-28)" },
-        { year: "2019", name: "S Vijay Kumar, M Srinivas Prasad, R Rambabu, B Bhaskar, R M Sundaram, V Prakasam, D Ladhalakshmi, G S Laha and M Sheshu Madhav", details: "Marker assisted introgression of broad spectrum blast resistance gene Pi-2 into Samba Mahsuri (IJPP Vol. 47 No. 3&4, 154-163)" },
-        { year: "2020", name: "E Sree Latha, S Jesurajan and Ch. Sreenivasa Rao", details: "Ecological engineering in gourds and melons (Cucurbitaceae) for pest management and beneficial insects (IJPP Vol. 48 No. 3, 190-196)" },
-        { year: "2020", name: "Shambhu Singh, A K Dave, D Padhee and Aman", details: "Design and development of a mono wheel operated sprayer cum weeder (IJPP Vol. 48 No. 4, 296-300)" },
-        { year: "2021", name: "B Sai Sushma, B Vidya Sagar, S Triveni, G Uma Devi", details: "Isolation, characterization of endophytic bacteria against early blight of tomato (IJPP Vol. 49 No. 1, 40-53)" },
-        { year: "2021", name: "K Selvaraj and B V Sumalatha", details: "Increasing distribution, biology and population dynamics of invasive woolly whitefly on guava (IJPP Vol. 49 No. 4, 227-232)" },
-        { year: "2022", name: "Prasanna Holajjer, Bharat H Gawade, Z Khan and N Sivaraj", details: "Prediction of potential geographic distribution of exotic nematode in India based on MaxEnt (IJPP Vol. 50 No. 1, 51-55)" },
-        { year: "2022", name: "C D Mayee, B Chaudhary, R Panchbhai, A R Annepu and R D Kapur", details: "Mega-field demonstration of management of pink bollworm in rain-fed cotton using mating disruption technology (IJPP Vol. 50 No. 4, 115-119)" }
-      ]
-    },
-    {
-      id: "dr-rdvj-prasada-rao",
-      title: "Dr. R D V J Prasada Rao Award",
-      desc: "Instituted to recognize outstanding research and meritorious service in the specialized fields of Plant Virology and Plant Quarantine.",
-      awardees: [
-        { year: "2012", name: "Dr V Celia Chalam", details: "Division of Plant Quarantine, ICAR-NBPGR, New Delhi" },
-        { year: "2016", name: "Dr Kavita Gupta", details: "ICAR-National Bureau of Plant Genetic Resources, New Delhi" }
-      ]
-    },
-    {
-      id: "best-scientist-awards",
-      title: "Best Scientist Awards (Instituted in 2023)",
-      desc: "The Best Scientist Awards in Young (<=40 years) and Senior (40-60 years) Category were instituted by PPAI starting from the year 2023 marking the occasion of the Golden Jubilee Celebrations. The awards are given biannually to individuals in recognition of professional contributions in Entomology, Plant Pathology, Nematology, and Digital Agriculture.",
-      awardees: [
-        { year: "2023", name: "Dr Shravan M Haldhar", details: "Best Scientist Award (Senior Category) in Entomology" },
-        { year: "2023", name: "Dr K Selvaraj", details: "Best Scientist Award (Senior Category) in Entomology" },
-        { year: "2023", name: "Dr V Bhuvaneswari", details: "Best Scientist Award (Senior Category) in Plant Pathology" },
-        { year: "2023", name: "Dr N Somasekhar", details: "Best Scientist Award (Senior Category) in Nematology" },
-        { year: "2023", name: "Dr Gadratagi Basana Gowda", details: "Best Scientist Award (Young Category) in Entomology" },
-        { year: "2023", name: "Dr K Sakthivel", details: "Best Scientist Award (Young Category) in Plant Pathology" },
-        { year: "2023", name: "Dr Satish N Chavan", details: "Best Scientist Award (Young Category) in Nematology" },
-        { year: "2023", name: "Dr Srikanth Rupavathara", details: "Best Scientist Award in Digital Agriculture" }
-      ]
-    },
-    {
-      id: "recognition-awards",
-      title: "ICPHM 2023 - PPAI Recognition & Distinction Awards",
-      desc: "Conferred during the Golden Jubilee ICPHM 2023 for Lifetime Contribution, Outstanding Services, Golden Jubilee Recognition, Award of Distinction, Special Awards, and Posthumous Awards rendered during 1972–2022.",
-      awardees: [
-        { year: "1972 – 2022", name: "Dr Dodla V Raghava Reddy, Dr V Raghunathan, Dr P S Chandurkar, Dr K S Varaprasad, Dr K Krishnaiah, Dr KSRK Murthy, Dr B Sarath Babu", details: "Life Time Contribution Award" },
-        { year: "1972 – 2022", name: "Dr M Veera Bhadra Rao, Dr B Julius Divakar, Dr T B Gour, Dr Rajan Sharma, Dr T Ramesh Babu, Dr Anitha Kodaru", details: "Outstanding Contribution Award" },
-        { year: "1972 – 2022", name: "Dr B Govinda Naik, Dr Renu Sharma, Dr S K Chakrabarty, Dr R Jagadeeshwar, Dr B Parameswari, Dr R K Khetarpal, Dr Harvir Singh, Dr Gururaj Katti, Dr A Raja Reddy, Dr V Celia Chalam, Dr M Srinivas Prasad, Dr H C Sharma, Dr L Saravanan, Dr K M Azam, Dr S Sithanantham, Dr C Pramod Chandra Kumar, Dr G Sreedevi, Dr Prasanna Holajjer, Dr Bhaskar Bajaru", details: "PPAI - Golden Jubilee Recognition Award" },
-        { year: "1972 – 2022", name: "Dr S N Puri, Dr C D Mayee, Dr Chelliah, Dr Anupam Varma, Dr A K Dhawan, Dr A N Mukhopadhyay, Dr Srikant Kulkarni, Dr J S Prasad, Dr H S Gaur", details: "PPAI Award of Distinction" },
-        { year: "1972 – 2022", name: "Dr S N Sushil, Dr J P Singh", details: "PPAI Golden Jubilee Special Award" },
-        { year: "1972 – 2022", name: "Mr Vinod Kumar Samanthula", details: "PPAI Posthumous Award" }
-      ]
-    }
-  ];
+  {
+    "id": "dodla-raghava-reddy",
+    "title": "Dodla Raghava Reddy Memorial Gold Medal Award",
+    "desc": "This award was instituted by Dr D V R Reddy, former President of PPAI and former Principal Scientist and Leader of Virology, International Crops Research Institute for the Semi-Arid Tropics (ICRISAT) in the year 1983 in memory of his late father Shri Dodla Raghava Reddy for outstanding contributions in the field of Plant Protection. The award is given to Indian citizens once in three years constituting a gold medal and a certificate from interest accrued from a fund of \u20b93,00,000/- (Rupees three lakhs only).",
+    "awardees": [
+      {
+        "year": "1997",
+        "name": "Dr A Appa Rao"
+      },
+      {
+        "year": "2006 \u2013 2008",
+        "name": "Dr C D Mayee"
+      },
+      {
+        "year": "2008 \u2013 2010",
+        "name": "Dr K S Varaprasad"
+      },
+      {
+        "year": "2010 \u2013 2012",
+        "name": "Dr T Ramesh Babu"
+      },
+      {
+        "year": "2014 \u2013 2016",
+        "name": "Dr P Anand Kumar"
+      },
+      {
+        "year": "2016 \u2013 2018",
+        "name": "Dr A G Sreenivas"
+      },
+      {
+        "year": "2018 \u2013 2020",
+        "name": "Dr M Srinivasa Rao"
+      },
+      {
+        "year": "2020 \u2013 2022",
+        "name": "Dr Basava Prabhu Patil"
+      }
+    ]
+  },
+  {
+    "id": "dr-d-bap-reddy",
+    "title": "Dr. Bap Reddy Award for Integrated Pest Management",
+    "desc": "Dr Bap Reddy, an eminent scientist who contributed immensely for pest management in India and Asia Pacific for nearly 40 years and retired as FAO representative after serving the United Nations for two years, donated \u20b915,000/- over three decades ago for instituting this award. The interest accrued from this amount is given as an award once in two years. The award constitutes a plaque, a certificate and cash. The purpose of the award is to promote the concept of Integrated Pest Management (IPM).",
+    "awardees": [
+      {
+        "year": "1986 \u2013 1988",
+        "name": "Dr K Krishnaiah"
+      },
+      {
+        "year": "1988 \u2013 1990",
+        "name": "Dr A D Pawar"
+      },
+      {
+        "year": "1990 \u2013 1992",
+        "name": "Dr S Uthamasamy"
+      },
+      {
+        "year": "1992 \u2013 1994",
+        "name": "Dr T M Manjunath"
+      },
+      {
+        "year": "1994 \u2013 1996",
+        "name": "Dr V Muniappa"
+      },
+      {
+        "year": "1998 \u2013 2000",
+        "name": "Dr H C Sharma"
+      },
+      {
+        "year": "2000 \u2013 2002",
+        "name": "Dr I C Pasalu and Team"
+      },
+      {
+        "year": "2002 \u2013 2004",
+        "name": "Dr B Srinivasulu"
+      },
+      {
+        "year": "2006 \u2013 2008",
+        "name": "Dr N P Eswar Reddy"
+      },
+      {
+        "year": "2008 \u2013 2010",
+        "name": "Dr S Suresh"
+      },
+      {
+        "year": "2010 \u2013 2012",
+        "name": "Dr Y G Prasad"
+      },
+      {
+        "year": "2014 \u2013 2016",
+        "name": "Dr U Sreedhar"
+      },
+      {
+        "year": "2016 \u2013 2018",
+        "name": "Dr S Vennila"
+      },
+      {
+        "year": "2018 \u2013 2020",
+        "name": "Dr Jameel Akthar"
+      },
+      {
+        "year": "2020 \u2013 2022",
+        "name": "Dr NBV Chalapathi Rao"
+      }
+    ]
+  },
+  {
+    "id": "fellows-fppai",
+    "title": "Fellows of Plant Protection Association of India (FPPAI)",
+    "desc": "Fellowship is conferred on distinguished individuals and scientists having completed five years of continuous membership in the Plant Protection Association of India in recognition of their valuable service and contributions to the cause of plant protection.",
+    "awardees": [
+      {
+        "year": "Before 2003",
+        "name": "Dr D Bap Reddy"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr N C Joshi"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr B V David"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K Krishnaiah"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr V C S Sastry"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr B J Divakar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr H C Sharma"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr L V Gangwane"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Viswanath"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S M A Rizvi"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S S Lateef"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr O P Singh"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr A D Pawar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K P Srivastava"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr D J Patel"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S S Misra"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr A R Solayappan"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K Natarajan"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr A K Garg"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Allahnoor"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S K Gangwar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S K Srivastava"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr G Arjanan"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr M Balasubramanian"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr D Kumaresan"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr M Veerabhadra Rao"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr G Maruthi Ram"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K C Bhagat"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr V K Kalra"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K S R K Murthy"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Shashi Verma"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K C D Urs"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr R C Joshi"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S R Das"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr G Balasubramanian"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr H P Patnaik"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S Kumarasamy"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Rambabu Gaur"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr P V Sarma"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr G T Gujar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr T V K Singh"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr V Raghunathan"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S P Singh"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr T B Gour"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K C S Rao"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr H R Patel"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Raghunatha Rao"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Sanjay Kumar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr I V Dhruj"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr R T Gahukar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr B Senapthi"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr G Ramaprasad"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S V Damdhere"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr N C Misra"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr R P Thakur"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S B Sharma"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Renu Sharma"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Meera Gupta"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Amrit Phokela"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S Jayaraj"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K Abbaiah"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr B K Sontakke"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr P S Chandukar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr N Venugopal Rao"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr G V Subbarathnam"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Suresh Pande"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S K Pal"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Mangal Sain"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S P Sharma"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S S Bhardwaj"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr C P C Kumar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr S Uthamasamy"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr B Padmanabhan"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr M P Singh"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr P R M Rao"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr T M Manjunath"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr R D V J Prasada Rao"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr T Ramesh Babu"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr P R Misra"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Ravi Prakash Maurya"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr A J Tamhankar"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr V R Bhagwat"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr M K Naik"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Prakash P Shastry"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Mr Satish Parsai"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Madhuban Gopal"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Mr J Kannaiyan"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr M Mani"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Chirantan Chattopadhyay"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr P V Krishnayya"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr D Jagadishwar Reddy"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr K K Pandey"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Prof S V Sarode"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Prof A Regupathy"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr B K Mishra"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr Ashok Krishna"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr H P Mishra"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Dr (Mrs) Saxena"
+      },
+      {
+        "year": "Before 2003",
+        "name": "Mr V Ambethgar"
+      },
+      {
+        "year": "2003",
+        "name": "Dr U Sreedhar"
+      },
+      {
+        "year": "2003",
+        "name": "Dr Prem Raj Gupta"
+      },
+      {
+        "year": "2003",
+        "name": "Dr Kanchan Baral"
+      },
+      {
+        "year": "2003",
+        "name": "Dr B K Sahoo"
+      },
+      {
+        "year": "2003",
+        "name": "Dr Rajgopal"
+      },
+      {
+        "year": "2005",
+        "name": "Dr M A Raoof"
+      },
+      {
+        "year": "2005",
+        "name": "Dr V B Nargund"
+      },
+      {
+        "year": "2005",
+        "name": "Dr Gururaj Katti"
+      },
+      {
+        "year": "2005",
+        "name": "Dr Asif Tanweer"
+      },
+      {
+        "year": "2005",
+        "name": "Dr P Nagaraja Rao"
+      },
+      {
+        "year": "2006",
+        "name": "Dr S Desai"
+      },
+      {
+        "year": "2006",
+        "name": "Dr Subrata Satpathy"
+      },
+      {
+        "year": "2006",
+        "name": "Dr P Sreerama Kumar"
+      },
+      {
+        "year": "2006",
+        "name": "Dr Ladu Kishore Rath"
+      },
+      {
+        "year": "2006",
+        "name": "Dr Anitha Kodaru"
+      },
+      {
+        "year": "2010",
+        "name": "Dr A Rajareddy"
+      },
+      {
+        "year": "2010",
+        "name": "Dr Satya Vir"
+      },
+      {
+        "year": "2010",
+        "name": "Dr V Ramesh Babu"
+      },
+      {
+        "year": "2010",
+        "name": "Dr RW Alexander Jesudasan"
+      },
+      {
+        "year": "2010",
+        "name": "Dr S Manickavasagam"
+      },
+      {
+        "year": "2010",
+        "name": "Dr V Jayalakshmi"
+      },
+      {
+        "year": "2010",
+        "name": "Dr Yashoda R Hegde"
+      },
+      {
+        "year": "2010",
+        "name": "Dr Pankaj Sharma"
+      },
+      {
+        "year": "2010",
+        "name": "Prof Ram Singh"
+      },
+      {
+        "year": "2010",
+        "name": "Dr V Selvanarayanan"
+      },
+      {
+        "year": "2010",
+        "name": "Dr Rajesh Pratap Singh"
+      },
+      {
+        "year": "2010",
+        "name": "Dr S Jeyarani"
+      },
+      {
+        "year": "2010",
+        "name": "Dr R Velazhahan"
+      },
+      {
+        "year": "2010",
+        "name": "Dr PS Vimaladevi"
+      },
+      {
+        "year": "2010",
+        "name": "Dr Mukesh K Dhillon"
+      },
+      {
+        "year": "2010",
+        "name": "Dr J Jayakumar"
+      },
+      {
+        "year": "2010",
+        "name": "Dr Abhishek Shukla"
+      },
+      {
+        "year": "2010",
+        "name": "Dr T V K Singh"
+      },
+      {
+        "year": "2012",
+        "name": "Dr T S K Patro"
+      },
+      {
+        "year": "2012",
+        "name": "Dr P C Rath"
+      },
+      {
+        "year": "2012",
+        "name": "Dr P D Meena"
+      },
+      {
+        "year": "2012",
+        "name": "Dr Kavita Gupta"
+      },
+      {
+        "year": "2012",
+        "name": "Dr S R Pandravada"
+      },
+      {
+        "year": "2012",
+        "name": "Dr B Sree laxmi"
+      },
+      {
+        "year": "2012",
+        "name": "Dr T Saravanan"
+      },
+      {
+        "year": "2012",
+        "name": "Dr G Shyam Prasad"
+      },
+      {
+        "year": "2012",
+        "name": "Dr P G Padmaja"
+      },
+      {
+        "year": "2012",
+        "name": "Dr Chandish R Ballal"
+      },
+      {
+        "year": "2012",
+        "name": "Dr G M V Prasad"
+      },
+      {
+        "year": "2012",
+        "name": "Dr Dewa Ram Bajya"
+      },
+      {
+        "year": "2012",
+        "name": "Dr S Ramakrishnan"
+      },
+      {
+        "year": "2012",
+        "name": "Dr N Somasekhar"
+      },
+      {
+        "year": "2012",
+        "name": "Dr Arjun Lal"
+      },
+      {
+        "year": "2012",
+        "name": "Dr A P Padma Kumari"
+      },
+      {
+        "year": "2012",
+        "name": "Dr M Prabhakar"
+      },
+      {
+        "year": "2012",
+        "name": "Dr P K Behera"
+      },
+      {
+        "year": "2012",
+        "name": "Dr Sashi Bhalla"
+      },
+      {
+        "year": "2012",
+        "name": "Dr V Kamala"
+      },
+      {
+        "year": "2016",
+        "name": "Dr V Lakshminarayanamma"
+      },
+      {
+        "year": "2016",
+        "name": "Dr Ch Padmavathi"
+      },
+      {
+        "year": "2016",
+        "name": "Dr Bharati N Bhat"
+      },
+      {
+        "year": "2016",
+        "name": "Dr K Shankarganesh"
+      },
+      {
+        "year": "2016",
+        "name": "Dr M Rajasri"
+      },
+      {
+        "year": "2016",
+        "name": "Dr R Jagadeeshwar"
+      },
+      {
+        "year": "2016",
+        "name": "Dr G Sridevi"
+      },
+      {
+        "year": "2016",
+        "name": "Dr K Karthikeyal"
+      },
+      {
+        "year": "2016",
+        "name": "Dr M Visalakshmi"
+      },
+      {
+        "year": "2016",
+        "name": "Dr B Bhavani"
+      },
+      {
+        "year": "2016",
+        "name": "Ashish Kumar Tripathi"
+      },
+      {
+        "year": "2016",
+        "name": "Dr Aravindnath Singh"
+      },
+      {
+        "year": "2016",
+        "name": "Dr D Karthikeyan"
+      },
+      {
+        "year": "2016",
+        "name": "Dr T V Prasad"
+      },
+      {
+        "year": "2016",
+        "name": "Dr K Rameash"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Srinivas Parimi"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr C Alice Retna Packia Sujeetha"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr M Srinivas Prasad"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Suresh Kumar Khinchi"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr A Muthu Kumar"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Jameel Akhtar"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr M Alagar"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr K P Manju"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr V Prakasam"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr R Maruthadurai"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Pardeep Kumar"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr D Ladhalakshmi"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Prasanna Holajjer"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Veghra Durga Prasad Rao Nimmakayala"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr L Saravanan"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr M Punithavalli"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr B S Gotyal"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr K Selvaraj"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Kuldeep Singh Jadon"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr P Duraimurugan"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Issai Aruna Sri"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr V Jhansi Lakshmi"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Kiran Babu Talluri"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Satish Kumar Sain"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr SVS Gopala Swamy"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Girish Anantrao Gunjotikar"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr K Vemana"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr MH Kodandaram"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr Bonthagorla Subbarayudu"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr J Gulsar Banu"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr M Visalakshi"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr D Krishnaveni"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr S Subramanian"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr MK Jyosthna"
+      },
+      {
+        "year": "2017 \u2013 2023",
+        "name": "Dr D Anitha Kumari"
+      }
+    ]
+  },
+  {
+    "id": "kavuri-sarada",
+    "title": "Smt. Kavuri Sarada Memorial Award",
+    "desc": "Candidates are not required to send proposals for this award as the screening committee appointed by Plant Protection Association of India chooses the Best Research Papers published in the Indian Journal of Plant Protection every year. The award consists of a certificate to each of the authors of the chosen research paper.",
+    "awardees": [
+      {
+        "year": "1988",
+        "name": "Dr K Abbaiah and Dr M Sugunakara Reddy"
+      },
+      {
+        "year": "1989",
+        "name": "Dr D V Singh, Dr P Arora, Dr K D Srivastava, Dr S Nagarajan and Dr R Agarwal"
+      },
+      {
+        "year": "1992 \u2013 1993",
+        "name": "Dr M Veerabhadra Rao"
+      },
+      {
+        "year": "1993 \u2013 1994",
+        "name": "Dr C Pramod Chandra Kumar"
+      },
+      {
+        "year": "1994 \u2013 1995",
+        "name": "Dr B J Divakar, Dr P V Sharma, Dr V Raghunathan, Dr B V David, Dr G R S Reddy and Sri S V Swamy"
+      },
+      {
+        "year": "1995 \u2013 1996",
+        "name": "Dr P P Shastry"
+      },
+      {
+        "year": "1996 \u2013 1997",
+        "name": "Dr T P Sriharan"
+      },
+      {
+        "year": "2001",
+        "name": "Dr V Markandeya, Dr V Vasu, Dr PS Chandurkar, Dr T Rangarajan and Dr B J Divakar"
+      },
+      {
+        "year": "2002",
+        "name": "Dr M Mani and Dr A Krishnamoorthy"
+      },
+      {
+        "year": "2004",
+        "name": "Dr T K S Latha"
+      },
+      {
+        "year": "2007",
+        "name": "Satya Vir (2007)",
+        "details": "Neem Genetic Diversity in India and its Use as Biopesticide and Biofertilizer (IJPP Vol. 35)"
+      },
+      {
+        "year": "2008",
+        "name": "V Ramesh Babu (2008)",
+        "details": "F2 Screen Estimation of Alleles Population of Diamondback Moth (Plutella xylostella Linn.) (IJPP Vol. 36)"
+      },
+      {
+        "year": "2010",
+        "name": "V Manoj Kumar (2010)",
+        "details": "Management economics of foot and stem rot of mesta incited by Phytophthora parasitica (IJPP Vol. 38)"
+      },
+      {
+        "year": "2011",
+        "name": "N Ramakrishnan (2011)",
+        "details": "Standardization of X-Ray Radiography Methodology for the detection of hidden infestation in cereals (IJPP Vol. 39)"
+      },
+      {
+        "year": "2012",
+        "name": "Ratna Bhimineni"
+      },
+      {
+        "year": "2013",
+        "name": "P A Ahila Devi & V Prakasam (2013)",
+        "details": "RAPD-based Genetic Variation among Colletotrichum Isolates causing Chilli Anthracnose (IJPP 41(3): 244-248)"
+      },
+      {
+        "year": "2014",
+        "name": "A Kandan, J Akhtar, B Singh, U Dev, R Goley, D Chand, A Roy, S Rajkumar, and P C Agarwal (2014)",
+        "details": "Genetic diversity analysis of Alternaria alternata isolates infecting different crops using URP and ISSR markers (IJPP 42 (3): 229-236)"
+      },
+      {
+        "year": "2015",
+        "name": "D Balakrishna, K Srinivasa Babu, B Venkatesh Bhat, R Vinod, M Sreedhar, G Shyamprasad, D B Pawar, Shekharappa, M O Mohammed Ilyas and J V Patil (2015)",
+        "details": "Improved shoot fly resistant sources by gamma irradiation induced mutation in sorghum (IJPP Vol 43 (4))"
+      },
+      {
+        "year": "2016",
+        "name": "K Susheela and N Sathyanarayana (2016)",
+        "details": "Weed risk assessment of Ambrosia psilostachya for its invasiveness and potential endangered areas in India (IJPP Vol 44 (1))"
+      },
+      {
+        "year": "2019",
+        "name": "Isha Sharma, Mohinder Singh and P L Sharma",
+        "details": "Efficacy of indigenous strains of entomopathogenic nematodes against white grub Brahmina coriacea (IJPP Vol. 47 No. 1&2, 21-28)"
+      },
+      {
+        "year": "2019",
+        "name": "S Vijay Kumar, M Srinivas Prasad, R Rambabu, B Bhaskar, R M Sundaram, V Prakasam, D Ladhalakshmi, G S Laha and M Sheshu Madhav",
+        "details": "Marker assisted introgression of broad spectrum blast resistance gene Pi-2 into Samba Mahsuri (IJPP Vol. 47 No. 3&4, 154-163)"
+      },
+      {
+        "year": "2020",
+        "name": "E Sree Latha, S Jesurajan and Ch. Sreenivasa Rao",
+        "details": "Ecological engineering in gourds and melons (Cucurbitaceae) for pest management and beneficial insects (IJPP Vol. 48 No. 3, 190-196)"
+      },
+      {
+        "year": "2020",
+        "name": "Shambhu Singh, A K Dave, D Padhee and Aman",
+        "details": "Design and development of a mono wheel operated sprayer cum weeder (IJPP Vol. 48 No. 4, 296-300)"
+      },
+      {
+        "year": "2021",
+        "name": "B Sai Sushma, B Vidya Sagar, S Triveni, G Uma Devi",
+        "details": "Isolation, characterization of endophytic bacteria against early blight of tomato (IJPP Vol. 49 No. 1, 40-53)"
+      },
+      {
+        "year": "2021",
+        "name": "K Selvaraj and B V Sumalatha",
+        "details": "Increasing distribution, biology and population dynamics of invasive woolly whitefly on guava (IJPP Vol. 49 No. 4, 227-232)"
+      },
+      {
+        "year": "2022",
+        "name": "Prasanna Holajjer, Bharat H Gawade, Z Khan and N Sivaraj",
+        "details": "Prediction of potential geographic distribution of exotic nematode in India based on MaxEnt (IJPP Vol. 50 No. 1, 51-55)"
+      },
+      {
+        "year": "2022",
+        "name": "C D Mayee, B Chaudhary, R Panchbhai, A R Annepu and R D Kapur",
+        "details": "Mega-field demonstration of management of pink bollworm in rain-fed cotton using mating disruption technology (IJPP Vol. 50 No. 4, 115-119)"
+      }
+    ]
+  },
+  {
+    "id": "dr-rdvj-prasada-rao",
+    "title": "Dr. R D V J Prasada Rao Award",
+    "desc": "Instituted to recognize outstanding research and meritorious service in the specialized fields of Plant Virology and Plant Quarantine.",
+    "awardees": [
+      {
+        "year": "2012",
+        "name": "Dr V Celia Chalam",
+        "details": "Division of Plant Quarantine, ICAR-NBPGR, New Delhi"
+      },
+      {
+        "year": "2016",
+        "name": "Dr Kavita Gupta",
+        "details": "ICAR-National Bureau of Plant Genetic Resources, New Delhi"
+      }
+    ]
+  },
+  {
+    "id": "best-scientist-awards",
+    "title": "Best Scientist Awards",
+    "desc": "The Best Scientist Awards in Young (<=40 years) and Senior (40-60 years) Category were instituted by PPAI starting from the year 2023 marking the occasion of the Golden Jubilee Celebrations. The awards are given biannually to individuals in recognition of professional contributions in Entomology, Plant Pathology, Nematology, and Digital Agriculture.",
+    "awardees": [
+      {
+        "year": "2023",
+        "name": "Dr Shravan M Haldhar",
+        "details": "Senior Category in Entomology"
+      },
+      {
+        "year": "2023",
+        "name": "Dr K Selvaraj",
+        "details": "Senior Category in Entomology"
+      },
+      {
+        "year": "2023",
+        "name": "Dr V Bhuvaneswari",
+        "details": "Senior Category in Plant Pathology"
+      },
+      {
+        "year": "2023",
+        "name": "Dr N Somasekhar",
+        "details": "Senior Category in Nematology"
+      },
+      {
+        "year": "2023",
+        "name": "Dr Gadratagi Basana Gowda",
+        "details": "Young Category in Entomology"
+      },
+      {
+        "year": "2023",
+        "name": "Dr K Sakthivel",
+        "details": "Young Category in Plant Pathology"
+      },
+      {
+        "year": "2023",
+        "name": "Dr Satish N Chavan",
+        "details": "Young Category in Nematology"
+      },
+      {
+        "year": "2023",
+        "name": "Dr Srikanth Rupavathara",
+        "details": "Digital Agriculture"
+      }
+    ]
+  },
+  {
+    "id": "recognition-awards",
+    "title": "Recognition & Distinction Awards",
+    "desc": "Conferred during the Golden Jubilee ICPHM 2023 for Lifetime Contribution, Outstanding Services, Golden Jubilee Recognition, Award of Distinction, Special Awards, and Posthumous Awards rendered during 1972\u20132022.",
+    "awardees": [
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Dodla V Raghava Reddy",
+        "details": "Lifetime Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr V Raghunathan",
+        "details": "Lifetime Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr P S Chandurkar",
+        "details": "Lifetime Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr K S Varaprasad",
+        "details": "Lifetime Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr K Krishnaiah",
+        "details": "Lifetime Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr KSRK Murthy",
+        "details": "Lifetime Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr B Sarath Babu",
+        "details": "Lifetime Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr M Veera Bhadra Rao",
+        "details": "Outstanding Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr B Julius Divakar",
+        "details": "Outstanding Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr T B Gour",
+        "details": "Outstanding Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Rajan Sharma",
+        "details": "Outstanding Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr T Ramesh Babu",
+        "details": "Outstanding Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Anitha Kodaru",
+        "details": "Outstanding Contribution Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr B Govinda Naik",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Renu Sharma",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr S K Chakrabarty",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr R Jagadeeshwar",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr B Parameswari",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr R K Khetarpal",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Harvir Singh",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Gururaj Katti",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr A Raja Reddy",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr V Celia Chalam",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr M Srinivas Prasad",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr H C Sharma",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr L Saravanan",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr K M Azam",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr S Sithanantham",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr C Pramod Chandra Kumar",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr G Sreedevi",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Prasanna Holajjer",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Bhaskar Bajaru",
+        "details": "Recognition Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr S N Puri",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr C D Mayee",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Chelliah",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Anupam Varma",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr A K Dhawan",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr A N Mukhopadhyay",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr Srikant Kulkarni",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr J S Prasad",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr H S Gaur",
+        "details": "Award of Distinction"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr S N Sushil",
+        "details": "Special Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Dr J P Singh",
+        "details": "Special Award"
+      },
+      {
+        "year": "1972 \u2013 2022",
+        "name": "Mr Vinod Kumar Samanthula",
+        "details": "Posthumous Award"
+      }
+    ]
+  }
+];
 
   let currentCategoryIndex = 0;
+  let activeEraFilter = "all";
 
   const sidebarEl = document.getElementById("awardsSidebar");
   const titleEl = document.getElementById("panelAwardTitle");
@@ -424,7 +1682,6 @@
     sidebarEl.innerHTML = awardsDataset.map((cat, idx) => `
       <div class="award-nav-item ${idx === currentCategoryIndex ? 'active' : ''}" data-index="${idx}">
         <h3 class="award-nav-title">${cat.title}</h3>
-        <p class="award-nav-count">${cat.awardees.length} recipient${cat.awardees.length === 1 ? '' : 's'}</p>
       </div>
     `).join('');
 
@@ -437,12 +1694,46 @@
     });
   }
 
+  function filterByEra(item) {
+    if (activeEraFilter === "all") return true;
+
+    if (item.year.includes("Before 2003")) {
+      return activeEraFilter === "upto-2000";
+    }
+
+    const matches = item.year.match(/\d{4}/g);
+    if (!matches || matches.length === 0) return true;
+
+    const startYear = parseInt(matches[0]);
+    const endYear = matches.length > 1 ? parseInt(matches[1]) : startYear;
+
+    if (activeEraFilter === "upto-2000") {
+      return startYear <= 2000;
+    } else if (activeEraFilter === "2001-2010") {
+      return (startYear >= 2001 && startYear <= 2010) || (endYear >= 2001 && endYear <= 2010) || (startYear <= 2001 && endYear >= 2010);
+    } else if (activeEraFilter === "2011-2023") {
+      return (startYear >= 2011 && startYear <= 2023) || (endYear >= 2011 && endYear <= 2023) || (startYear <= 2011 && endYear >= 2023);
+    }
+    return true;
+  }
+
   function renderContent() {
     const category = awardsDataset[currentCategoryIndex];
     titleEl.textContent = category.title;
     descEl.textContent = category.desc;
 
-    listContainerEl.innerHTML = category.awardees.map(item => `
+    const filtered = category.awardees.filter(filterByEra);
+
+    if (filtered.length === 0) {
+      listContainerEl.innerHTML = `
+        <div style="padding: 32px 20px; text-align: center; color: var(--text-muted); font-size: 13.5px;">
+          No recipient records found for the selected period.
+        </div>
+      `;
+      return;
+    }
+
+    listContainerEl.innerHTML = filtered.map(item => `
       <div class="awardee-row-item">
         <div class="awardee-year">${item.year}</div>
         <div>
@@ -451,7 +1742,20 @@
         </div>
       </div>
     `).join('');
+
+    // Reset scroll to top
+    listContainerEl.scrollTop = 0;
   }
+
+  // Setup Era Filter Buttons
+  document.querySelectorAll(".era-filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".era-filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeEraFilter = btn.dataset.era;
+      renderContent();
+    });
+  });
 
   // Init
   renderSidebar();
