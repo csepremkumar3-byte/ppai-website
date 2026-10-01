@@ -96,7 +96,7 @@ html_template = """{% extends "base.html" %}
     overflow: hidden;
   }
 
-  /* Award Description Box (Clean without redundant 'About the Award' header) */
+  /* Award Description Box */
   .award-description-card {
     background: #f4f9f6;
     border: 1px solid #d2e6dc;
@@ -168,7 +168,7 @@ html_template = """{% extends "base.html" %}
     display: inline-block;
   }
 
-  /* Awardees List Container - 5-6 rows in view with clean internal scroll */
+  /* Awardees List Container */
   .awardees-list-container {
     border: 1px solid #d5e5dc;
     border-radius: 8px;
@@ -200,7 +200,7 @@ html_template = """{% extends "base.html" %}
 
   .awardee-row-item {
     display: grid;
-    grid-template-columns: clamp(120px, 12vw, 145px) 1fr;
+    grid-template-columns: clamp(120px, 12vw, 150px) 1fr;
     padding: clamp(9px, 1.1vh, 12px) clamp(12px, 1.2vw, 16px);
     border-bottom: 1px solid #edf4f0;
     align-items: center;
@@ -228,14 +228,6 @@ html_template = """{% extends "base.html" %}
     font-weight: 700;
     color: var(--deep-forest);
     line-height: 1.45;
-  }
-
-  .awardee-details {
-    font-size: 12px;
-    color: #4a6354;
-    font-weight: 500;
-    margin-top: 2px;
-    line-height: 1.35;
   }
 
   /* Responsive Media Queries for Tablets and Small Screens */
@@ -304,7 +296,7 @@ html_template = """{% extends "base.html" %}
     <!-- Right Content Area -->
     <div class="awards-content-panel">
       
-      <!-- Award Description (Clean text without 'About the Award' header) -->
+      <!-- Award Description -->
       <div class="award-description-card" id="awardDescCard">
         <p id="panelAwardDesc"></p>
       </div>
@@ -410,10 +402,7 @@ html_template = """{% extends "base.html" %}
     listContainerEl.innerHTML = filtered.map(item => `
       <div class="awardee-row-item">
         <div class="awardee-year">${item.year}</div>
-        <div>
-          <div class="awardee-name">${item.name}</div>
-          ${item.details ? `<div class="awardee-details">${item.details}</div>` : ''}
-        </div>
+        <div class="awardee-name">${item.name}</div>
       </div>
     `).join('');
 
@@ -438,7 +427,14 @@ html_template = """{% extends "base.html" %}
 {% endblock %}
 """
 
-# Full Dataset
+# Helper to chunk list of names into groups of 3 to 4
+def chunk_names(names, size=4):
+    chunks = []
+    for i in range(0, len(names), size):
+        chunks.append(", ".join(names[i:i+size]))
+    return chunks
+
+# 1. FPPAI Fellows
 fellows_raw = [
     ("Before 2003", [
         "Dr D Bap Reddy", "Dr N C Joshi", "Dr B V David", "Dr K Krishnaiah", "Dr V C S Sastry",
@@ -480,7 +476,7 @@ fellows_raw = [
     ("2016", [
         "Dr V Lakshminarayanamma", "Dr Ch Padmavathi", "Dr Bharati N Bhat", "Dr K Shankarganesh", "Dr M Rajasri",
         "Dr R Jagadeeshwar", "Dr G Sridevi", "Dr K Karthikeyal", "Dr M Visalakshmi", "Dr B Bhavani",
-        "Ashish Kumar Tripathi", "Dr Aravindnath Singh", "Dr D Karthikeyan", "Dr T V Prasad", "Dr K Rameash"
+        "Dr Ashish Kumar Tripathi", "Dr Aravindnath Singh", "Dr D Karthikeyan", "Dr T V Prasad", "Dr K Rameash"
     ]),
     ("2017 – 2023", [
         "Dr Srinivas Parimi", "Dr C Alice Retna Packia Sujeetha", "Dr M Srinivas Prasad", "Dr Suresh Kumar Khinchi",
@@ -496,41 +492,49 @@ fellows_raw = [
 
 fellows_awardees = []
 for yr, names in fellows_raw:
-    for nm in names:
-        fellows_awardees.append({"year": yr, "name": nm})
+    chunks = chunk_names(names, size=4)
+    for ch in chunks:
+        fellows_awardees.append({"year": yr, "name": ch})
 
+# 2. Recognition Awards (ICPHM 2023)
 recognition_raw = [
-    ("Lifetime Contribution Award", [
+    ("1972 – 2022", [
         "Dr Dodla V Raghava Reddy", "Dr V Raghunathan", "Dr P S Chandurkar",
         "Dr K S Varaprasad", "Dr K Krishnaiah", "Dr KSRK Murthy", "Dr B Sarath Babu"
     ]),
-    ("Outstanding Contribution Award", [
+    ("1972 – 2022", [
         "Dr M Veera Bhadra Rao", "Dr B Julius Divakar", "Dr T B Gour",
         "Dr Rajan Sharma", "Dr T Ramesh Babu", "Dr Anitha Kodaru"
     ]),
-    ("Recognition Award", [
+    ("1972 – 2022", [
         "Dr B Govinda Naik", "Dr Renu Sharma", "Dr S K Chakrabarty", "Dr R Jagadeeshwar",
         "Dr B Parameswari", "Dr R K Khetarpal", "Dr Harvir Singh", "Dr Gururaj Katti",
         "Dr A Raja Reddy", "Dr V Celia Chalam", "Dr M Srinivas Prasad", "Dr H C Sharma",
         "Dr L Saravanan", "Dr K M Azam", "Dr S Sithanantham", "Dr C Pramod Chandra Kumar",
         "Dr G Sreedevi", "Dr Prasanna Holajjer", "Dr Bhaskar Bajaru"
     ]),
-    ("Award of Distinction", [
+    ("1972 – 2022", [
         "Dr S N Puri", "Dr C D Mayee", "Dr Chelliah", "Dr Anupam Varma", "Dr A K Dhawan",
         "Dr A N Mukhopadhyay", "Dr Srikant Kulkarni", "Dr J S Prasad", "Dr H S Gaur"
     ]),
-    ("Special Award", ["Dr S N Sushil", "Dr J P Singh"]),
-    ("Posthumous Award", ["Mr Vinod Kumar Samanthula"])
+    ("1972 – 2022", ["Dr S N Sushil", "Dr J P Singh"]),
+    ("1972 – 2022", ["Mr Vinod Kumar Samanthula"])
 ]
 
 recognition_awardees = []
-for category_title, names in recognition_raw:
-    for nm in names:
-        recognition_awardees.append({
-            "year": "1972 – 2022",
-            "name": nm,
-            "details": category_title
-        })
+for yr, names in recognition_raw:
+    chunks = chunk_names(names, size=4)
+    for ch in chunks:
+        recognition_awardees.append({"year": yr, "name": ch})
+
+# 3. Best Scientist Awards (2023)
+best_scientist_raw = [
+    "Dr Shravan M Haldhar", "Dr K Selvaraj", "Dr V Bhuvaneswari", "Dr N Somasekhar",
+    "Dr Gadratagi Basana Gowda", "Dr K Sakthivel", "Dr Satish N Chavan", "Dr Srikanth Rupavathara"
+]
+best_scientist_awardees = []
+for ch in chunk_names(best_scientist_raw, size=4):
+    best_scientist_awardees.append({"year": "2023", "name": ch})
 
 dataset = [
     {
@@ -581,33 +585,33 @@ dataset = [
       "title": "Smt. Kavuri Sarada Memorial Award",
       "desc": "Candidates are not required to send proposals for this award as the screening committee appointed by Plant Protection Association of India chooses the Best Research Papers published in the Indian Journal of Plant Protection every year. The award consists of a certificate to each of the authors of the chosen research paper.",
       "awardees": [
-        { "year": "1988", "name": "Dr K Abbaiah and Dr M Sugunakara Reddy" },
-        { "year": "1989", "name": "Dr D V Singh, Dr P Arora, Dr K D Srivastava, Dr S Nagarajan and Dr R Agarwal" },
+        { "year": "1988", "name": "Dr K Abbaiah, Dr M Sugunakara Reddy" },
+        { "year": "1989", "name": "Dr D V Singh, Dr P Arora, Dr K D Srivastava, Dr S Nagarajan, Dr R Agarwal" },
         { "year": "1992 – 1993", "name": "Dr M Veerabhadra Rao" },
         { "year": "1993 – 1994", "name": "Dr C Pramod Chandra Kumar" },
-        { "year": "1994 – 1995", "name": "Dr B J Divakar, Dr P V Sharma, Dr V Raghunathan, Dr B V David, Dr G R S Reddy and Sri S V Swamy" },
+        { "year": "1994 – 1995", "name": "Dr B J Divakar, Dr P V Sharma, Dr V Raghunathan, Dr B V David, Dr G R S Reddy, Sri S V Swamy" },
         { "year": "1995 – 1996", "name": "Dr P P Shastry" },
         { "year": "1996 – 1997", "name": "Dr T P Sriharan" },
-        { "year": "2001", "name": "Dr V Markandeya, Dr V Vasu, Dr PS Chandurkar, Dr T Rangarajan and Dr B J Divakar" },
-        { "year": "2002", "name": "Dr M Mani and Dr A Krishnamoorthy" },
+        { "year": "2001", "name": "Dr V Markandeya, Dr V Vasu, Dr PS Chandurkar, Dr T Rangarajan, Dr B J Divakar" },
+        { "year": "2002", "name": "Dr M Mani, Dr A Krishnamoorthy" },
         { "year": "2004", "name": "Dr T K S Latha" },
-        { "year": "2007", "name": "Satya Vir (2007)", "details": "Neem Genetic Diversity in India and its Use as Biopesticide and Biofertilizer (IJPP Vol. 35)" },
-        { "year": "2008", "name": "V Ramesh Babu (2008)", "details": "F2 Screen Estimation of Alleles Population of Diamondback Moth (Plutella xylostella Linn.) (IJPP Vol. 36)" },
-        { "year": "2010", "name": "V Manoj Kumar (2010)", "details": "Management economics of foot and stem rot of mesta incited by Phytophthora parasitica (IJPP Vol. 38)" },
-        { "year": "2011", "name": "N Ramakrishnan (2011)", "details": "Standardization of X-Ray Radiography Methodology for the detection of hidden infestation in cereals (IJPP Vol. 39)" },
-        { "year": "2012", "name": "Ratna Bhimineni" },
-        { "year": "2013", "name": "P A Ahila Devi & V Prakasam (2013)", "details": "RAPD-based Genetic Variation among Colletotrichum Isolates causing Chilli Anthracnose (IJPP 41(3): 244-248)" },
-        { "year": "2014", "name": "A Kandan, J Akhtar, B Singh, U Dev, R Goley, D Chand, A Roy, S Rajkumar, and P C Agarwal (2014)", "details": "Genetic diversity analysis of Alternaria alternata isolates infecting different crops using URP and ISSR markers (IJPP 42 (3): 229-236)" },
-        { "year": "2015", "name": "D Balakrishna, K Srinivasa Babu, B Venkatesh Bhat, R Vinod, M Sreedhar, G Shyamprasad, D B Pawar, Shekharappa, M O Mohammed Ilyas and J V Patil (2015)", "details": "Improved shoot fly resistant sources by gamma irradiation induced mutation in sorghum (IJPP Vol 43 (4))" },
-        { "year": "2016", "name": "K Susheela and N Sathyanarayana (2016)", "details": "Weed risk assessment of Ambrosia psilostachya for its invasiveness and potential endangered areas in India (IJPP Vol 44 (1))" },
-        { "year": "2019", "name": "Isha Sharma, Mohinder Singh and P L Sharma", "details": "Efficacy of indigenous strains of entomopathogenic nematodes against white grub Brahmina coriacea (IJPP Vol. 47 No. 1&2, 21-28)" },
-        { "year": "2019", "name": "S Vijay Kumar, M Srinivas Prasad, R Rambabu, B Bhaskar, R M Sundaram, V Prakasam, D Ladhalakshmi, G S Laha and M Sheshu Madhav", "details": "Marker assisted introgression of broad spectrum blast resistance gene Pi-2 into Samba Mahsuri (IJPP Vol. 47 No. 3&4, 154-163)" },
-        { "year": "2020", "name": "E Sree Latha, S Jesurajan and Ch. Sreenivasa Rao", "details": "Ecological engineering in gourds and melons (Cucurbitaceae) for pest management and beneficial insects (IJPP Vol. 48 No. 3, 190-196)" },
-        { "year": "2020", "name": "Shambhu Singh, A K Dave, D Padhee and Aman", "details": "Design and development of a mono wheel operated sprayer cum weeder (IJPP Vol. 48 No. 4, 296-300)" },
-        { "year": "2021", "name": "B Sai Sushma, B Vidya Sagar, S Triveni, G Uma Devi", "details": "Isolation, characterization of endophytic bacteria against early blight of tomato (IJPP Vol. 49 No. 1, 40-53)" },
-        { "year": "2021", "name": "K Selvaraj and B V Sumalatha", "details": "Increasing distribution, biology and population dynamics of invasive woolly whitefly on guava (IJPP Vol. 49 No. 4, 227-232)" },
-        { "year": "2022", "name": "Prasanna Holajjer, Bharat H Gawade, Z Khan and N Sivaraj", "details": "Prediction of potential geographic distribution of exotic nematode in India based on MaxEnt (IJPP Vol. 50 No. 1, 51-55)" },
-        { "year": "2022", "name": "C D Mayee, B Chaudhary, R Panchbhai, A R Annepu and R D Kapur", "details": "Mega-field demonstration of management of pink bollworm in rain-fed cotton using mating disruption technology (IJPP Vol. 50 No. 4, 115-119)" }
+        { "year": "2007", "name": "Dr Satya Vir" },
+        { "year": "2008", "name": "Dr V Ramesh Babu" },
+        { "year": "2010", "name": "Dr V Manoj Kumar" },
+        { "year": "2011", "name": "Dr N Ramakrishnan" },
+        { "year": "2012", "name": "Dr Ratna Bhimineni" },
+        { "year": "2013", "name": "Dr P A Ahila Devi, Dr V Prakasam" },
+        { "year": "2014", "name": "Dr A Kandan, Dr J Akhtar, Dr B Singh, Dr U Dev, Dr R Goley, Dr D Chand, Dr A Roy, Dr S Rajkumar, Dr P C Agarwal" },
+        { "year": "2015", "name": "Dr D Balakrishna, Dr K Srinivasa Babu, Dr B Venkatesh Bhat, Dr R Vinod, Dr M Sreedhar, Dr G Shyamprasad, Dr D B Pawar, Dr Shekharappa, Dr M O Mohammed Ilyas, Dr J V Patil" },
+        { "year": "2016", "name": "Dr K Susheela, Dr N Sathyanarayana" },
+        { "year": "2019", "name": "Dr Isha Sharma, Dr Mohinder Singh, Dr P L Sharma" },
+        { "year": "2019", "name": "Dr S Vijay Kumar, Dr M Srinivas Prasad, Dr R Rambabu, Dr B Bhaskar, Dr R M Sundaram, Dr V Prakasam, Dr D Ladhalakshmi, Dr G S Laha, Dr M Sheshu Madhav" },
+        { "year": "2020", "name": "Dr E Sree Latha, Dr S Jesurajan, Dr Ch. Sreenivasa Rao" },
+        { "year": "2020", "name": "Dr Shambhu Singh, Dr A K Dave, Dr D Padhee, Dr Aman" },
+        { "year": "2021", "name": "Dr B Sai Sushma, Dr B Vidya Sagar, Dr S Triveni, Dr G Uma Devi" },
+        { "year": "2021", "name": "Dr K Selvaraj, Dr B V Sumalatha" },
+        { "year": "2022", "name": "Dr Prasanna Holajjer, Dr Bharat H Gawade, Dr Z Khan, Dr N Sivaraj" },
+        { "year": "2022", "name": "Dr C D Mayee, Dr B Chaudhary, Dr R Panchbhai, Dr A R Annepu, Dr R D Kapur" }
       ]
     },
     {
@@ -615,24 +619,15 @@ dataset = [
       "title": "Dr. R D V J Prasada Rao Award",
       "desc": "Instituted to recognize outstanding research and meritorious service in the specialized fields of Plant Virology and Plant Quarantine.",
       "awardees": [
-        { "year": "2012", "name": "Dr V Celia Chalam", "details": "Division of Plant Quarantine, ICAR-NBPGR, New Delhi" },
-        { "year": "2016", "name": "Dr Kavita Gupta", "details": "ICAR-National Bureau of Plant Genetic Resources, New Delhi" }
+        { "year": "2012", "name": "Dr V Celia Chalam" },
+        { "year": "2016", "name": "Dr Kavita Gupta" }
       ]
     },
     {
       "id": "best-scientist-awards",
       "title": "Best Scientist Awards",
       "desc": "The Best Scientist Awards in Young (<=40 years) and Senior (40-60 years) Category were instituted by PPAI starting from the year 2023 marking the occasion of the Golden Jubilee Celebrations. The awards are given biannually to individuals in recognition of professional contributions in Entomology, Plant Pathology, Nematology, and Digital Agriculture.",
-      "awardees": [
-        { "year": "2023", "name": "Dr Shravan M Haldhar", "details": "Senior Category in Entomology" },
-        { "year": "2023", "name": "Dr K Selvaraj", "details": "Senior Category in Entomology" },
-        { "year": "2023", "name": "Dr V Bhuvaneswari", "details": "Senior Category in Plant Pathology" },
-        { "year": "2023", "name": "Dr N Somasekhar", "details": "Senior Category in Nematology" },
-        { "year": "2023", "name": "Dr Gadratagi Basana Gowda", "details": "Young Category in Entomology" },
-        { "year": "2023", "name": "Dr K Sakthivel", "details": "Young Category in Plant Pathology" },
-        { "year": "2023", "name": "Dr Satish N Chavan", "details": "Young Category in Nematology" },
-        { "year": "2023", "name": "Dr Srikanth Rupavathara", "details": "Digital Agriculture" }
-      ]
+      "awardees": best_scientist_awardees
     },
     {
       "id": "recognition-awards",
