@@ -505,19 +505,10 @@
   const titleEl = document.getElementById('historyTableTitle');
   const tbodyEl = document.getElementById('councilTableBody');
 
-  let currentSelectedPeriod = null;
+  let activePeriod = null;
 
-  function handlePeriodClick(period) {
-    // If clicking the currently open period, toggle it closed
-    if (currentSelectedPeriod === period) {
-      currentSelectedPeriod = null;
-      tableBoxEl.classList.remove('is-visible');
-      document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-      return;
-    }
-
-    // Otherwise show the clicked period details and keep it visible until changed
-    currentSelectedPeriod = period;
+  function switchPeriod(period) {
+    activePeriod = period;
     titleEl.textContent = 'Executive Council ' + period;
     const rows = councilData[period] || [];
     tbodyEl.innerHTML = rows.map(r => `
@@ -529,20 +520,21 @@
 
     tableBoxEl.classList.add('is-visible');
 
-    // Highlight only the clicked button
+    // Highlight only the active button
     document.querySelectorAll('.period-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.period === period);
     });
   }
 
-  // Create buttons with click handler
+  // Create buttons with hover & click handlers
   periods.forEach((period) => {
     const btn = document.createElement('button');
     btn.className = 'period-btn';
     btn.textContent = period;
     btn.dataset.period = period;
 
-    btn.addEventListener('click', () => handlePeriodClick(period));
+    btn.addEventListener('mouseenter', () => switchPeriod(period));
+    btn.addEventListener('click', () => switchPeriod(period));
 
     buttonsContainer.appendChild(btn);
   });
