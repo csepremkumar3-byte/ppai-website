@@ -523,20 +523,25 @@
     });
   }
 
-  // Create buttons with click event
-  periods.forEach((period, idx) => {
+  function hideTable() {
+    tableBoxEl.classList.remove('is-visible');
+    document.querySelectorAll('.period-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+  }
+
+  // Create buttons with hover event
+  periods.forEach((period) => {
     const btn = document.createElement('button');
-    btn.className = 'period-btn' + (idx === 0 ? ' active' : '');
+    btn.className = 'period-btn';
     btn.textContent = period;
     btn.dataset.period = period;
 
-    btn.addEventListener('click', () => showTable(period));
+    btn.addEventListener('mouseenter', () => showTable(period));
+    btn.addEventListener('mouseleave', hideTable);
 
     buttonsContainer.appendChild(btn);
   });
-
-  // Initial load: display the first period
-  showTable(periods[0]);
 </script>
 {% endblock %}
 
