@@ -10,22 +10,21 @@ html_template = """{% extends "base.html" %}
      PPAI SOCIETY AWARDS - SPLIT-PANEL AWARDS PORTAL
   =================================================================== */
   .awards-page-section {
-    min-height: calc(100vh - 70px);
     box-sizing: border-box;
     max-width: 1280px;
     margin: 0 auto;
-    padding: clamp(20px, 2.5vh, 32px) clamp(20px, 3.5vw, 48px) clamp(60px, 8vh, 90px) clamp(20px, 3.5vw, 48px);
+    padding: 16px clamp(16px, 3vw, 36px) 32px clamp(16px, 3vw, 36px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
   }
 
   .awards-page-titlebar {
-    margin-bottom: clamp(14px, 1.8vh, 18px);
+    margin-bottom: 12px;
   }
 
   .awards-page-titlebar h1 {
-    font-size: clamp(22px, 1.8vw, 28px);
+    font-size: clamp(20px, 1.6vw, 26px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
@@ -36,11 +35,11 @@ html_template = """{% extends "base.html" %}
   .awards-portal-container {
     background: #ffffff;
     border: 1px solid var(--border-color);
-    border-radius: 14px;
+    border-radius: 12px;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     display: grid;
     grid-template-columns: 320px 1fr;
-    min-height: 520px;
+    min-height: auto;
     overflow: hidden;
   }
 
@@ -53,7 +52,7 @@ html_template = """{% extends "base.html" %}
   }
 
   .award-nav-item {
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-bottom: 1px solid #eef4f0;
     cursor: pointer;
     position: relative;
@@ -78,20 +77,37 @@ html_template = """{% extends "base.html" %}
   }
 
   .award-nav-title {
-    font-size: clamp(13.5px, 0.92vw, 15px);
+    font-size: clamp(13px, 0.88vw, 14.5px);
     font-weight: 700;
     color: var(--deep-forest);
     margin: 0;
     line-height: 1.35;
   }
 
-  /* Right Panel: Content Area (Moved Up) */
+  /* Right Panel: Content Area */
   .awards-content-panel {
-    padding: clamp(18px, 2.2vw, 26px);
+    padding: 16px 20px 18px 20px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     background: #ffffff;
+  }
+
+  /* Award Description Box (Clean without redundant 'About the Award' header) */
+  .award-description-card {
+    background: #f4f9f6;
+    border: 1px solid #d2e6dc;
+    border-left: 4px solid #059669;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+
+  .award-description-card p {
+    font-size: 13px;
+    color: #2c4235;
+    line-height: 1.5;
+    margin: 0;
   }
 
   /* Era Filter Bar */
@@ -100,9 +116,7 @@ html_template = """{% extends "base.html" %}
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin-bottom: 16px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid #edf4f0;
+    margin-bottom: 12px;
   }
 
   .era-filter-btn {
@@ -110,9 +124,9 @@ html_template = """{% extends "base.html" %}
     background: #f4faf6;
     border: 1px solid #cce2d6;
     color: #1e3a29;
-    padding: 6px 16px;
+    padding: 5px 14px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -134,29 +148,29 @@ html_template = """{% extends "base.html" %}
 
   /* Recipients Section */
   .recipients-section-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 12px 0;
+    margin: 0 0 8px 0;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
   .recipients-section-title .dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #059669;
     display: inline-block;
   }
 
-  /* Awardees List Container - Sized for clean internal scrolling without page scroll */
+  /* Awardees List Container - 5-6 rows in view with clean internal scroll */
   .awardees-list-container {
     border: 1px solid #d5e5dc;
     border-radius: 8px;
     overflow-y: auto;
-    max-height: 450px;
+    max-height: 275px;
     background: #ffffff;
     box-shadow: 0 1px 3px rgba(11, 36, 23, 0.04);
     scrollbar-width: thin;
@@ -183,8 +197,8 @@ html_template = """{% extends "base.html" %}
 
   .awardee-row-item {
     display: grid;
-    grid-template-columns: 145px 1fr;
-    padding: 13px 18px;
+    grid-template-columns: 140px 1fr;
+    padding: 10px 16px;
     border-bottom: 1px solid #edf4f0;
     align-items: center;
     transition: background-color 0.15s ease;
@@ -201,24 +215,24 @@ html_template = """{% extends "base.html" %}
   .awardee-year {
     font-weight: 800;
     color: #059669;
-    font-size: 14.5px;
-    letter-spacing: 0.02em;
+    font-size: 14px;
+    letter-spacing: 0.01em;
     line-height: 1.4;
   }
 
   .awardee-name {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     color: var(--deep-forest);
     line-height: 1.45;
   }
 
   .awardee-details {
-    font-size: 12.5px;
+    font-size: 12px;
     color: #4a6354;
     font-weight: 500;
-    margin-top: 3px;
-    line-height: 1.4;
+    margin-top: 2px;
+    line-height: 1.35;
   }
 
   /* Responsive Media Queries */
@@ -232,18 +246,15 @@ html_template = """{% extends "base.html" %}
       max-height: 220px;
       overflow-y: auto;
     }
-    .awardees-list-container {
-      max-height: 380px;
-    }
   }
 
   @media (max-width: 600px) {
     .awardee-row-item {
       grid-template-columns: 1fr;
-      gap: 4px;
+      gap: 3px;
     }
     .awards-content-panel {
-      padding: 16px 12px;
+      padding: 14px 12px;
     }
   }
 </style>
@@ -264,9 +275,14 @@ html_template = """{% extends "base.html" %}
       <!-- Generated dynamically by JS -->
     </div>
 
-    <!-- Right Content Area (Starts right away with Filters & Recipients) -->
+    <!-- Right Content Area -->
     <div class="awards-content-panel">
       
+      <!-- Award Description (Clean text without 'About the Award' header) -->
+      <div class="award-description-card" id="awardDescCard">
+        <p id="panelAwardDesc"></p>
+      </div>
+
       <!-- Era Filter Pills -->
       <div class="era-filter-bar">
         <button class="era-filter-btn active" data-era="all">All</button>
@@ -300,6 +316,8 @@ html_template = """{% extends "base.html" %}
   let activeEraFilter = "all";
 
   const sidebarEl = document.getElementById("awardsSidebar");
+  const descCardEl = document.getElementById("awardDescCard");
+  const descEl = document.getElementById("panelAwardDesc");
   const listContainerEl = document.getElementById("awardeesListContainer");
 
   function renderSidebar() {
@@ -343,11 +361,20 @@ html_template = """{% extends "base.html" %}
 
   function renderContent() {
     const category = awardsDataset[currentCategoryIndex];
+    
+    // Update description text
+    if (category.desc) {
+      descEl.textContent = category.desc;
+      descCardEl.style.display = "block";
+    } else {
+      descCardEl.style.display = "none";
+    }
+
     const filtered = category.awardees.filter(filterByEra);
 
     if (filtered.length === 0) {
       listContainerEl.innerHTML = `
-        <div style="padding: 36px 20px; text-align: center; color: var(--text-muted); font-size: 13.5px;">
+        <div style="padding: 28px 20px; text-align: center; color: var(--text-muted); font-size: 13.5px;">
           No recipient records found for the selected period.
         </div>
       `;
@@ -483,6 +510,7 @@ dataset = [
     {
       "id": "dodla-raghava-reddy",
       "title": "Dodla Raghava Reddy Memorial Gold Medal Award",
+      "desc": "This award was instituted by Dr D V R Reddy, former President of PPAI and former Principal Scientist and Leader of Virology, International Crops Research Institute for the Semi-Arid Tropics (ICRISAT) in the year 1983 in memory of his late father Shri Dodla Raghava Reddy for outstanding contributions in the field of Plant Protection. The award is given to Indian citizens once in three years constituting a gold medal and a certificate from interest accrued from a fund of ₹3,00,000/- (Rupees three lakhs only).",
       "awardees": [
         { "year": "1997", "name": "Dr A Appa Rao" },
         { "year": "2006 – 2008", "name": "Dr C D Mayee" },
@@ -497,6 +525,7 @@ dataset = [
     {
       "id": "dr-d-bap-reddy",
       "title": "Dr. Bap Reddy Award for Integrated Pest Management",
+      "desc": "Dr Bap Reddy, an eminent scientist who contributed immensely for pest management in India and Asia Pacific for nearly 40 years and retired as FAO representative after serving the United Nations for two years, donated ₹15,000/- over three decades ago for instituting this award. The interest accrued from this amount is given as an award once in two years. The award constitutes a plaque, a certificate and cash. The purpose of the award is to promote the concept of Integrated Pest Management (IPM).",
       "awardees": [
         { "year": "1986 – 1988", "name": "Dr K Krishnaiah" },
         { "year": "1988 – 1990", "name": "Dr A D Pawar" },
@@ -518,11 +547,13 @@ dataset = [
     {
       "id": "fellows-fppai",
       "title": "Fellows of Plant Protection Association of India (FPPAI)",
+      "desc": "Fellowship is conferred on distinguished individuals and scientists having completed five years of continuous membership in the Plant Protection Association of India in recognition of their valuable service and contributions to the cause of plant protection.",
       "awardees": fellows_awardees
     },
     {
       "id": "kavuri-sarada",
       "title": "Smt. Kavuri Sarada Memorial Award",
+      "desc": "Candidates are not required to send proposals for this award as the screening committee appointed by Plant Protection Association of India chooses the Best Research Papers published in the Indian Journal of Plant Protection every year. The award consists of a certificate to each of the authors of the chosen research paper.",
       "awardees": [
         { "year": "1988", "name": "Dr K Abbaiah and Dr M Sugunakara Reddy" },
         { "year": "1989", "name": "Dr D V Singh, Dr P Arora, Dr K D Srivastava, Dr S Nagarajan and Dr R Agarwal" },
@@ -556,6 +587,7 @@ dataset = [
     {
       "id": "dr-rdvj-prasada-rao",
       "title": "Dr. R D V J Prasada Rao Award",
+      "desc": "Instituted to recognize outstanding research and meritorious service in the specialized fields of Plant Virology and Plant Quarantine.",
       "awardees": [
         { "year": "2012", "name": "Dr V Celia Chalam", "details": "Division of Plant Quarantine, ICAR-NBPGR, New Delhi" },
         { "year": "2016", "name": "Dr Kavita Gupta", "details": "ICAR-National Bureau of Plant Genetic Resources, New Delhi" }
@@ -564,6 +596,7 @@ dataset = [
     {
       "id": "best-scientist-awards",
       "title": "Best Scientist Awards",
+      "desc": "The Best Scientist Awards in Young (<=40 years) and Senior (40-60 years) Category were instituted by PPAI starting from the year 2023 marking the occasion of the Golden Jubilee Celebrations. The awards are given biannually to individuals in recognition of professional contributions in Entomology, Plant Pathology, Nematology, and Digital Agriculture.",
       "awardees": [
         { "year": "2023", "name": "Dr Shravan M Haldhar", "details": "Senior Category in Entomology" },
         { "year": "2023", "name": "Dr K Selvaraj", "details": "Senior Category in Entomology" },
@@ -578,6 +611,7 @@ dataset = [
     {
       "id": "recognition-awards",
       "title": "Recognition & Distinction Awards",
+      "desc": "Conferred during the Golden Jubilee ICPHM 2023 for Lifetime Contribution, Outstanding Services, Golden Jubilee Recognition, Award of Distinction, Special Awards, and Posthumous Awards rendered during 1972–2022.",
       "awardees": recognition_awardees
     }
 ]
