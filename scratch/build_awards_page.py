@@ -10,21 +10,22 @@ html_template = """{% extends "base.html" %}
      PPAI SOCIETY AWARDS - SPLIT-PANEL AWARDS PORTAL
   =================================================================== */
   .awards-page-section {
+    min-height: calc(100vh - 70px);
     box-sizing: border-box;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 16px clamp(16px, 3vw, 36px) 32px clamp(16px, 3vw, 36px);
+    padding: clamp(16px, 2.2vh, 28px) clamp(16px, 3.5vw, 40px) clamp(40px, 6vh, 60px) clamp(16px, 3.5vw, 40px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
   }
 
   .awards-page-titlebar {
-    margin-bottom: 12px;
+    margin-bottom: clamp(10px, 1.5vh, 16px);
   }
 
   .awards-page-titlebar h1 {
-    font-size: clamp(20px, 1.6vw, 26px);
+    font-size: clamp(20px, 1.7vw, 28px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
@@ -38,8 +39,8 @@ html_template = """{% extends "base.html" %}
     border-radius: 12px;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     display: grid;
-    grid-template-columns: 320px 1fr;
-    min-height: auto;
+    grid-template-columns: clamp(260px, 24vw, 320px) 1fr;
+    min-height: clamp(480px, 65vh, 580px);
     overflow: hidden;
   }
 
@@ -49,10 +50,11 @@ html_template = """{% extends "base.html" %}
     border-right: 1px solid #e2ece5;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
   }
 
   .award-nav-item {
-    padding: 14px 18px;
+    padding: clamp(12px, 1.5vh, 16px) clamp(14px, 1.5vw, 20px);
     border-bottom: 1px solid #eef4f0;
     cursor: pointer;
     position: relative;
@@ -86,11 +88,12 @@ html_template = """{% extends "base.html" %}
 
   /* Right Panel: Content Area */
   .awards-content-panel {
-    padding: 16px 20px 18px 20px;
+    padding: clamp(16px, 2vw, 24px);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     background: #ffffff;
+    overflow: hidden;
   }
 
   /* Award Description Box (Clean without redundant 'About the Award' header) */
@@ -99,12 +102,12 @@ html_template = """{% extends "base.html" %}
     border: 1px solid #d2e6dc;
     border-left: 4px solid #059669;
     border-radius: 8px;
-    padding: 10px 14px;
-    margin-bottom: 12px;
+    padding: clamp(10px, 1.2vh, 14px) clamp(12px, 1.2vw, 16px);
+    margin-bottom: clamp(10px, 1.4vh, 14px);
   }
 
   .award-description-card p {
-    font-size: 13px;
+    font-size: clamp(12.5px, 0.85vw, 13.5px);
     color: #2c4235;
     line-height: 1.5;
     margin: 0;
@@ -116,7 +119,7 @@ html_template = """{% extends "base.html" %}
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: clamp(10px, 1.2vh, 14px);
   }
 
   .era-filter-btn {
@@ -124,9 +127,9 @@ html_template = """{% extends "base.html" %}
     background: #f4faf6;
     border: 1px solid #cce2d6;
     color: #1e3a29;
-    padding: 5px 14px;
+    padding: 5px clamp(12px, 1vw, 16px);
     border-radius: 20px;
-    font-size: 12.5px;
+    font-size: clamp(12px, 0.8vw, 13px);
     font-weight: 700;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -148,7 +151,7 @@ html_template = """{% extends "base.html" %}
 
   /* Recipients Section */
   .recipients-section-title {
-    font-size: 15px;
+    font-size: clamp(14px, 1vw, 16px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0 0 8px 0;
@@ -170,7 +173,7 @@ html_template = """{% extends "base.html" %}
     border: 1px solid #d5e5dc;
     border-radius: 8px;
     overflow-y: auto;
-    max-height: 275px;
+    max-height: clamp(260px, 34vh, 340px);
     background: #ffffff;
     box-shadow: 0 1px 3px rgba(11, 36, 23, 0.04);
     scrollbar-width: thin;
@@ -197,8 +200,8 @@ html_template = """{% extends "base.html" %}
 
   .awardee-row-item {
     display: grid;
-    grid-template-columns: 140px 1fr;
-    padding: 10px 16px;
+    grid-template-columns: clamp(120px, 12vw, 145px) 1fr;
+    padding: clamp(9px, 1.1vh, 12px) clamp(12px, 1.2vw, 16px);
     border-bottom: 1px solid #edf4f0;
     align-items: center;
     transition: background-color 0.15s ease;
@@ -215,13 +218,13 @@ html_template = """{% extends "base.html" %}
   .awardee-year {
     font-weight: 800;
     color: #059669;
-    font-size: 14px;
+    font-size: clamp(13px, 0.88vw, 14px);
     letter-spacing: 0.01em;
     line-height: 1.4;
   }
 
   .awardee-name {
-    font-size: 13.5px;
+    font-size: clamp(13px, 0.88vw, 14px);
     font-weight: 700;
     color: var(--deep-forest);
     line-height: 1.45;
@@ -235,16 +238,39 @@ html_template = """{% extends "base.html" %}
     line-height: 1.35;
   }
 
-  /* Responsive Media Queries */
+  /* Responsive Media Queries for Tablets and Small Screens */
   @media (max-width: 900px) {
+    .awards-page-section {
+      min-height: auto;
+      padding-bottom: 40px;
+    }
     .awards-portal-container {
       grid-template-columns: 1fr;
+      min-height: auto;
     }
     .awards-sidebar {
       border-right: none;
       border-bottom: 1px solid #e2ece5;
-      max-height: 220px;
-      overflow-y: auto;
+      flex-direction: row;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 8px;
+      gap: 6px;
+    }
+    .award-nav-item {
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      border-radius: 6px;
+      padding: 8px 14px;
+      flex: 0 0 auto;
+    }
+    .award-nav-item.active {
+      border-bottom-color: #059669;
+      border-left-color: transparent;
+      background: #edf7f2;
+    }
+    .awardees-list-container {
+      max-height: 320px;
     }
   }
 
