@@ -14,33 +14,35 @@ html_template = """{% extends "base.html" %}
     box-sizing: border-box;
     max-width: 1280px;
     margin: 0 auto;
-    padding: clamp(16px, 2.2vh, 28px) clamp(16px, 3.5vw, 40px) clamp(40px, 6vh, 60px) clamp(16px, 3.5vw, 40px);
+    padding: clamp(10px, 1.4vh, 16px) clamp(16px, 3vw, 36px) clamp(18px, 2.5vh, 28px) clamp(16px, 3vw, 36px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
   }
 
   .awards-page-titlebar {
-    margin-bottom: clamp(12px, 1.6vh, 18px);
+    margin-bottom: clamp(8px, 1.2vh, 14px);
   }
 
   .awards-page-titlebar h1 {
-    font-size: clamp(22px, 1.9vw, 30px);
+    font-size: clamp(20px, 1.7vw, 26px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
     letter-spacing: -0.02em;
   }
 
-  /* Main Split-Panel Card */
+  /* Main Split-Panel Card - Fits within viewport so emerald background is visible */
   .awards-portal-container {
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 12px;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     display: grid;
-    grid-template-columns: clamp(280px, 26vw, 340px) 1fr;
-    min-height: clamp(520px, 70vh, 660px);
+    grid-template-columns: clamp(270px, 25vw, 330px) 1fr;
+    height: calc(100vh - 165px);
+    max-height: 640px;
+    min-height: 480px;
     overflow: hidden;
   }
 
@@ -54,7 +56,7 @@ html_template = """{% extends "base.html" %}
   }
 
   .award-nav-item {
-    padding: clamp(13px, 1.5vh, 16px) clamp(16px, 1.6vw, 20px);
+    padding: clamp(12px, 1.4vh, 15px) clamp(14px, 1.4vw, 18px);
     border-bottom: 1px solid #eef4f0;
     cursor: pointer;
     position: relative;
@@ -79,16 +81,16 @@ html_template = """{% extends "base.html" %}
   }
 
   .award-nav-title {
-    font-size: clamp(13.5px, 0.92vw, 15px);
+    font-size: clamp(13.5px, 0.9vw, 14.5px);
     font-weight: 700;
     color: var(--deep-forest);
     margin: 0;
-    line-height: 1.38;
+    line-height: 1.35;
   }
 
   /* Right Panel: Content Area */
   .awards-content-panel {
-    padding: clamp(18px, 2.2vw, 26px);
+    padding: clamp(14px, 1.8vw, 22px);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -102,37 +104,47 @@ html_template = """{% extends "base.html" %}
     border: 1px solid #d2e6dc;
     border-left: 4px solid #059669;
     border-radius: 8px;
-    padding: clamp(14px, 1.6vh, 18px) clamp(16px, 1.6vw, 20px);
-    margin-bottom: clamp(16px, 1.8vh, 22px);
+    padding: clamp(10px, 1.3vh, 14px) clamp(14px, 1.4vw, 18px);
+    margin-bottom: clamp(10px, 1.3vh, 14px);
+    flex-shrink: 0;
   }
 
   .award-description-card h3 {
-    font-size: clamp(14px, 0.92vw, 15.5px);
+    font-size: clamp(13.5px, 0.9vw, 14.5px);
     font-weight: 800;
     color: #065f46;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    margin: 0 0 8px 0;
+    margin: 0 0 6px 0;
   }
 
   .award-description-card p {
-    font-size: clamp(14px, 0.95vw, 15.5px);
+    font-size: clamp(13.5px, 0.9vw, 14.5px);
     color: #1e3328;
-    line-height: 1.68;
+    line-height: 1.6;
     text-align: justify;
     text-justify: inter-word;
     margin: 0;
   }
 
-  /* Recipients Section */
+  /* Recipients Section Wrapper */
+  .recipients-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+
   .recipients-section-title {
-    font-size: clamp(15px, 1.05vw, 17px);
+    font-size: clamp(14.5px, 1vw, 16px);
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
   }
 
   .recipients-section-title .dot {
@@ -143,13 +155,13 @@ html_template = """{% extends "base.html" %}
     display: inline-block;
   }
 
-  /* Awardees List Container (Table Layout - 10 rows visible, remaining scrollable) */
+  /* Awardees List Container (Table Layout - Scrollable inside) */
   .awardees-list-container {
     border: 1px solid #d5e5dc;
     border-radius: 8px;
     overflow-y: auto;
-    height: 385px;
-    max-height: 385px;
+    flex: 1 1 auto;
+    min-height: 0;
     background: #ffffff;
     box-shadow: 0 1px 3px rgba(11, 36, 23, 0.04);
     scrollbar-width: thin;
@@ -177,7 +189,7 @@ html_template = """{% extends "base.html" %}
   /* Group Row: Year on Left, 4-column Table on Right */
   .awardee-group-row {
     display: grid;
-    grid-template-columns: clamp(110px, 12vw, 145px) 1fr;
+    grid-template-columns: clamp(110px, 12vw, 140px) 1fr;
     border-bottom: 1px solid #dce8e1;
     background: #ffffff;
   }
@@ -189,10 +201,10 @@ html_template = """{% extends "base.html" %}
   .awardee-group-year {
     background: #f8fbf9;
     border-right: 1px solid #dce8e1;
-    padding: 9px 12px;
+    padding: 8px 12px;
     font-weight: 700;
     color: #047857;
-    font-size: 13px;
+    font-size: 12.5px;
     letter-spacing: 0.01em;
     display: flex;
     align-items: flex-start;
@@ -206,8 +218,8 @@ html_template = """{% extends "base.html" %}
 
   .awardee-names-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    min-height: 38px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    min-height: 36px;
     border-bottom: 1px solid #edf4f0;
     transition: background-color 0.12s ease;
   }
@@ -221,15 +233,16 @@ html_template = """{% extends "base.html" %}
   }
 
   .awardee-cell {
-    padding: 8px 12px;
-    font-size: 12.5px;
+    padding: 7px 10px;
+    font-size: 12px;
     color: #1e3328;
     font-weight: 600;
     line-height: 1.35;
-    word-break: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
     display: flex;
     align-items: center;
-    min-height: 38px;
+    min-height: 36px;
     box-sizing: border-box;
   }
 
@@ -317,7 +330,7 @@ html_template = """{% extends "base.html" %}
       </div>
 
       <!-- Recipients Section -->
-      <div>
+      <div class="recipients-wrapper">
         <h3 class="recipients-section-title">
           <span class="dot"></span>
           Recipients
