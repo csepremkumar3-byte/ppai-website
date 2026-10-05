@@ -19,11 +19,11 @@
   }
 
   .awards-page-titlebar {
-    margin-bottom: clamp(10px, 1.5vh, 16px);
+    margin-bottom: clamp(12px, 1.6vh, 18px);
   }
 
   .awards-page-titlebar h1 {
-    font-size: clamp(20px, 1.7vw, 28px);
+    font-size: clamp(22px, 1.9vw, 30px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0;
@@ -37,8 +37,8 @@
     border-radius: 12px;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     display: grid;
-    grid-template-columns: clamp(260px, 24vw, 320px) 1fr;
-    min-height: clamp(480px, 65vh, 580px);
+    grid-template-columns: clamp(280px, 26vw, 340px) 1fr;
+    min-height: clamp(500px, 68vh, 640px);
     overflow: hidden;
   }
 
@@ -52,7 +52,7 @@
   }
 
   .award-nav-item {
-    padding: clamp(12px, 1.5vh, 16px) clamp(14px, 1.5vw, 20px);
+    padding: clamp(14px, 1.6vh, 18px) clamp(16px, 1.6vw, 22px);
     border-bottom: 1px solid #eef4f0;
     cursor: pointer;
     position: relative;
@@ -77,16 +77,16 @@
   }
 
   .award-nav-title {
-    font-size: clamp(13px, 0.88vw, 14.5px);
+    font-size: clamp(14px, 0.95vw, 15.5px);
     font-weight: 700;
     color: var(--deep-forest);
     margin: 0;
-    line-height: 1.35;
+    line-height: 1.4;
   }
 
   /* Right Panel: Content Area */
   .awards-content-panel {
-    padding: clamp(16px, 2vw, 24px);
+    padding: clamp(18px, 2.2vw, 26px);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -100,78 +100,42 @@
     border: 1px solid #d2e6dc;
     border-left: 4px solid #059669;
     border-radius: 8px;
-    padding: clamp(10px, 1.2vh, 14px) clamp(12px, 1.2vw, 16px);
-    margin-bottom: clamp(10px, 1.4vh, 14px);
+    padding: clamp(14px, 1.6vh, 18px) clamp(16px, 1.6vw, 20px);
+    margin-bottom: clamp(16px, 1.8vh, 22px);
   }
 
   .award-description-card h3 {
-    font-size: 13px;
+    font-size: clamp(14px, 0.92vw, 15.5px);
     font-weight: 800;
-    color: var(--deep-forest);
+    color: #065f46;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    margin: 0 0 6px 0;
+    margin: 0 0 8px 0;
   }
 
   .award-description-card p {
-    font-size: clamp(12.5px, 0.85vw, 13.5px);
-    color: #2c4235;
-    line-height: 1.55;
+    font-size: clamp(14px, 0.95vw, 15.5px);
+    color: #1e3328;
+    line-height: 1.68;
     text-align: justify;
     text-justify: inter-word;
     margin: 0;
   }
 
-  /* Era Filter Bar */
-  .era-filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: clamp(10px, 1.2vh, 14px);
-  }
-
-  .era-filter-btn {
-    appearance: none;
-    background: #f4faf6;
-    border: 1px solid #cce2d6;
-    color: #1e3a29;
-    padding: 5px clamp(12px, 1vw, 16px);
-    border-radius: 20px;
-    font-size: clamp(12px, 0.8vw, 13px);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    outline: none;
-  }
-
-  .era-filter-btn:hover {
-    background: #e6f4ec;
-    border-color: #059669;
-    color: #059669;
-  }
-
-  .era-filter-btn.active {
-    background: #059669;
-    border-color: #059669;
-    color: #ffffff;
-    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
-  }
-
   /* Recipients Section */
   .recipients-section-title {
-    font-size: clamp(14px, 1vw, 16px);
+    font-size: clamp(16px, 1.1vw, 18px);
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 8px 0;
+    margin: 0 0 10px 0;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
   .recipients-section-title .dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #059669;
     display: inline-block;
@@ -182,7 +146,7 @@
     border: 1px solid #d5e5dc;
     border-radius: 8px;
     overflow-y: auto;
-    max-height: clamp(260px, 34vh, 340px);
+    max-height: clamp(300px, 42vh, 420px);
     background: #ffffff;
     box-shadow: 0 1px 3px rgba(11, 36, 23, 0.04);
     scrollbar-width: thin;
@@ -209,8 +173,8 @@
 
   .awardee-row-item {
     display: grid;
-    grid-template-columns: clamp(120px, 12vw, 150px) 1fr;
-    padding: clamp(9px, 1.1vh, 12px) clamp(12px, 1.2vw, 16px);
+    grid-template-columns: clamp(130px, 13vw, 160px) 1fr;
+    padding: clamp(11px, 1.3vh, 14px) clamp(14px, 1.4vw, 18px);
     border-bottom: 1px solid #edf4f0;
     align-items: center;
     transition: background-color 0.15s ease;
@@ -227,16 +191,16 @@
   .awardee-year {
     font-weight: 800;
     color: #059669;
-    font-size: clamp(13px, 0.88vw, 14px);
+    font-size: clamp(14px, 0.95vw, 15.5px);
     letter-spacing: 0.01em;
     line-height: 1.4;
   }
 
   .awardee-name {
-    font-size: clamp(13px, 0.88vw, 14px);
-    font-weight: 700;
+    font-size: clamp(14px, 0.95vw, 15.5px);
+    font-weight: 600;
     color: var(--deep-forest);
-    line-height: 1.45;
+    line-height: 1.55;
   }
 
   /* Responsive Media Queries for Tablets and Small Screens */
@@ -262,7 +226,7 @@
       border-left: none;
       border-bottom: 3px solid transparent;
       border-radius: 6px;
-      padding: 8px 14px;
+      padding: 10px 16px;
       flex: 0 0 auto;
     }
     .award-nav-item.active {
@@ -271,17 +235,17 @@
       background: #edf7f2;
     }
     .awardees-list-container {
-      max-height: 320px;
+      max-height: 350px;
     }
   }
 
   @media (max-width: 600px) {
     .awardee-row-item {
       grid-template-columns: 1fr;
-      gap: 3px;
+      gap: 4px;
     }
     .awards-content-panel {
-      padding: 14px 12px;
+      padding: 16px 14px;
     }
   }
 </style>
@@ -309,14 +273,6 @@
       <div class="award-description-card" id="awardDescCard">
         <h3>About the Award</h3>
         <p id="panelAwardDesc"></p>
-      </div>
-
-      <!-- Era Filter Pills -->
-      <div class="era-filter-bar">
-        <button class="era-filter-btn active" data-era="all">All</button>
-        <button class="era-filter-btn" data-era="upto-2000">Up to 2000</button>
-        <button class="era-filter-btn" data-era="2001-2010">2001 – 2010</button>
-        <button class="era-filter-btn" data-era="2011-2023">2011 – 2023</button>
       </div>
 
       <!-- Recipients Section -->
@@ -879,7 +835,6 @@
 ];
 
   let currentCategoryIndex = 0;
-  let activeEraFilter = "all";
 
   const sidebarEl = document.getElementById("awardsSidebar");
   const descCardEl = document.getElementById("awardDescCard");
@@ -902,29 +857,6 @@
     });
   }
 
-  function filterByEra(item) {
-    if (activeEraFilter === "all") return true;
-
-    if (item.year.includes("Before 2003")) {
-      return activeEraFilter === "upto-2000";
-    }
-
-    const matches = item.year.match(/\d{4}/g);
-    if (!matches || matches.length === 0) return true;
-
-    const startYear = parseInt(matches[0]);
-    const endYear = matches.length > 1 ? parseInt(matches[1]) : startYear;
-
-    if (activeEraFilter === "upto-2000") {
-      return startYear <= 2000;
-    } else if (activeEraFilter === "2001-2010") {
-      return (startYear >= 2001 && startYear <= 2010) || (endYear >= 2001 && endYear <= 2010) || (startYear <= 2001 && endYear >= 2010);
-    } else if (activeEraFilter === "2011-2023") {
-      return (startYear >= 2011 && startYear <= 2023) || (endYear >= 2011 && endYear <= 2023) || (startYear <= 2011 && endYear >= 2023);
-    }
-    return true;
-  }
-
   function renderContent() {
     const category = awardsDataset[currentCategoryIndex];
     
@@ -936,18 +868,18 @@
       descCardEl.style.display = "none";
     }
 
-    const filtered = category.awardees.filter(filterByEra);
+    const awardees = category.awardees || [];
 
-    if (filtered.length === 0) {
+    if (awardees.length === 0) {
       listContainerEl.innerHTML = `
-        <div style="padding: 28px 20px; text-align: center; color: var(--text-muted); font-size: 13.5px;">
-          No recipient records found for the selected period.
+        <div style="padding: 28px 20px; text-align: center; color: var(--text-muted); font-size: 14px;">
+          No recipient records found.
         </div>
       `;
       return;
     }
 
-    listContainerEl.innerHTML = filtered.map(item => `
+    listContainerEl.innerHTML = awardees.map(item => `
       <div class="awardee-row-item">
         <div class="awardee-year">${item.year}</div>
         <div class="awardee-name">${item.name}</div>
@@ -957,16 +889,6 @@
     // Reset scroll to top
     listContainerEl.scrollTop = 0;
   }
-
-  // Setup Era Filter Buttons
-  document.querySelectorAll(".era-filter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".era-filter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      activeEraFilter = btn.dataset.era;
-      renderContent();
-    });
-  });
 
   // Init
   renderSidebar();
