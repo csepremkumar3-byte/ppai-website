@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}The Present Executive Council — Plant Protection Association of India{% endblock %}
+{% block title %}Executive Council — Plant Protection Association of India{% endblock %}
 
 {% block extra_css %}
 <style>
   /* ===================================================================
-     EXECUTIVE COUNCIL - HIERARCHICAL ROW ORDERING (NO GROUP HEADINGS)
+     EXECUTIVE COUNCIL - PRESENT & PAST COUNCILS
   =================================================================== */
   .council-section {
     min-height: calc(100vh - 70px);
@@ -19,10 +19,10 @@
   }
 
   .council-titlebar {
-    margin-bottom: clamp(16px, 2.2vh, 22px);
+    margin-bottom: clamp(14px, 1.8vh, 20px);
   }
 
-  .council-titlebar h1 {
+  .council-titlebar h1, .council-titlebar h2 {
     font-size: clamp(22px, 1.8vw, 28px);
     font-weight: 800;
     color: var(--deep-forest);
@@ -42,6 +42,7 @@
     display: flex;
     flex-direction: column;
     gap: clamp(20px, 2.8vh, 32px);
+    margin-bottom: clamp(32px, 4vh, 48px);
   }
 
   /* 4-in-Row Grid for President & Vice Presidents */
@@ -144,10 +145,147 @@
     line-height: 1.45;
   }
 
+  /* ===================================================================
+     PAST EXECUTIVE COUNCIL - INTERACTIVE PERIOD MATRIX & TABLE
+  =================================================================== */
+  .past-council-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
+    padding: clamp(22px, 2.8vw, 34px);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .period-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: clamp(8px, 1vw, 12px);
+    margin-top: clamp(14px, 1.8vh, 20px);
+    margin-bottom: 0;
+  }
+
+  .period-btn {
+    appearance: none;
+    background: #ffffff;
+    border: 1.5px solid #246845;
+    border-radius: 8px;
+    padding: 11px 6px;
+    font-size: clamp(12px, 0.86vw, 13.5px);
+    font-weight: 700;
+    color: #174e30;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .period-btn:hover {
+    background: rgba(0, 178, 114, 0.12);
+    border-color: #185a36;
+    color: #0d3820;
+  }
+
+  .period-btn.active {
+    background: #175434;
+    border-color: #175434;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(23, 84, 52, 0.25);
+  }
+
+  .history-table-box {
+    display: none;
+    border: 1.5px solid #246845;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    margin-top: clamp(20px, 2.5vh, 28px);
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  .history-table-box.is-visible {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .history-table-title {
+    font-size: clamp(15px, 1.1vw, 17px);
+    font-weight: 800;
+    color: #0f3821;
+    padding: 14px 20px;
+    margin: 0;
+    border-bottom: 1px solid rgba(36, 104, 69, 0.2);
+    background: #ffffff;
+  }
+
+  .council-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: clamp(12.5px, 0.88vw, 14px);
+  }
+
+  .council-table thead th {
+    background: #eaf3ec;
+    color: #0f3821;
+    font-weight: 800;
+    padding: 12px 20px;
+    border-bottom: 1px solid #d1e2d6;
+    letter-spacing: 0.01em;
+  }
+
+  .council-table thead th:first-child {
+    width: 28%;
+    min-width: 180px;
+  }
+
+  .council-table thead th:last-child {
+    width: 72%;
+  }
+
+  .council-table tbody tr {
+    border-bottom: 1px solid #edf4ef;
+    transition: background 0.15s ease;
+  }
+
+  .council-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .council-table tbody tr:hover {
+    background: rgba(0, 178, 114, 0.03);
+  }
+
+  .council-table td {
+    padding: 12px 20px;
+    vertical-align: middle;
+    line-height: 1.55;
+  }
+
+  .position-cell {
+    font-weight: 800;
+    color: #0f3821;
+    white-space: nowrap;
+  }
+
+  .name-cell {
+    color: #2b3b33;
+    font-weight: 500;
+  }
+
   /* Responsive Rules */
   @media (max-width: 1120px) {
     .grid-row-5 {
       grid-template-columns: repeat(3, 1fr);
+    }
+    .period-buttons-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
@@ -164,17 +302,36 @@
     }
   }
 
+  @media (max-width: 768px) {
+    .period-buttons-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .council-table thead th:first-child {
+      width: 35%;
+      min-width: 140px;
+    }
+  }
+
   @media (max-width: 640px) {
     .council-section {
       padding: 20px 16px 48px 16px;
     }
-    .council-card-box {
+    .council-card-box, .past-council-card {
       padding: 18px 14px;
     }
     .grid-row-4,
     .grid-row-3,
     .grid-row-5 {
       grid-template-columns: 1fr;
+    }
+    .period-buttons-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .council-table td, .council-table thead th {
+      padding: 10px 12px;
+    }
+    .position-cell {
+      white-space: normal;
     }
   }
 </style>
@@ -183,7 +340,7 @@
 {% block content %}
 <section class="council-section">
 
-  <!-- Main Title -->
+  <!-- Section 1: The Present Executive Council -->
   <div class="council-titlebar">
     <h1>The Present Executive Council</h1>
   </div>
@@ -308,5 +465,338 @@
 
   </div>
 
+  <!-- Section 2: Past Executive Council -->
+  <div class="council-titlebar" id="past-executive-council">
+    <h2>Past Executive Council</h2>
+  </div>
+
+  <div class="past-council-card" id="councilHistoryCard">
+    <!-- Period Buttons Grid (1972 to 2023) -->
+    <div class="period-buttons-grid" id="periodButtons">
+      <!-- Generated dynamically by JS -->
+    </div>
+
+    <!-- Table Container Box (Visible on Hover / Click) -->
+    <div class="history-table-box" id="historyTableBox">
+      <h3 class="history-table-title" id="historyTableTitle">Executive Council 1972 - 1974</h3>
+      <div style="overflow-x: auto;">
+        <table class="council-table">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody id="councilTableBody">
+            <!-- Populated dynamically by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </section>
+
+<script>
+  // Complete data of Executive Council Members with full 4-digit years (1972 - 2023)
+  const councilData = {
+    "1972 - 1974": [
+      { position: "President", name: "Dr K K Nirula" },
+      { position: "Vice Presidents", name: "Shri V Lakshminarayana, Shri T B Lal" },
+      { position: "General Secretary", name: "Dr S Hussaine" },
+      { position: "Asst. Secretary", name: "Shri G K Mathew" },
+      { position: "Treasurer", name: "Shri P K Menon" },
+      { position: "Chief Editor", name: "Shri B K Verma" },
+      { position: "Editor", name: "Dr S S Hussaine" },
+      { position: "Councillors", name: "Shri K Rama Rao, Shri P N S Pradhan, Shri S C Das, Shri L M Patel" },
+      { position: "Editorial Board Members", name: "Dr O S Bindra, Dr D S Gupta, Dr Zile Singh, Dr A R Seshadri, Dr Appa Rao, Dr R S Dewan, Dr T Sankaran, Er V C S Sastry" },
+      { position: "Chairman and Chief Patron", name: "Dr S N Banerjee, Plant Protection Adviser to GOI" }
+    ],
+    "1975 - 1976": [
+      { position: "President", name: "Dr K K Nirula" },
+      { position: "Vice Presidents", name: "Dr K D Paharia, Dr L M Patel, Dr Hamid Ali" },
+      { position: "General Secretary", name: "Dr V Lakshminarayana" },
+      { position: "Asst. Secretary", name: "Shri T Rangarajan" },
+      { position: "Treasurer", name: "Shri S S Lal" },
+      { position: "Chief Editor", name: "Shri B K Verma" },
+      { position: "Editor", name: "Dr S S Hussaine" },
+      { position: "Councillors", name: "Shri K K Mangal, Shri K Rama Rao, Shri H R Gauba, Dr M C Diwakar, Shri Maiku Lal, Shri N D Das, Shri Laxma Reddy, Shri P K Menon" },
+      { position: "Chairman and Chief Patron", name: "Dr S N Banerjee, Plant Protection Adviser to GOI" }
+    ],
+    "1977 - 1978": [
+      { position: "President", name: "Dr K K Nirula" },
+      { position: "Vice Presidents", name: "Dr N C Joshi, Dr Mir Hamid Ali, Dr K D Paharia" },
+      { position: "General Secretary", name: "Dr Basu Chaudhary" },
+      { position: "Asst. Secretary", name: "Shri A P Jain" },
+      { position: "Treasurer", name: "Shri T Rengarajan" },
+      { position: "Councillors", name: "Shri N D Das, Shri B K Verma, Dr P R Sarma, Shri K K Mangal, Dr J Lowe, Er V C S Sastry, Dr Agnihotrudu, Dr Ramesh Gandhi" },
+      { position: "Chief Editor", name: "Dr V Lakshminarayana" },
+      { position: "Joint Editors", name: "Dr S M A Rizvi, Dr V Raghunathan" },
+      { position: "Editorial Board Members", name: "Dr Y L Nene, Dr T Sankaran, Dr A R Seshadri, Dr B H K Rao, Dr M D Phatak, Dr N C Pant, Dr A Appa Rao" },
+      { position: "Chairman and Chief Patron", name: "Dr S N Banerjee, Plant Protection Adviser to GOI" }
+    ],
+    "1979 - 1980": [
+      { position: "President", name: "Dr N C Joshi" },
+      { position: "Vice Presidents", name: "Dr Mir Hamid Ali, Dr R Gandhi, Dr J A Lowe" },
+      { position: "General Secretary", name: "Dr V Lakshminarayana" },
+      { position: "Asst. Secretary", name: "Shri A P Jain" },
+      { position: "Treasurer", name: "Shri T Rangarajan" },
+      { position: "Councillors", name: "Dr Y K Mathur, Dr R L Rajak, Dr O N Dhar, Dr Bhaskaran, Dr Reed, Dr Seshadri, Er V C S Sastry, Dr L M Patel" },
+      { position: "Chief Editor", name: "Dr K K Niralu" },
+      { position: "Joint Editors", name: "Dr V Raghunathan, Dr K M Azam" },
+      { position: "Editorial Board Members", name: "Dr Y L Nene, Shri B K Verma, Shri Maiku Lal, Dr Santhi Sarup, Dr M B Kalode, Dr B H K Rao, Dr V T John, Dr B Balasubramanyan" },
+      { position: "Chairman and Chief Patron", name: "Dr K D Paharia, Plant Protection Adviser to GOI" }
+    ],
+    "1981 - 1982": [
+      { position: "President", name: "Dr K D Paharia" },
+      { position: "Vice Presidents", name: "Dr N C Joshi, Dr V Lakshminarayana, Dr B H Krishnamurthy Rao" },
+      { position: "General Secretary", name: "Dr V Raghunathan" },
+      { position: "Asst. Secretary", name: "Shri N D Das" },
+      { position: "Treasurer", name: "Dr A Jayaprakash" },
+      { position: "Councillors", name: "Dr D Bap Reddy, Dr J Lowe, Dr W Reed, Shri K Rama Rao, Dr S K Pal, Dr P L Premi, Shri O N Dhar, Dr Gangwane" },
+      { position: "Chief Editor", name: "Dr K K Niralu" },
+      { position: "Joint Editors", name: "Dr V T John, Dr T Sankaran, Dr S Sarup, Dr M B Kalode, Dr M Lal" },
+      { position: "Editorial Board Members", name: "Dr Y L Nene, Dr K A Balasubramanyam, Dr M Balasubramanyam, Dr R L Rajak" },
+      { position: "Chairman and Chief Patron", name: "Dr K D Paharia, Plant Protection Adviser to GOI" }
+    ],
+    "1983 - 1984": [
+      { position: "President", name: "Dr K D Paharia" },
+      { position: "Vice Presidents", name: "Dr N C Joshi, Dr B H Krishnamurthy Rao, Dr R L Rajak" },
+      { position: "General Secretary", name: "Dr V Raghunathan" },
+      { position: "Asst. Secretary", name: "Shri N D Das" },
+      { position: "Treasurer", name: "Dr A Jayaprakash, Dr B J Divakar (w.e.f. 14/05/1984)" },
+      { position: "Councillors", name: "Dr D Bap Reddy, Dr D N Srivastava, Dr W Reed, Dr V Lakshminarayana, Dr A D Pawar, Dr B V David, Shri B K Verma, Dr D P Nag, Shri K Rama Rao" },
+      { position: "Chief Editor", name: "Dr M Veerabhadra Rao" },
+      { position: "Joint Editors", name: "Dr S Sithanantham, Sri B G Naik, Sri M Lal, Dr S Sarup, Dr M B Kalode, Dr R D V J Prasada Rao, Dr V T John, Er V C S Sastry" },
+      { position: "Editorial Board Members", name: "Dr Y L Nene, Dr V K Pathak, Dr M Balasubramanyam, Dr K Krishnaiah, Shri T Rangarajan, Dr Meera Gupta, Dr P S Chandurkar, Dr A M K Mohan Rao" }
+    ],
+    "1985 - 1986": [
+      { position: "President", name: "Dr N C Joshi" },
+      { position: "Vice Presidents", name: "Dr D Bap Reddy, Shri B K Verma, Dr B V David" },
+      { position: "General Secretary", name: "Shri B Govinda Naik, Dr R D V J Prasada Rao (from 31.01.86)" },
+      { position: "Asst. Secretary", name: "Dr R D V J Prasada Rao, Dr Meera Gupta (from 31.01.86)" },
+      { position: "Treasurer", name: "Dr B J Divakar" },
+      { position: "Councillors", name: "Shri N D Das, Dr A M K Mohan Rao, Dr Shanti Swarop, Dr S P Singh, Dr A S Sindhu, Dr Meera Gupta, Er V C S Sastry" },
+      { position: "Chief Editor", name: "Dr M Veerabhadra Rao" },
+      { position: "Editor", name: "Dr S Sithanantham" },
+      { position: "Chairman and Chief Patron", name: "Dr R L Rajak, Plant Protection Adviser to GOI" }
+    ],
+    "1987 - 1988": [
+      { position: "President", name: "Dr D Bap Reddy" },
+      { position: "Vice Presidents", name: "Dr D V R Reddy, Shri B K Verma, Dr K Krishnaiah" },
+      { position: "General Secretary", name: "Dr B J Divakar" },
+      { position: "Asst. Secretary", name: "Dr Meera Gupta" },
+      { position: "Treasurer", name: "Dr T Ranga Rajan" },
+      { position: "Councillors", name: "Dr A D Pawar, Dr S M A Rizvi, Dr T B Gour, Dr R D V J Prasada Rao, Dr N V Krishnaiah, Dr A S Sindhu, Dr S L Taneja" },
+      { position: "Chief Editor", name: "Dr M Veerabhadra Rao" },
+      { position: "Editor", name: "Dr S Sithanantham" },
+      { position: "Honorary Patron", name: "Dr R L Rajak, Plant Protection Adviser to GOI" }
+    ],
+    "1989 - 1990": [
+      { position: "President", name: "Dr S Jayaraj" },
+      { position: "Vice Presidents", name: "Dr B V David, Dr K Krishnaiah, Dr V Raghunathan" },
+      { position: "General Secretary", name: "Dr B J Divakar" },
+      { position: "Asst. Secretary", name: "Dr N S Ingale" },
+      { position: "Treasurer", name: "Mr T Ranga Rajan" },
+      { position: "Councillors", name: "Dr G T Gujar, Dr Meera Gupta, Dr K S R K Murthy, Dr A D Pawar, Dr S M A Rizvi, Dr S P Singh, Dr S L Taneja, Dr T B Gour" },
+      { position: "Chief Editor", name: "Dr M Veerabhadra Rao" },
+      { position: "Editor", name: "Dr H C Sharma" },
+      { position: "Editorial Board Members", name: "Dr H S Sohi, Dr S Nagarajan, Dr M V Reddy, Dr M S Chary, Dr I C Pasalu, Dr M D Awasthi, Dr B G Naik" },
+      { position: "Honorary Patron", name: "Dr R L Rajak, Plant Protection Adviser to GOI" }
+    ],
+    "1991 - 1993": [
+      { position: "President", name: "Dr D V R Reddy" },
+      { position: "Vice Presidents", name: "Dr K Krishnaiah, Dr K P Srivastava, Dr B V David" },
+      { position: "General Secretary", name: "Dr B J Divakar" },
+      { position: "Asst. Secretary", name: "Dr C Pramod Chandra Kumar" },
+      { position: "Treasurer", name: "Mr D Chatterjee" },
+      { position: "Councillors", name: "Dr K S R K Murthy, Dr Renu Sharma, Dr K C Devaraj Urs, Dr J R Patel, Dr S M A Rizvi, Dr Meera Gupta, Dr S P Singh, Dr A D Pawar" },
+      { position: "Chief Editor", name: "Dr M Veerabhadra Rao" },
+      { position: "Editor", name: "Dr H C Sharma" },
+      { position: "Editorial Board Members", name: "Dr S R S Dange, Dr T B Gour, Dr S K Handa, Dr B G Naik, Dr T P Sriharan, Dr V T Sundaramurthy, Dr P L Tandon, Dr R P Thakur, Dr B J Divakar" },
+      { position: "Honorary Patron", name: "Dr R L Rajak, Plant Protection Adviser to GOI" }
+    ],
+    "1993 - 1995": [
+      { position: "President", name: "Dr D V R Reddy" },
+      { position: "Vice Presidents", name: "Dr K Krishnaiah, Dr P S Chandurkar, Dr B V David" },
+      { position: "General Secretary", name: "Dr B J Divakar" },
+      { position: "Asst. Secretary", name: "Dr C Pramod Chandra Kumar" },
+      { position: "Treasurer", name: "Mr C V Rama Rao" },
+      { position: "Councillors", name: "Dr Renu Sharma, Dr K S R K Murthy, Dr Meera Gupta, Dr K C Devaraj Urs, Dr C S Pawar, Dr A M K Mohan Rao, Dr K S Varaprasad, Dr Mangal Sain" },
+      { position: "Chief Editor", name: "Dr H C Sharma" },
+      { position: "Editor", name: "Dr T B Gour" },
+      { position: "Editorial Board Members", name: "Dr K Chandrasekhara Rao, Dr T Ramesh Babu, Dr D S Ajri, Dr N Ramakrishnan, Dr A N Mukhopadhyay, Dr D J Patel, Dr Ajay Varadachary, Dr B J Divakar" },
+      { position: "Honorary Patron", name: "Dr R L Rajak, Plant Protection Advisor to GOI" }
+    ],
+    "1995 - 1997": [
+      { position: "President", name: "Dr D V R Reddy" },
+      { position: "Vice Presidents", name: "Dr K Krishnaiah, Dr P S Chandurkar, Dr K S R K Murthy" },
+      { position: "General Secretary", name: "Dr B J Divakar" },
+      { position: "Asst. Secretary", name: "Dr Renu Sharma" },
+      { position: "Treasurer", name: "Mr C V Rama Rao" },
+      { position: "Councillors", name: "Dr M V Reddy, Dr T Ramesh Babu, Dr O P Singh, Dr G T Gujar, Dr B Senapathi, Mr O N Dhar, Mr Reddy Raju Perumal, Dr B S Rathore" },
+      { position: "Chief Editor", name: "Dr T B Gour" },
+      { position: "Editor", name: "Dr C Pramod Chandra Kumar (1995-96), Dr K Chandrasekhara Rao (1996-97)" },
+      { position: "Editorial Board Members", name: "Dr K C S Rao, Dr T Ramesh Babu, Dr G K Veeresh, Dr D S Ajri, Dr N Ramakrishnan, Dr A N Mukhopadhyay, Dr D J Patel, Dr A Varadachary, Dr G R S Reddy, Dr John A Wightman, Dr T N Raju, Dr S B Sharma, Dr R D V J Prasada Rao, Dr N V Krishnaiah, Dr D D R Reddy, Dr C Chattopadhyay, Dr B J Divakar" },
+      { position: "Honorary Patron", name: "Dr V Raghunathan, Plant Protection Adviser to GOI" }
+    ],
+    "1997 - 1999": [
+      { position: "President", name: "Dr K Krishnaiah" },
+      { position: "Vice Presidents", name: "Dr P S Chandurkar, Dr K S R K Murthy, Dr B Senapathi" },
+      { position: "General Secretary", name: "Dr Renu Sharma" },
+      { position: "Asst. Secretary", name: "Mr D Chattopadhyay" },
+      { position: "Treasurer", name: "Mr C V Rama Rao" },
+      { position: "Councillors", name: "Dr T Ramesh Babu, Dr S M A Rizvi, Dr V R Bhagwat, Dr P V Sharma, Dr B Padmanaban, Dr B K Sahoo, Dr B C Shukla, Dr T P Rajendran" },
+      { position: "Chief Editor", name: "Dr T B Gour" },
+      { position: "Editor", name: "Dr K Chandrasekhara Rao" },
+      { position: "Editorial Board Members", name: "Dr N V Krishnaiah, Dr S D Sharma, Dr R D V J Prasada Rao, Dr D D R Reddy, Dr C Chattopadhyay, Dr Renu Sharma" },
+      { position: "Honorary Patron", name: "Dr R L Rajak, Plant Protection Advisor to GOI" }
+    ],
+    "2000 - 2002": [
+      { position: "President", name: "Dr P S Chandurkar" },
+      { position: "Vice Presidents", name: "Dr K S R K Murthy, Mr O N Dhar, Dr S M A Rizvi" },
+      { position: "General Secretary", name: "Dr R D V J Prasada Rao" },
+      { position: "Asst. Secretary", name: "Mr D Chattopadhyay" },
+      { position: "Treasurer", name: "Mr D Chattopadhyay" },
+      { position: "Councillors", name: "Dr B Senapathi, Dr A J Tamhankar, Dr S K Gangwar, Dr P Sundara Raju, Dr P P Shastry, Dr S K Chakrabarty, Dr G V Ranga Rao, Dr P V Sarma" },
+      { position: "Chief Editor", name: "Dr K S Varaprasad" },
+      { position: "Editor", name: "Dr B Sarath Babu" },
+      { position: "Patron", name: "Dr K S R K Murthy" },
+      { position: "Honorary Patron", name: "Dr V Raghunathan, Plant Protection Advisor, GOI" }
+    ],
+    "2003 - 2004": [
+      { position: "President", name: "Dr Y L Nene" },
+      { position: "Vice Presidents", name: "Dr K S R K Murthy, Dr H D Sharma, Dr B Julius Divakar" },
+      { position: "General Secretary", name: "Dr R D V J Prasada Rao" },
+      { position: "Asst. Secretary", name: "Dr V Markandeya" },
+      { position: "Treasurer", name: "Dr K Anitha" },
+      { position: "Councillors", name: "Dr R C Dani, Dr C Chattopadhyay, Dr S K Gangwar, Dr M K Naik, Dr Ashok Krishna, Dr S K Chakrabarty, Dr G V Ranga Rao, Dr P V Sarma" },
+      { position: "Chief Editor", name: "Dr K S Varaprasad" },
+      { position: "Editor", name: "Dr B Sarath Babu" },
+      { position: "Editorial Board Members", name: "Dr R D V J Prasad Rao (Ex-officio), Dr K Muralidharan, Dr R P Thakur, Dr Harvir Singh, Dr Gururaj Katti, Dr T V K Singh, Dr Arjun Lal" },
+      { position: "Honorary Patron", name: "Dr P S Chandurkar" }
+    ],
+    "2005 - 2006": [
+      { position: "President", name: "Dr Y L Nene" },
+      { position: "Vice Presidents", name: "Dr K S R K Murthy, Dr O N Dhar, Dr R K Khetrapal" },
+      { position: "General Secretary", name: "Dr R D V J Prasada Rao" },
+      { position: "Asst. Secretary", name: "Dr C Pramod Chandra Kumar" },
+      { position: "Treasurer", name: "Dr S K Chakrabarty" },
+      { position: "Councillors", name: "Dr B K Mishra, Dr C Chattopadhyay, Dr S K Gangwar, Dr M K Naik, Dr A J Thamankar, Dr S K Chakrabarty, Dr P R Yadav, Dr P V Sarma, Dr R K S Tiwari, Dr N V Krishnaiah, Dr A Raja Reddy, Dr Asif Tanveer" },
+      { position: "Chief Editor", name: "Dr B Sarath Babu" },
+      { position: "Editor", name: "Dr K Anitha" },
+      { position: "Editorial Board Members", name: "Dr R D V J Prasad Rao (Ex-officio), Dr K Muralidharan, Dr R P Thakur, Dr Harvir Singh, Dr J S Prasad, Dr T Ramesh Babu, Dr Gururaj Katti, Dr T V K Singh, Dr J R Felerio, Dr V Celia Chalam" },
+      { position: "Honorary Patron", name: "Dr P S Chandurkar" }
+    ],
+    "2007 - 2009": [
+      { position: "President", name: "Dr K S R K Murthy" },
+      { position: "Vice Presidents", name: "Dr R D V J Prasada Rao, Dr Harvir Singh, Dr D J Patel" },
+      { position: "General Secretary", name: "Dr S K Chakrabarty" },
+      { position: "Asst. Secretary", name: "Dr Gururaj Katti" },
+      { position: "Treasurer", name: "Dr Kamala Venkateswaran" },
+      { position: "Councillors", name: "Dr P K Sarangi, Dr P D Meena, Dr V B Nargund, Dr A Raja Reddy, Dr Suseelendra Desai, Dr Ashish Kumar Tripathi, Dr R L N Murthy, Dr P S Chandurkar" },
+      { position: "Chief Editor", name: "Dr B Sarath Babu" },
+      { position: "Editor", name: "Dr Anitha Kodaru" },
+      { position: "Editorial Board Members", name: "Dr R D V J Prasad Rao (Ex-officio), Dr K Muralidharan, Dr R P Thakur, Dr R K Khetrapal, Dr G V Ranga Rao, Dr J S Prasad, Dr T V K Singh, Dr H C Sharma, Dr C S Reddy, Dr G V Subbaratnam, Dr C Chattopadhyay" },
+      { position: "Honorary Patron", name: "Dr K S Varaprasad" }
+    ],
+    "2010 - 2013": [
+      { position: "President", name: "Dr K S Varaprasad" },
+      { position: "Vice Presidents", name: "Dr R J Rabindra, Dr T Ramesh Babu, Dr C Chattopadhyay" },
+      { position: "General Secretary", name: "Dr B Sarath Babu" },
+      { position: "Asst. Secretary", name: "Dr A Raja Reddy" },
+      { position: "Treasurer", name: "Dr S K Chakrabarty" },
+      { position: "Councillors", name: "Dr P K Singh, Dr B S Agnihotri, Dr A K Tripathi, Dr K P Srivastava, Mr G Ravi, Dr Suryakala, Mr Ashok Jalagam, Dr Asif Tanveer" },
+      { position: "Chief Editor", name: "Dr Gururaj Katti" },
+      { position: "Editor", name: "Dr G S Laha" },
+      { position: "Editorial Board Members", name: "Dr H C Sharma, Dr S Ramani, Dr R K Khetrapal, Dr K P Jayant, Dr S J Rehman, Dr C Chattopadhyay, Dr Suseelendra Desai, Dr Shashi Bhalla, Dr N Somasekar, Dr S Ram Singh" },
+      { position: "Honorary Patron", name: "Dr P S Chandurkar, Dr K S R K Murthy, Mr N Sukumar" }
+    ],
+    "2014 - 2015": [
+      { position: "President", name: "Dr K S Varaprasad" },
+      { position: "Vice Presidents", name: "Dr T Ramesh Babu, Dr N Sathyanarayana, Dr Rajan Sharma" },
+      { position: "General Secretary", name: "Dr B Sarath Babu" },
+      { position: "Asst. Secretary", name: "Dr A Raja Reddy" },
+      { position: "Treasurer", name: "Dr K Rameash" },
+      { position: "Councillors", name: "Dr S R Koteswara Rao, Dr G Shyam Prasad, Dr P C Rath, Dr L K Rath, Dr S Vennila, Dr Baleshwar Singh, Dr Alpeshkumar V Khanpara, Dr Ajit Singh, Dr B L Jat, Dr Chandish R Ballal, Dr A Muthukumar, Dr Asif Tanveer" },
+      { position: "Chief Editor", name: "Dr Anitha Kodaru" },
+      { position: "Editor", name: "Dr G Sridevi" },
+      { position: "Editorial Board Members", name: "Dr B Sarath Babu, Dr Josep A J Miret, Dr Mathyam Prabhakar, Dr Jameel Akhtar, Dr Rob Tanner, Dr Mohammad Akram, Dr V B Nargund, Dr Hamadttu Abdel Farag Elshafie, Dr N Somasekar, Dr P Satya Srinivas" },
+      { position: "Honorary Patrons", name: "Dr S N Sushil, Dr K S R K Murthy, Mr N Sukumar" }
+    ],
+    "2016 - 2018": [
+      { position: "President", name: "Dr K S Varaprasad" },
+      { position: "Vice Presidents", name: "Dr B Sarath Babu, Dr T Srinivasa Rao, Dr N Sathyanarayana" },
+      { position: "General Secretary", name: "Dr Anitha Kodaru" },
+      { position: "Asst. Secretary", name: "Dr A Raja Reddy" },
+      { position: "Treasurer", name: "Dr Kamala Venkateswaran" },
+      { position: "Councillors", name: "Dr P P Jambhulkar, Dr Alpeshkumar V Khanpara, Dr Ashish Kumar Tripathi, Dr Asif Tanweer, Dr B K Sahoo, Dr K Rameash, Dr Kavita Gupta, Dr D P Kamala Jayanthi, Dr R Jagadeeshwar, Dr R K Sharma, Dr S R Koteswara Rao, Dr Y Sridhar" },
+      { position: "Chief Editor", name: "Dr Rajan Sharma" },
+      { position: "Associate Editors", name: "Dr Mukesh Kumar Dhillon, Dr Rajeev Rathour, Dr Jameel Akhtar, Dr Cherukuri Srinivasa Rao" },
+      { position: "Editorial Board Members", name: "Dr Anitha Kodaru, Dr R P Thakur, Dr Muthyam Prabhakar, Dr Md Akram, Dr Hamadttu, Dr K Vijaya Lakshmi, Dr Dilip K Ghosh, Dr T Uma Maheswari" },
+      { position: "Honorary Patrons", name: "Dr A K Sinha, Dr K S R K Murthy, Mr N Sukumar" }
+    ],
+    "2018 - 2021": [
+      { position: "President", name: "Dr B Sarath Babu" },
+      { position: "Vice Presidents", name: "Dr Gururaj Katti, Dr T Srinivasa Rao, Dr A Raja Reddy" },
+      { position: "General Secretary", name: "Dr R Jagadeeshwar" },
+      { position: "Asst. Secretary", name: "Dr G Shyam Prasad" },
+      { position: "Treasurer", name: "Dr Prasanna Holajjer" },
+      { position: "Councillors", name: "Dr P P Jambhulkar, Dr Alpeshkumar V Khanpara, Dr Asif Tanweer, Dr Ashish Kumar Tripathi, Dr B K Sahoo, Dr K Rameash, Dr Kavitha Gupta, Dr D P Kamala Jayanthi, Dr R Jagadeeshwar, Dr R K Sharma, Dr S R Koteswara Rao, Dr Y Sridhar" },
+      { position: "Chief Editor", name: "Dr G Sridevi" },
+      { position: "Associate Editor", name: "Dr V Ramya" },
+      { position: "Editorial Board Members", name: "Dr Anitha Kodaru, Dr R P Thakur, Dr Muthyam Prabhakar, Dr Md Akram, Dr Hamadttu Abdel Farag Elshafie, Dr K Vijaya Lakshmi, Dr Dilip K Ghosh, Dr T Uma Maheswari" },
+      { position: "Honorary Patrons", name: "Dr A K Sinha, Dr K S R K Murthy, Mr N Sukumar" }
+    ],
+    "2021 - 2023": [
+      { position: "President", name: "Dr B Sarath Babu" },
+      { position: "Vice Presidents", name: "Dr R Jagadeeshwar, Dr V Celia Chalam, Dr M Srinivas Prasad" },
+      { position: "General Secretary", name: "Dr B Parameswari" },
+      { position: "Asst. Secretary", name: "Dr V Prakasam" },
+      { position: "Treasurer", name: "Dr Bhaskar Bajaru" },
+      { position: "Councillors", name: "Dr B S Gotyal, Dr Alpeshkumar V Khanpara, Dr D Sagar, Dr K Rameash, Dr J Stanley" },
+      { position: "Chief Editor", name: "Dr L Saravanan" },
+      { position: "Associate Editors", name: "Dr Kavitha Gupta, Dr Prasanna Holajjer" },
+      { position: "Editorial Board Members", name: "Dr J Alice R P Sujeetha, Dr Jameel Aktar, Dr Kuldeep S Jadon, Dr J R Falerio, Dr Hamadttu Abdel Farag Elshafie, Dr P Anandi, Dr P Roja, Dr Ravindra Chandra Joshi, Dr D Sagar" },
+      { position: "Honorary Patrons", name: "Dr A K Sinha, Dr K S R K Murthy, Mr N Sukumar" }
+    ]
+  };
+
+  const periods = Object.keys(councilData);
+  const buttonsContainer = document.getElementById('periodButtons');
+  const tableBoxEl = document.getElementById('historyTableBox');
+  const titleEl = document.getElementById('historyTableTitle');
+  const tbodyEl = document.getElementById('councilTableBody');
+
+  function switchPeriod(period) {
+    titleEl.textContent = 'Executive Council ' + period;
+    const rows = councilData[period] || [];
+    tbodyEl.innerHTML = rows.map(r => `
+      <tr>
+        <td class="position-cell">${r.position}</td>
+        <td class="name-cell">${r.name}</td>
+      </tr>
+    `).join('');
+
+    tableBoxEl.classList.add('is-visible');
+
+    // Highlight only the active button
+    document.querySelectorAll('.period-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.period === period);
+    });
+  }
+
+  // Create buttons with hover & click handlers
+  periods.forEach((period) => {
+    const btn = document.createElement('button');
+    btn.className = 'period-btn';
+    btn.textContent = period;
+    btn.dataset.period = period;
+
+    btn.addEventListener('mouseenter', () => switchPeriod(period));
+    btn.addEventListener('click', () => switchPeriod(period));
+
+    buttonsContainer.appendChild(btn);
+  });
+</script>
 {% endblock %}

@@ -33,12 +33,7 @@ def executive_council(request):
     return render(request, 'pages/executive_council.html', context)
 
 def legends(request):
-    context = get_common_context()
-    context['past_presidents'] = PastBearer.objects.filter(role='president')
-    context['past_secretaries'] = PastBearer.objects.filter(role='secretary')
-    context['past_treasurers'] = PastBearer.objects.filter(role='treasurer')
-    context['past_editors'] = PastBearer.objects.filter(role='editor')
-    return render(request, 'pages/legends.html', context)
+    return redirect('/executive-council/#past-executive-council')
 
 def journal_about(request):
     context = get_common_context()
