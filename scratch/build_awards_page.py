@@ -14,7 +14,7 @@ html_template = """{% extends "base.html" %}
     box-sizing: border-box;
     max-width: 1280px;
     margin: 0 auto;
-    padding: clamp(10px, 1.4vh, 16px) clamp(16px, 3vw, 36px) clamp(18px, 2.5vh, 28px) clamp(16px, 3vw, 36px);
+    padding: clamp(12px, 1.8vh, 20px) clamp(16px, 3vw, 36px) clamp(24px, 3.5vh, 38px) clamp(16px, 3vw, 36px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -22,6 +22,7 @@ html_template = """{% extends "base.html" %}
 
   .awards-page-titlebar {
     margin-bottom: clamp(8px, 1.2vh, 14px);
+    flex-shrink: 0;
   }
 
   .awards-page-titlebar h1 {
@@ -32,7 +33,7 @@ html_template = """{% extends "base.html" %}
     letter-spacing: -0.02em;
   }
 
-  /* Main Split-Panel Card - Fits within viewport so emerald background is visible */
+  /* Main Split-Panel Card - Scales smoothly from small (768p) to large (1080p+) desktops */
   .awards-portal-container {
     background: #ffffff;
     border: 1px solid var(--border-color);
@@ -40,10 +41,9 @@ html_template = """{% extends "base.html" %}
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.05);
     display: grid;
     grid-template-columns: clamp(270px, 25vw, 330px) 1fr;
-    height: calc(100vh - 165px);
-    max-height: 640px;
-    min-height: 480px;
+    height: clamp(480px, calc(100vh - 185px), 640px);
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   /* Left Sidebar: Categories List */
