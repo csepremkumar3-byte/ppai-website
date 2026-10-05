@@ -22,8 +22,7 @@ def about(request):
     return render(request, 'pages/about.html', context)
 
 def agbm(request):
-    context = get_common_context()
-    return render(request, 'pages/agbm.html', context)
+    return redirect('/about/#annual-general-body-meeting')
 
 def executive_council(request):
     context = get_common_context()

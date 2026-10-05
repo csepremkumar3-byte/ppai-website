@@ -693,13 +693,12 @@
         </div>
 
         <div class="nav-item">
-          <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name in 'about,agbm,executive_council,legends' %}active{% endif %}">The Society
+          <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name in 'about,executive_council,legends' %}active{% endif %}">The Society
             <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </a>
           <div class="dropdown">
             <a href="{% url 'about' %}">About Us</a>
             <a href="{% url 'executive_council' %}">Executive Council</a>
-            <a href="{% url 'agbm' %}">Annual General Body Meeting</a>
             <a href="{% url 'legends' %}">Legends of PPAI</a>
           </div>
         </div>
@@ -787,9 +786,9 @@
         <div>
           <h4 class="footer-heading">More From PPAI</h4>
           <ul class="footer-links">
+            <li><a href="{% url 'about' %}">About Us</a></li>
             <li><a href="{% url 'executive_council' %}">Executive Council</a></li>
             <li><a href="{% url 'legends' %}">Legends of PPAI</a></li>
-            <li><a href="{% url 'agbm' %}">Annual General Body Meeting</a></li>
             <li><a href="{% url 'journal_archives' %}">Journal Archives</a></li>
           </ul>
         </div>
