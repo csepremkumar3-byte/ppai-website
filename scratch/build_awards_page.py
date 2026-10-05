@@ -194,10 +194,6 @@ html_template = """{% extends "base.html" %}
     background: #ffffff;
   }
 
-  .awardee-group-row:last-child {
-    border-bottom: none;
-  }
-
   .awardee-group-year {
     background: #f8fbf9;
     border-right: 1px solid #dce8e1;
@@ -222,10 +218,6 @@ html_template = """{% extends "base.html" %}
     min-height: 36px;
     border-bottom: 1px solid #edf4f0;
     transition: background-color 0.12s ease;
-  }
-
-  .awardee-names-row:last-child {
-    border-bottom: none;
   }
 
   .awardee-names-row:hover {
