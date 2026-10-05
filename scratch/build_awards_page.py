@@ -102,23 +102,23 @@ html_template = """{% extends "base.html" %}
     border: 1px solid #d2e6dc;
     border-left: 4px solid #059669;
     border-radius: 8px;
-    padding: clamp(12px, 1.4vh, 16px) clamp(14px, 1.4vw, 18px);
-    margin-bottom: clamp(14px, 1.6vh, 20px);
+    padding: clamp(14px, 1.6vh, 18px) clamp(16px, 1.6vw, 20px);
+    margin-bottom: clamp(16px, 1.8vh, 22px);
   }
 
   .award-description-card h3 {
-    font-size: 13.5px;
+    font-size: clamp(14px, 0.92vw, 15.5px);
     font-weight: 800;
     color: #065f46;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    margin: 0 0 6px 0;
+    margin: 0 0 8px 0;
   }
 
   .award-description-card p {
-    font-size: clamp(13px, 0.9vw, 14px);
+    font-size: clamp(14px, 0.95vw, 15.5px);
     color: #1e3328;
-    line-height: 1.65;
+    line-height: 1.68;
     text-align: justify;
     text-justify: inter-word;
     margin: 0;
