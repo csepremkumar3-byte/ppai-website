@@ -137,7 +137,7 @@ html_template = """{% extends "base.html" %}
   }
 
   .recipients-section-title {
-    font-size: clamp(14.5px, 1vw, 16px);
+    font-size: clamp(15.5px, 1.1vw, 17.5px);
     font-weight: 800;
     color: var(--deep-forest);
     margin: 0 0 8px 0;
@@ -189,7 +189,7 @@ html_template = """{% extends "base.html" %}
   /* Group Row: Year on Left, 4-column Table on Right */
   .awardee-group-row {
     display: grid;
-    grid-template-columns: clamp(110px, 12vw, 140px) 1fr;
+    grid-template-columns: clamp(115px, 12vw, 145px) 1fr;
     border-bottom: 1px solid #dce8e1;
     background: #ffffff;
   }
@@ -197,10 +197,10 @@ html_template = """{% extends "base.html" %}
   .awardee-group-year {
     background: #f8fbf9;
     border-right: 1px solid #dce8e1;
-    padding: 8px 12px;
+    padding: 9px 12px;
     font-weight: 700;
     color: #047857;
-    font-size: 12.5px;
+    font-size: clamp(13.5px, 0.92vw, 15px);
     letter-spacing: 0.01em;
     display: flex;
     align-items: flex-start;
@@ -215,7 +215,7 @@ html_template = """{% extends "base.html" %}
   .awardee-names-row {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    min-height: 36px;
+    min-height: 38px;
     border-bottom: 1px solid #edf4f0;
     transition: background-color 0.12s ease;
   }
@@ -225,16 +225,16 @@ html_template = """{% extends "base.html" %}
   }
 
   .awardee-cell {
-    padding: 7px 10px;
-    font-size: 12px;
+    padding: 8px 12px;
+    font-size: clamp(13px, 0.9vw, 14.5px);
     color: #1e3328;
     font-weight: 600;
-    line-height: 1.35;
+    line-height: 1.4;
     overflow-wrap: break-word;
     word-break: normal;
     display: flex;
     align-items: center;
-    min-height: 36px;
+    min-height: 38px;
     box-sizing: border-box;
   }
 
