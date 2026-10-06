@@ -10,7 +10,7 @@
      Refined web-design spacing with snug divider-to-heading hierarchy
   =================================================================== */
   .about-stream-wrapper {
-    max-width: 960px;
+    max-width: 980px;
     margin: 0 auto;
     padding: clamp(28px, 4.5vh, 52px) clamp(20px, 4vw, 40px) clamp(60px, 8vh, 90px) clamp(20px, 4vw, 40px);
   }
@@ -20,7 +20,7 @@
     border: none;
     height: 1px;
     background: rgba(11, 36, 23, 0.12);
-    margin: clamp(24px, 3.2vh, 36px) 0 clamp(8px, 1.2vh, 14px) 0;
+    margin: clamp(24px, 3.2vh, 36px) 0 clamp(10px, 1.4vh, 16px) 0;
   }
 
   /* Top Hero Section */
@@ -106,74 +106,234 @@
     top: -2px;
   }
 
-  /* Clean Numbered List Structure */
-  .story-ordered-list {
-    list-style: none;
-    counter-reset: custom-counter;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(10px, 1.3vh, 14px);
-    margin-top: clamp(6px, 0.9vh, 10px);
-    padding: 0;
+  /* ===================================================================
+     REGISTRATION & DOCUMENTS SECTION
+  =================================================================== */
+  .docs-section {
+    margin-top: 4px;
   }
 
-  .story-ordered-item {
-    counter-increment: custom-counter;
+  .docs-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .docs-title-group h2 {
+    font-size: clamp(22px, 1.8vw, 28px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .docs-title-group p {
+    font-size: clamp(13.5px, 0.95vw, 15px);
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* View Switcher Toggle (Table vs Cards) */
+  .docs-view-toggle {
+    display: inline-flex;
+    align-items: center;
+    background: #eef5f1;
+    border-radius: 30px;
+    padding: 3px;
+    border: 1px solid #d4e7dc;
+    flex-shrink: 0;
+  }
+
+  .toggle-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2b523c;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: inherit;
+  }
+
+  .toggle-btn.active {
+    background: #047857;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(4, 120, 87, 0.25);
+  }
+
+  /* Documents Table Container */
+  .docs-table-container {
+    background: #ffffff;
+    border: 1px solid #d5e8dc;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(11, 36, 23, 0.04);
+  }
+
+  .docs-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .docs-table thead th {
+    background: #eef6f1;
+    color: #0f3821;
+    font-weight: 700;
+    padding: 14px 22px;
+    font-size: 13.5px;
+    border-bottom: 1.5px solid #d2e7db;
+    letter-spacing: 0.01em;
+  }
+
+  .docs-table thead th.col-sno {
+    width: 75px;
+    text-align: center;
+  }
+
+  .docs-table thead th.col-download {
+    width: 140px;
+    text-align: center;
+  }
+
+  .docs-table tbody tr {
+    border-bottom: 1px solid #edf4ef;
+    transition: background 0.15s ease;
+  }
+
+  .docs-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .docs-table tbody tr:hover {
+    background: rgba(0, 178, 114, 0.035);
+  }
+
+  .docs-table td {
+    padding: 16px 22px;
+    vertical-align: middle;
+  }
+
+  .docs-sno {
+    text-align: center;
+    font-weight: 700;
+    color: #4b6354;
+    font-size: 14px;
+  }
+
+  .doc-name-title {
+    font-size: clamp(14px, 0.98vw, 15.5px);
+    font-weight: 700;
+    color: #0f3821;
+    margin: 0 0 3px 0;
+    line-height: 1.35;
+  }
+
+  .doc-name-subtitle {
+    font-size: clamp(12px, 0.84vw, 13px);
+    color: #617c6e;
+    margin: 0;
+    line-height: 1.45;
+    font-weight: 400;
+  }
+
+  .docs-download-cell {
+    text-align: center;
+  }
+
+  /* PDF Download Button */
+  .btn-pdf-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: #eef7f2;
+    color: #047857;
+    border: 1px solid #bde1cb;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  .btn-pdf-download:hover {
+    background: #047857;
+    color: #ffffff;
+    border-color: #047857;
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .btn-pdf-download svg {
+    flex-shrink: 0;
+  }
+
+  /* Cards View */
+  .docs-cards-container {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 16px;
+  }
+
+  .doc-card-item {
+    background: #ffffff;
+    border: 1px solid #d5e8dc;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 3px 12px rgba(11, 36, 23, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .doc-card-item:hover {
+    transform: translateY(-2px);
+    border-color: #047857;
+    box-shadow: 0 6px 18px rgba(4, 120, 87, 0.12);
+  }
+
+  .doc-card-header {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    font-size: clamp(14.5px, 1vw, 16px);
-    line-height: 1.72;
-    color: var(--text-main);
   }
 
-  .story-ordered-item::before {
-    content: counter(custom-counter) ".";
-    font-weight: 700;
-    color: var(--deep-forest);
-    flex-shrink: 0;
-    min-width: 20px;
-  }
-
-  .story-ordered-item > div {
-    flex: 1;
-    text-align: justify;
-    text-justify: inter-word;
-  }
-
-  /* Sub-numbered list for Roman numerals (i, ii, iii, iv) */
-  .story-sub-list {
-    list-style: none;
-    counter-reset: sub-counter;
+  .doc-card-sno {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #eef7f2;
+    color: #047857;
+    font-weight: 800;
+    font-size: 12px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 8px;
-    padding-left: 4px;
-  }
-
-  .story-sub-item {
-    counter-increment: sub-counter;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: clamp(14px, 0.98vw, 15.5px);
-    line-height: 1.65;
-    color: var(--text-main);
-  }
-
-  .story-sub-item::before {
-    content: counter(sub-counter, lower-roman) ")";
-    font-weight: 600;
-    color: var(--vibrant-green);
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    min-width: 22px;
+    border: 1px solid #c2e3ce;
   }
 
-  .story-sub-item span {
+  .doc-card-info {
     flex: 1;
-    text-align: justify;
-    text-justify: inter-word;
+  }
+
+  .doc-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid #edf4ef;
   }
 
   /* Responsive Adjustments */
@@ -188,16 +348,43 @@
     }
 
     .story-divider {
-      margin: 20px 0 8px 0;
+      margin: 20px 0 10px 0;
     }
 
     .story-heading {
       margin-bottom: 8px;
     }
 
-    .story-pillar-row,
-    .story-ordered-item {
+    .story-pillar-row {
       gap: 10px;
+    }
+
+    .docs-table thead th,
+    .docs-table td {
+      padding: 12px 14px;
+    }
+
+    .docs-table thead th.col-sno,
+    .docs-table td.docs-sno {
+      width: 45px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .docs-table thead th.col-download,
+    .docs-table td.docs-download-cell {
+      width: 100px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .btn-pdf-download {
+      padding: 6px 10px;
+      font-size: 11.5px;
+    }
+
+    .docs-cards-container {
+      grid-template-columns: 1fr;
     }
   }
 </style>
@@ -257,155 +444,313 @@
   <!-- Line Divider -->
   <hr class="story-divider">
 
-  <!-- 4. Executive Council of PPAI -->
-  <section class="story-section">
-    <h2 class="story-heading">Executive Council of PPAI</h2>
-    <ol class="story-ordered-list">
-      <li class="story-ordered-item">
-        <div>There is an executive council responsible to carry on all affairs of the association.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The executive council consists of Honorary Patron, the President; Vice President; General Secretary; Assistant Secretary; Treasurer and Eight councillors. All except the Honorary Patron (Plant Protection Adviser to the Government of India) will be elected by the General body. All the office bearers are elected for a period of two years.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The general secretary is responsible for recording the proceedings of the meetings of the association and of the council and for conducting day to day business of the association. The assistant secretary assists the secretary in all matters connected with the association, and shall be in charge in the absence of the secretary. The treasurer maintains the account, receive deposits and disburses money on behalf of the association according to directions of the council.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The funds are spent only to the attainment of the objects of the society and no portion thereof shall be paid or transferred directly or indirectly to any of its members through any means.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The funds of the association are in the name of the Plant Protection Association of India operated jointly by General Secretary and Treasurer and the latter shall make payments endorsed by the secretary in respect of bills not exceeding ₹100/- at a time, Bills for sums in excess of this amount shall be jointly endorsed by the secretary and the president to the extent of ₹1000/- before they will be valid for payment by the treasurer.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>
-          <div>There is a reserve fund of the association governed as follows:</div>
-          <ul class="story-sub-list">
-            <li class="story-sub-item">
-              <span>There is a reserve fund of the association.</span>
-            </li>
-            <li class="story-sub-item">
-              <span>The reserve fund is not used on recurring items.</span>
-            </li>
-            <li class="story-sub-item">
-              <span>All the admission fees and 50% of life membership fee received form the reserve fund.</span>
-            </li>
-            <li class="story-sub-item">
-              <span>The executive council by decision of the general body by two thirds majority, can sanction any expenditure out of the reserve fund but not exceeding 50%.</span>
-            </li>
-          </ul>
+  <!-- 4. Registration & Documents Section -->
+  <section class="docs-section">
+    <div class="docs-section-header">
+      <div class="docs-title-group">
+        <h2>Registration &amp; Documents</h2>
+        <p>Official registration papers, bye-laws and publications of the Association.</p>
+      </div>
+      <div class="docs-view-toggle">
+        <button type="button" class="toggle-btn active" id="btnViewTable" onclick="switchDocsView('table')">Table</button>
+        <button type="button" class="toggle-btn" id="btnViewCards" onclick="switchDocsView('cards')">Cards</button>
+      </div>
+    </div>
+
+    <!-- Table View -->
+    <div class="docs-table-container" id="docsTableView">
+      <table class="docs-table">
+        <thead>
+          <tr>
+            <th class="col-sno">S.No.</th>
+            <th class="col-doc">Document</th>
+            <th class="col-download">Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 1. Certificate of Registration -->
+          <tr>
+            <td class="docs-sno">1</td>
+            <td>
+              <div class="doc-name-title">Certificate of Registration (1972)</div>
+              <div class="doc-name-subtitle">Registrar of Societies, Hyderabad – Reg. No. 726 of 1972</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/certificate_of_registration_1972.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- 2. Memorandum, Rules & Regulations -->
+          <tr>
+            <td class="docs-sno">2</td>
+            <td>
+              <div class="doc-name-title">Memorandum, Rules &amp; Regulations</div>
+              <div class="doc-name-subtitle">Bye-laws and registration documents of the Association</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/memorandum_rules_and_regulations.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- 3. NGO Darpan Registration -->
+          <tr>
+            <td class="docs-sno">3</td>
+            <td>
+              <div class="doc-name-title">NGO Darpan (NITI Aayog) Registration</div>
+              <div class="doc-name-subtitle">Unique ID TS/2017/0117123</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/ngo_darpan_registration.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- 4. CSR-1 Registration Letter -->
+          <tr>
+            <td class="docs-sno">4</td>
+            <td>
+              <div class="doc-name-title">CSR-1 Registration Letter</div>
+              <div class="doc-name-subtitle">Ministry of Corporate Affairs – registered for CSR activities</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/csr1_registration_letter.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- 5. Souvenir 1972 – 2022 -->
+          <tr>
+            <td class="docs-sno">5</td>
+            <td>
+              <div class="doc-name-title">Souvenir 1972 – 2022</div>
+              <div class="doc-name-subtitle">Fifty years of the Plant Protection Association of India</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/souvenir_1972_2022.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- 6. PPAI Brochure -->
+          <tr>
+            <td class="docs-sno">6</td>
+            <td>
+              <div class="doc-name-title">PPAI Brochure</div>
+              <div class="doc-name-subtitle">About the Association, its aims and membership</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/ppai_brochure.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- 7. ICPHM Souvenir -->
+          <tr>
+            <td class="docs-sno">7</td>
+            <td>
+              <div class="doc-name-title">ICPHM Souvenir</div>
+              <div class="doc-name-subtitle">International Conference on Plant Health Management</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/icphm_souvenir.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+
+          <!-- 8. Tax Exemption -->
+          <tr>
+            <td class="docs-sno">8</td>
+            <td>
+              <div class="doc-name-title">Tax Exemption</div>
+              <div class="doc-name-subtitle">Income Tax Exemption Certificate under Section 12A / 80G</div>
+            </td>
+            <td class="docs-download-cell">
+              <a href="{% static 'documents/tax_exemption.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Cards View -->
+    <div class="docs-cards-container" id="docsCardsView">
+      <!-- 1 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">1</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">Certificate of Registration (1972)</div>
+            <div class="doc-name-subtitle">Registrar of Societies, Hyderabad – Reg. No. 726 of 1972</div>
+          </div>
         </div>
-      </li>
-      <li class="story-ordered-item">
-        <div>All accounts of the association are audited annually by an accountant nominated by the executive council. The treasurer submits to the accountant by the end of April each year the accounts of the association for the previous year for the purpose of auditing. The auditor’s statement of accounts are circulated to all members before the annual general body meeting.</div>
-      </li>
-    </ol>
-  </section>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/certificate_of_registration_1972.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
+      <!-- 2 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">2</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">Memorandum, Rules &amp; Regulations</div>
+            <div class="doc-name-subtitle">Bye-laws and registration documents of the Association</div>
+          </div>
+        </div>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/memorandum_rules_and_regulations.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
 
-  <!-- 5. Meeting of the Council -->
-  <section class="story-section">
-    <h2 class="story-heading">Meeting of the Council</h2>
-    <ul class="story-pillars">
-      <li class="story-pillar-row">
-        <span>Council meetings are held periodically at the discretion of the president or at the request of 1/3 of the members of council.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>The date and time of holding each meeting of the council are notified by the secretary to each member of the council at least 2 weeks before the date on which such meetings are to be held. Non-receipt of such notice by any member of the council in no way invalidate the proceedings of the meeting. One-third of the members of the executive council form the quorum.</span>
-      </li>
-      <li class="story-pillar-row">
-        <span>Extraordinary meetings of the council are called by the president on a requisition signed by the members of the council.</span>
-      </li>
-    </ul>
-  </section>
+      <!-- 3 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">3</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">NGO Darpan (NITI Aayog) Registration</div>
+            <div class="doc-name-subtitle">Unique ID TS/2017/0117123</div>
+          </div>
+        </div>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/ngo_darpan_registration.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
+      <!-- 4 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">4</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">CSR-1 Registration Letter</div>
+            <div class="doc-name-subtitle">Ministry of Corporate Affairs – registered for CSR activities</div>
+          </div>
+        </div>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/csr1_registration_letter.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
 
-  <!-- 6. Meetings of the Association -->
-  <section class="story-section" id="meetings-of-association">
-    <h2 class="story-heading">Meetings of the Association</h2>
-    <ol class="story-ordered-list">
-      <li class="story-ordered-item">
-        <div>Ordinary meetings of the association are presided over by the President or in his absence by one of the Vice-Presidents or by one of the members of the council present or by member elected at the meetings.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>An extraordinary meeting of the association is called if one third of the ordinary members of the association send a signed requisition to the general secretary for such meeting.</div>
-      </li>
-    </ol>
-  </section>
+      <!-- 5 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">5</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">Souvenir 1972 – 2022</div>
+            <div class="doc-name-subtitle">Fifty years of the Plant Protection Association of India</div>
+          </div>
+        </div>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/souvenir_1972_2022.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
+      <!-- 6 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">6</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">PPAI Brochure</div>
+            <div class="doc-name-subtitle">About the Association, its aims and membership</div>
+          </div>
+        </div>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/ppai_brochure.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
 
-  <!-- 7. Annual General Body Meeting -->
-  <section class="story-section" id="annual-general-body-meeting">
-    <h2 class="story-heading">Annual General Body Meeting</h2>
-    <ol class="story-ordered-list">
-      <li class="story-ordered-item">
-        <div>The date of the annual general body meeting shall be announced by the council at least four weeks before the meeting and all notices of motions shall be received by the general secretary by the end of October. The out-going President will address the meeting. In case the president is unable to attend the annual general meeting the presidential address will be sent and read at the meeting.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The venue of the meetings shall be decided by the executive council.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The agenda and resolutions for the annual general meeting shall be circulated to the members before the date of the meeting.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The reading of technical papers will be fully encouraged at all meetings of the association. Discussions, purely of plant protection interest could however be held at the annual general meetings.</div>
-      </li>
-    </ol>
-  </section>
+      <!-- 7 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">7</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">ICPHM Souvenir</div>
+            <div class="doc-name-subtitle">International Conference on Plant Health Management</div>
+          </div>
+        </div>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/icphm_souvenir.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
 
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 8. Withdrawal or Removal of Members -->
-  <section class="story-section">
-    <h2 class="story-heading">Withdrawal or Removal of Members</h2>
-    <ol class="story-ordered-list">
-      <li class="story-ordered-item">
-        <div>A member may withdraw from the association by signifying his/her desire to do in a letter addressed to the secretary. The association shall not be liable to return any fee that may have been paid by the member in advance.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>A member who has withdrawn and whose subscriptions is not in arrears shall automatically recover the privileges of membership without reelection, if he joins the association within a year of withdrawn and he shall be liable to pay all dues as if he had not withdrawn at all.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The general body shall have the power to remove any member of the association from its rolls.</div>
-      </li>
-    </ol>
-  </section>
-
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 9. Amendment of the Rules -->
-  <section class="story-section">
-    <h2 class="story-heading">Amendment of the Rules</h2>
-    <ol class="story-ordered-list">
-      <li class="story-ordered-item">
-        <div>No amendment of alteration shall be made in purpose of the Association unless it is voted by 2/3<sup>rd</sup> members present at a meeting convened for the purpose and confirmed by 2/3<sup>rd</sup> of the members present at a second special meeting.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>Proposals for an amendment of these rules may be made either by the council or any member duly seconded. In the latter, case, it must reach the secretary in writing in time for circulation to all members of the association at least 1 month before extraordinary meeting by the end of October for the annual meeting.</div>
-      </li>
-      <li class="story-ordered-item">
-        <div>The executive council may frame or alter bye-laws for efficient working of the association not inconsistent with its rules.</div>
-      </li>
-    </ol>
-  </section>
-
-  <!-- Line Divider -->
-  <hr class="story-divider">
-
-  <!-- 10. Winding Up -->
-  <section class="story-section">
-    <h2 class="story-heading">Winding Up</h2>
-    <p class="story-body-p">
-      In case, the society/association had to be woundup, the property and funds of the society/association that remain after full satisfaction of the liabilities of the society/association will be transferred or paid to some other institution with similar aims and objectives.
-    </p>
+      <!-- 8 -->
+      <div class="doc-card-item">
+        <div class="doc-card-header">
+          <div class="doc-card-sno">8</div>
+          <div class="doc-card-info">
+            <div class="doc-name-title">Tax Exemption</div>
+            <div class="doc-name-subtitle">Income Tax Exemption Certificate under Section 12A / 80G</div>
+          </div>
+        </div>
+        <div class="doc-card-footer">
+          <a href="{% static 'documents/tax_exemption.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </section>
 
 </div>
+
+<script>
+  function switchDocsView(viewType) {
+    var tableView = document.getElementById('docsTableView');
+    var cardsView = document.getElementById('docsCardsView');
+    var btnTable = document.getElementById('btnViewTable');
+    var btnCards = document.getElementById('btnViewCards');
+
+    if (viewType === 'cards') {
+      tableView.style.display = 'none';
+      cardsView.style.display = 'grid';
+      btnCards.classList.add('active');
+      btnTable.classList.remove('active');
+    } else {
+      tableView.style.display = 'block';
+      cardsView.style.display = 'none';
+      btnTable.classList.add('active');
+      btnCards.classList.remove('active');
+    }
+  }
+</script>
 {% endblock %}
