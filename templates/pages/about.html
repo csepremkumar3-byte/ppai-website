@@ -107,65 +107,18 @@
   }
 
   /* ===================================================================
-     REGISTRATION & DOCUMENTS SECTION
+     REGISTRATION & DOCUMENTS TABLE
   =================================================================== */
   .docs-section {
     margin-top: 4px;
   }
 
-  .docs-section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 16px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-
-  .docs-title-group h2 {
+  .docs-title-heading {
     font-size: clamp(22px, 1.8vw, 28px);
     font-weight: 800;
     color: var(--deep-forest);
-    margin: 0 0 6px 0;
+    margin: 0 0 clamp(14px, 1.8vh, 20px) 0;
     letter-spacing: -0.02em;
-  }
-
-  .docs-title-group p {
-    font-size: clamp(13.5px, 0.95vw, 15px);
-    color: var(--text-muted);
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  /* View Switcher Toggle (Table vs Cards) */
-  .docs-view-toggle {
-    display: inline-flex;
-    align-items: center;
-    background: #eef5f1;
-    border-radius: 30px;
-    padding: 3px;
-    border: 1px solid #d4e7dc;
-    flex-shrink: 0;
-  }
-
-  .toggle-btn {
-    appearance: none;
-    border: none;
-    background: transparent;
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #2b523c;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    font-family: inherit;
-  }
-
-  .toggle-btn.active {
-    background: #047857;
-    color: #ffffff;
-    box-shadow: 0 2px 8px rgba(4, 120, 87, 0.25);
   }
 
   /* Documents Table Container */
@@ -175,6 +128,7 @@
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 4px 18px rgba(11, 36, 23, 0.04);
+    width: 100%;
   }
 
   .docs-table {
@@ -278,64 +232,6 @@
     flex-shrink: 0;
   }
 
-  /* Cards View */
-  .docs-cards-container {
-    display: none;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 16px;
-  }
-
-  .doc-card-item {
-    background: #ffffff;
-    border: 1px solid #d5e8dc;
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 16px;
-    box-shadow: 0 3px 12px rgba(11, 36, 23, 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-
-  .doc-card-item:hover {
-    transform: translateY(-2px);
-    border-color: #047857;
-    box-shadow: 0 6px 18px rgba(4, 120, 87, 0.12);
-  }
-
-  .doc-card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .doc-card-sno {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #eef7f2;
-    color: #047857;
-    font-weight: 800;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    border: 1px solid #c2e3ce;
-  }
-
-  .doc-card-info {
-    flex: 1;
-  }
-
-  .doc-card-footer {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 10px;
-    border-top: 1px solid #edf4ef;
-  }
-
   /* Responsive Adjustments */
   @media (max-width: 768px) {
     .about-stream-wrapper {
@@ -381,10 +277,6 @@
     .btn-pdf-download {
       padding: 6px 10px;
       font-size: 11.5px;
-    }
-
-    .docs-cards-container {
-      grid-template-columns: 1fr;
     }
   }
 </style>
@@ -446,19 +338,10 @@
 
   <!-- 4. Registration & Documents Section -->
   <section class="docs-section">
-    <div class="docs-section-header">
-      <div class="docs-title-group">
-        <h2>Registration &amp; Documents</h2>
-        <p>Official registration papers, bye-laws and publications of the Association.</p>
-      </div>
-      <div class="docs-view-toggle">
-        <button type="button" class="toggle-btn active" id="btnViewTable" onclick="switchDocsView('table')">Table</button>
-        <button type="button" class="toggle-btn" id="btnViewCards" onclick="switchDocsView('cards')">Cards</button>
-      </div>
-    </div>
+    <h2 class="docs-title-heading">Registration &amp; Documents</h2>
 
     <!-- Table View -->
-    <div class="docs-table-container" id="docsTableView">
+    <div class="docs-table-container">
       <table class="docs-table">
         <thead>
           <tr>
@@ -468,7 +351,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- 1. Certificate of Registration -->
+          <!-- 1. Certificate of Registration (1972) -->
           <tr>
             <td class="docs-sno">1</td>
             <td>
@@ -573,7 +456,7 @@
             </td>
           </tr>
 
-          <!-- 8. Tax Exemption -->
+          <!-- 8. Tax Exemption (Dummy) -->
           <tr>
             <td class="docs-sno">8</td>
             <td>
@@ -581,7 +464,7 @@
               <div class="doc-name-subtitle">Income Tax Exemption Certificate under Section 12A / 80G</div>
             </td>
             <td class="docs-download-cell">
-              <a href="{% static 'documents/tax_exemption.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
+              <a href="#" class="btn-pdf-download" onclick="alert('Tax Exemption Certificate document will be updated soon.'); return false;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 <span>PDF</span>
               </a>
@@ -590,167 +473,7 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Cards View -->
-    <div class="docs-cards-container" id="docsCardsView">
-      <!-- 1 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">1</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">Certificate of Registration (1972)</div>
-            <div class="doc-name-subtitle">Registrar of Societies, Hyderabad – Reg. No. 726 of 1972</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/certificate_of_registration_1972.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 2 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">2</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">Memorandum, Rules &amp; Regulations</div>
-            <div class="doc-name-subtitle">Bye-laws and registration documents of the Association</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/memorandum_rules_and_regulations.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 3 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">3</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">NGO Darpan (NITI Aayog) Registration</div>
-            <div class="doc-name-subtitle">Unique ID TS/2017/0117123</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/ngo_darpan_registration.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">4</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">CSR-1 Registration Letter</div>
-            <div class="doc-name-subtitle">Ministry of Corporate Affairs – registered for CSR activities</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/csr1_registration_letter.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 5 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">5</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">Souvenir 1972 – 2022</div>
-            <div class="doc-name-subtitle">Fifty years of the Plant Protection Association of India</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/souvenir_1972_2022.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 6 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">6</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">PPAI Brochure</div>
-            <div class="doc-name-subtitle">About the Association, its aims and membership</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/ppai_brochure.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 7 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">7</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">ICPHM Souvenir</div>
-            <div class="doc-name-subtitle">International Conference on Plant Health Management</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/icphm_souvenir.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 8 -->
-      <div class="doc-card-item">
-        <div class="doc-card-header">
-          <div class="doc-card-sno">8</div>
-          <div class="doc-card-info">
-            <div class="doc-name-title">Tax Exemption</div>
-            <div class="doc-name-subtitle">Income Tax Exemption Certificate under Section 12A / 80G</div>
-          </div>
-        </div>
-        <div class="doc-card-footer">
-          <a href="{% static 'documents/tax_exemption.pdf' %}" class="btn-pdf-download" target="_blank" rel="noopener noreferrer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Download PDF</span>
-          </a>
-        </div>
-      </div>
-    </div>
   </section>
 
 </div>
-
-<script>
-  function switchDocsView(viewType) {
-    var tableView = document.getElementById('docsTableView');
-    var cardsView = document.getElementById('docsCardsView');
-    var btnTable = document.getElementById('btnViewTable');
-    var btnCards = document.getElementById('btnViewCards');
-
-    if (viewType === 'cards') {
-      tableView.style.display = 'none';
-      cardsView.style.display = 'grid';
-      btnCards.classList.add('active');
-      btnTable.classList.remove('active');
-    } else {
-      tableView.style.display = 'block';
-      cardsView.style.display = 'none';
-      btnTable.classList.add('active');
-      btnCards.classList.remove('active');
-    }
-  }
-</script>
 {% endblock %}
