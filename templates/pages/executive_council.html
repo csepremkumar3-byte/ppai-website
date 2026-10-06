@@ -342,26 +342,6 @@
     cursor: pointer;
   }
 
-  .member-bio-trigger {
-    margin-top: auto;
-    padding-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--vibrant-green);
-    opacity: 0.85;
-    transition: all 0.2s ease;
-  }
-
-  .member-card-item:hover .member-bio-trigger {
-    opacity: 1;
-    color: var(--vibrant-green-hover);
-    transform: translateX(2px);
-  }
-
   .bio-modal-overlay {
     position: fixed;
     top: 0;
@@ -658,10 +638,6 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
-        <div class="member-bio-trigger">
-          <span>View Biodata</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </div>
       </div>
       {% endfor %}
     </div>
@@ -691,10 +667,6 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
-        <div class="member-bio-trigger">
-          <span>View Biodata</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </div>
       </div>
       {% endfor %}
     </div>
@@ -724,10 +696,6 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
-        <div class="member-bio-trigger">
-          <span>View Biodata</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </div>
       </div>
       {% endfor %}
     </div>
@@ -757,10 +725,6 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
-        <div class="member-bio-trigger">
-          <span>View Biodata</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </div>
       </div>
       {% endfor %}
     </div>
