@@ -44,7 +44,15 @@ class ExecutiveMember(models.Model):
     affiliation = models.CharField(max_length=255)
     image = models.ImageField(upload_to='council/', blank=True, null=True, help_text="Upload member photo. Defaults to gender avatar if blank.")
     gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], default='male')
-    bio = models.TextField(blank=True, help_text="Short bio / description")
+    email = models.CharField(max_length=255, blank=True, null=True, help_text="Official email address(es)")
+    phone = models.CharField(max_length=150, blank=True, null=True, help_text="Contact number(s)")
+    qualification = models.CharField(max_length=255, blank=True, null=True, help_text="Academic qualifications")
+    date_of_birth = models.CharField(max_length=100, blank=True, null=True, help_text="Date of birth")
+    official_address = models.TextField(blank=True, null=True, help_text="Official address")
+    bio = models.TextField(blank=True, help_text="Detailed bio / profile description")
+    achievements = models.TextField(blank=True, null=True, help_text="Major Professional Achievements")
+    projects = models.TextField(blank=True, null=True, help_text="Key Research Projects")
+    publications = models.TextField(blank=True, null=True, help_text="Key Research Publications")
     order = models.PositiveIntegerField(default=0)
 
     class Meta:

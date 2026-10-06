@@ -334,6 +334,292 @@
       white-space: normal;
     }
   }
+
+  /* ===================================================================
+     INTERACTIVE BIODATA MODAL
+  =================================================================== */
+  .member-card-item {
+    cursor: pointer;
+  }
+
+  .member-bio-trigger {
+    margin-top: auto;
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--vibrant-green);
+    opacity: 0.85;
+    transition: all 0.2s ease;
+  }
+
+  .member-card-item:hover .member-bio-trigger {
+    opacity: 1;
+    color: var(--vibrant-green-hover);
+    transform: translateX(2px);
+  }
+
+  .bio-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(11, 36, 23, 0.68);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease;
+  }
+
+  .bio-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .bio-modal-card {
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 740px;
+    width: 100%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(11, 36, 23, 0.35);
+    border: 1px solid rgba(0, 178, 114, 0.25);
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .bio-modal-overlay.active .bio-modal-card {
+    transform: scale(1) translateY(0);
+  }
+
+  .bio-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(11, 36, 23, 0.08);
+    border: none;
+    color: var(--deep-forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+  }
+
+  .bio-modal-close:hover {
+    background: #e2ece5;
+    color: #047857;
+    transform: rotate(90deg);
+  }
+
+  .bio-modal-header {
+    background: linear-gradient(135deg, #f2faf5 0%, #e5f5ec 100%);
+    border-bottom: 1px solid #d2e8dc;
+    padding: 22px 26px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-shrink: 0;
+  }
+
+  .bio-modal-avatar {
+    width: 88px;
+    height: 100px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 2.5px solid var(--vibrant-green);
+    box-shadow: 0 4px 14px rgba(0, 178, 114, 0.15);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bio-modal-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .bio-modal-header-text {
+    flex: 1;
+    min-width: 0;
+    padding-right: 28px;
+  }
+
+  .bio-modal-designation {
+    display: inline-block;
+    background: var(--vibrant-green);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  .bio-modal-name {
+    font-size: clamp(18px, 1.5vw, 22px);
+    font-weight: 800;
+    color: var(--deep-forest);
+    margin: 0 0 4px 0;
+    line-height: 1.25;
+  }
+
+  .bio-modal-affiliation {
+    font-size: 12.5px;
+    color: #2b4536;
+    margin: 0;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  .bio-modal-content {
+    padding: 22px 26px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    scrollbar-width: thin;
+    scrollbar-color: #8bbfa3 #f0f6f2;
+  }
+
+  .bio-modal-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .bio-modal-content::-webkit-scrollbar-track {
+    background: #f0f6f2;
+  }
+
+  .bio-modal-content::-webkit-scrollbar-thumb {
+    background: #8bbfa3;
+    border-radius: 4px;
+  }
+
+  .bio-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bio-section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #047857;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .bio-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2ece5;
+  }
+
+  .bio-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    background: #f8fbf9;
+    border: 1px solid #dceae1;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .bio-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .bio-info-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #64746D;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .bio-info-value {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--deep-forest);
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .bio-info-value a {
+    color: #047857;
+    text-decoration: underline;
+  }
+
+  .bio-text-block {
+    font-size: 13px;
+    color: #2c4235;
+    line-height: 1.65;
+    text-align: justify;
+    text-justify: inter-word;
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  .bio-list-block {
+    font-size: 12.5px;
+    color: #2c4235;
+    line-height: 1.6;
+    background: #fbfdfc;
+    border: 1px solid #e2ece5;
+    border-radius: 8px;
+    padding: 12px 14px;
+    white-space: pre-line;
+    text-align: justify;
+  }
+
+  @media (max-width: 600px) {
+    .bio-info-grid {
+      grid-template-columns: 1fr;
+    }
+    .bio-modal-header {
+      flex-direction: column;
+      text-align: center;
+      padding: 20px 16px;
+    }
+    .bio-modal-header-text {
+      padding-right: 0;
+    }
+    .bio-modal-content {
+      padding: 16px;
+    }
+  }
 </style>
 {% endblock %}
 
@@ -350,7 +636,7 @@
     <!-- Hierarchy Row 1: President & Vice-Presidents (4 items) -->
     <div class="grid-row-4">
       {% for m in presidents_group %}
-      <div class="member-card-item">
+      <div class="member-card-item" onclick="openMemberBio('{{ m.id }}')">
         <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
           {% if m.image %}
             <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
@@ -372,6 +658,10 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
+        <div class="member-bio-trigger">
+          <span>View Biodata</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -379,7 +669,7 @@
     <!-- Hierarchy Row 2: General Secretary, Assistant Secretary & Treasurer (3 items) -->
     <div class="grid-row-3">
       {% for m in secretaries_group %}
-      <div class="member-card-item">
+      <div class="member-card-item" onclick="openMemberBio('{{ m.id }}')">
         <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
           {% if m.image %}
             <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
@@ -401,6 +691,10 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
+        <div class="member-bio-trigger">
+          <span>View Biodata</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -408,7 +702,7 @@
     <!-- Hierarchy Row 3: Chief Editor & Associate Editors (3 items) -->
     <div class="grid-row-3">
       {% for m in editors_group %}
-      <div class="member-card-item">
+      <div class="member-card-item" onclick="openMemberBio('{{ m.id }}')">
         <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
           {% if m.image %}
             <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
@@ -430,6 +724,10 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
+        <div class="member-bio-trigger">
+          <span>View Biodata</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -437,7 +735,7 @@
     <!-- Hierarchy Row 4: Councillors (5 items) -->
     <div class="grid-row-5">
       {% for m in councillors_group %}
-      <div class="member-card-item">
+      <div class="member-card-item" onclick="openMemberBio('{{ m.id }}')">
         <div class="avatar-circle {% if m.image %}has-photo{% endif %}">
           {% if m.image %}
             <img src="{{ m.image.url }}?v=20260929_1" alt="{{ m.name }}">
@@ -459,6 +757,10 @@
         <span class="badge-pill" style="margin-bottom: 6px; font-size: 11px; padding: 2px 9px;">{{ m.designation }}</span>
         <h3 class="member-name">{{ m.name }}</h3>
         <p class="member-affiliation">{{ m.affiliation }}</p>
+        <div class="member-bio-trigger">
+          <span>View Biodata</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -491,6 +793,28 @@
             <!-- Populated dynamically by JS -->
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Member Biodata Modal -->
+  <div class="bio-modal-overlay" id="bioModalOverlay" onclick="closeBioModal(event)">
+    <div class="bio-modal-card" id="bioModalCard" onclick="event.stopPropagation()">
+      <button type="button" class="bio-modal-close" onclick="closeBioModalDirect()" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="bio-modal-header">
+        <div class="bio-modal-avatar" id="modalAvatarBox"></div>
+        <div class="bio-modal-header-text">
+          <span class="bio-modal-designation" id="modalDesignation"></span>
+          <h2 class="bio-modal-name" id="modalName"></h2>
+          <p class="bio-modal-affiliation" id="modalAffiliation"></p>
+        </div>
+      </div>
+
+      <div class="bio-modal-content" id="modalContent">
+        <!-- Injected via JavaScript -->
       </div>
     </div>
   </div>
@@ -797,6 +1121,154 @@
     btn.addEventListener('click', () => switchPeriod(period));
 
     buttonsContainer.appendChild(btn);
+  });
+
+  // ===================================================================
+  // BIODATA MODAL SCRIPT
+  // ===================================================================
+  const membersData = {{ members_json|safe }};
+  const modalOverlay = document.getElementById('bioModalOverlay');
+  const modalAvatarBox = document.getElementById('modalAvatarBox');
+  const modalDesignation = document.getElementById('modalDesignation');
+  const modalName = document.getElementById('modalName');
+  const modalAffiliation = document.getElementById('modalAffiliation');
+  const modalContent = document.getElementById('modalContent');
+
+  function openMemberBio(memberId) {
+    const m = membersData[String(memberId)];
+    if (!m) return;
+
+    modalDesignation.textContent = m.designation;
+    modalName.textContent = m.name;
+    modalAffiliation.textContent = m.affiliation;
+
+    if (m.image) {
+      modalAvatarBox.innerHTML = `<img src="${m.image}?v=20261006_1" alt="${m.name}">`;
+    } else {
+      if (m.gender === 'female') {
+        modalAvatarBox.innerHTML = `
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+            <path d="M18 21a6 6 0 0 0-12 0"></path>
+            <circle cx="12" cy="7" r="1.5" fill="var(--vibrant-green)"></circle>
+          </svg>
+        `;
+      } else {
+        modalAvatarBox.innerHTML = `
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--vibrant-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        `;
+      }
+    }
+
+    let html = '';
+
+    // 1. Personal & Contact Info Grid
+    const infoItems = [];
+    if (m.qualification) {
+      infoItems.push({ label: 'Academic Qualification', val: m.qualification });
+    }
+    if (m.email) {
+      const emailLinks = m.email.split(',').map(e => `<a href="mailto:${e.trim()}">${e.trim()}</a>`).join(', ');
+      infoItems.push({ label: 'Email Address', val: emailLinks });
+    }
+    if (m.phone) {
+      const phoneLinks = m.phone.split(',').map(p => `<a href="tel:${p.trim()}">${p.trim()}</a>`).join(', ');
+      infoItems.push({ label: 'Contact Number', val: phoneLinks });
+    }
+    if (m.date_of_birth) {
+      infoItems.push({ label: 'Date of Birth', val: m.date_of_birth });
+    }
+    if (m.official_address && m.official_address !== m.affiliation) {
+      infoItems.push({ label: 'Official Address', val: m.official_address });
+    }
+
+    if (infoItems.length > 0) {
+      html += `
+        <div class="bio-section">
+          <h4 class="bio-section-title">Personal &amp; Contact Information</h4>
+          <div class="bio-info-grid">
+            ${infoItems.map(item => `
+              <div class="bio-info-item">
+                <span class="bio-info-label">${item.label}</span>
+                <span class="bio-info-value">${item.val}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 2. Profile Summary / Bio
+    if (m.bio) {
+      html += `
+        <div class="bio-section">
+          <h4 class="bio-section-title">Profile &amp; Biography</h4>
+          <p class="bio-text-block">${m.bio}</p>
+        </div>
+      `;
+    }
+
+    // 3. Professional Achievements
+    if (m.achievements) {
+      html += `
+        <div class="bio-section">
+          <h4 class="bio-section-title">Major Professional Achievements</h4>
+          <div class="bio-list-block">${m.achievements}</div>
+        </div>
+      `;
+    }
+
+    // 4. Research Projects
+    if (m.projects) {
+      html += `
+        <div class="bio-section">
+          <h4 class="bio-section-title">Key Research Projects</h4>
+          <div class="bio-list-block">${m.projects}</div>
+        </div>
+      `;
+    }
+
+    // 5. Research Publications
+    if (m.publications) {
+      html += `
+        <div class="bio-section">
+          <h4 class="bio-section-title">Selected Research Publications</h4>
+          <div class="bio-list-block">${m.publications}</div>
+        </div>
+      `;
+    }
+
+    if (!html) {
+      html = `
+        <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 13.5px;">
+          Detailed biodata for this member will be updated shortly.
+        </div>
+      `;
+    }
+
+    modalContent.innerHTML = html;
+    modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBioModalDirect() {
+    modalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function closeBioModal(event) {
+    if (event.target === modalOverlay) {
+      closeBioModalDirect();
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+      closeBioModalDirect();
+    }
   });
 </script>
 {% endblock %}

@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
@@ -26,10 +27,32 @@ def agbm(request):
 
 def executive_council(request):
     context = get_common_context()
-    context['presidents_group'] = ExecutiveMember.objects.filter(order__in=[1, 2, 3, 4])
-    context['secretaries_group'] = ExecutiveMember.objects.filter(order__in=[5, 6, 7])
-    context['editors_group'] = ExecutiveMember.objects.filter(order__in=[8, 9, 10])
-    context['councillors_group'] = ExecutiveMember.objects.filter(order__in=[11, 12, 13, 14, 15])
+    all_members = ExecutiveMember.objects.all().order_by('order', 'id')
+    context['presidents_group'] = all_members.filter(order__in=[1, 2, 3, 4])
+    context['secretaries_group'] = all_members.filter(order__in=[5, 6, 7])
+    context['editors_group'] = all_members.filter(order__in=[8, 9, 10])
+    context['councillors_group'] = all_members.filter(order__in=[11, 12, 13, 14, 15])
+    
+    members_data = {}
+    for m in all_members:
+        members_data[str(m.id)] = {
+            'id': m.id,
+            'name': m.name,
+            'designation': m.designation,
+            'affiliation': m.affiliation,
+            'image': m.image.url if m.image else '',
+            'gender': m.gender,
+            'email': m.email or '',
+            'phone': m.phone or '',
+            'qualification': m.qualification or '',
+            'date_of_birth': m.date_of_birth or '',
+            'official_address': m.official_address or '',
+            'bio': m.bio or '',
+            'achievements': m.achievements or '',
+            'projects': m.projects or '',
+            'publications': m.publications or '',
+        }
+    context['members_json'] = json.dumps(members_data)
     return render(request, 'pages/executive_council.html', context)
 
 def legends(request):
