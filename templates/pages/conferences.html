@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Conferences &amp; Seminars — Plant Protection Association of India{% endblock %}
 
@@ -103,6 +104,20 @@
     color: var(--text-main);
   }
 
+  .conference-link {
+    color: #111111;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(4, 120, 87, 0.45);
+    text-underline-offset: 3px;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+
+  .conference-link:hover {
+    color: var(--vibrant-green);
+    text-decoration-color: var(--vibrant-green);
+  }
+
   @media (max-width: 768px) {
     .conferences-section {
       padding: 20px 16px 48px 16px;
@@ -134,7 +149,9 @@
         <tbody>
           <tr>
             <td class="col-year">2023</td>
-            <td class="col-event">International Conference on Plant Health Management (ICPHM 2023): Innovation and Sustainability, at PJTSAU, Hyderabad (15-18 November, 2023)</td>
+            <td class="col-event">
+              <a href="{% static 'documents/icphm_souvenir.pdf' %}" class="conference-link" target="_blank" rel="noopener noreferrer">International Conference on Plant Health Management (ICPHM 2023): Innovation and Sustainability, at PJTSAU, Hyderabad (15-18 November, 2023)</a>
+            </td>
           </tr>
           <tr>
             <td class="col-year">2023</td>
