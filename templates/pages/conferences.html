@@ -107,18 +107,22 @@
 
   .conferences-table tbody td.col-event {
     color: var(--text-main);
+    font-weight: 400;
   }
 
-  .conference-link {
-    color: #111111;
+  .event-doc-link {
+    color: #0b6623;
     font-weight: 700;
-    text-decoration: none;
-    transition: color 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+    display: inline-block;
+    margin-left: 6px;
   }
 
-  .conference-link:hover {
+  .event-doc-link:hover {
     color: var(--vibrant-green);
-    text-decoration: none;
+    text-decoration: underline;
   }
 
   @media (max-width: 768px) {
@@ -154,13 +158,7 @@
             <tr>
               <td class="col-year">{{ ev.year }}</td>
               <td class="col-event">
-                {% if ev.doc_file %}
-                  <a href="{% static ev.doc_file %}" class="conference-link" target="_blank" rel="noopener noreferrer">
-                    {{ ev.title|safe }}
-                  </a>
-                {% else %}
-                  <span>{{ ev.title|safe }}</span>
-                {% endif %}
+                <span>{{ ev.title|safe }}</span>{% if ev.doc_file %} <a href="{% static ev.doc_file %}" class="event-doc-link" target="_blank" rel="noopener noreferrer">[{% if ev.doc_label %}{{ ev.doc_label }}{% else %}View Document{% endif %}]</a>{% endif %}
               </td>
             </tr>
           {% endfor %}

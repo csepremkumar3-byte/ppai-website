@@ -210,7 +210,7 @@ ALL_CONFERENCES_AND_EVENTS = [
         'date': '16 Oct 2026',
         'title': 'PPAI Guest Lecture: "From a Remote Village to Global Science: Plant Virus Discovery and Innovation" by Dr. Satyanarayana Tatineni, USDA-ARS, Lincoln, Nebraska',
         'doc_file': 'documents/events/guest_lecture_poster.jpg',
-        'doc_label': 'View Poster (JPG)',
+        'doc_label': 'View Poster',
         'category': 'Guest Lecture',
     },
     {
@@ -272,7 +272,7 @@ ALL_CONFERENCES_AND_EVENTS = [
     {
         'year': '2025',
         'date': '17 Apr 2025',
-        'title': 'Proceedings and Recommendations of One-Day Seminar with Stakeholders on Seed flying / Seed Sovereignty',
+        'title': 'Proceedings and Recommendations of One-Day Seminar with Stakeholders on Seed Sovereignty',
         'doc_file': 'documents/events/seminar_seed_sovereignty.pdf',
         'doc_label': 'Download PDF',
         'category': 'Seminar',
@@ -280,9 +280,9 @@ ALL_CONFERENCES_AND_EVENTS = [
     {
         'year': '2023',
         'date': '15-18 Nov 2023',
-        'title': 'International Conference on Plant Health Management (ICPHM 2023): Innovation and Sustainability, at PJTSAU, Hyderabad',
+        'title': 'International Conference on Plant Health Management (ICPHM 2023): Innovation and Sustainability, at PJTSAU, Hyderabad (15-18 November, 2023)',
         'doc_file': 'documents/icphm_souvenir.pdf',
-        'doc_label': 'ICPHM Souvenir (PDF)',
+        'doc_label': 'ICPHM Souvenir',
         'category': 'International Conference',
     },
     {
