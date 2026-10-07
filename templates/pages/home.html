@@ -345,7 +345,7 @@
     }
 
     /* ===================================================================
-       HERO SECTION: COMPACT 2-COLUMN STRUCTURE (HEADER + GRID)
+       HERO SECTION: 2-COLUMN GRAND LAYOUT (MATCHING REFERENCE STRUCTURE)
     =================================================================== */
     .viewport-fold .hero {
       flex: 1 1 auto;
@@ -353,23 +353,25 @@
       display: flex;
       align-items: center;
       position: relative;
-      padding: clamp(6px, 1.2vh, 16px) 0;
+      padding: clamp(10px, 1.8vh, 24px) 0;
       background: transparent;
     }
 
     .hero-container {
       width: 100%;
+      max-width: 1540px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: clamp(8px, 1.4vh, 16px);
+      gap: clamp(12px, 1.8vh, 22px);
     }
 
-    /* --- Top Hero Header Row (Logo on top, heading under logo) --- */
+    /* --- Top Hero Header Row --- */
     .hero-header-row {
       display: flex;
-      align-items: flex-start;
+      align-items: flex-end;
       justify-content: space-between;
-      gap: clamp(16px, 2.5vw, 32px);
+      gap: clamp(20px, 3vw, 48px);
       width: 100%;
     }
 
@@ -377,69 +379,61 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 5px;
+      gap: clamp(6px, 1vh, 10px);
       flex: 1;
       min-width: 0;
     }
 
-    .hero-jubilee-wrapper {
+    .hero-jubilee-badge-row {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      background: #FFFFFF;
-      padding: 5px 14px;
-      border-radius: 12px;
-      border: 1.5px solid rgba(217, 119, 6, 0.4);
-      box-shadow: 0 4px 16px rgba(217, 119, 6, 0.15);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      flex-shrink: 0;
-      margin-bottom: 2px;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1.5px solid rgba(217, 119, 6, 0.35);
+      padding: 3px 14px 3px 6px;
+      border-radius: 100px;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.12);
+      backdrop-filter: blur(8px);
     }
 
-    .hero-jubilee-wrapper:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.22);
-    }
-
-    .hero-jubilee-emblem {
-      height: clamp(58px, 7.2vh, 76px);
+    .hero-jubilee-emblem-small {
+      height: clamp(34px, 4.2vh, 44px);
       width: auto;
       object-fit: contain;
       display: block;
-      image-rendering: -webkit-optimize-contrast;
-      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.08));
     }
 
-    .hero-header-text {
-      width: 100%;
+    .hero-jubilee-years {
+      font-size: clamp(12px, 0.9vw, 14px);
+      font-weight: 800;
+      color: #9A6700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     .hero-main-title {
-      font-size: clamp(17px, 1.5vw, 22px);
+      font-size: clamp(22px, 2.2vw, 36px);
       font-weight: 800;
       color: var(--deep-forest);
-      line-height: 1.22;
-      letter-spacing: -0.025em;
-      margin-bottom: 3px;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
     }
 
     .hero-main-subtitle {
-      font-size: clamp(11px, 0.78vw, 12.5px);
+      font-size: clamp(12px, 0.86vw, 13.8px);
       color: var(--text-muted);
-      line-height: 1.48;
-      max-width: 720px;
-      text-align: justify;
-      text-justify: inter-word;
+      line-height: 1.5;
+      max-width: 820px;
     }
 
     .hero-header-right {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 6px;
+      gap: 8px;
       flex-shrink: 0;
-      min-width: clamp(260px, 24vw, 340px);
-      padding-top: 4px;
+      min-width: clamp(280px, 26vw, 380px);
+      padding-bottom: 2px;
     }
 
     .hero-search {
@@ -448,20 +442,20 @@
       background: #FFFFFF;
       border: 1.5px solid var(--border-color);
       border-radius: var(--radius-pill);
-      padding: 3px 5px 3px 14px;
+      padding: 4px 6px 4px 16px;
       width: 100%;
-      box-shadow: 0 3px 12px rgba(11, 36, 23, 0.04);
+      box-shadow: 0 4px 16px rgba(11, 36, 23, 0.05);
       transition: var(--transition);
     }
 
     .hero-search:focus-within {
       border-color: var(--vibrant-green);
-      box-shadow: 0 0 0 3px rgba(0, 178, 114, 0.15);
+      box-shadow: 0 0 0 3px rgba(0, 178, 114, 0.18);
     }
 
     .search-icon {
       color: var(--text-muted);
-      margin-right: 6px;
+      margin-right: 8px;
       flex-shrink: 0;
     }
 
@@ -469,8 +463,8 @@
       flex: 1;
       border: none;
       background: none;
-      padding: 0 6px;
-      font-size: clamp(11.5px, 0.8vw, 12.5px);
+      padding: 2px 6px;
+      font-size: clamp(12px, 0.86vw, 13.5px);
       font-family: inherit;
       outline: none;
       color: var(--text-main);
@@ -478,13 +472,13 @@
     }
 
     .btn-search {
-      padding: 5px 14px;
+      padding: 7px 18px;
       border-radius: 100px;
       border: none;
       background: var(--vibrant-green);
       color: #FFF;
       font-weight: 700;
-      font-size: clamp(11px, 0.8vw, 12px);
+      font-size: clamp(11.5px, 0.82vw, 13px);
       cursor: pointer;
       transition: var(--transition);
       flex-shrink: 0;
@@ -497,7 +491,7 @@
     .hero-quick-pills {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
@@ -505,9 +499,9 @@
     .quick-pill {
       display: inline-flex;
       align-items: center;
-      padding: 2.5px 9px;
+      padding: 3px 12px;
       border-radius: var(--radius-pill);
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--deep-forest);
       background: rgba(11, 36, 23, 0.05);
@@ -523,34 +517,31 @@
       transform: translateY(-1px);
     }
 
-    /* --- Main 2-Column Grid (Left: 3:4 Carousel, Right: Spacious Matching Events Card) --- */
+    /* --- 2-Column Main Grid (Left: Dynamic Carousel, Right: Events Card) --- */
     .hero-main-grid {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       align-items: stretch;
-      gap: clamp(16px, 2.2vw, 30px);
-      justify-content: flex-start;
+      gap: clamp(20px, 2.6vw, 40px);
       width: 100%;
     }
 
+    /* Left Column: Hero Carousel Card */
     .hero-carousel-card {
-      flex: 0 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
     }
 
-    /* Strict 3:4 Aspect Ratio Hero Carousel */
     .hero-carousel-container {
-      border-radius: 14px;
+      border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(11, 36, 23, 0.1);
-      background: #FFFFFF;
-      height: clamp(260px, 31vh, 320px);
-      aspect-ratio: 3 / 4;
-      width: auto;
+      box-shadow: 0 10px 30px rgba(11, 36, 23, 0.12);
+      background: #0B2417;
+      height: clamp(310px, 37vh, 440px);
+      width: 100%;
       position: relative;
-      border: 1px solid rgba(11, 36, 23, 0.08);
-      flex-shrink: 0;
+      border: 1px solid rgba(11, 36, 23, 0.1);
     }
 
     .carousel-track {
@@ -578,78 +569,50 @@
       display: block;
     }
 
-    .slide-caption {
+    /* Modern Bottom Carousel Bar: Title on left, dots in middle, arrows on sides */
+    .carousel-overlay-bar {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 14px 8px 16px;
-      background: linear-gradient(180deg, transparent 0%, rgba(11, 36, 23, 0.9) 100%);
-      color: #FFFFFF;
+      padding: 14px 18px;
+      background: linear-gradient(180deg, transparent 0%, rgba(11, 36, 23, 0.92) 100%);
       display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      text-align: center;
-      pointer-events: none;
-      z-index: 2;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 5;
     }
 
     .slide-caption-title {
-      font-size: clamp(10px, 0.72vw, 11.5px);
+      font-size: clamp(12px, 0.92vw, 14.5px);
       font-weight: 700;
+      color: #FFFFFF;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-      line-height: 1.28;
+      line-height: 1.3;
       letter-spacing: -0.01em;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .carousel-nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(11, 36, 23, 0.1);
-      color: var(--deep-forest);
+    .carousel-controls-group {
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-      transition: var(--transition);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-      padding: 0;
-    }
-
-    .carousel-nav-btn:hover {
-      background: #FFFFFF;
-      color: var(--vibrant-green);
-      transform: translateY(-50%) scale(1.08);
-    }
-
-    .carousel-nav-btn.prev {
-      left: 6px;
-    }
-
-    .carousel-nav-btn.next {
-      right: 6px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .carousel-dots {
-      position: absolute;
-      bottom: 6px;
-      left: 50%;
-      transform: translateX(-50%);
       display: flex;
-      gap: 4px;
-      z-index: 10;
+      align-items: center;
+      gap: 5px;
     }
 
     .dot {
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.5);
       cursor: pointer;
@@ -659,33 +622,55 @@
 
     .dot.active {
       background: var(--vibrant-green);
-      width: 14px;
+      width: 16px;
       border-radius: 4px;
     }
 
-    /* --- Events Card: Matching Height, Wider than carousel, cleanly bounded --- */
+    .carousel-nav-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      padding: 0;
+    }
+
+    .carousel-nav-btn:hover {
+      background: var(--vibrant-green);
+      border-color: var(--vibrant-green);
+      transform: scale(1.08);
+    }
+
+    /* Right Column: Matching Upcoming Events Card (Exact Structure from Picture 2) */
     .hero-events-card {
-      height: clamp(260px, 31vh, 320px);
-      flex: 1 1 clamp(420px, 46vw, 680px);
-      max-width: 680px;
       background: #FFFFFF;
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: clamp(8px, 1.2vh, 14px) clamp(12px, 1.5vw, 18px);
-      box-shadow: 0 6px 22px rgba(11, 36, 23, 0.06);
+      border-radius: 20px;
+      padding: clamp(14px, 1.8vh, 22px) clamp(16px, 2vw, 24px);
+      box-shadow: 0 10px 30px rgba(11, 36, 23, 0.08);
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      height: clamp(310px, 37vh, 440px);
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
+      width: 100%;
     }
 
     .events-card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
-      padding-bottom: 6px;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
       border-bottom: 1px solid rgba(11, 36, 23, 0.08);
       flex-shrink: 0;
     }
@@ -693,56 +678,33 @@
     .events-header-title-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .events-live-pulse {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--vibrant-green);
       box-shadow: 0 0 0 2px rgba(0, 178, 114, 0.25);
       animation: pulseGreen 2s infinite;
     }
 
-    @keyframes pulseGreen {
-      0% { box-shadow: 0 0 0 0 rgba(0, 178, 114, 0.5); }
-      70% { box-shadow: 0 0 0 5px rgba(0, 178, 114, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(0, 178, 114, 0); }
-    }
-
     .events-card-title {
-      font-size: clamp(13.5px, 0.95vw, 15.5px);
+      font-size: clamp(16px, 1.25vw, 20px);
       font-weight: 800;
       color: var(--deep-forest);
-      letter-spacing: -0.015em;
-    }
-
-    .view-all-events-link {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--vibrant-green);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      transition: all 0.2s ease;
-    }
-
-    .view-all-events-link:hover {
-      color: var(--vibrant-green-hover);
-      transform: translateX(2px);
+      letter-spacing: -0.02em;
     }
 
     .events-list {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      overflow-y: hidden;
-      flex: 1 1 0;
+      gap: 8px;
+      overflow-y: auto;
+      flex: 1 1 auto;
       min-height: 0;
-      padding-right: 2px;
-      padding-bottom: 2px;
+      padding-right: 4px;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -754,14 +716,15 @@
     .event-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 6px 8px;
-      border-bottom: 1px solid rgba(11, 36, 23, 0.05);
-      border-radius: 8px;
+      gap: 14px;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(11, 36, 23, 0.06);
+      border-radius: 10px;
       text-decoration: none;
       transition: all 0.2s ease;
       cursor: pointer;
       flex-shrink: 0;
+      background: #FFFFFF;
     }
 
     .event-item:last-child {
@@ -770,35 +733,35 @@
 
     .event-item:hover {
       background: rgba(0, 178, 114, 0.06);
-      transform: translateX(2px);
+      transform: translateX(3px);
     }
 
     .event-date-badge {
-      width: 36px;
-      height: 38px;
+      width: 44px;
+      height: 46px;
       background: linear-gradient(135deg, var(--vibrant-green) 0%, #00965F 100%);
       color: #FFFFFF;
-      border-radius: 7px;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 2px 5px rgba(0, 178, 114, 0.2);
+      box-shadow: 0 3px 8px rgba(0, 178, 114, 0.25);
     }
 
     .event-date-badge .event-day {
-      font-size: 12px;
+      font-size: 15px;
       font-weight: 800;
       line-height: 1;
     }
 
     .event-date-badge .event-month {
-      font-size: 7.5px;
+      font-size: 9px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-top: 1px;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
     }
 
     .event-info {
@@ -806,31 +769,8 @@
       min-width: 0;
     }
 
-    .event-tags-row {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 2px;
-    }
-
-    .event-category-badge {
-      font-size: 8.5px;
-      font-weight: 700;
-      color: var(--vibrant-green);
-      background: rgba(0, 178, 114, 0.1);
-      padding: 1px 5px;
-      border-radius: 3px;
-      letter-spacing: 0.02em;
-    }
-
-    .event-year-tag {
-      font-size: 8.5px;
-      font-weight: 700;
-      color: var(--text-muted);
-    }
-
     .event-title {
-      font-size: clamp(10.5px, 0.78vw, 12px);
+      font-size: clamp(12.5px, 0.95vw, 14.5px);
       font-weight: 700;
       color: var(--deep-forest);
       line-height: 1.35;
@@ -838,18 +778,82 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      margin-bottom: 3px;
     }
 
-    .event-action-icon {
-      color: rgba(11, 36, 23, 0.3);
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-      margin-left: auto;
+    .event-tags-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .event-item:hover .event-action-icon {
+    .event-category-badge {
+      font-size: 9px;
+      font-weight: 700;
       color: var(--vibrant-green);
+      background: rgba(0, 178, 114, 0.1);
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .event-year-tag {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .events-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 8px;
+      margin-top: 4px;
+      border-top: 1px solid rgba(11, 36, 23, 0.08);
+      flex-shrink: 0;
+    }
+
+    .view-all-events-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--vibrant-green);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .view-all-events-link:hover {
+      color: var(--vibrant-green-hover);
       transform: translateX(2px);
+    }
+
+    .events-nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .event-nav-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(11, 36, 23, 0.05);
+      border: 1px solid rgba(11, 36, 23, 0.1);
+      color: var(--deep-forest);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      padding: 0;
+    }
+
+    .event-nav-btn:hover {
+      background: var(--vibrant-green);
+      color: #FFFFFF;
+      border-color: var(--vibrant-green);
     }
 
     /* --- Stats Section (Compact, No Vertical Divider Lines) --- */
@@ -859,13 +863,13 @@
       backdrop-filter: blur(12px);
       border-top: 1px solid var(--border-color);
       border-bottom: 1px solid var(--border-color);
-      padding: clamp(6px, 0.9vh, 12px) 0;
+      padding: clamp(8px, 1.2vh, 16px) 0;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 16px;
       text-align: center;
     }
 
@@ -879,19 +883,19 @@
     }
 
     .stat-number {
-      font-size: clamp(17px, 1.6vw, 24px);
+      font-size: clamp(20px, 2vw, 30px);
       font-weight: 800;
       color: var(--vibrant-green);
       line-height: 1.1;
-      margin-bottom: 1px;
+      margin-bottom: 2px;
     }
 
     .stat-label {
-      font-size: clamp(9px, 0.7vw, 10.5px);
+      font-size: clamp(10px, 0.78vw, 12px);
       font-weight: 700;
       color: var(--deep-forest);
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
     }
 
     /* ===================================================================
@@ -1406,20 +1410,19 @@
 
     </header>
 
-    <!-- Hero Section (Top Header Row + 2-Column Main Grid) -->
+    <!-- Hero Section (Matching Reference 2-Column Structure) -->
     <section class="hero">
       <div class="container hero-container">
 
         <!-- Top Header Row: Left Title & Emblem + Right Search & Quick Pills -->
         <div class="hero-header-row">
           <div class="hero-header-left">
-            <div class="hero-jubilee-wrapper">
-              <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261007_3" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
+            <div class="hero-jubilee-badge-row">
+              <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261008_1" alt="PPAI Golden Jubilee" class="hero-jubilee-emblem-small">
+              <span class="hero-jubilee-years">1972 – 2022</span>
             </div>
-            <div class="hero-header-text">
-              <h1 class="hero-main-title">Fifty years of protecting Indian crops</h1>
-              <p class="hero-main-subtitle">PPAI celebrated its landmark Golden Jubilee (1972–2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.</p>
-            </div>
+            <h1 class="hero-main-title">Fifty years of protecting Indian crops</h1>
+            <p class="hero-main-subtitle">From entomology and pathology to nematology, weed science, biosecurity and pesticide chemistry, PPAI brings India's plant protection community together.</p>
           </div>
 
           <div class="hero-header-right">
@@ -1437,101 +1440,77 @@
           </div>
         </div>
 
-        <!-- Main 2-Column Grid: Left 3:4 Hero Carousel + Right Matching-Height Events Card -->
+        <!-- Main 2-Column Grid (Left: Dynamic Hero Carousel, Right: Upcoming Events Card) -->
         <div class="hero-main-grid">
 
-          <!-- Left Column: Auto Carousel with Strict 3:4 Aspect Ratio -->
+          <!-- Left Column: Dynamic Hero Carousel Card -->
           <div class="hero-carousel-card">
             <div class="hero-carousel-container" id="heroCarousel">
               <div class="carousel-track" id="carouselTrack">
                 {% if slides %}
                   {% for slide in slides %}
-                    <div class="carousel-slide">
+                    <div class="carousel-slide" data-title="{{ slide.title|default:'Plant Protection Research' }}">
                       <img src="{{ slide.image.url }}" alt="{{ slide.title|default:"Indian Journal Cover" }}">
-                      {% if slide.title %}
-                        <div class="slide-caption">
-                          <span class="slide-caption-title">{{ slide.title }}</span>
-                        </div>
-                      {% endif %}
                     </div>
                   {% endfor %}
                 {% else %}
-                  <div class="carousel-slide">
+                  <div class="carousel-slide" data-title="Indian Journal of Plant Protection · Vol 54 (1)">
                     <img src="{% static 'images/journal_cover.png' %}" alt="Indian Journal of Plant Protection Cover Vol 54 No 1">
-                    <div class="slide-caption">
-                      <span class="slide-caption-title">Indian Journal of Plant Protection · Vol 54 (1)</span>
-                    </div>
                   </div>
-                  <div class="carousel-slide">
+                  <div class="carousel-slide" data-title="PPAI Golden Jubilee · Celebrating 50 Years">
                     <img src="{% static 'images/golden_jubilee_banner.png' %}" alt="PPAI Golden Jubilee 1972 - 2022 Celebrating 50 Years">
-                    <div class="slide-caption">
-                      <span class="slide-caption-title">PPAI Golden Jubilee · Celebrating 50 Years</span>
-                    </div>
                   </div>
-                  <div class="carousel-slide">
-                    <img src="{% static 'images/slide1.jpg' %}" alt="Moth on Leaf">
-                    <div class="slide-caption">
-                      <span class="slide-caption-title">Agricultural Entomology &amp; Pest Surveillance</span>
-                    </div>
+                  <div class="carousel-slide" data-title="Agricultural Entomology &amp; Pest Surveillance">
+                    <img src="{% static 'images/slide1.jpg' %}" alt="Agricultural Entomology & Pest Surveillance">
                   </div>
-                  <div class="carousel-slide">
-                    <img src="{% static 'images/slide2.jpg' %}" alt="Ladybug on Plant">
-                    <div class="slide-caption">
-                      <span class="slide-caption-title">Biological Control &amp; Natural Predators</span>
-                    </div>
+                  <div class="carousel-slide" data-title="Biological Control &amp; Natural Predators">
+                    <img src="{% static 'images/slide2.jpg' %}" alt="Biological Control & Natural Predators">
                   </div>
-                  <div class="carousel-slide">
-                    <img src="{% static 'images/slide3.jpg' %}" alt="Plant Disease Spot">
-                    <div class="slide-caption">
-                      <span class="slide-caption-title">Plant Pathology &amp; Disease Diagnostics</span>
-                    </div>
+                  <div class="carousel-slide" data-title="Plant Pathology &amp; Disease Diagnostics">
+                    <img src="{% static 'images/slide3.jpg' %}" alt="Plant Pathology & Disease Diagnostics">
                   </div>
-                  <div class="carousel-slide">
-                    <img src="{% static 'images/slide4.jpg' %}" alt="Hands Holding Seedling">
-                    <div class="slide-caption">
-                      <span class="slide-caption-title">Sustainable Crop Protection &amp; Biosecurity</span>
-                    </div>
+                  <div class="carousel-slide" data-title="Sustainable Crop Protection &amp; Biosecurity">
+                    <img src="{% static 'images/slide4.jpg' %}" alt="Sustainable Crop Protection & Biosecurity">
                   </div>
                 {% endif %}
               </div>
 
-              <!-- Navigation Controls -->
-              <button class="carousel-nav-btn prev" id="carouselPrevBtn" aria-label="Previous Slide">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-              </button>
-              <button class="carousel-nav-btn next" id="carouselNextBtn" aria-label="Next Slide">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </button>
-
-              <!-- Dots -->
-              <div class="carousel-dots" id="carouselDots">
-                {% if slides %}
-                  {% for slide in slides %}
-                    <span class="dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></span>
-                  {% endfor %}
-                {% else %}
-                  <span class="dot active" data-slide="0"></span>
-                  <span class="dot" data-slide="1"></span>
-                  <span class="dot" data-slide="2"></span>
-                  <span class="dot" data-slide="3"></span>
-                  <span class="dot" data-slide="4"></span>
-                  <span class="dot" data-slide="5"></span>
-                {% endif %}
+              <!-- Bottom Carousel Control Bar -->
+              <div class="carousel-overlay-bar">
+                <span class="slide-caption-title" id="slideCaptionText">Indian Journal of Plant Protection · Vol 54 (1)</span>
+                <div class="carousel-controls-group">
+                  <button class="carousel-nav-btn prev" id="carouselPrevBtn" aria-label="Previous Slide">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  </button>
+                  <div class="carousel-dots" id="carouselDots">
+                    {% if slides %}
+                      {% for slide in slides %}
+                        <span class="dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></span>
+                      {% endfor %}
+                    {% else %}
+                      <span class="dot active" data-slide="0"></span>
+                      <span class="dot" data-slide="1"></span>
+                      <span class="dot" data-slide="2"></span>
+                      <span class="dot" data-slide="3"></span>
+                      <span class="dot" data-slide="4"></span>
+                      <span class="dot" data-slide="5"></span>
+                    {% endif %}
+                  </div>
+                  <button class="carousel-nav-btn next" id="carouselNextBtn" aria-label="Next Slide">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Right Column: Matching-Height Upcoming Events Card -->
+          <!-- Right Column: Matching Upcoming Events Card -->
           <div class="hero-events-card">
             <div class="events-card-header">
               <div class="events-header-title-group">
                 <span class="events-live-pulse"></span>
-                <h2 class="events-card-title">Upcoming Events</h2>
+                <h2 class="events-card-title">Upcoming events</h2>
               </div>
-              <a href="{% url 'conferences' %}" class="view-all-events-link">
-                <span>View all events</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </a>
             </div>
 
             <div class="events-list" id="heroEventsList">
@@ -1542,14 +1521,11 @@
                     <span class="event-month">{{ ev.month }}</span>
                   </div>
                   <div class="event-info">
+                    <div class="event-title">{{ ev.title }}</div>
                     <div class="event-tags-row">
                       <span class="event-category-badge">{{ ev.category }}</span>
                       <span class="event-year-tag">{{ ev.year }}</span>
                     </div>
-                    <div class="event-title">{{ ev.title }}</div>
-                  </div>
-                  <div class="event-action-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                   </div>
                 </a>
               {% empty %}
@@ -1559,14 +1535,30 @@
                     <span class="event-month">NOV</span>
                   </div>
                   <div class="event-info">
+                    <div class="event-title">ICPHM 2023 International Conference on Plant Health Management</div>
                     <div class="event-tags-row">
                       <span class="event-category-badge">International Conference</span>
                       <span class="event-year-tag">2023</span>
                     </div>
-                    <div class="event-title">ICPHM 2023 International Conference on Plant Health Management</div>
                   </div>
                 </div>
               {% endfor %}
+            </div>
+
+            <!-- Footer of Events Card (View All on Left + Arrows on Right) -->
+            <div class="events-card-footer">
+              <a href="{% url 'conferences' %}" class="view-all-events-link">
+                <span>View all events</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </a>
+              <div class="events-nav-controls">
+                <button class="event-nav-btn prev" id="eventsScrollPrevBtn" aria-label="Scroll Events Up">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button class="event-nav-btn next" id="eventsScrollNextBtn" aria-label="Scroll Events Down">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1747,6 +1739,7 @@
     const dots = Array.from(document.querySelectorAll('.dot'));
     const prevBtn = document.getElementById('carouselPrevBtn');
     const nextBtn = document.getElementById('carouselNextBtn');
+    const captionText = document.getElementById('slideCaptionText');
     let currentIndex = 0;
     let carouselInterval = null;
 
@@ -1757,6 +1750,10 @@
       dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === currentIndex);
       });
+      if (captionText && slides[currentIndex]) {
+        const title = slides[currentIndex].getAttribute('data-title') || 'Plant Protection Association of India';
+        captionText.textContent = title;
+      }
     }
 
     function startCarouselAutoPlay() {
@@ -1882,6 +1879,9 @@
 
     // Automatic smooth seamless scrolling for Events list widget
     const eventsList = document.getElementById('heroEventsList') || document.querySelector('.events-list');
+    const eventsScrollPrev = document.getElementById('eventsScrollPrevBtn');
+    const eventsScrollNext = document.getElementById('eventsScrollNextBtn');
+
     if (eventsList) {
       let isUserInteracting = false;
       let resumeTimeout = null;
@@ -1917,8 +1917,26 @@
         eventsList.addEventListener('touchstart', () => { isUserInteracting = true; }, { passive: true });
         eventsList.addEventListener('touchend', () => {
           clearTimeout(resumeTimeout);
-          resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1000);
+          resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1200);
         });
+
+        if (eventsScrollPrev) {
+          eventsScrollPrev.addEventListener('click', () => {
+            isUserInteracting = true;
+            eventsList.scrollBy({ top: -70, behavior: 'smooth' });
+            clearTimeout(resumeTimeout);
+            resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1500);
+          });
+        }
+
+        if (eventsScrollNext) {
+          eventsScrollNext.addEventListener('click', () => {
+            isUserInteracting = true;
+            eventsList.scrollBy({ top: 70, behavior: 'smooth' });
+            clearTimeout(resumeTimeout);
+            resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1500);
+          });
+        }
 
         let lastTime = performance.now();
         function autoScrollEvents(currentTime) {
