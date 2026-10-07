@@ -353,7 +353,7 @@
       display: flex;
       align-items: center;
       position: relative;
-      padding: clamp(4px, 0.8vh, 10px) 0;
+      padding: clamp(2px, 0.6vh, 6px) 0;
       background: transparent;
     }
 
@@ -361,7 +361,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: clamp(6px, 0.9vh, 10px);
+      gap: clamp(4px, 0.6vh, 8px);
     }
 
     /* --- Top Hero Header Row (Logo on top, heading under logo) --- */
@@ -369,7 +369,7 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: clamp(14px, 2vw, 28px);
+      gap: clamp(12px, 2vw, 24px);
       width: 100%;
     }
 
@@ -388,9 +388,9 @@
       justify-content: center;
       background: #FFFFFF;
       padding: 3px 10px;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1.5px solid rgba(217, 119, 6, 0.35);
-      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.12);
+      box-shadow: 0 3px 12px rgba(217, 119, 6, 0.12);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       flex-shrink: 0;
       margin-bottom: 2px;
@@ -398,15 +398,16 @@
 
     .hero-jubilee-wrapper:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.2);
+      box-shadow: 0 6px 18px rgba(217, 119, 6, 0.2);
     }
 
     .hero-jubilee-emblem {
-      height: clamp(52px, 6.2vh, 68px);
+      height: clamp(50px, 5.8vh, 64px);
       width: auto;
       object-fit: contain;
       display: block;
       image-rendering: -webkit-optimize-contrast;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
     }
 
     .hero-header-text {
@@ -414,19 +415,19 @@
     }
 
     .hero-main-title {
-      font-size: clamp(16px, 1.4vw, 21px);
+      font-size: clamp(15.5px, 1.3vw, 19.5px);
       font-weight: 800;
       color: var(--deep-forest);
       line-height: 1.2;
       letter-spacing: -0.025em;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .hero-main-subtitle {
-      font-size: clamp(10.5px, 0.74vw, 12px);
+      font-size: clamp(10px, 0.7vw, 11.5px);
       color: var(--text-muted);
-      line-height: 1.45;
-      max-width: 680px;
+      line-height: 1.4;
+      max-width: 660px;
       text-align: justify;
       text-justify: inter-word;
     }
@@ -435,9 +436,9 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 5px;
+      gap: 4px;
       flex-shrink: 0;
-      min-width: clamp(250px, 24vw, 330px);
+      min-width: clamp(240px, 22vw, 310px);
       padding-top: 2px;
     }
 
@@ -469,7 +470,7 @@
       border: none;
       background: none;
       padding: 0 6px;
-      font-size: clamp(11.5px, 0.8vw, 12.5px);
+      font-size: clamp(11px, 0.78vw, 12px);
       font-family: inherit;
       outline: none;
       color: var(--text-main);
@@ -477,13 +478,13 @@
     }
 
     .btn-search {
-      padding: 5px 14px;
+      padding: 4px 12px;
       border-radius: 100px;
       border: none;
       background: var(--vibrant-green);
       color: #FFF;
       font-weight: 700;
-      font-size: clamp(11px, 0.8vw, 12px);
+      font-size: clamp(10.5px, 0.75vw, 11.5px);
       cursor: pointer;
       transition: var(--transition);
       flex-shrink: 0;
@@ -504,9 +505,9 @@
     .quick-pill {
       display: inline-flex;
       align-items: center;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: var(--radius-pill);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       color: var(--deep-forest);
       background: rgba(11, 36, 23, 0.05);
@@ -526,13 +527,13 @@
     .hero-main-grid {
       display: flex;
       align-items: stretch;
-      gap: clamp(16px, 2.5vw, 32px);
+      gap: clamp(14px, 2vw, 24px);
       justify-content: flex-start;
       width: 100%;
     }
 
     .hero-carousel-card {
-      flex: 0 0 clamp(190px, 17vw, 235px);
+      flex: 0 0 clamp(170px, 13.5vw, 195px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -540,13 +541,13 @@
 
     /* Strict 3:4 Aspect Ratio Hero Carousel (Compact) */
     .hero-carousel-container {
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(11, 36, 23, 0.1);
+      box-shadow: 0 6px 20px rgba(11, 36, 23, 0.1);
       background: #FFFFFF;
       aspect-ratio: 3 / 4;
       width: 100%;
-      max-width: 235px;
+      max-width: 195px;
       height: auto;
       position: relative;
       border: 1px solid rgba(11, 36, 23, 0.08);
@@ -582,7 +583,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 14px 8px 18px;
+      padding: 12px 6px 14px;
       background: linear-gradient(180deg, transparent 0%, rgba(11, 36, 23, 0.88) 100%);
       color: #FFFFFF;
       display: flex;
@@ -594,10 +595,10 @@
     }
 
     .slide-caption-title {
-      font-size: clamp(10px, 0.74vw, 11.5px);
+      font-size: clamp(9.5px, 0.68vw, 10.8px);
       font-weight: 700;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-      line-height: 1.28;
+      line-height: 1.25;
       letter-spacing: -0.01em;
     }
 
@@ -605,8 +606,8 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(6px);
@@ -618,7 +619,7 @@
       cursor: pointer;
       z-index: 10;
       transition: var(--transition);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
       padding: 0;
     }
 
@@ -629,26 +630,26 @@
     }
 
     .carousel-nav-btn.prev {
-      left: 6px;
+      left: 5px;
     }
 
     .carousel-nav-btn.next {
-      right: 6px;
+      right: 5px;
     }
 
     .carousel-dots {
       position: absolute;
-      bottom: 6px;
+      bottom: 5px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 4px;
+      gap: 3.5px;
       z-index: 10;
     }
 
     .dot {
-      width: 5px;
-      height: 5px;
+      width: 4.5px;
+      height: 4.5px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.5);
       cursor: pointer;
@@ -658,24 +659,24 @@
 
     .dot.active {
       background: var(--vibrant-green);
-      width: 14px;
+      width: 12px;
       border-radius: 4px;
     }
 
     /* --- Bounded Events Card: Wider than carousel, plenty of space on the right --- */
     .hero-events-card {
-      flex: 0 1 clamp(360px, 38vw, 480px);
-      width: clamp(360px, 38vw, 480px);
-      max-width: 480px;
+      flex: 0 1 clamp(340px, 32vw, 440px);
+      width: clamp(340px, 32vw, 440px);
+      max-width: 440px;
       background: #FFFFFF;
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: clamp(8px, 1.1vh, 12px) clamp(12px, 1.4vw, 16px);
-      box-shadow: 0 6px 20px rgba(11, 36, 23, 0.05);
+      border-radius: 12px;
+      padding: clamp(6px, 0.9vh, 10px) clamp(10px, 1.2vw, 14px);
+      box-shadow: 0 5px 18px rgba(11, 36, 23, 0.05);
       display: flex;
       flex-direction: column;
       height: 100%;
-      max-height: 310px;
+      max-height: 260px;
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
@@ -685,8 +686,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
-      padding-bottom: 5px;
+      margin-bottom: 4px;
+      padding-bottom: 4px;
       border-bottom: 1px solid rgba(11, 36, 23, 0.07);
       flex-shrink: 0;
     }
@@ -694,12 +695,12 @@
     .events-header-title-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .events-live-pulse {
-      width: 7px;
-      height: 7px;
+      width: 6.5px;
+      height: 6.5px;
       border-radius: 50%;
       background: var(--vibrant-green);
       box-shadow: 0 0 0 2px rgba(0, 178, 114, 0.25);
@@ -713,14 +714,14 @@
     }
 
     .events-card-title {
-      font-size: clamp(13.5px, 0.95vw, 15px);
+      font-size: clamp(12.5px, 0.88vw, 14px);
       font-weight: 800;
       color: var(--deep-forest);
       letter-spacing: -0.015em;
     }
 
     .view-all-events-link {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       color: var(--vibrant-green);
       text-decoration: none;
@@ -739,32 +740,30 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      overflow-y: auto;
+      overflow-y: hidden;
       flex: 1 1 0;
       min-height: 0;
-      padding-right: 4px;
-      padding-bottom: 4px;
-      scrollbar-width: thin;
+      padding-right: 2px;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
 
     .events-list::-webkit-scrollbar {
-      width: 3px;
-    }
-    .events-list::-webkit-scrollbar-thumb {
-      background: rgba(0, 178, 114, 0.3);
-      border-radius: 3px;
+      display: none;
     }
 
     .event-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 6px 5px;
+      gap: 8px;
+      padding: 4px 4px;
       border-bottom: 1px solid rgba(11, 36, 23, 0.05);
-      border-radius: 6px;
+      border-radius: 5px;
       text-decoration: none;
       transition: all 0.2s ease;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .event-item:last-child {
@@ -777,27 +776,27 @@
     }
 
     .event-date-badge {
-      width: 36px;
-      height: 38px;
+      width: 32px;
+      height: 34px;
       background: linear-gradient(135deg, var(--vibrant-green) 0%, #00965F 100%);
       color: #FFFFFF;
-      border-radius: 7px;
+      border-radius: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 2px 5px rgba(0, 178, 114, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 178, 114, 0.18);
     }
 
     .event-date-badge .event-day {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       line-height: 1;
     }
 
     .event-date-badge .event-month {
-      font-size: 7.5px;
+      font-size: 7px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -812,31 +811,31 @@
     .event-tags-row {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       margin-bottom: 1px;
     }
 
     .event-category-badge {
-      font-size: 8.5px;
+      font-size: 8px;
       font-weight: 700;
       color: var(--vibrant-green);
       background: rgba(0, 178, 114, 0.1);
-      padding: 1px 5px;
+      padding: 1px 4px;
       border-radius: 3px;
       letter-spacing: 0.02em;
     }
 
     .event-year-tag {
-      font-size: 8.5px;
+      font-size: 8px;
       font-weight: 700;
       color: var(--text-muted);
     }
 
     .event-title {
-      font-size: clamp(10.5px, 0.78vw, 11.8px);
+      font-size: clamp(10px, 0.72vw, 11.2px);
       font-weight: 700;
       color: var(--deep-forest);
-      line-height: 1.35;
+      line-height: 1.3;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -862,7 +861,7 @@
       backdrop-filter: blur(12px);
       border-top: 1px solid var(--border-color);
       border-bottom: 1px solid var(--border-color);
-      padding: clamp(6px, 0.8vh, 10px) 0;
+      padding: clamp(5px, 0.7vh, 8px) 0;
     }
 
     .stats-grid {
@@ -1124,7 +1123,7 @@
       .hero-header-row {
         flex-direction: column;
         align-items: stretch;
-        gap: 16px;
+        gap: 14px;
       }
 
       .hero-header-right {
@@ -1139,17 +1138,18 @@
 
       .hero-main-grid {
         display: flex;
-        gap: 20px;
+        gap: 18px;
         align-items: stretch;
       }
 
       .hero-carousel-card {
-        flex: 0 0 220px;
+        flex: 0 0 190px;
       }
 
       .hero-events-card {
         flex: 1;
         max-width: 100%;
+        max-height: 260px;
       }
 
       .f-pattern-grid {
@@ -1175,7 +1175,7 @@
         flex-direction: column;
         text-align: center;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
       }
 
       .hero-jubilee-wrapper {
@@ -1183,7 +1183,7 @@
       }
 
       .hero-main-title {
-        font-size: 18px;
+        font-size: 17px;
         text-align: center;
       }
 
@@ -1199,7 +1199,7 @@
       .hero-main-grid {
         flex-direction: column;
         align-items: center;
-        gap: 16px;
+        gap: 14px;
       }
 
       .hero-carousel-card {
@@ -1208,7 +1208,7 @@
       }
 
       .hero-carousel-container {
-        max-width: 240px;
+        max-width: 200px;
         margin: 0 auto;
       }
 
@@ -1216,8 +1216,8 @@
         width: 100%;
         max-width: 100%;
         flex: none;
-        height: 320px;
-        max-height: 320px;
+        height: 260px;
+        max-height: 260px;
       }
 
       .f-pattern-grid {
@@ -1244,22 +1244,22 @@
       }
 
       .hero-main-grid {
-        gap: 32px;
+        gap: 26px;
       }
 
       .hero-carousel-card {
-        flex: 0 0 250px;
+        flex: 0 0 210px;
       }
 
       .hero-carousel-container {
-        max-width: 250px;
+        max-width: 210px;
       }
 
       .hero-events-card {
-        flex: 0 1 580px;
-        width: 580px;
-        max-width: 580px;
-        max-height: 335px;
+        flex: 0 1 480px;
+        width: 480px;
+        max-width: 480px;
+        max-height: 280px;
       }
     }
 
@@ -1269,22 +1269,22 @@
       }
 
       .hero-main-grid {
-        gap: 36px;
+        gap: 30px;
       }
 
       .hero-carousel-card {
-        flex: 0 0 265px;
+        flex: 0 0 225px;
       }
 
       .hero-carousel-container {
-        max-width: 265px;
+        max-width: 225px;
       }
 
       .hero-events-card {
-        flex: 0 1 620px;
-        width: 620px;
-        max-width: 620px;
-        max-height: 355px;
+        flex: 0 1 520px;
+        width: 520px;
+        max-width: 520px;
+        max-height: 300px;
       }
     }
   </style>
@@ -1874,7 +1874,7 @@
     }
 
     // Automatic smooth seamless scrolling for Events list widget
-    const eventsList = document.querySelector('.events-list');
+    const eventsList = document.getElementById('heroEventsList') || document.querySelector('.events-list');
     if (eventsList) {
       let isUserInteracting = false;
       let resumeTimeout = null;
@@ -1886,23 +1886,18 @@
           eventsList.appendChild(item.cloneNode(true));
         });
 
-        function calculateSetHeight() {
-          let totalHeight = 0;
-          originalItems.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            totalHeight += rect.height;
-          });
-          return totalHeight;
+        function getSingleSetHeight() {
+          return eventsList.scrollHeight / 2;
         }
 
-        let singleSetHeight = calculateSetHeight();
+        let singleSetHeight = getSingleSetHeight();
 
         // Recalculate accurately once all fonts & assets have settled
         window.addEventListener('load', () => {
-          singleSetHeight = calculateSetHeight();
+          singleSetHeight = getSingleSetHeight();
         });
         window.addEventListener('resize', () => {
-          singleSetHeight = calculateSetHeight();
+          singleSetHeight = getSingleSetHeight();
         });
 
         eventsList.addEventListener('mouseenter', () => { isUserInteracting = true; });
@@ -1919,12 +1914,12 @@
           lastTime = currentTime;
 
           if (!singleSetHeight || singleSetHeight <= 0) {
-            singleSetHeight = calculateSetHeight();
+            singleSetHeight = getSingleSetHeight();
           }
 
           if (!isUserInteracting && singleSetHeight > 0) {
-            // Smooth advance ~25px/sec
-            eventsList.scrollTop += (delta * 0.025);
+            // Smooth advance ~22px/sec
+            eventsList.scrollTop += (delta * 0.022);
 
             // Once the first set has scrolled completely, seamlessly wrap back
             if (eventsList.scrollTop >= singleSetHeight) {
