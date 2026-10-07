@@ -373,38 +373,22 @@
       text-align: left;
     }
 
-    .hero-badge-card {
+    .hero-jubilee-wrapper {
+      margin-bottom: clamp(10px, 1.4vh, 16px);
       display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: #FFFFFF;
-      border: 1.5px solid rgba(217, 119, 6, 0.35);
-      border-radius: 12px;
-      padding: 4px 16px;
-      margin-bottom: clamp(6px, 1vh, 12px);
-      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.08);
       align-self: flex-start;
-      text-decoration: none;
     }
 
-    .hero-badge-num {
-      font-size: clamp(22px, 2vw, 28px);
-      font-weight: 800;
-      color: #D97706;
-      line-height: 1;
-      letter-spacing: -0.02em;
+    .hero-jubilee-emblem {
+      height: clamp(65px, 8.5vh, 95px);
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.08));
+      transition: transform 0.2s ease;
     }
 
-    .hero-badge-text {
-      font-size: 9.5px;
-      font-weight: 700;
-      color: #92400E;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      text-align: center;
-      line-height: 1.2;
-      margin-top: 2px;
+    .hero-jubilee-emblem:hover {
+      transform: scale(1.03);
     }
 
     .hero h1 {
@@ -943,7 +927,8 @@
       }
 
       .hero-badge,
-      .hero-badge-card {
+      .hero-badge-card,
+      .hero-jubilee-wrapper {
         align-self: center;
       }
 
@@ -1206,12 +1191,8 @@
 
         <!-- Column 2 (Center): Society Info & Search -->
         <div class="hero-content">
-          <div class="hero-badge-card">
-            <span class="hero-badge-num">50</span>
-            <div class="hero-badge-text">
-              <div>Golden Jubilee</div>
-              <div style="font-size: 8.5px; opacity: 0.9;">1972-2022</div>
-            </div>
+          <div class="hero-jubilee-wrapper">
+            <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261007_1" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
           </div>
           <p>PPAI celebrated its landmark Golden Jubilee (1972–2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.</p>
 
