@@ -204,132 +204,178 @@ def awards_nomination(request):
     context = get_common_context()
     return render(request, 'pages/awards_nomination.html', context)
 
-ALL_CONFERENCES_AND_EVENTS = [
+YEARLY_CONFERENCES_AND_EVENTS = [
     {
         'year': '2026',
-        'title': 'PPAI Guest Lecture: "From a Remote Village to Global Science: Plant Virus Discovery and Innovation" by Dr. Satyanarayana Tatineni, USDA-ARS, Lincoln, Nebraska',
-        'doc_file': None,
-    },
-    {
-        'year': '2026',
-        'title': 'Joint Representation by leading plant protection Societies of India',
-        'doc_file': None,
-    },
-    {
-        'year': '2026',
-        'title': 'Comprehensive Submission on the Proposed Prohibition of Paraquat Dichloride 24% SL',
-        'doc_file': None,
-    },
-    {
-        'year': '2026',
-        'title': 'Proceedings & Policy Deliberations on Enhancing Agricultural Contribution and GDP Growth',
-        'doc_file': None,
-    },
-    {
-        'year': '2026',
-        'title': 'Comments and Recommendations on the Pesticide Management Bill',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'PPAI Guest Lecture: "From a Remote Village to Global Science: Plant Virus Discovery and Innovation" by Dr. Satyanarayana Tatineni, USDA-ARS, Lincoln, Nebraska (16th October, 2026)',
+                'doc_file': None,
+            },
+            {
+                'title': 'Joint Representation by leading plant protection Societies of India (19th September, 2026)',
+                'doc_file': None,
+            },
+            {
+                'title': 'Comprehensive Submission on the Proposed Prohibition of Paraquat Dichloride 24% SL (4th August, 2026)',
+                'doc_file': None,
+            },
+            {
+                'title': 'Proceedings & Policy Deliberations on Enhancing Agricultural Contribution and GDP Growth (6th June, 2026)',
+                'doc_file': None,
+            },
+            {
+                'title': 'Comments and Recommendations on the Pesticide Management Bill (3rd February, 2026)',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '2025',
-        'title': 'Farmer Training Programme on Problems and Solutions in Mango Farming',
-        'doc_file': None,
-    },
-    {
-        'year': '2025',
-        'title': 'SGD Suggestions and Policy Submission on the Seed Bill',
-        'doc_file': None,
-    },
-    {
-        'year': '2025',
-        'title': 'Petition to the Director of Agriculture Telangana on Curbing Spurious / Counterfeit Pesticides',
-        'doc_file': None,
-    },
-    {
-        'year': '2025',
-        'title': 'Proceedings and Recommendations of One-Day Seminar with Stakeholders on Seed Sovereignty',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'Farmer Training Programme on Problems and solutions on Mango farming (23rd December, 2025)',
+                'doc_file': None,
+            },
+            {
+                'title': 'SGD Suggestions and Policy Submission on the Seed Bill (10th December, 2025)',
+                'doc_file': None,
+            },
+            {
+                'title': 'Petition to the Director of Agriculture Telangana on Curbing the usage of counterfeit / spurious pesticides (25th July, 2025)',
+                'doc_file': None,
+            },
+            {
+                'title': 'A one-day seminar with Stakeholders on Seed Sovereignty (17th April, 2025)',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '2023',
-        'title': 'International Conference on Plant Health Management (ICPHM 2023): Innovation and Sustainability, at PJTSAU, Hyderabad (15-18 November, 2023)',
-        'doc_file': 'documents/icphm_souvenir.pdf',
-    },
-    {
-        'year': '2023',
-        'title': 'Interactive Session with Seed Research Industry Companies at ICPHM (23rd May, 2023)',
-        'doc_file': None,
-    },
-    {
-        'year': '2023',
-        'title': 'Brain Storming Session on Integrated pest management of invasive black thrips (<em>Thrips parvispinus</em>) in chilli in Telangana and Andhra Pradesh (28th January, 2023)',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'International Conference on Plant Health Management (ICPHM 2023): Innovation and Sustainability, at PJTSAU, Hyderabad (15-18 November, 2023)',
+                'doc_file': 'documents/icphm_souvenir.pdf',
+            },
+            {
+                'title': 'Interactive Session with Seed Research Industry Companies at ICPHM (23rd May, 2023)',
+                'doc_file': None,
+            },
+            {
+                'title': 'Brain Storming Session on Integrated pest management of invasive black thrips (<em>Thrips parvispinus</em>) in chilli in Telangana and Andhra Pradesh (28th January, 2023)',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '2019',
-        'title': 'Association in organizing “XIX International Plant Protection Congress” (IPPC2019)',
-        'doc_file': None,
-    },
-    {
-        'year': '2019',
-        'title': 'Red Palm Weevil Symposium: - Outsmarting the Red Palm weevil: A Global Challenge during XIX International Plant Protection Congress (IPPC2019)',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'Association in organizing “XIX International Plant Protection Congress” (IPPC2019)',
+                'doc_file': None,
+            },
+            {
+                'title': 'Red Palm Weevil Symposium: - Outsmarting the Red Palm weevil: A Global Challenge during XIX International Plant Protection Congress (IPPC2019)',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '2018',
-        'title': 'Brain Storming Session on Emerging Plant Protection Technologies: Opportunities and Challenges (20th April, 2018)',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'Brain Storming Session on Emerging Plant Protection Technologies: Opportunities and Challenges (20th April, 2018)',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '2016',
-        'title': 'National Conference on Plant Health Management (at Tirupati)',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Conference on Plant Health Management (at Tirupati)',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '2012',
-        'title': 'International Conference on Plant Health Management for Food Security (28-30th November, 2012)',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'International Conference on Plant Health Management for Food Security (28-30th November, 2012)',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '2007',
-        'title': 'National Conference on Organic Waste Utilization and Eco Friendly Technologies For Crop Protection',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Conference on Organic Waste Utilization and Eco Friendly Technologies For Crop Protection',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '1997',
-        'title': 'National Seminar on Plant Protection Towards Sustainability',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Seminar on Plant Protection Towards Sustainability',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '1995',
-        'title': 'National Symposium on Integrated Pest Management and Environment',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Symposium on Integrated Pest Management and Environment',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '1994',
-        'title': 'National Workshop on Use of Pheromones in Integrated Pest Management',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Workshop on Use of Pheromones in Integrated Pest Management',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '1992',
-        'title': 'National Seminar on Changing Scenario in Pest and Pest Management',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Seminar on Changing Scenario in Pest and Pest Management',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '1988',
-        'title': 'National Workshop on Plant Protection in Horticultural Crops',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Workshop on Plant Protection in Horticultural Crops',
+                'doc_file': None,
+            },
+        ],
     },
     {
         'year': '1986',
-        'title': 'National Seminar on Plant Protection in Field Crops',
-        'doc_file': None,
+        'events': [
+            {
+                'title': 'National Seminar on Plant Protection in Field Crops',
+                'doc_file': None,
+            },
+        ],
     },
 ]
 
 def conferences(request):
     context = get_common_context()
-    context['events_list'] = ALL_CONFERENCES_AND_EVENTS
+    context['yearly_events'] = YEARLY_CONFERENCES_AND_EVENTS
     return render(request, 'pages/conferences.html', context)
 
 def election(request):

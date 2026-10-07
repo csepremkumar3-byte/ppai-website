@@ -103,6 +103,10 @@
     color: var(--deep-forest);
     font-size: clamp(14px, 0.98vw, 15.5px);
     white-space: nowrap;
+    vertical-align: top;
+    padding-top: clamp(12px, 1.3vh, 15px);
+    border-right: 1px solid #eef4f0;
+    background: #fafdfb;
   }
 
   .conferences-table tbody td.col-event {
@@ -152,17 +156,21 @@
           </tr>
         </thead>
         <tbody>
-          {% for ev in events_list %}
-            <tr>
-              <td class="col-year">{{ ev.year }}</td>
-              <td class="col-event">
-                {% if ev.doc_file %}
-                  <a href="{% static ev.doc_file %}" class="conference-link" target="_blank" rel="noopener noreferrer">{{ ev.title|safe }}</a>
-                {% else %}
-                  <span>{{ ev.title|safe }}</span>
+          {% for group in yearly_events %}
+            {% for ev in group.events %}
+              <tr>
+                {% if forloop.first %}
+                  <td class="col-year" rowspan="{{ group.events|length }}">{{ group.year }}</td>
                 {% endif %}
-              </td>
-            </tr>
+                <td class="col-event">
+                  {% if ev.doc_file %}
+                    <a href="{% static ev.doc_file %}" class="conference-link" target="_blank" rel="noopener noreferrer">{{ ev.title|safe }}</a>
+                  {% else %}
+                    <span>{{ ev.title|safe }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
           {% endfor %}
         </tbody>
       </table>
