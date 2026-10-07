@@ -121,53 +121,9 @@
     text-decoration: none;
   }
 
-  .event-cat-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    font-size: 11.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    background: #e8f5ec;
-    color: #1a6338;
-    border-radius: 4px;
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-
-  .doc-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    background: #f0f8f3;
-    border: 1px solid #c2e2cf;
-    color: var(--deep-forest);
-    font-size: 13px;
-    font-weight: 700;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .doc-btn:hover {
-    background: var(--vibrant-green);
-    color: #ffffff;
-    border-color: var(--vibrant-green);
-    box-shadow: 0 2px 8px rgba(46,125,50,0.25);
-    text-decoration: none;
-  }
-
   @media (max-width: 768px) {
     .conferences-section {
       padding: 20px 16px 48px 16px;
-    }
-    .conferences-table thead th.col-doc {
-      display: none;
-    }
-    .conferences-table tbody td.col-doc {
-      display: none;
     }
   }
 </style>
@@ -190,8 +146,7 @@
         <thead>
           <tr>
             <th class="col-year">Year</th>
-            <th class="col-event">Conference, Workshop, Symposia &amp; Scientific Event</th>
-            <th class="col-doc">Document</th>
+            <th class="col-event">Conference, Workshop, Symposia &amp; Brainstorming Event</th>
           </tr>
         </thead>
         <tbody>
@@ -199,23 +154,12 @@
             <tr>
               <td class="col-year">{{ ev.year }}</td>
               <td class="col-event">
-                {% if ev.category %}
-                  <span class="event-cat-badge">{{ ev.category }}</span>
-                {% endif %}
                 {% if ev.doc_file %}
                   <a href="{% static ev.doc_file %}" class="conference-link" target="_blank" rel="noopener noreferrer">
                     {{ ev.title|safe }}
                   </a>
                 {% else %}
                   <span>{{ ev.title|safe }}</span>
-                {% endif %}
-              </td>
-              <td class="col-doc" style="text-align: right;">
-                {% if ev.doc_file %}
-                  <a href="{% static ev.doc_file %}" class="doc-btn" target="_blank" rel="noopener noreferrer">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                    {% if ev.doc_label %}{{ ev.doc_label }}{% else %}View Document{% endif %}
-                  </a>
                 {% endif %}
               </td>
             </tr>
