@@ -78,7 +78,7 @@ EXECUTIVE_MEMBERS_FULL_DATA = [   {   'achievements': '• PGR & Quarantine Poli
         'designation': 'Vice-President',
         'email': None,
         'gender': 'male',
-        'image': 'council/dr_m_srinivas_prasad.jpg',
+        'image': 'council/dr_m_srinivas_prasad.png',
         'name': 'Dr. M Srinivas Prasad',
         'official_address': None,
         'order': 4,
