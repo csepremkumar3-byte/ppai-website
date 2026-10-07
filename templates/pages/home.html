@@ -529,14 +529,14 @@
       box-shadow: 0 4px 12px rgba(0, 178, 114, 0.25);
     }
 
-    /* --- Centered 2-Column Main Grid (Left: 3:4 Carousel, Right: Structured Events Card) --- */
+    /* --- Centered 2-Column Main Grid (Left: 3:4 Carousel, Right: Compact Structured Events Card) --- */
     .hero-main-grid {
       display: flex;
       align-items: stretch;
       justify-content: center;
-      gap: clamp(24px, 3vw, 42px);
+      gap: clamp(20px, 2.5vw, 36px);
       width: 100%;
-      max-width: 1280px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
@@ -549,11 +549,11 @@
     }
 
     .hero-carousel-container {
-      border-radius: 20px;
+      border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(11, 36, 23, 0.12);
+      box-shadow: 0 10px 30px rgba(11, 36, 23, 0.1);
       background: #0B2417;
-      height: clamp(300px, 35vh, 400px);
+      height: clamp(310px, 36vh, 380px);
       aspect-ratio: 3 / 4;
       width: auto;
       position: relative;
@@ -626,19 +626,18 @@
       border-radius: 4px;
     }
 
-    /* Right Column: Structured Upcoming Events Card (Matching Second Image Reference) */
+    /* Right Column: Structured Upcoming Events Card Matching Photo Exactly */
     .hero-events-card {
       background: #FFFFFF;
-      border: 1.5px solid rgba(11, 36, 23, 0.08);
-      border-radius: 20px;
-      padding: clamp(16px, 2vh, 24px) clamp(20px, 2.2vw, 32px);
+      border: 1.5px solid rgba(11, 36, 23, 0.09);
+      border-radius: 18px;
+      padding: 16px 20px 14px 20px;
       box-shadow: 0 10px 30px rgba(11, 36, 23, 0.06);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      height: clamp(300px, 35vh, 400px);
-      flex: 1 1 640px;
-      max-width: 820px;
+      height: clamp(310px, 36vh, 380px);
+      flex: 1 1 560px;
+      max-width: 640px;
       min-width: 0;
       box-sizing: border-box;
       position: relative;
@@ -650,19 +649,20 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
-      padding-bottom: 4px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(11, 36, 23, 0.06);
       flex-shrink: 0;
     }
 
     .events-header-title-group {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
     }
 
     .events-live-pulse {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--vibrant-green);
       box-shadow: 0 0 0 3px rgba(0, 178, 114, 0.22);
@@ -670,10 +670,27 @@
     }
 
     .events-card-title {
-      font-size: clamp(18px, 1.4vw, 22px);
+      font-size: clamp(16px, 1.2vw, 19px);
       font-weight: 800;
       color: var(--deep-forest);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
+    }
+
+    .view-all-events-link {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--vibrant-green);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .view-all-events-link:hover {
+      color: var(--vibrant-green-hover);
+      transform: translateX(2px);
     }
 
     .events-list {
@@ -681,28 +698,34 @@
       flex-direction: column;
       gap: 0;
       overflow-y: auto;
+      overflow-x: hidden;
       flex: 1 1 auto;
       min-height: 0;
-      padding-right: 2px;
+      height: 100%;
+      padding-right: 0;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
 
     .events-list::-webkit-scrollbar {
       display: none;
+      width: 0;
+      height: 0;
     }
 
     .event-item {
       display: flex;
       align-items: center;
-      gap: 18px;
-      padding: clamp(10px, 1.4vh, 15px) 4px;
+      gap: 14px;
+      padding: 8px 4px;
       border-bottom: 1px solid #EEF2F0;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       cursor: pointer;
       flex-shrink: 0;
       background: #FFFFFF;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .event-item:last-child {
@@ -711,104 +734,87 @@
 
     .event-item:hover {
       background: rgba(0, 178, 114, 0.04);
-      transform: translateX(4px);
+      transform: translateX(3px);
     }
 
     .event-date-badge {
-      width: clamp(50px, 4vw, 58px);
-      height: clamp(50px, 4vw, 58px);
+      width: 44px;
+      height: 44px;
       background: var(--vibrant-green);
       color: #FFFFFF;
-      border-radius: 12px;
+      border-radius: 9px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 3px 10px rgba(0, 178, 114, 0.25);
+      box-shadow: 0 2px 6px rgba(0, 178, 114, 0.22);
     }
 
     .event-date-badge .event-day {
-      font-size: clamp(17px, 1.3vw, 20px);
+      font-size: 15px;
       font-weight: 800;
       line-height: 1;
     }
 
     .event-date-badge .event-month {
-      font-size: clamp(9.5px, 0.75vw, 11px);
+      font-size: 8.5px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 2px;
+      letter-spacing: 0.04em;
+      margin-top: 1px;
     }
 
     .event-info {
       flex: 1;
       min-width: 0;
-    }
-
-    .event-title {
-      font-size: clamp(15px, 1.15vw, 18px);
-      font-weight: 700;
-      color: var(--deep-forest);
-      line-height: 1.35;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      margin-bottom: 5px;
-      letter-spacing: -0.01em;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .event-tags-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 7px;
     }
 
     .event-category-badge {
-      font-size: clamp(10.5px, 0.8vw, 12px);
+      font-size: 10px;
       font-weight: 700;
       color: var(--vibrant-green);
-      background: rgba(0, 178, 114, 0.12);
-      padding: 3px 11px;
-      border-radius: 6px;
-      letter-spacing: 0.02em;
+      background: rgba(0, 178, 114, 0.1);
+      padding: 1.5px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.01em;
     }
 
     .event-year-tag {
-      font-size: clamp(11px, 0.8vw, 12.5px);
+      font-size: 10px;
       font-weight: 600;
       color: var(--text-muted);
     }
 
-    .events-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 12px;
-      margin-top: 4px;
-      border-top: 1px solid rgba(11, 36, 23, 0.06);
-      flex-shrink: 0;
-      background: #FFFFFF;
-      z-index: 10;
-      position: relative;
-    }
-
-    .view-all-events-link {
+    .event-title {
       font-size: clamp(13px, 0.95vw, 14.5px);
       font-weight: 700;
-      color: var(--vibrant-green);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
+      color: var(--deep-forest);
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .view-all-events-link:hover {
-      color: var(--vibrant-green-hover);
-      transform: translateX(4px);
+    .event-chevron {
+      color: #CBD5E1;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, color 0.2s ease;
+      margin-left: 6px;
+    }
+
+    .event-item:hover .event-chevron {
+      color: var(--vibrant-green);
+      transform: translateX(2px);
     }
 
     /* --- Stats Section (Compact, No Vertical Divider Lines) --- */
@@ -1477,13 +1483,17 @@
             </div>
           </div>
 
-          <!-- Right Column: Matching Upcoming Events Card -->
+          <!-- Right Column: Matching Upcoming Events Card (Exact Photo Layout) -->
           <div class="hero-events-card">
             <div class="events-card-header">
               <div class="events-header-title-group">
                 <span class="events-live-pulse"></span>
-                <h2 class="events-card-title">Upcoming events</h2>
+                <h2 class="events-card-title">Upcoming Events</h2>
               </div>
+              <a href="{% url 'conferences' %}" class="view-all-events-link">
+                <span>View all events</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </a>
             </div>
 
             <div class="events-list" id="heroEventsList">
@@ -1494,12 +1504,13 @@
                     <span class="event-month">{{ ev.month }}</span>
                   </div>
                   <div class="event-info">
-                    <div class="event-title">{{ ev.title }}</div>
                     <div class="event-tags-row">
                       <span class="event-category-badge">{{ ev.category }}</span>
                       <span class="event-year-tag">{{ ev.year }}</span>
                     </div>
+                    <div class="event-title">{{ ev.title }}</div>
                   </div>
+                  <svg class="event-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </a>
               {% empty %}
                 <div class="event-item">
@@ -1508,22 +1519,15 @@
                     <span class="event-month">NOV</span>
                   </div>
                   <div class="event-info">
-                    <div class="event-title">ICPHM 2023 International Conference on Plant Health Management</div>
                     <div class="event-tags-row">
                       <span class="event-category-badge">International Conference</span>
                       <span class="event-year-tag">2023</span>
                     </div>
+                    <div class="event-title">ICPHM 2023 International Conference on Plant Health Management</div>
                   </div>
+                  <svg class="event-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
               {% endfor %}
-            </div>
-
-            <!-- Footer of Events Card (View All Events Link - No Arrow Buttons) -->
-            <div class="events-card-footer">
-              <a href="{% url 'conferences' %}" class="view-all-events-link">
-                <span>View all events</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </a>
             </div>
           </div>
 
@@ -1856,26 +1860,26 @@
 
         let scrollCycleHeight = 0;
         function updateCycleHeight() {
-          if (eventsList.children.length > originalItems.length) {
-            const firstItem = eventsList.children[0];
-            const clonedFirstItem = eventsList.children[originalItems.length];
-            scrollCycleHeight = clonedFirstItem.offsetTop - firstItem.offsetTop;
-            if (scrollCycleHeight <= 0) {
-              scrollCycleHeight = eventsList.scrollHeight / 3;
+          let totalHeight = 0;
+          for (let i = 0; i < originalItems.length; i++) {
+            if (eventsList.children[i]) {
+              totalHeight += eventsList.children[i].offsetHeight;
             }
           }
+          scrollCycleHeight = totalHeight > 0 ? totalHeight : (eventsList.scrollHeight / 3);
         }
 
         updateCycleHeight();
         window.addEventListener('load', updateCycleHeight);
         window.addEventListener('resize', updateCycleHeight);
+        setTimeout(updateCycleHeight, 500);
 
         eventsList.addEventListener('mouseenter', () => { isUserInteracting = true; });
         eventsList.addEventListener('mouseleave', () => { isUserInteracting = false; });
         eventsList.addEventListener('touchstart', () => { isUserInteracting = true; }, { passive: true });
         eventsList.addEventListener('touchend', () => {
           clearTimeout(resumeTimeout);
-          resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1200);
+          resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 800);
         });
 
         let lastTime = performance.now();
@@ -1888,8 +1892,8 @@
           }
 
           if (!isUserInteracting && scrollCycleHeight > 0) {
-            // Smooth continuous advance ~22px/sec
-            eventsList.scrollTop += (delta * 0.022);
+            // Smooth continuous advance ~28px/sec
+            eventsList.scrollTop += (delta * 0.028);
 
             // Once 1 complete cycle is reached, seamlessly wrap back into the buffer without colliding
             if (eventsList.scrollTop >= scrollCycleHeight) {
