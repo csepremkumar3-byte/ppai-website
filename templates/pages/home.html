@@ -420,8 +420,10 @@
       font-size: clamp(13px, 0.95vw, 14.5px);
       color: var(--text-muted);
       margin-bottom: clamp(12px, 1.8vh, 18px);
-      line-height: 1.6;
+      line-height: 1.65;
       max-width: 600px;
+      text-align: justify;
+      text-justify: inter-word;
     }
 
     .hero-search {
@@ -1528,6 +1530,26 @@
         alert('Document for "' + title + '" will be available soon.');
         return false;
       }
+    }
+
+    // Automatic smooth scrolling for Events list widget
+    const eventsList = document.querySelector('.events-list');
+    if (eventsList) {
+      let isUserInteracting = false;
+      eventsList.addEventListener('mouseenter', () => { isUserInteracting = true; });
+      eventsList.addEventListener('mouseleave', () => { isUserInteracting = false; });
+      eventsList.addEventListener('touchstart', () => { isUserInteracting = true; }, { passive: true });
+      eventsList.addEventListener('touchend', () => { isUserInteracting = false; });
+
+      setInterval(() => {
+        if (!isUserInteracting && eventsList.scrollHeight > eventsList.clientHeight) {
+          if (eventsList.scrollTop + eventsList.clientHeight >= eventsList.scrollHeight - 2) {
+            eventsList.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            eventsList.scrollBy({ top: 1, behavior: 'auto' });
+          }
+        }
+      }, 45);
     }
   </script>
 </body>
