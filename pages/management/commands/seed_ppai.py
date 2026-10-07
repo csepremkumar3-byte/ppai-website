@@ -176,21 +176,65 @@ EXECUTIVE_MEMBERS_FULL_DATA = [   {   'achievements': '• PGR & Quarantine Poli
                         'Aspergillus niger inciting collar rot disease in groundnut. Indian Phytopathology, 69(4S): '
                         '172–174. (NAAS: 5.99)',
         'qualification': 'Ph.D. in Plant Pathology'},
-    {   'achievements': None,
+    {   'achievements': '• Prestigious Honors & State Awards: University Meritorious Teacher Award (1996) from the '
+                        'Governor of Andhra Pradesh; State Meritorious Teacher Award (2007) presented by (Late) Dr. '
+                        'Y. S. Rajasekhar Reddy, then Chief Minister of Andhra Pradesh; Dr. Y. Ramachandra Rao '
+                        'Memorial Award for outstanding ecological and ethological research.\n'
+                        '• Fellowships & Professional Memberships: Fellow of the Royal Entomological Society (London), '
+                        'the Linnean Society (London), the Entomological Society of India, the Plant Protection '
+                        'Association of India (PPAI), and the Indian Society of Oilseed Research. Life Member of over '
+                        'a dozen national and international professional scientific societies.\n'
+                        '• International & National Recognition: Met Mr. George W. Bush, President of the United States '
+                        '(2006) to brief him on the state’s plant protection initiatives; University Coordinator for '
+                        'the INTAG Program of Cornell University (USA).\n'
+                        '• Editorial & Academic Leadership: Chief Editor of the Indian Journal of Plant Protection '
+                        '(IJPP), Editor of the Indian Journal of Ecology, Editorial Board Member of several leading '
+                        'journals (including Current Science, Indian Journal of Entomology, Shashpa), and Chief '
+                        'Content Reviewer for the Plantix mobile application developed by PEAT GmbH, Berlin.\n'
+                        '• Farmer Outreach & Capacity Building: Post-retirement Consultant at ICRISAT (2018–2020) under '
+                        'the SERP initiative (Govt. of Andhra Pradesh), conducting 95 training programs for 165 '
+                        'Farmer Producer Organizations across AP benefiting ~4,000 farmers in crop production and IPM; '
+                        'trained farmers and officials in Odisha (Sundargarh).',
         'affiliation': 'Dean of ANGRAU and PJTSAU Retd. & Ex. ICAR-Emeritus Scientist, Hyderabad.',
-        'bio': 'Chief Editor.',
+        'bio': 'Prof. T. V. K. Singh is an eminent academician, researcher, and Chief Editor of the Indian Journal of '
+               'Plant Protection (IJPP). With more than three decades of distinguished experience in higher education '
+               'and agricultural entomology, he has served in top administrative and academic leadership roles at '
+               'ANGRAU and PJTSAU — including Senior Professor, Vice Principal, Principal, Associate Director of '
+               'Research, Dean of Agriculture, Director of Extension, and Comptroller. He was the first ICAR Emeritus '
+               'Scientist of PJTSAU and has specialized in insect ecology, toxicology, population dynamics, economic '
+               'entomology, and eco-friendly IPM strategies.',
         'date_of_birth': None,
         'designation': 'Chief Editor',
         'email': None,
         'gender': 'male',
         'image': 'council/prof_t_v_k_singh.png',
         'name': 'Prof. T V K Singh',
-        'official_address': None,
+        'official_address': 'Former Dean of Agriculture & Director of Extension, ANGRAU / PJTSAU, Hyderabad, Telangana',
         'order': 8,
         'phone': None,
-        'projects': None,
-        'publications': None,
-        'qualification': None},
+        'projects': '• Insecticide Resistance Monitoring Laboratory: Established and operated an Insecticide Resistance '
+                    'Monitoring Laboratory at the university for over 15 years; developed the F2 screen method for '
+                    'estimating Bt cotton resistance in India and Cry1Ac/Cry2Ab resistance alleles in H. armigera.\n'
+                    '• Funded Research Projects: Served as Principal Investigator for major research projects funded '
+                    'by ICAR–CICR, BTU–IPE, Osmania University, NTGCF–Anand, and DST–Government of India across '
+                    'insecticide resistance, pheromones, botanicals, and vermiculture technology.\n'
+                    '• National Policy Consultation: Consultant for writing the national report on "Study on impact '
+                    'of indiscriminate use of chemical fertilizers and pesticides" (2018–19) across 7 SAUs and 1 SHU, '
+                    'funded by Dept. of Agriculture & Farmers Welfare, GoI (NIPHM Nodal Agency).\n'
+                    '• National & International Conferences: Organized five international seminars and three national '
+                    'conferences (Entomology 2018, 2020, 2022); key organizer for National Conference on IPHMRA-AEP '
+                    '(Feb 2026) at NIPHM, Hyderabad.',
+        'publications': '• Authored over 170 research papers, 13 books, 4 book chapters, edited 2 books, and delivered '
+                        '25 keynote/lead papers at national and international platforms.\n'
+                        '• Mentored over 15 M.Sc. and 5 Ph.D. scholars as Major Advisor, and served as Co-Chair for '
+                        'more than 30 M.Sc. and 10 Ph.D. dissertations.\n'
+                        '• Seminal research on distribution patterns and sampling plans for safflower aphid, diamondback '
+                        'moth (Plutella xylostella), cabbage leaf webber (Crocidolomia binotalis), brinjal fruit borer, '
+                        'and sunflower thrips.\n'
+                        '• Developed sequential sampling plans for groundnut leafhopper/thrips and safflower aphid, '
+                        'and validated stochastic models for predicting Helicoverpa armigera in Bt cotton and Spodoptera '
+                        'litura migration dynamics.',
+        'qualification': 'Ph.D. (1986–1989, IARI New Delhi), M.Sc. in Entomology (1976–1978, APAU), B.Sc. (Agri.) with Distinction (1971–1976, APAU); Specialized training in Insecticide Resistance (Univ. of Florida, USA)'},
     {   'achievements': None,
         'affiliation': 'ICAR-National Bureau of Plant Genetic Resources, New Delhi',
         'bio': 'Associate Editor.',
