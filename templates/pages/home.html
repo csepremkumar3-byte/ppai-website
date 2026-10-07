@@ -117,7 +117,7 @@
     }
 
     .header-top {
-      padding: 10px 32px;
+      padding: clamp(6px, 1vh, 10px) 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -140,7 +140,7 @@
     }
 
     .brand-logo {
-      height: clamp(62px, 6.8vh, 85px);
+      height: clamp(52px, 5.8vh, 74px);
       width: auto;
       object-fit: contain;
       background: #FFFFFF;
@@ -148,7 +148,7 @@
     }
 
     .brand-details h1 {
-      font-size: clamp(18px, 1.9vw, 25px);
+      font-size: clamp(17px, 1.8vw, 24px);
       font-weight: 800;
       color: var(--deep-forest);
       letter-spacing: -0.02em;
@@ -156,10 +156,10 @@
     }
 
     .brand-details p {
-      font-size: clamp(10.5px, 0.95vw, 12px);
+      font-size: clamp(10px, 0.9vw, 11.5px);
       color: var(--text-muted);
       font-weight: 600;
-      margin-top: 3px;
+      margin-top: 2px;
       letter-spacing: 0.01em;
     }
 
@@ -248,7 +248,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      height: clamp(42px, 4.8vh, 48px);
+      height: clamp(38px, 4.2vh, 44px);
       width: 100%;
     }
 
@@ -829,14 +829,17 @@
       transform: translateX(3px);
     }
 
-    /* --- Stats Section (Compact, No Vertical Divider Lines) --- */
+    /* --- Stats Section (Abundantly Visible, No Vertical Divider Lines) --- */
     .viewport-fold .stats-section {
       flex: 0 0 auto;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(12px);
       border-top: 1px solid var(--border-color);
       border-bottom: 1px solid var(--border-color);
-      padding: clamp(6px, 0.9vh, 11px) 0;
+      padding: clamp(8px, 1.3vh, 16px) 0;
+      box-shadow: 0 -4px 16px rgba(11, 36, 23, 0.04);
+      z-index: 10;
+      width: 100%;
     }
 
     .stats-grid {
@@ -856,19 +859,19 @@
     }
 
     .stat-number {
-      font-size: clamp(20px, 2.1vw, 30px);
+      font-size: clamp(22px, 2.3vw, 32px);
       font-weight: 800;
       color: var(--vibrant-green);
       line-height: 1.1;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .stat-label {
-      font-size: clamp(10px, 0.8vw, 12px);
-      font-weight: 700;
+      font-size: clamp(11px, 0.88vw, 13px);
+      font-weight: 800;
       color: var(--deep-forest);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     /* ===================================================================
