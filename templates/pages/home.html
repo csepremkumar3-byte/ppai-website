@@ -522,20 +522,20 @@
       transform: translateY(-1px);
     }
 
-    /* --- Main 2-Column Grid (Left: 3:4 Carousel, Right: Events Card) --- */
+    /* --- Main 2-Column Grid (Left: 3:4 Carousel, Right: Bounded Events Card) --- */
     .hero-main-grid {
-      display: grid;
-      grid-template-columns: minmax(180px, 230px) 1fr;
-      gap: clamp(12px, 1.8vw, 24px);
-      align-items: center;
+      display: flex;
+      align-items: stretch;
+      gap: clamp(16px, 2.5vw, 32px);
+      justify-content: flex-start;
       width: 100%;
     }
 
     .hero-carousel-card {
+      flex: 0 0 clamp(190px, 17vw, 235px);
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
     }
 
     /* Strict 3:4 Aspect Ratio Hero Carousel (Compact) */
@@ -546,7 +546,7 @@
       background: #FFFFFF;
       aspect-ratio: 3 / 4;
       width: 100%;
-      max-width: 230px;
+      max-width: 235px;
       height: auto;
       position: relative;
       border: 1px solid rgba(11, 36, 23, 0.08);
@@ -662,17 +662,20 @@
       border-radius: 4px;
     }
 
-    /* --- Matching Compact Events Card (Right Column) --- */
+    /* --- Bounded Events Card: Wider than carousel, does not stretch to far right --- */
     .hero-events-card {
+      flex: 0 1 clamp(360px, 42vw, 540px);
+      width: clamp(360px, 42vw, 540px);
+      max-width: 540px;
       background: #FFFFFF;
       border: 1px solid var(--border-color);
       border-radius: 14px;
-      padding: clamp(6px, 0.9vh, 10px) clamp(10px, 1.2vw, 14px);
-      box-shadow: 0 6px 18px rgba(11, 36, 23, 0.05);
+      padding: clamp(8px, 1.1vh, 12px) clamp(12px, 1.4vw, 16px);
+      box-shadow: 0 6px 20px rgba(11, 36, 23, 0.05);
       display: flex;
       flex-direction: column;
       height: 100%;
-      max-height: 305px;
+      max-height: 315px;
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
@@ -682,8 +685,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 4px;
-      padding-bottom: 4px;
+      margin-bottom: 6px;
+      padding-bottom: 5px;
       border-bottom: 1px solid rgba(11, 36, 23, 0.07);
       flex-shrink: 0;
     }
@@ -691,7 +694,7 @@
     .events-header-title-group {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .events-live-pulse {
@@ -735,12 +738,15 @@
     .events-list {
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 2px;
       overflow-y: auto;
       flex: 1 1 0;
       min-height: 0;
       padding-right: 3px;
+      padding-bottom: 6px;
       scrollbar-width: thin;
+      mask-image: linear-gradient(to bottom, black 86%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 86%, transparent 100%);
     }
 
     .events-list::-webkit-scrollbar {
@@ -754,10 +760,14 @@
     .event-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 3px;
+      gap: 10px;
+      padding: 5px 4px;
       border-bottom: 1px solid rgba(11, 36, 23, 0.04);
       border-radius: 5px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
       text-decoration: none;
       transition: all 0.2s ease;
       cursor: pointer;
@@ -1134,8 +1144,18 @@
       }
 
       .hero-main-grid {
-        grid-template-columns: minmax(260px, 320px) 1fr;
+        display: flex;
         gap: 20px;
+        align-items: stretch;
+      }
+
+      .hero-carousel-card {
+        flex: 0 0 220px;
+      }
+
+      .hero-events-card {
+        flex: 1;
+        max-width: 100%;
       }
 
       .f-pattern-grid {
@@ -1160,11 +1180,16 @@
       .hero-header-left {
         flex-direction: column;
         text-align: center;
-        gap: 12px;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .hero-jubilee-wrapper {
+        align-self: center;
       }
 
       .hero-main-title {
-        font-size: 20px;
+        font-size: 18px;
         text-align: center;
       }
 
@@ -1178,17 +1203,27 @@
       }
 
       .hero-main-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .hero-carousel-card {
+        width: 100%;
+        flex: none;
       }
 
       .hero-carousel-container {
-        max-width: 280px;
+        max-width: 240px;
         margin: 0 auto;
       }
 
       .hero-events-card {
-        height: 380px;
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+        height: 320px;
+        max-height: 320px;
       }
 
       .f-pattern-grid {
@@ -1200,11 +1235,11 @@
       }
 
       .stat-number {
-        font-size: clamp(18px, 4.5vw, 26px);
+        font-size: clamp(16px, 4vw, 22px);
       }
 
       .stat-label {
-        font-size: 10.5px;
+        font-size: 9.5px;
       }
     }
 
@@ -1215,16 +1250,22 @@
       }
 
       .hero-main-grid {
-        grid-template-columns: minmax(200px, 260px) 1fr;
-        gap: 28px;
+        gap: 32px;
+      }
+
+      .hero-carousel-card {
+        flex: 0 0 250px;
       }
 
       .hero-carousel-container {
-        max-width: 260px;
+        max-width: 250px;
       }
 
       .hero-events-card {
-        max-height: 345px;
+        flex: 0 1 580px;
+        width: 580px;
+        max-width: 580px;
+        max-height: 335px;
       }
     }
 
@@ -1234,16 +1275,22 @@
       }
 
       .hero-main-grid {
-        grid-template-columns: minmax(220px, 280px) 1fr;
-        gap: 32px;
+        gap: 36px;
+      }
+
+      .hero-carousel-card {
+        flex: 0 0 265px;
       }
 
       .hero-carousel-container {
-        max-width: 280px;
+        max-width: 265px;
       }
 
       .hero-events-card {
-        max-height: 370px;
+        flex: 0 1 620px;
+        width: 620px;
+        max-width: 620px;
+        max-height: 355px;
       }
     }
   </style>
@@ -1838,17 +1885,30 @@
       let isUserInteracting = false;
       let resumeTimeout = null;
 
-      const items = Array.from(eventsList.children);
-      if (items.length > 0) {
-        // Clone all event items to create a continuous seamless loop
-        items.forEach(item => {
+      const originalItems = Array.from(eventsList.children);
+      if (originalItems.length > 0) {
+        // Clone all event items once for continuous seamless marquee loop
+        originalItems.forEach(item => {
           eventsList.appendChild(item.cloneNode(true));
         });
 
-        // Compute original items height accurately
-        let singleSetHeight = 0;
-        items.forEach(item => {
-          singleSetHeight += item.offsetHeight;
+        function calculateSetHeight() {
+          let totalHeight = 0;
+          originalItems.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            totalHeight += rect.height;
+          });
+          return totalHeight;
+        }
+
+        let singleSetHeight = calculateSetHeight();
+
+        // Recalculate accurately once all fonts & assets have settled
+        window.addEventListener('load', () => {
+          singleSetHeight = calculateSetHeight();
+        });
+        window.addEventListener('resize', () => {
+          singleSetHeight = calculateSetHeight();
         });
 
         eventsList.addEventListener('mouseenter', () => { isUserInteracting = true; });
@@ -1856,12 +1916,12 @@
         eventsList.addEventListener('touchstart', () => { isUserInteracting = true; }, { passive: true });
         eventsList.addEventListener('touchend', () => {
           clearTimeout(resumeTimeout);
-          resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1500);
+          resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1200);
         });
         eventsList.addEventListener('scroll', () => {
           if (isUserInteracting) {
             clearTimeout(resumeTimeout);
-            resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 2000);
+            resumeTimeout = setTimeout(() => { isUserInteracting = false; }, 1800);
           }
         });
 
@@ -1871,8 +1931,8 @@
           lastTime = currentTime;
 
           if (!isUserInteracting && singleSetHeight > 0) {
-            // Smoothly advance by ~28px per second
-            eventsList.scrollTop += (delta * 0.028);
+            // Smoothly advance by ~24px per second
+            eventsList.scrollTop += (delta * 0.024);
 
             // Once the first set has scrolled completely, seamlessly wrap back to 0
             if (eventsList.scrollTop >= singleSetHeight) {
