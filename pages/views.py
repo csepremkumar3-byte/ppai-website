@@ -8,6 +8,99 @@ from .models import (
     SocietyAward, JournalVolume, JournalArticle
 )
 
+RECENT_EVENTS = [
+    {
+        'day': '19',
+        'month': 'SEP',
+        'year': '2026',
+        'category': 'PPAI Collaborations',
+        'title': 'Joint Representation by leading plant protection Societies of India',
+        'doc_file': 'documents/events/joint_representation.pdf',
+        'doc_name': 'JOINT REPRESENTATION BY LEADING PLANT PROTECTION SOCIETIES OF INDIA.pdf',
+    },
+    {
+        'day': '04',
+        'month': 'AUG',
+        'year': '2026',
+        'category': 'PPAI Proposal',
+        'title': 'Prohibition of Paraquat Dichloride',
+        'doc_file': 'documents/events/paraquat_dichloride_submission.pdf',
+        'doc_name': 'Comprehensive Submission on the Proposed Prohibition of Paraquat Dichloride 24_ SL.pdf',
+    },
+    {
+        'day': '06',
+        'month': 'JUN',
+        'year': '2026',
+        'category': 'PPAI Proceedings',
+        'title': 'Enhancing Agricultural Contribution And GDP Growth',
+        'doc_file': 'documents/events/agricultural_contribution_gdp_growth.pdf',
+        'doc_name': 'Enhancing Agricultural Contribution and GDP Growth.pdf',
+    },
+    {
+        'day': '03',
+        'month': 'FEB',
+        'year': '2026',
+        'category': 'PPAI Comments',
+        'title': 'Pesticide Management Bill',
+        'doc_file': 'documents/events/pesticide_management_bill_comments.pdf',
+        'doc_name': 'Comments on the pesticide management bill.pdf',
+    },
+    {
+        'day': '23',
+        'month': 'DEC',
+        'year': '2025',
+        'category': 'PPAI Farmer Training',
+        'title': 'Problems and solutions on Mango farming',
+        'doc_file': 'documents/events/mango_training_programme.pdf',
+        'doc_name': 'Mango training programme PDF.pdf',
+    },
+    {
+        'day': '10',
+        'month': 'DEC',
+        'year': '2025',
+        'category': 'PPAI Comments',
+        'title': 'SGD Suggestions on the Seed Bill',
+        'doc_file': 'documents/events/sgd_suggestions_seed_bill.pdf',
+        'doc_name': 'SGD Suggestions on the Seed Bill.pdf',
+    },
+    {
+        'day': '25',
+        'month': 'JUL',
+        'year': '2025',
+        'category': 'PPAI Petition',
+        'title': 'Curbing the usage of counterfeit pesticides',
+        'doc_file': 'documents/events/spurious_pesticides_petition.pdf',
+        'doc_name': 'Petition to the Director of Agriculture Telangana on Spurious Pesticides.pdf',
+    },
+    {
+        'day': '17',
+        'month': 'APR',
+        'year': '2025',
+        'category': 'PPAI Seminars',
+        'title': 'A one-day seminar with Stakeholders on Seed Sovereignty',
+        'doc_file': 'documents/events/seminar_seed_sovereignty.pdf',
+        'doc_name': 'Proceedings and Recommendations of one day seminar on seed sovereignty.pdf',
+    },
+    {
+        'day': '23',
+        'month': 'MAY',
+        'year': '2023',
+        'category': 'PPAI Meeting',
+        'title': 'Seed Research Companies attended ICPHM',
+        'doc_file': 'documents/events/seed_industry_icphm_meeting.pdf',
+        'doc_name': 'Seed Industry participants on 23rd May Interactive session.pdf',
+    },
+    {
+        'day': '15',
+        'month': 'NOV',
+        'year': '2023',
+        'category': 'PPAI Guest Lecture',
+        'title': 'From a Remote Village to Global Science',
+        'doc_file': 'documents/events/guest_lecture_global_science.pdf',
+        'doc_name': 'PPAI Guest Lecture Poster',
+    },
+]
+
 def get_common_context():
     return {
         'site_settings': SiteSetting.objects.first(),
@@ -16,6 +109,7 @@ def get_common_context():
 def home(request):
     context = get_common_context()
     context['slides'] = CarouselSlide.objects.filter(is_active=True)
+    context['events'] = RECENT_EVENTS
     return render(request, 'pages/home.html', context)
 
 def about(request):
