@@ -1109,7 +1109,7 @@
     }
 
     /* ===================================================================
-       RESPONSIVE ADAPTATIONS: SMALL SCREEN TO LARGE SCREEN DESKTOP
+       RESPONSIVE ADAPTATIONS: SMALL SCREEN TO ULTRA-WIDE LARGE DESKTOP
     =================================================================== */
     @media (max-width: 1080px) {
       .viewport-fold {
@@ -1245,33 +1245,7 @@
     /* Large Screen Desktop Adaptations */
     @media (min-width: 1440px) {
       .container {
-        max-width: 1440px;
-      }
-
-      .hero-main-grid {
-        gap: 28px;
-      }
-
-      .hero-carousel-card {
-        flex: 0 0 auto;
-      }
-
-      .hero-carousel-container {
-        height: 320px;
-        aspect-ratio: 3 / 4;
-        width: auto;
-      }
-
-      .hero-events-card {
-        flex: 1 1 720px;
-        max-width: 760px;
-        height: 320px;
-      }
-    }
-
-    @media (min-width: 1920px) {
-      .container {
-        max-width: 1560px;
+        max-width: 1480px;
       }
 
       .hero-main-grid {
@@ -1283,15 +1257,41 @@
       }
 
       .hero-carousel-container {
-        height: 350px;
+        height: clamp(300px, 34vh, 370px);
         aspect-ratio: 3 / 4;
         width: auto;
       }
 
       .hero-events-card {
-        flex: 1 1 820px;
-        max-width: 860px;
-        height: 350px;
+        flex: 1 1 760px;
+        max-width: 820px;
+        height: clamp(300px, 34vh, 370px);
+      }
+    }
+
+    @media (min-width: 1920px) {
+      .container {
+        max-width: 1640px;
+      }
+
+      .hero-main-grid {
+        gap: 36px;
+      }
+
+      .hero-carousel-card {
+        flex: 0 0 auto;
+      }
+
+      .hero-carousel-container {
+        height: clamp(340px, 36vh, 410px);
+        aspect-ratio: 3 / 4;
+        width: auto;
+      }
+
+      .hero-events-card {
+        flex: 1 1 860px;
+        max-width: 940px;
+        height: clamp(340px, 36vh, 410px);
       }
     }
   </style>
@@ -1888,24 +1888,29 @@
 
       const originalItems = Array.from(eventsList.children);
       if (originalItems.length > 0) {
-        // Clone all event items once for continuous seamless marquee loop
+        // Clone original items twice to build a robust infinite buffer
+        originalItems.forEach(item => {
+          eventsList.appendChild(item.cloneNode(true));
+        });
         originalItems.forEach(item => {
           eventsList.appendChild(item.cloneNode(true));
         });
 
-        function getSingleSetHeight() {
-          return eventsList.scrollHeight / 2;
+        let scrollCycleHeight = 0;
+        function updateCycleHeight() {
+          if (eventsList.children.length > originalItems.length) {
+            const firstItem = eventsList.children[0];
+            const clonedFirstItem = eventsList.children[originalItems.length];
+            scrollCycleHeight = clonedFirstItem.offsetTop - firstItem.offsetTop;
+            if (scrollCycleHeight <= 0) {
+              scrollCycleHeight = eventsList.scrollHeight / 3;
+            }
+          }
         }
 
-        let singleSetHeight = getSingleSetHeight();
-
-        // Recalculate accurately once all fonts & assets have settled
-        window.addEventListener('load', () => {
-          singleSetHeight = getSingleSetHeight();
-        });
-        window.addEventListener('resize', () => {
-          singleSetHeight = getSingleSetHeight();
-        });
+        updateCycleHeight();
+        window.addEventListener('load', updateCycleHeight);
+        window.addEventListener('resize', updateCycleHeight);
 
         eventsList.addEventListener('mouseenter', () => { isUserInteracting = true; });
         eventsList.addEventListener('mouseleave', () => { isUserInteracting = false; });
@@ -1920,17 +1925,17 @@
           const delta = currentTime - lastTime;
           lastTime = currentTime;
 
-          if (!singleSetHeight || singleSetHeight <= 0) {
-            singleSetHeight = getSingleSetHeight();
+          if (scrollCycleHeight <= 0) {
+            updateCycleHeight();
           }
 
-          if (!isUserInteracting && singleSetHeight > 0) {
-            // Smooth advance ~22px/sec
-            eventsList.scrollTop += (delta * 0.022);
+          if (!isUserInteracting && scrollCycleHeight > 0) {
+            // Smooth advance ~24px/sec
+            eventsList.scrollTop += (delta * 0.024);
 
-            // Once the first set has scrolled completely, seamlessly wrap back
-            if (eventsList.scrollTop >= singleSetHeight) {
-              eventsList.scrollTop -= singleSetHeight;
+            // Once 1 complete cycle is reached, seamlessly wrap back into the buffer
+            if (eventsList.scrollTop >= scrollCycleHeight) {
+              eventsList.scrollTop -= scrollCycleHeight;
             }
           }
           requestAnimationFrame(autoScrollEvents);
