@@ -10,6 +10,15 @@ from .models import (
 
 RECENT_EVENTS = [
     {
+        'day': '16',
+        'month': 'OCT',
+        'year': '2026',
+        'category': 'PPAI Guest Lecture',
+        'title': 'From a Remote Village to Global Science: Plant Virus Discovery and Innovation',
+        'doc_file': 'documents/events/guest_lecture_poster.jpg',
+        'doc_name': 'PPAI Guest Lecture - Dr. Satyanarayana Tatineni.jpg',
+    },
+    {
         'day': '19',
         'month': 'SEP',
         'year': '2026',
@@ -89,15 +98,6 @@ RECENT_EVENTS = [
         'title': 'Seed Research Companies attended ICPHM',
         'doc_file': 'documents/events/seed_industry_icphm_meeting.pdf',
         'doc_name': 'Seed Industry participants on 23rd May Interactive session.pdf',
-    },
-    {
-        'day': '15',
-        'month': 'NOV',
-        'year': '2023',
-        'category': 'PPAI Guest Lecture',
-        'title': 'From a Remote Village to Global Science',
-        'doc_file': 'documents/events/guest_lecture_global_science.pdf',
-        'doc_name': 'PPAI Guest Lecture Poster',
     },
 ]
 
