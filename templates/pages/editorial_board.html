@@ -91,11 +91,12 @@
 
   .avatar-circle {
     width: clamp(100px, 7.5vw, 120px);
-    height: clamp(112px, 8.5vw, 134px);
+    height: clamp(100px, 7.5vw, 120px);
+    aspect-ratio: 1 / 1;
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 12px;
-    background: rgba(0, 178, 114, 0.06);
+    background: #ffffff;
     border: 2px solid var(--vibrant-green);
     display: flex;
     align-items: center;
@@ -114,7 +115,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center center;
     display: block;
   }
 
