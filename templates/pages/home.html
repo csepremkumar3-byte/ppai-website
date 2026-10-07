@@ -374,21 +374,27 @@
     }
 
     .hero-jubilee-wrapper {
-      margin-bottom: clamp(10px, 1.4vh, 16px);
+      margin-bottom: clamp(14px, 1.8vh, 22px);
       display: inline-flex;
       align-self: flex-start;
+      background: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 18px;
+      border: 1.5px solid rgba(217, 119, 6, 0.32);
+      box-shadow: 0 8px 24px rgba(217, 119, 6, 0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-jubilee-wrapper:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(217, 119, 6, 0.18);
     }
 
     .hero-jubilee-emblem {
-      height: clamp(65px, 8.5vh, 95px);
+      height: clamp(95px, 12vh, 135px);
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.08));
-      transition: transform 0.2s ease;
-    }
-
-    .hero-jubilee-emblem:hover {
-      transform: scale(1.03);
+      display: block;
     }
 
     .hero h1 {
