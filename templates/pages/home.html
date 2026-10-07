@@ -95,15 +95,13 @@
        RESPONSIVE FIRST FOLD WITH GRADIENT BACKGROUND
     =================================================================== */
     .viewport-fold {
-      height: 100vh;
-      height: 100dvh;
-      max-height: 100vh;
+      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       background: linear-gradient(180deg, #FFFFFF 0%, #E1F0E8 100%);
       position: relative;
-      overflow: hidden;
     }
 
     /* --- Clean Header (No Top Line Above Logo) --- */
@@ -350,14 +348,13 @@
        HERO SECTION: 2-COLUMN GRAND LAYOUT (3:4 CAROUSEL + EXPANSIVE EVENTS)
     =================================================================== */
     .viewport-fold .hero {
-      flex: 1 1 0;
+      flex: 1 1 auto;
       min-height: 0;
       display: flex;
-      align-items: stretch;
+      align-items: center;
       position: relative;
-      padding: clamp(4px, 0.8vh, 10px) 0;
+      padding: clamp(6px, 1vh, 14px) 0;
       background: transparent;
-      overflow: hidden;
     }
 
     .hero-container {
@@ -366,10 +363,7 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: clamp(6px, 1vh, 12px);
-      flex: 1 1 0;
-      min-height: 0;
+      gap: clamp(8px, 1.2vh, 16px);
     }
 
     /* --- Top Hero Header Row --- */
@@ -379,7 +373,6 @@
       justify-content: space-between;
       gap: clamp(16px, 2.5vw, 36px);
       width: 100%;
-      flex: 0 0 auto;
     }
 
     .hero-header-left {
@@ -396,10 +389,10 @@
       align-items: center;
       justify-content: center;
       background: #FFFFFF;
-      padding: clamp(4px, 0.6vh, 6px) clamp(16px, 1.6vw, 22px);
-      border-radius: 14px;
+      padding: 6px 20px;
+      border-radius: 15px;
       border: 2px solid rgba(217, 119, 6, 0.55);
-      box-shadow: 0 4px 18px rgba(217, 119, 6, 0.2);
+      box-shadow: 0 5px 20px rgba(217, 119, 6, 0.22);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       flex-shrink: 0;
       margin-bottom: 2px;
@@ -411,7 +404,7 @@
     }
 
     .hero-jubilee-emblem {
-      height: clamp(56px, 7.2vh, 82px);
+      height: clamp(60px, 7.5vh, 85px);
       width: auto;
       object-fit: contain;
       display: block;
@@ -420,19 +413,19 @@
     }
 
     .hero-main-title {
-      font-size: clamp(24px, 2.4vw, 36px);
+      font-size: clamp(26px, 2.5vw, 38px);
       font-weight: 800;
       color: var(--deep-forest);
       line-height: 1.15;
       letter-spacing: -0.03em;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .hero-main-subtitle {
-      font-size: clamp(13px, 0.92vw, 15.5px);
+      font-size: clamp(13.5px, 0.95vw, 16px);
       color: var(--text-muted);
-      line-height: 1.52;
-      max-width: 920px;
+      line-height: 1.56;
+      max-width: 940px;
       text-align: justify;
       text-justify: inter-word;
     }
@@ -538,13 +531,12 @@
 
     /* --- Left-Aligned 2-Column Main Grid (Left: 3:4 Carousel, Right: Compact Balanced Events Card) --- */
     .hero-main-grid {
+      --hero-panel-h: clamp(340px, 39vh, 420px);
       display: flex;
       align-items: stretch;
       justify-content: flex-start;
-      gap: clamp(16px, 2vw, 28px);
+      gap: clamp(20px, 2.2vw, 32px);
       width: 100%;
-      min-height: 0;
-      flex: 1 1 0;
     }
 
     /* Left Column: Strict 3:4 Hero Carousel Card (Left-Aligned) */
@@ -553,8 +545,6 @@
       display: flex;
       justify-content: flex-start;
       align-items: stretch;
-      height: 100%;
-      min-height: 0;
     }
 
     .hero-carousel-container {
@@ -562,8 +552,7 @@
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(11, 36, 23, 0.1);
       background: #0B2417;
-      height: 100%;
-      max-height: 100%;
+      height: var(--hero-panel-h);
       aspect-ratio: 3 / 4;
       width: auto;
       position: relative;
@@ -641,15 +630,14 @@
       background: #FFFFFF;
       border: 1.5px solid rgba(11, 36, 23, 0.09);
       border-radius: 18px;
-      padding: clamp(10px, 1.4vh, 16px) 18px clamp(6px, 0.8vh, 8px) 20px;
+      padding: 16px 18px 8px 20px;
       box-shadow: 0 10px 30px rgba(11, 36, 23, 0.06);
       display: flex;
       flex-direction: column;
-      height: 100%;
-      max-height: 100%;
-      flex: 0 0 clamp(440px, 34vw, 580px);
-      width: clamp(440px, 34vw, 580px);
-      max-width: 580px;
+      height: var(--hero-panel-h);
+      flex: 0 0 clamp(460px, 34vw, 600px);
+      width: clamp(460px, 34vw, 600px);
+      max-width: 600px;
       min-width: 0;
       box-sizing: border-box;
       position: relative;
@@ -705,7 +693,7 @@
       transform: translateX(3px);
     }
 
-    /* Scrolling viewport: soft fade top & bottom so rows never "hit" the card edge */
+    /* Scrolling viewport: soft fade only at bottom so top rows are 100% crisp */
     .events-list {
       display: flex;
       flex-direction: column;
@@ -716,8 +704,8 @@
       padding: 2px 4px 0 0;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10px, #000 calc(100% - 34px), transparent 100%);
-      mask-image: linear-gradient(to bottom, transparent 0, #000 10px, #000 calc(100% - 34px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 24px), transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 24px), transparent 100%);
     }
 
     .events-list::-webkit-scrollbar {
