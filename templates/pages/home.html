@@ -347,133 +347,96 @@
     /* --- Hero Section with 3 Columns --- */
     .viewport-fold .hero {
       flex: 1 1 auto;
-    /* --- Hero Section (New 2-Tier Layout with Existing Theme Colors) --- */
-    .hero {
+      min-height: 0;
+      display: flex;
+      align-items: center;
       position: relative;
-      padding: clamp(14px, 2.2vh, 26px) 0 clamp(18px, 2.8vh, 30px);
+      padding: clamp(14px, 2vh, 24px) 0;
       background: transparent;
-      width: 100%;
     }
 
-    .hero-container-layout {
-      max-width: 1340px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(18px, 2.4vh, 28px);
-    }
-
-    /* Top Row: Left Intro + Right Search */
-    .hero-top-row {
+    .hero-inner {
       display: grid;
-      grid-template-columns: 1.18fr 0.82fr;
-      gap: clamp(20px, 3vw, 42px);
-      align-items: flex-end;
+      grid-template-columns: clamp(230px, 20vw, 290px) 1fr clamp(270px, 24vw, 335px);
+      gap: clamp(16px, 2vw, 32px);
+      align-items: center;
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
     }
 
-    .hero-intro-col {
+    .hero-content {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .hero-jubilee-badge-row {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .hero-mini-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: #FFFFFF;
-      border: 1.5px solid rgba(217, 119, 6, 0.35);
-      padding: 3px 12px 3px 7px;
-      border-radius: 20px;
-      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.1);
-    }
-
-    .mini-badge-num {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #D97706;
-      background: rgba(217, 119, 6, 0.12);
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      line-height: 1;
+      padding: 0 clamp(4px, 1vw, 16px);
+      text-align: left;
     }
 
-    .mini-badge-text {
-      font-size: 11px;
-      font-weight: 700;
-      color: #92400E;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    .hero-jubilee-wrapper {
+      margin-bottom: clamp(14px, 1.8vh, 22px);
+      display: inline-flex;
+      align-self: flex-start;
+      background: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 18px;
+      border: 1.5px solid rgba(217, 119, 6, 0.32);
+      box-shadow: 0 8px 24px rgba(217, 119, 6, 0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .hero-badge-years {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--text-muted);
-      letter-spacing: 0.02em;
+    .hero-jubilee-wrapper:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(217, 119, 6, 0.18);
     }
 
-    .hero-main-title {
-      font-size: clamp(23px, 2.5vw, 36px);
+    .hero-jubilee-emblem {
+      height: clamp(95px, 12vh, 135px);
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .hero h1 {
+      font-size: clamp(22px, 2.2vw, 36px);
       font-weight: 800;
       color: var(--deep-forest);
       line-height: 1.18;
       letter-spacing: -0.03em;
-      margin: 4px 0 8px 0;
+      margin-bottom: clamp(6px, 1vh, 12px);
     }
 
-    .hero-main-desc {
-      font-size: clamp(13px, 0.94vw, 14.5px);
+    .hero p {
+      font-size: clamp(13px, 0.95vw, 14.5px);
       color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 640px;
-      margin: 0;
+      margin-bottom: clamp(12px, 1.8vh, 18px);
+      line-height: 1.65;
+      max-width: 600px;
       text-align: justify;
       text-justify: inter-word;
     }
 
-    /* Right Search & Quick Tags */
-    .hero-search-col {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      width: 100%;
-    }
-
-    .hero-search-bar {
+    .hero-search {
       display: flex;
       background: #FFFFFF;
       border: 2px solid var(--border-color);
       border-radius: var(--radius-pill);
       padding: 4px;
-      width: 100%;
       max-width: 460px;
-      box-shadow: 0 4px 16px rgba(11, 36, 23, 0.06);
+      box-shadow: var(--shadow-soft);
       transition: var(--transition);
     }
 
-    .hero-search-bar:focus-within {
+    .hero-search:focus-within {
       border-color: var(--vibrant-green);
       box-shadow: 0 0 0 3px rgba(0, 178, 114, 0.15);
     }
 
-    .hero-search-bar input {
+    .hero-search input {
       flex: 1;
       border: none;
       background: none;
-      padding: 0 16px;
+      padding: 0 14px;
       font-size: clamp(12.5px, 0.9vw, 14px);
       font-family: inherit;
       outline: none;
@@ -481,357 +444,209 @@
       min-width: 0;
     }
 
-    .btn-search-main {
-      padding: 9px 24px;
+    .btn-search {
+      padding: 8px 22px;
       border-radius: 100px;
       border: none;
       background: var(--vibrant-green);
-      color: #FFFFFF;
+      color: #FFF;
       font-weight: 700;
       font-size: clamp(12.5px, 0.9vw, 13.5px);
       cursor: pointer;
       transition: var(--transition);
-      box-shadow: 0 3px 10px rgba(0, 178, 114, 0.25);
     }
 
-    .btn-search-main:hover {
+    .btn-search:hover {
       background: var(--vibrant-green-hover);
-      transform: translateY(-1px);
     }
 
-    .hero-quick-tags {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      max-width: 460px;
-      width: 100%;
-    }
-
-    .quick-tag-pill {
-      padding: 5px 14px;
-      background: rgba(11, 36, 23, 0.05);
-      border: 1px solid rgba(11, 36, 23, 0.1);
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--deep-forest);
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .quick-tag-pill:hover {
-      background: var(--vibrant-green);
-      color: #FFFFFF;
-      border-color: var(--vibrant-green);
-      transform: translateY(-1px);
-    }
-
-    /* 2 Big Cards Grid */
-    .hero-cards-grid {
-      display: grid;
-      grid-template-columns: minmax(320px, 1fr) minmax(360px, 1.15fr);
-      gap: clamp(18px, 2.2vw, 30px);
-      align-items: stretch;
-      width: 100%;
-    }
-
-    /* Left Card: 3:4 Dynamic Carousel */
-    .hero-carousel-card {
-      background: #FFFFFF;
-      border-radius: 22px;
+    /* Dynamic Scaling Carousel with 3:4 Ratio */
+    .hero-carousel-container {
+      border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: 0 14px 34px rgba(11, 36, 23, 0.1);
-      border: 1px solid var(--border-color);
-      position: relative;
+      box-shadow: 0 14px 34px rgba(11, 36, 23, 0.12);
+      background: #FFFFFF;
       aspect-ratio: 3 / 4;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      max-height: 480px;
-      min-height: 380px;
-    }
-
-    .hero-carousel-card .carousel-track {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
-      height: 100%;
-      display: flex;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .hero-carousel-card .carousel-slide {
-      min-width: 100%;
-      height: 100%;
+      max-width: clamp(230px, 20vw, 290px);
+      height: auto;
+      margin: 0 auto;
       position: relative;
     }
 
-    .hero-carousel-card .carousel-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .slide-caption-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 40px 18px 50px 18px;
-      background: linear-gradient(to top, rgba(7, 30, 19, 0.88) 0%, rgba(7, 30, 19, 0.45) 60%, transparent 100%);
-      color: #FFFFFF;
-      pointer-events: none;
-    }
-
-    .slide-caption-title {
-      font-size: clamp(14px, 1.1vw, 16px);
-      font-weight: 700;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      line-height: 1.35;
-    }
-
-    .carousel-bottom-bar {
-      position: absolute;
-      bottom: 12px;
-      left: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 14px;
-      z-index: 10;
-    }
-
-    .carousel-nav-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: #FFFFFF;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .carousel-nav-btn:hover {
-      background: var(--vibrant-green);
-      border-color: var(--vibrant-green);
-      transform: scale(1.1);
-    }
-
-    .hero-carousel-card .carousel-dots {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .hero-carousel-card .carousel-dots .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.5);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .hero-carousel-card .carousel-dots .dot.active {
-      width: 20px;
-      border-radius: 10px;
-      background: var(--accent-gold);
-    }
-
-    /* Right Card: Bigger Upcoming Events Card */
-    .hero-events-card-big {
+    /* --- Events Widget Card in Hero --- */
+    .hero-events-card {
       background: #FFFFFF;
       border: 1px solid var(--border-color);
-      border-radius: 22px;
-      padding: clamp(18px, 2.2vh, 24px) clamp(18px, 2vw, 26px);
-      box-shadow: 0 14px 34px rgba(11, 36, 23, 0.08);
+      border-radius: 18px;
+      padding: clamp(14px, 1.8vh, 18px) clamp(14px, 1.4vw, 18px);
+      box-shadow: 0 10px 28px rgba(11, 36, 23, 0.07);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      max-height: 480px;
-      min-height: 380px;
+      height: 100%;
+      max-height: 420px;
       box-sizing: border-box;
       position: relative;
     }
 
-    .events-card-header {
-      margin-bottom: 12px;
-    }
-
-    .events-card-title {
-      font-size: clamp(20px, 1.5vw, 24px);
+    .hero-events-card h3 {
+      font-size: clamp(16px, 1.15vw, 18px);
       font-weight: 800;
       color: var(--deep-forest);
-      letter-spacing: -0.02em;
-      margin: 0;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
     }
 
-    .events-list-big {
+    .events-list {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 0;
       overflow-y: auto;
-      max-height: 340px;
-      padding-right: 6px;
+      max-height: 310px;
+      padding-right: 4px;
     }
 
-    .events-list-big::-webkit-scrollbar {
-      width: 5px;
+    .events-list::-webkit-scrollbar {
+      width: 4px;
     }
-    .events-list-big::-webkit-scrollbar-thumb {
-      background: rgba(0, 178, 114, 0.35);
-      border-radius: 6px;
+    .events-list::-webkit-scrollbar-thumb {
+      background: rgba(0, 178, 114, 0.3);
+      border-radius: 4px;
     }
 
-    .event-item-big {
+    .event-item {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 10px 10px;
+      gap: 10px;
+      padding: 8px 4px;
       border-bottom: 1px solid rgba(11, 36, 23, 0.06);
-      border-radius: 12px;
+      border-radius: 6px;
       text-decoration: none;
       transition: all 0.2s ease;
       cursor: pointer;
     }
 
-    .event-item-big:last-child {
+    .event-item:last-child {
       border-bottom: none;
     }
 
-    .event-item-big:hover {
+    .event-item:hover {
       background: rgba(0, 178, 114, 0.06);
-      transform: translateX(3px);
+      transform: translateX(2px);
     }
 
-    .event-badge-big {
-      width: 52px;
-      height: 54px;
+    .event-date-badge {
+      width: 42px;
+      height: 44px;
       background: var(--vibrant-green);
       color: #FFFFFF;
-      border-radius: 12px;
+      border-radius: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(0, 178, 114, 0.25);
+      box-shadow: 0 3px 8px rgba(0, 178, 114, 0.22);
     }
 
-    .event-day-big {
-      font-size: 17px;
+    .event-date-badge .event-day {
+      font-size: 14px;
       font-weight: 800;
       line-height: 1;
     }
 
-    .event-month-big {
-      font-size: 10.5px;
+    .event-date-badge .event-month {
+      font-size: 9px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      opacity: 0.95;
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
-    .event-info-big {
+    .event-info {
       flex: 1;
       min-width: 0;
     }
 
-    .event-title-big {
-      font-size: clamp(13.5px, 0.98vw, 15px);
+    .event-title {
+      font-size: clamp(11.5px, 0.84vw, 12.5px);
       font-weight: 700;
       color: var(--deep-forest);
       line-height: 1.35;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .event-meta-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .event-cat-pill {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--vibrant-green);
-      background: rgba(0, 178, 114, 0.1);
-      padding: 2px 8px;
-      border-radius: 12px;
-    }
-
-    .event-year-text {
-      font-size: 11.5px;
+    .event-venue {
+      font-size: clamp(10px, 0.75vw, 11px);
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .events-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 10px;
-      border-top: 1px solid rgba(11, 36, 23, 0.08);
-      margin-top: 6px;
-    }
-
-    .view-all-link-big {
-      font-size: 13.5px;
+    .view-all-events-link {
+      margin-top: 8px;
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--vibrant-green);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: gap 0.2s ease;
-    }
-
-    .view-all-link-big:hover {
-      color: var(--vibrant-green-hover);
-      gap: 9px;
-    }
-
-    .events-nav-buttons {
-      display: flex;
-      gap: 6px;
-    }
-
-    .event-arrow-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid rgba(11, 36, 23, 0.15);
-      background: #FFFFFF;
-      color: var(--deep-forest);
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      gap: 4px;
       transition: all 0.2s ease;
     }
 
-    .event-arrow-btn:hover {
-      background: var(--vibrant-green);
-      color: #FFFFFF;
-      border-color: var(--vibrant-green);
+    .view-all-events-link:hover {
+      color: var(--vibrant-green-hover);
+      padding-left: 3px;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFFFFF;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .dot.active {
@@ -1104,27 +919,38 @@
         overflow: visible;
       }
 
-      .hero-top-row {
+      .hero-inner {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 28px;
+        padding-top: 16px;
+        padding-bottom: 24px;
+        text-align: center;
       }
 
-      .hero-search-col {
-        align-items: flex-start;
+      .hero-content {
+        padding-left: 0;
+        align-items: center;
       }
 
-      .hero-quick-tags {
-        justify-content: flex-start;
+      .hero-badge,
+      .hero-badge-card,
+      .hero-jubilee-wrapper {
+        align-self: center;
       }
 
-      .hero-cards-grid {
-        grid-template-columns: 1fr;
-        gap: 22px;
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      .hero-carousel-card {
-        max-height: 420px;
-        min-height: 320px;
+      .hero-search {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-carousel-container {
+        max-width: 250px;
+        margin: 0 auto;
       }
 
       .f-pattern-grid {
@@ -1146,41 +972,12 @@
     }
 
     @media (max-width: 768px) {
-      .hero-main-title {
-        font-size: 22px;
-      }
-
-      .hero-carousel-card {
-        aspect-ratio: 4 / 3;
-        max-height: 300px;
-        min-height: 240px;
-      }
-
-      .hero-events-card-big {
-        max-height: 440px;
-        padding: 16px 14px;
-      }
-
-      .event-item-big {
-        padding: 8px 6px;
-        gap: 10px;
-      }
-
-      .event-badge-big {
-        width: 44px;
-        height: 46px;
-      }
-
-      .event-day-big {
-        font-size: 15px;
-      }
-
-      .event-month-big {
-        font-size: 9.5px;
-      }
-
       .f-pattern-grid {
         grid-template-columns: 1fr;
+      }
+
+      .hero-carousel-container {
+        max-width: 220px;
       }
 
       .impact-inner {
@@ -1348,163 +1145,101 @@
 
     </header>
 
-    <!-- Hero Section with New 2-Tier Layout -->
+    <!-- Hero Section with 3 Columns (Carousel, Journal Info, Events) -->
     <section class="hero">
-      <div class="container hero-container-layout">
+      <div class="container hero-inner">
 
-        <!-- Top Header: Left Title & Description, Right Search & Quick Tags -->
-        <div class="hero-top-row">
-          <div class="hero-intro-col">
-            <div class="hero-jubilee-badge-row">
-              <div class="hero-mini-badge">
-                <span class="mini-badge-num">50</span>
-                <span class="mini-badge-text">Golden Jubilee</span>
+        <!-- Column 1 (Left): Auto Carousel -->
+        <div class="hero-carousel-container">
+          <div class="carousel-track" id="carouselTrack">
+            {% if slides %}
+              {% for slide in slides %}
+                <div class="carousel-slide">
+                  <img src="{{ slide.image.url }}" alt="{{ slide.title|default:"Indian Journal Cover" }}">
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="carousel-slide">
+                <img src="{% static 'images/journal_cover.png' %}" alt="Indian Journal of Plant Protection Cover Vol 54 No 1">
               </div>
-              <span class="hero-badge-years">1972 – 2022</span>
-            </div>
-            <h1 class="hero-main-title">Fifty years of protecting Indian crops</h1>
-            <p class="hero-main-desc">From entomology and pathology to nematology, weed science, biosecurity and pesticide chemistry, PPAI brings India's plant protection community together.</p>
+              <div class="carousel-slide">
+                <img src="{% static 'images/golden_jubilee_banner.png' %}" alt="PPAI Golden Jubilee 1972 - 2022 Celebrating 50 Years">
+              </div>
+              <div class="carousel-slide">
+                <img src="{% static 'images/slide1.jpg' %}" alt="Moth on Leaf">
+              </div>
+              <div class="carousel-slide">
+                <img src="{% static 'images/slide2.jpg' %}" alt="Ladybug on Plant">
+              </div>
+              <div class="carousel-slide">
+                <img src="{% static 'images/slide3.jpg' %}" alt="Plant Disease Spot">
+              </div>
+              <div class="carousel-slide">
+                <img src="{% static 'images/slide4.jpg' %}" alt="Hands Holding Seedling">
+              </div>
+            {% endif %}
           </div>
-
-          <div class="hero-search-col">
-            <form class="hero-search-bar" action="{% url 'search' %}" method="get">
-              <input type="text" name="q" placeholder="Search journals, members, awards..." required>
-              <button type="submit" class="btn-search-main">Search</button>
-            </form>
-            <div class="hero-quick-tags">
-              <a href="{% url 'journal_current' %}" class="quick-tag-pill">Journal</a>
-              <a href="{% url 'membership_directory' %}" class="quick-tag-pill">Members</a>
-              <a href="{% url 'awards' %}" class="quick-tag-pill">Awards</a>
-              <a href="{% url 'conferences' %}" class="quick-tag-pill">Events</a>
-            </div>
+          <div class="carousel-dots" id="carouselDots">
+            {% if slides %}
+              {% for slide in slides %}
+                <span class="dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></span>
+              {% endfor %}
+            {% else %}
+              <span class="dot active" data-slide="0"></span>
+              <span class="dot" data-slide="1"></span>
+              <span class="dot" data-slide="2"></span>
+              <span class="dot" data-slide="3"></span>
+              <span class="dot" data-slide="4"></span>
+              <span class="dot" data-slide="5"></span>
+            {% endif %}
           </div>
         </div>
 
-        <!-- Main Grid: 2 Big Cards (Dynamic 3:4 Carousel on Left, Bigger Upcoming Events Card on Right) -->
-        <div class="hero-cards-grid">
-
-          <!-- Left Card: Dynamic Carousel (3:4 Ratio) -->
-          <div class="hero-carousel-card">
-            <div class="carousel-track" id="carouselTrack">
-              {% if slides %}
-                {% for slide in slides %}
-                  <div class="carousel-slide">
-                    <img src="{{ slide.image.url }}" alt="{{ slide.title|default:"Indian Journal Cover" }}">
-                    <div class="slide-caption-overlay">
-                      <div class="slide-caption-title">{{ slide.title|default:"Indian Journal of Plant Protection" }}</div>
-                    </div>
-                  </div>
-                {% endfor %}
-              {% else %}
-                <div class="carousel-slide">
-                  <img src="{% static 'images/journal_cover.png' %}" alt="Indian Journal of Plant Protection Cover Vol 54 No 1">
-                  <div class="slide-caption-overlay">
-                    <div class="slide-caption-title">Indian Journal of Plant Protection Vol 54</div>
-                  </div>
-                </div>
-                <div class="carousel-slide">
-                  <img src="{% static 'images/golden_jubilee_banner.png' %}" alt="PPAI Golden Jubilee 1972 - 2022 Celebrating 50 Years">
-                  <div class="slide-caption-overlay">
-                    <div class="slide-caption-title">PPAI Golden Jubilee (1972–2022)</div>
-                  </div>
-                </div>
-                <div class="carousel-slide">
-                  <img src="{% static 'images/slide1.jpg' %}" alt="Moth on Leaf">
-                  <div class="slide-caption-overlay">
-                    <div class="slide-caption-title">Agricultural Entomology Research</div>
-                  </div>
-                </div>
-                <div class="carousel-slide">
-                  <img src="{% static 'images/slide2.jpg' %}" alt="Ladybug on Plant">
-                  <div class="slide-caption-overlay">
-                    <div class="slide-caption-title">Biological Control &amp; IPM</div>
-                  </div>
-                </div>
-                <div class="carousel-slide">
-                  <img src="{% static 'images/slide3.jpg' %}" alt="Plant Disease Spot">
-                  <div class="slide-caption-overlay">
-                    <div class="slide-caption-title">Plant Pathology Field Scouting</div>
-                  </div>
-                </div>
-                <div class="carousel-slide">
-                  <img src="{% static 'images/slide4.jpg' %}" alt="Hands Holding Seedling">
-                  <div class="slide-caption-overlay">
-                    <div class="slide-caption-title">Sustainable Crop Protection</div>
-                  </div>
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="carousel-bottom-bar">
-              <button class="carousel-nav-btn" id="carouselPrev" aria-label="Previous Slide">&larr;</button>
-              <div class="carousel-dots" id="carouselDots">
-                {% if slides %}
-                  {% for slide in slides %}
-                    <span class="dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></span>
-                  {% endfor %}
-                {% else %}
-                  <span class="dot active" data-slide="0"></span>
-                  <span class="dot" data-slide="1"></span>
-                  <span class="dot" data-slide="2"></span>
-                  <span class="dot" data-slide="3"></span>
-                  <span class="dot" data-slide="4"></span>
-                  <span class="dot" data-slide="5"></span>
-                {% endif %}
-              </div>
-              <button class="carousel-nav-btn" id="carouselNext" aria-label="Next Slide">&rarr;</button>
-            </div>
+        <!-- Column 2 (Center): Society Info & Search -->
+        <div class="hero-content">
+          <div class="hero-jubilee-wrapper">
+            <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261007_1" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
           </div>
+          <p>PPAI celebrated its landmark Golden Jubilee (1972–2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.</p>
 
-          <!-- Right Card: Bigger Upcoming Events Card -->
-          <div class="hero-events-card-big">
-            <div class="events-card-header">
-              <h2 class="events-card-title">Upcoming events</h2>
-            </div>
+          <form class="hero-search" action="{% url 'search' %}" method="get">
+            <input type="text" name="q" placeholder="Search journals, members..." required>
+            <button type="submit" class="btn-search">Search</button>
+          </form>
+        </div>
 
-            <div class="events-list-big" id="eventsListBig">
-              {% for ev in events %}
-                <a href="{% if ev.doc_file %}{% static ev.doc_file %}{% else %}#{% endif %}" class="event-item-big" target="_blank" rel="noopener noreferrer" onclick="handleEventDocClick(event, '{{ ev.title|escapejs }}', '{% if ev.doc_file %}{% static ev.doc_file %}{% endif %}')">
-                  <div class="event-badge-big">
-                    <span class="event-day-big">{{ ev.day }}</span>
-                    <span class="event-month-big">{{ ev.month }}</span>
-                  </div>
-                  <div class="event-info-big">
-                    <div class="event-title-big">{{ ev.title }}</div>
-                    <div class="event-meta-row">
-                      <span class="event-cat-pill">{{ ev.category }}</span>
-                      <span class="event-year-text">{{ ev.year }}</span>
-                    </div>
-                  </div>
-                </a>
-              {% empty %}
-                <div class="event-item-big">
-                  <div class="event-badge-big">
-                    <span class="event-day-big">16</span>
-                    <span class="event-month-big">OCT</span>
-                  </div>
-                  <div class="event-info-big">
-                    <div class="event-title-big">From a Remote Village to Global Science</div>
-                    <div class="event-meta-row">
-                      <span class="event-cat-pill">PPAI Guest Lecture</span>
-                      <span class="event-year-text">2026</span>
-                    </div>
-                  </div>
+        <!-- Column 3 (Right): Events Widget Card -->
+        <div class="hero-events-card">
+          <h3>Events</h3>
+          <div class="events-list">
+            {% for ev in events %}
+              <a href="{% if ev.doc_file %}{% static ev.doc_file %}{% else %}#{% endif %}" class="event-item" target="_blank" rel="noopener noreferrer" onclick="handleEventDocClick(event, '{{ ev.title|escapejs }}', '{% if ev.doc_file %}{% static ev.doc_file %}{% endif %}')">
+                <div class="event-date-badge">
+                  <span class="event-day">{{ ev.day }}</span>
+                  <span class="event-month">{{ ev.month }}</span>
                 </div>
-              {% endfor %}
-            </div>
-
-            <div class="events-card-footer">
-              <a href="{% url 'conferences' %}" class="view-all-link-big">
-                <span>View all events</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <div class="event-info">
+                  <div class="event-title">{{ ev.title }}</div>
+                  <div class="event-venue">{{ ev.category }} · {{ ev.year }}</div>
+                </div>
               </a>
-              <div class="events-nav-buttons">
-                <button class="event-arrow-btn" id="eventsPrevBtn" aria-label="Scroll Events Up">&larr;</button>
-                <button class="event-arrow-btn" id="eventsNextBtn" aria-label="Scroll Events Down">&rarr;</button>
+            {% empty %}
+              <div class="event-item">
+                <div class="event-date-badge">
+                  <span class="event-day">15</span>
+                  <span class="event-month">NOV</span>
+                </div>
+                <div class="event-info">
+                  <div class="event-title">ICPHM 2023 International Conference</div>
+                  <div class="event-venue">PJTSAU, Hyderabad</div>
+                </div>
               </div>
-            </div>
+            {% endfor %}
           </div>
-
+          <a href="{% url 'conferences' %}" class="view-all-events-link">
+            <span>View all events</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
         </div>
 
       </div>
@@ -1676,58 +1411,32 @@
       }
     });
 
-    // Dynamic Carousel Controller
     const track = document.getElementById('carouselTrack');
-    const slides = track ? Array.from(track.children) : [];
+    const slides = Array.from(track.children);
     const dots = Array.from(document.querySelectorAll('.dot'));
-    const prevBtn = document.getElementById('carouselPrev');
-    const nextBtn = document.getElementById('carouselNext');
     let currentIndex = 0;
-    let carouselTimer = null;
 
     function updateCarousel(index) {
-      if (!track || slides.length === 0) return;
+      if (slides.length === 0) return;
       track.style.transform = `translateX(-${index * 100}%)`;
       dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === index);
       });
     }
 
-    function nextSlide() {
-      if (slides.length <= 1) return;
-      currentIndex = (currentIndex + 1) % slides.length;
-      updateCarousel(currentIndex);
-    }
-
-    function prevSlide() {
-      if (slides.length <= 1) return;
-      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-      updateCarousel(currentIndex);
-    }
-
-    if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetTimer(); });
-    if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetTimer(); });
-
     dots.forEach((dot, index) => {
       dot.addEventListener('click', () => {
         currentIndex = index;
         updateCarousel(currentIndex);
-        resetTimer();
       });
     });
 
-    function startTimer() {
-      if (slides.length > 1) {
-        carouselTimer = setInterval(nextSlide, 4500);
-      }
+    if (slides.length > 1) {
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateCarousel(currentIndex);
+      }, 4000);
     }
-
-    function resetTimer() {
-      if (carouselTimer) clearInterval(carouselTimer);
-      startTimer();
-    }
-
-    startTimer();
 
     // Custom Newsletter Subscription Handler for Home (No browser popup tooltips)
     let homeNewsletterFeedbackTimer;
@@ -1810,23 +1519,9 @@
       }
     }
 
-    // Automatic smooth scrolling and navigation buttons for Events list widget
-    const eventsList = document.getElementById('eventsListBig') || document.querySelector('.events-list-big') || document.querySelector('.events-list');
-    const eventsPrevBtn = document.getElementById('eventsPrevBtn');
-    const eventsNextBtn = document.getElementById('eventsNextBtn');
-
+    // Automatic smooth scrolling for Events list widget
+    const eventsList = document.querySelector('.events-list');
     if (eventsList) {
-      if (eventsPrevBtn) {
-        eventsPrevBtn.addEventListener('click', () => {
-          eventsList.scrollBy({ top: -140, behavior: 'smooth' });
-        });
-      }
-      if (eventsNextBtn) {
-        eventsNextBtn.addEventListener('click', () => {
-          eventsList.scrollBy({ top: 140, behavior: 'smooth' });
-        });
-      }
-
       let isUserInteracting = false;
       eventsList.addEventListener('mouseenter', () => { isUserInteracting = true; });
       eventsList.addEventListener('mouseleave', () => { isUserInteracting = false; });
