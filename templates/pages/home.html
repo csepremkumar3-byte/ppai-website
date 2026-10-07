@@ -386,24 +386,25 @@
       align-items: center;
       justify-content: center;
       background: #FFFFFF;
-      padding: 6px 14px;
-      border-radius: 16px;
-      border: 1.5px solid rgba(217, 119, 6, 0.32);
-      box-shadow: 0 6px 20px rgba(217, 119, 6, 0.12);
+      padding: 8px 16px;
+      border-radius: 18px;
+      border: 1.5px solid rgba(217, 119, 6, 0.35);
+      box-shadow: 0 8px 24px rgba(217, 119, 6, 0.14);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       flex-shrink: 0;
     }
 
     .hero-jubilee-wrapper:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 26px rgba(217, 119, 6, 0.18);
+      box-shadow: 0 12px 32px rgba(217, 119, 6, 0.22);
     }
 
     .hero-jubilee-emblem {
-      height: clamp(60px, 7.8vh, 82px);
+      height: clamp(85px, 10.5vh, 125px);
       width: auto;
       object-fit: contain;
       display: block;
+      image-rendering: -webkit-optimize-contrast;
     }
 
     .hero-header-text {
@@ -412,19 +413,21 @@
     }
 
     .hero-main-title {
-      font-size: clamp(20px, 1.85vw, 27px);
+      font-size: clamp(20px, 1.85vw, 28px);
       font-weight: 800;
       color: var(--deep-forest);
       line-height: 1.2;
       letter-spacing: -0.025em;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .hero-main-subtitle {
-      font-size: clamp(12px, 0.88vw, 13.5px);
+      font-size: clamp(12px, 0.86vw, 13.5px);
       color: var(--text-muted);
-      line-height: 1.55;
-      max-width: 640px;
+      line-height: 1.6;
+      max-width: 680px;
+      text-align: justify;
+      text-justify: inter-word;
     }
 
     .hero-header-right {
@@ -1373,11 +1376,11 @@
         <div class="hero-header-row">
           <div class="hero-header-left">
             <div class="hero-jubilee-wrapper">
-              <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261007_2" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
+              <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261007_3" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
             </div>
             <div class="hero-header-text">
               <h1 class="hero-main-title">Fifty years of protecting Indian crops</h1>
-              <p class="hero-main-subtitle">From entomology and pathology to nematology, weed science, biosecurity and pesticide chemistry, PPAI brings India's plant protection community together.</p>
+              <p class="hero-main-subtitle">PPAI celebrated its landmark Golden Jubilee (1972–2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.</p>
             </div>
           </div>
 
@@ -1388,7 +1391,6 @@
               <button type="submit" class="btn-search">Search</button>
             </form>
             <div class="hero-quick-pills">
-              <span class="quick-pills-label">Quick Links:</span>
               <a href="{% url 'journal_current' %}" class="quick-pill">Journal</a>
               <a href="{% url 'membership_info' %}" class="quick-pill">Members</a>
               <a href="{% url 'awards' %}" class="quick-pill">Awards</a>
@@ -1528,17 +1530,11 @@
                 </div>
               {% endfor %}
             </div>
-
-            <div class="events-card-footer">
-              <span>Scrolls automatically · Click to view details</span>
-              <span>Updated 2026</span>
-            </div>
           </div>
 
         </div><!-- /.hero-main-grid -->
 
       </div><!-- /.hero-container -->
-    </section>
     </section>
 
     <!-- Stats Section (NO Vertical Divider Lines, Soft Glass Backdrop) -->
