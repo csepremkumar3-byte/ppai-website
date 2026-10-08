@@ -399,12 +399,13 @@
     }
 
     .hero-jubilee-emblem {
-      height: clamp(90px, 10vh, 130px);
+      height: clamp(120px, 14vh, 180px);
       width: auto;
       object-fit: contain;
       display: block;
       image-rendering: -webkit-optimize-contrast;
-      filter: drop-shadow(0 10px 24px rgba(217, 119, 6, 0.5));
+      filter: drop-shadow(0 14px 32px rgba(217, 119, 6, 0.8)) drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+      transform: scale(1.08);
     }
 
     .hero-main-title {
@@ -565,8 +566,7 @@
       box-shadow: 0 10px 30px rgba(11, 36, 23, 0.1);
       background: #0B2417;
       width: 100%;
-      height: auto;
-      aspect-ratio: 3 / 4;
+      height: clamp(380px, 50vh, 480px);
       position: relative;
       border: 1px solid rgba(11, 36, 23, 0.1);
     }
@@ -651,8 +651,7 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      height: auto;
-      aspect-ratio: 3 / 4;
+      height: clamp(380px, 50vh, 480px);
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
