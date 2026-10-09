@@ -403,6 +403,8 @@
       width: auto;
       object-fit: contain;
       display: block;
+      image-rendering: -webkit-optimize-contrast;
+      filter: drop-shadow(0 14px 32px rgba(217, 119, 6, 0.8)) drop-shadow(0 4px 10px rgba(0,0,0,0.3));
     }
 
     .hero-main-title {
@@ -1417,7 +1419,7 @@
           <!-- Middle Column: Title & Text (No Card Background, Left Aligned) -->
           <div class="hero-middle-content">
             <div class="hero-jubilee-wrapper">
-              <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261009_logo" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
+              <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261009_logo_old" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
             </div>
             <h1 class="hero-main-title">Five Decades of Excellence in Plant Protection</h1>
             <h4 class="hero-tagline">Advancing Science, Safeguarding Crops, Sustaining Agriculture</h4>
