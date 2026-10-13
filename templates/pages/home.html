@@ -1291,11 +1291,13 @@
 </head>
 <body>
 
-  <!-- Inauguration Curtain Opening Video Overlay -->
+  {% if show_curtain %}
+  <!-- Inauguration Curtain Opening Video Overlay (Only visible on special launch link) -->
   <div id="inaugurationCurtain" class="curtain-stage-overlay">
     <video id="curtainVideoPlayer" src="{% static 'videos/curtain_opening.mp4' %}" playsinline muted autoplay preload="auto"></video>
     <canvas id="curtainChromaCanvas"></canvas>
   </div>
+  {% endif %}
 
   <!-- SINGLE-VIEWPORT FIRST FOLD WITH MINT GRADIENT -->
   <div class="viewport-fold">
@@ -1917,7 +1919,8 @@
     }
   </script>
 
-  <!-- Inauguration Grand Curtain Opening Controller -->
+  {% if show_curtain %}
+  <!-- Inauguration Grand Curtain Opening Controller (Only loaded on special launch link) -->
   <script>
     (function initInaugurationCurtain() {
       const overlay = document.getElementById('inaugurationCurtain');
@@ -2102,5 +2105,6 @@
       }
     })();
   </script>
+  {% endif %}
 </body>
 </html>
