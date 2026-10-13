@@ -1251,9 +1251,51 @@
         max-width: 1480px;
       }
     }
+
+    /* ========================================================
+       INAUGURATION GRAND CURTAIN OPENING OVERLAY
+       ======================================================== */
+    .curtain-stage-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 99999999;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .curtain-stage-overlay.curtain-fade-out {
+      opacity: 0;
+    }
+
+    .curtain-stage-overlay.curtain-dismissed {
+      display: none !important;
+    }
+
+    #curtainChromaCanvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #curtainVideoPlayer {
+      display: none;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Inauguration Curtain Opening Video Overlay -->
+  <div id="inaugurationCurtain" class="curtain-stage-overlay">
+    <video id="curtainVideoPlayer" src="{% static 'videos/curtain_opening.mp4' %}" playsinline muted autoplay preload="auto"></video>
+    <canvas id="curtainChromaCanvas"></canvas>
+  </div>
 
   <!-- SINGLE-VIEWPORT FIRST FOLD WITH MINT GRADIENT -->
   <div class="viewport-fold">
@@ -1873,6 +1915,179 @@
         requestAnimationFrame(autoScrollEvents);
       }
     }
+  </script>
+
+  <!-- Inauguration Grand Curtain Opening Controller -->
+  <script>
+    (function initInaugurationCurtain() {
+      const overlay = document.getElementById('inaugurationCurtain');
+      const video = document.getElementById('curtainVideoPlayer');
+      const canvas = document.getElementById('curtainChromaCanvas');
+      if (!overlay || !video || !canvas) return;
+
+      const gl = canvas.getContext('webgl', { premultipliedAlpha: false, alpha: true }) ||
+                 canvas.getContext('experimental-webgl', { premultipliedAlpha: false, alpha: true });
+
+      let isDismissed = false;
+      let animId = null;
+
+      function dismissCurtain() {
+        if (isDismissed) return;
+        isDismissed = true;
+        overlay.classList.add('curtain-fade-out');
+        setTimeout(() => {
+          overlay.classList.add('curtain-dismissed');
+          if (animId) cancelAnimationFrame(animId);
+          try { video.pause(); } catch(e) {}
+        }, 650);
+      }
+
+      // Safety fallback: guaranteed homepage reveal
+      setTimeout(() => {
+        if (!isDismissed) dismissCurtain();
+      }, 4200);
+
+      if (!gl) {
+        // Fallback for systems without WebGL
+        const ctx = canvas.getContext('2d');
+        function render2D() {
+          if (!isDismissed && !video.paused && !video.ended) {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          }
+          if (video.currentTime >= 2.7 || video.ended) {
+            dismissCurtain();
+            return;
+          }
+          animId = requestAnimationFrame(render2D);
+        }
+        video.addEventListener('loadedmetadata', () => {
+          canvas.width = video.videoWidth || 1280;
+          canvas.height = video.videoHeight || 720;
+        });
+        video.addEventListener('play', () => {
+          overlay.style.background = 'transparent';
+          render2D();
+        });
+        video.play().catch(dismissCurtain);
+        return;
+      }
+
+      // WebGL High-Performance Hardware-Accelerated Chroma Key
+      const vsSrc = `
+        attribute vec2 a_pos;
+        attribute vec2 a_tex;
+        varying vec2 v_tex;
+        void main() {
+          gl_Position = vec4(a_pos, 0.0, 1.0);
+          v_tex = a_tex;
+        }
+      `;
+
+      const fsSrc = `
+        precision mediump float;
+        uniform sampler2D u_tex;
+        varying vec2 v_tex;
+        void main() {
+          vec4 col = texture2D(u_tex, v_tex);
+          // Key out green background: green exceeds both red and blue
+          float greenness = col.g - max(col.r, col.b);
+          if (greenness > 0.12 && col.g > 0.35) {
+            gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+          } else {
+            gl_FragColor = col;
+          }
+        }
+      `;
+
+      function createShader(src, type) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        return s;
+      }
+
+      const program = gl.createProgram();
+      gl.attachShader(program, createShader(vsSrc, gl.VERTEX_SHADER));
+      gl.attachShader(program, createShader(fsSrc, gl.FRAGMENT_SHADER));
+      gl.linkProgram(program);
+      gl.useProgram(program);
+
+      // Fullscreen quad buffer
+      const pBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, pBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        -1, -1,  1, -1, -1,  1,
+        -1,  1,  1, -1,  1,  1
+      ]), gl.STATIC_DRAW);
+
+      const pLoc = gl.getAttribLocation(program, 'a_pos');
+      gl.enableVertexAttribArray(pLoc);
+      gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
+
+      // Texture coordinate buffer (flipped vertically for WebGL standard)
+      const tBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, tBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        0, 1,  1, 1,  0, 0,
+        0, 0,  1, 1,  1, 0
+      ]), gl.STATIC_DRAW);
+
+      const tLoc = gl.getAttribLocation(program, 'a_tex');
+      gl.enableVertexAttribArray(tLoc);
+      gl.vertexAttribPointer(tLoc, 2, gl.FLOAT, false, 0, 0);
+
+      const tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+      function resizeGL() {
+        canvas.width = video.videoWidth || 1280;
+        canvas.height = video.videoHeight || 720;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+
+      function renderGL() {
+        if (!isDismissed && !video.paused && !video.ended) {
+          gl.bindTexture(gl.TEXTURE_2D, tex);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+          gl.clearColor(0, 0, 0, 0);
+          gl.clear(gl.COLOR_BUFFER_BIT);
+          gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+
+        // When curtains are wide open (~2.6 - 2.8s in), trigger smooth fade reveal
+        if (video.currentTime >= 2.7 || video.ended) {
+          dismissCurtain();
+          return;
+        }
+
+        animId = requestAnimationFrame(renderGL);
+      }
+
+      video.addEventListener('loadedmetadata', resizeGL);
+      video.addEventListener('play', () => {
+        resizeGL();
+        overlay.style.background = 'transparent';
+        renderGL();
+      });
+
+      // Start playback automatically on page load
+      const startPlay = () => {
+        video.play().catch(() => {
+          // If browser policy blocks unmuted/early autoplay, dismiss safely
+          dismissCurtain();
+        });
+      };
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        startPlay();
+      } else {
+        window.addEventListener('DOMContentLoaded', startPlay);
+      }
+    })();
   </script>
 </body>
 </html>
