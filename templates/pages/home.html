@@ -1267,7 +1267,7 @@
       justify-content: center;
       overflow: hidden;
       pointer-events: none;
-      transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: opacity 1.0s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     .curtain-stage-overlay.curtain-fade-out {
@@ -1939,13 +1939,13 @@
           overlay.classList.add('curtain-dismissed');
           if (animId) cancelAnimationFrame(animId);
           try { video.pause(); } catch(e) {}
-        }, 650);
+        }, 1000);
       }
 
       // Safety fallback: guaranteed homepage reveal
       setTimeout(() => {
         if (!isDismissed) dismissCurtain();
-      }, 4200);
+      }, 5200);
 
       if (!gl) {
         // Fallback for systems without WebGL
@@ -1953,8 +1953,12 @@
         function render2D() {
           if (!isDismissed && !video.paused && !video.ended) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // Accelerate speed towards the end for a snappy opening
+            if (video.currentTime > 1.4 && video.playbackRate < 1.25) {
+              video.playbackRate = 1.25;
+            }
           }
-          if (video.currentTime >= 2.7 || video.ended) {
+          if (video.currentTime >= 3.65 || video.ended) {
             dismissCurtain();
             return;
           }
@@ -2060,10 +2064,15 @@
           gl.clearColor(0, 0, 0, 0);
           gl.clear(gl.COLOR_BUFFER_BIT);
           gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+          // As the curtains sweep wide, accelerate speed so the final pull into corners is swift
+          if (video.currentTime > 1.4 && video.playbackRate < 1.25) {
+            video.playbackRate = 1.25;
+          }
         }
 
-        // When curtains are wide open (~2.45s in), trigger smooth fade reveal
-        if (video.currentTime >= 2.45 || video.ended) {
+        // Allow curtains to open completely into the top corners (~3.65s), then smoothly dissolve
+        if (video.currentTime >= 3.65 || video.ended) {
           dismissCurtain();
           return;
         }
