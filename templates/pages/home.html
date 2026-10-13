@@ -1267,7 +1267,7 @@
       justify-content: center;
       overflow: hidden;
       pointer-events: none;
-      transition: opacity 1.0s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: opacity 0.4s ease;
     }
 
     .curtain-stage-overlay.curtain-fade-out {
@@ -1939,13 +1939,13 @@
           overlay.classList.add('curtain-dismissed');
           if (animId) cancelAnimationFrame(animId);
           try { video.pause(); } catch(e) {}
-        }, 1000);
+        }, 400);
       }
 
       // Safety fallback: guaranteed homepage reveal
       setTimeout(() => {
         if (!isDismissed) dismissCurtain();
-      }, 5200);
+      }, 5800);
 
       if (!gl) {
         // Fallback for systems without WebGL
@@ -1953,12 +1953,12 @@
         function render2D() {
           if (!isDismissed && !video.paused && !video.ended) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            // Accelerate speed towards the end for a snappy opening
-            if (video.currentTime > 1.4 && video.playbackRate < 1.25) {
-              video.playbackRate = 1.25;
+            // Accelerate speed so the curtain opens fully and exits cleanly
+            if (video.currentTime > 1.2 && video.playbackRate < 1.35) {
+              video.playbackRate = 1.35;
             }
           }
-          if (video.currentTime >= 3.65 || video.ended) {
+          if (video.currentTime >= 5.25 || video.ended) {
             dismissCurtain();
             return;
           }
@@ -2065,14 +2065,14 @@
           gl.clear(gl.COLOR_BUFFER_BIT);
           gl.drawArrays(gl.TRIANGLES, 0, 6);
 
-          // As the curtains sweep wide, accelerate speed so the final pull into corners is swift
-          if (video.currentTime > 1.4 && video.playbackRate < 1.25) {
-            video.playbackRate = 1.25;
+          // As the curtains sweep wide, accelerate speed so the final exit off-screen is swift and energetic
+          if (video.currentTime > 1.2 && video.playbackRate < 1.35) {
+            video.playbackRate = 1.35;
           }
         }
 
-        // Allow curtains to open completely into the top corners (~3.65s), then smoothly dissolve
-        if (video.currentTime >= 3.65 || video.ended) {
+        // Allow curtains to open 100% completely until they have pulled totally off the screen (~5.25s)
+        if (video.currentTime >= 5.25 || video.ended) {
           dismissCurtain();
           return;
         }
