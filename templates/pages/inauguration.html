@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inauguration — Plant Protection Association of India (PPAI)</title>
 
-  <!-- Plus Jakarta Sans Font (Primary Typography Across Entire PPAI Website) -->
+  <!-- Plus Jakarta Sans Font (Design System Standard) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -26,64 +26,58 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(20px, 4vw, 36px);
+      padding: clamp(16px, 3.5vw, 32px);
       color: #1D2924;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Clean Center Stage Card (Distraction-Free, Human Designer Proportions) */
+    /* Clean Center Stage Card (Human Proportions, Balanced Spacing) */
     .ceremony-card {
       background: #FFFFFF;
       border: 1px solid rgba(11, 36, 23, 0.08);
       border-radius: 24px;
-      box-shadow: 0 16px 44px rgba(11, 36, 23, 0.07);
-      max-width: 650px;
+      box-shadow: 0 18px 48px rgba(11, 36, 23, 0.06);
+      max-width: 620px;
       width: 100%;
-      padding: clamp(38px, 5vw, 52px) clamp(20px, 4vw, 42px);
+      padding: clamp(38px, 5vw, 52px) clamp(20px, 4vw, 40px);
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* Enhanced Golden Jubilee Emblem */
+    /* Enhanced Golden Jubilee Emblem (Crisp, High Visibility) */
     .ceremony-emblem {
-      width: clamp(120px, 13vw, 150px);
+      width: clamp(135px, 15vw, 170px);
       height: auto;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       display: block;
-      filter: drop-shadow(0 6px 18px rgba(11, 36, 23, 0.09));
-      image-rendering: -webkit-optimize-contrast;
-      transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 14px rgba(11, 36, 23, 0.06));
     }
 
-    .ceremony-emblem:hover {
-      transform: scale(1.02);
-    }
-
-    /* PPAI Full Form (Single Line) */
+    /* Institution Primary Title (Prominent, Authoritative, Single Line) */
     .ceremony-title {
-      font-size: clamp(16px, 2.5vw, 23px);
+      font-size: clamp(17px, 2.3vw, 23px);
       font-weight: 800;
       color: #0B2417;
       line-height: 1.25;
       letter-spacing: -0.02em;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       white-space: nowrap;
       max-width: 100%;
     }
 
-    /* Tagline (Small, Single Line Under PPAI) */
+    /* Tagline (Delicate, Subordinate to PPAI, Single Line) */
     .ceremony-tagline {
-      font-size: clamp(10.5px, 1.4vw, 13px);
-      font-weight: 600;
-      color: #B7791F;
+      font-size: clamp(10.5px, 1.15vw, 12px);
+      font-weight: 500;
+      color: #9A6A1D;
       line-height: 1.4;
-      margin-bottom: 30px;
+      letter-spacing: 0.03em;
+      margin-bottom: 34px;
       white-space: nowrap;
       max-width: 100%;
-      letter-spacing: 0.01em;
     }
 
     /* Clean, Human-Designed "Inaugurate" Button */
@@ -92,24 +86,24 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      padding: 14px 44px;
+      padding: 13px 42px;
       border-radius: 100px;
       font-family: inherit;
-      font-size: 15.5px;
+      font-size: 15px;
       font-weight: 700;
       color: #FFFFFF;
       background: #00B272;
       border: none;
       text-decoration: none;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0, 178, 114, 0.28);
+      box-shadow: 0 4px 14px rgba(0, 178, 114, 0.28);
       transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .btn-open:hover {
       background: #00965F;
       transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(0, 178, 114, 0.38);
+      box-shadow: 0 8px 22px rgba(0, 178, 114, 0.36);
       color: #FFFFFF;
     }
 
@@ -119,7 +113,7 @@
     }
 
     .btn-arrow {
-      font-size: 16px;
+      font-size: 15px;
       transition: transform 0.2s ease;
     }
 
@@ -127,12 +121,12 @@
       transform: translateX(3px);
     }
 
-    /* Since 1972 Heritage Note (Under the Button) */
+    /* Heritage Note (Under the Button) */
     .ceremony-since {
-      margin-top: 22px;
-      font-size: 12.5px;
+      margin-top: 20px;
+      font-size: 12px;
       font-weight: 600;
-      color: #64746D;
+      color: #718096;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -151,10 +145,10 @@
     <!-- Golden Jubilee Emblem -->
     <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261009_logo_old" alt="PPAI Golden Jubilee" class="ceremony-emblem">
 
-    <!-- Full Institution Name -->
+    <!-- Full Institution Name (Single Line) -->
     <h1 class="ceremony-title">Plant Protection Association of India</h1>
 
-    <!-- Official Tagline -->
+    <!-- Official Tagline (Small Under PPAI, Single Line) -->
     <p class="ceremony-tagline">Advancing Science, Safeguarding Crops, Sustaining Agriculture</p>
 
     <!-- Clean Direct Inauguration Button -->
