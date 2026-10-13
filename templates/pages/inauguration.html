@@ -1,149 +1,182 @@
-{% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inauguration — Plant Protection Association of India (PPAI)</title>
 
-{% block title %}Official Portal Inauguration — Plant Protection Association of India{% endblock %}
+  <!-- Plus Jakarta Sans Font (Standard Website Typeface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-{% block extra_css %}
-<style>
-  /* ===================================================================
-     CEREMONIAL INAUGURATION PORTAL - CLEAN EDITORIAL DESIGN
-     Strictly adopts the website's native design system, colors & fonts
-  =================================================================== */
-  .inauguration-section {
-    min-height: calc(100vh - 120px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(32px, 5vh, 60px) clamp(16px, 3vw, 32px);
-  }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .inauguration-card {
-    background: #FFFFFF;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft);
-    max-width: 680px;
-    width: 100%;
-    padding: clamp(36px, 4.5vw, 52px) clamp(24px, 3.5vw, 44px);
-    text-align: center;
-    box-sizing: border-box;
-  }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, #FFFFFF 0%, #E1F0E8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(20px, 4vw, 36px);
+      color: #1D2924;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-  .inauguration-emblem {
-    width: clamp(85px, 8vw, 110px);
-    height: auto;
-    margin: 0 auto 20px;
-    display: block;
-  }
+    /* Clean Center Stage Card (Distraction-Free, Human Designer Proportions) */
+    .ceremony-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(11, 36, 23, 0.09);
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(11, 36, 23, 0.07);
+      max-width: 620px;
+      width: 100%;
+      padding: clamp(36px, 5vw, 54px) clamp(24px, 4vw, 44px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  .inauguration-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 18px;
-    border-radius: var(--radius-pill);
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--deep-forest);
-    background: rgba(11, 36, 23, 0.05);
-    border: 1.5px solid rgba(11, 36, 23, 0.1);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
+    /* Golden Jubilee Emblem */
+    .ceremony-emblem {
+      width: clamp(90px, 8.5vw, 115px);
+      height: auto;
+      margin-bottom: 22px;
+      display: block;
+    }
 
-  .inauguration-card h1 {
-    font-size: clamp(24px, 2.2vw, 32px);
-    font-weight: 800;
-    color: var(--deep-forest);
-    line-height: 1.25;
-    letter-spacing: -0.025em;
-    margin-bottom: 6px;
-  }
+    /* Institutional Label */
+    .ceremony-institution {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0B2417;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
 
-  .inauguration-tagline {
-    font-size: clamp(13px, 0.95vw, 15px);
-    font-weight: 700;
-    color: #B7791F;
-    margin-bottom: 22px;
-    line-height: 1.4;
-  }
+    /* Main Title */
+    .ceremony-title {
+      font-size: clamp(24px, 2.4vw, 32px);
+      font-weight: 800;
+      color: #0F3D2E;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+      margin-bottom: 8px;
+    }
 
-  .inauguration-divider {
-    width: 64px;
-    height: 2px;
-    background: rgba(11, 36, 23, 0.1);
-    border: none;
-    margin: 0 auto 22px;
-  }
+    /* Tagline */
+    .ceremony-tagline {
+      font-size: clamp(12.5px, 0.95vw, 14.5px);
+      font-weight: 700;
+      color: #B7791F;
+      margin-bottom: 22px;
+      line-height: 1.4;
+    }
 
-  .inauguration-desc {
-    font-size: 15px;
-    line-height: 1.65;
-    color: var(--text-muted);
-    max-width: 540px;
-    margin: 0 auto 32px;
-  }
+    .ceremony-divider {
+      width: 50px;
+      height: 2px;
+      background: rgba(11, 36, 23, 0.12);
+      border: none;
+      margin-bottom: 22px;
+    }
 
-  .btn-inaugurate-portal {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 13.5px 36px;
-    border-radius: var(--radius-pill);
-    font-size: 15px;
-    font-weight: 700;
-    color: #FFFFFF;
-    background: var(--vibrant-green);
-    border: none;
-    text-decoration: none;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 178, 114, 0.25);
-    transition: var(--transition);
-  }
+    /* Welcome Description */
+    .ceremony-message {
+      font-size: 15px;
+      line-height: 1.65;
+      color: #64746D;
+      max-width: 480px;
+      margin-bottom: 34px;
+    }
 
-  .btn-inaugurate-portal:hover {
-    background: var(--vibrant-green-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 178, 114, 0.35);
-    color: #FFFFFF;
-  }
+    /* Clean, Human-Designed "Open" Button */
+    .btn-open {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 44px;
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: #00B272;
+      border: none;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 178, 114, 0.28);
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-  .inauguration-footnote {
-    font-size: 12.5px;
-    color: var(--text-muted);
-    margin-top: 24px;
-    line-height: 1.4;
-  }
-</style>
-{% endblock %}
+    .btn-open:hover {
+      background: #00965F;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 178, 114, 0.38);
+      color: #FFFFFF;
+    }
 
-{% block content %}
-<section class="inauguration-section">
-  <div class="inauguration-card">
+    .btn-open:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(0, 178, 114, 0.25);
+    }
 
-    <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261009_logo_old" alt="PPAI Golden Jubilee 1972 - 2022" class="inauguration-emblem">
+    .btn-arrow {
+      font-size: 16px;
+      transition: transform 0.2s ease;
+    }
 
-    <div class="inauguration-pill">Ceremonial Launch</div>
+    .btn-open:hover .btn-arrow {
+      transform: translateX(3px);
+    }
 
-    <h1>Digital Portal Inauguration</h1>
-    <h4 class="inauguration-tagline">Advancing Science, Safeguarding Crops, Sustaining Agriculture</h4>
+    /* Discreet Footer Line */
+    .ceremony-footnote {
+      margin-top: 26px;
+      font-size: 12px;
+      color: #8C9E96;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
 
-    <hr class="inauguration-divider">
+  <main class="ceremony-card">
+    <!-- Golden Jubilee Emblem -->
+    <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261009_logo_old" alt="PPAI Golden Jubilee" class="ceremony-emblem">
 
-    <p class="inauguration-desc">
-      Welcome, Honored Dignitaries and Distinguished Guests. You are cordially invited to officially unveil the digital portal of the Plant Protection Association of India.
+    <div class="ceremony-institution">Plant Protection Association of India</div>
+    <h1 class="ceremony-title">Official Website Inauguration</h1>
+    <h4 class="ceremony-tagline">Advancing Science, Safeguarding Crops, Sustaining Agriculture</h4>
+
+    <hr class="ceremony-divider">
+
+    <p class="ceremony-message">
+      We cordially invite our distinguished guests and members to inaugurate the digital portal and unveil five decades of contributions to agricultural science.
     </p>
 
-    <a href="{% url 'home' %}?launch=1" class="btn-inaugurate-portal">
-      <span>Inaugurate Portal &amp; Unveil Homepage</span>
-      <span>&rarr;</span>
+    <!-- Clean Direct Open Button -->
+    <a href="{% url 'home' %}?launch=1" class="btn-open">
+      <span>Open Website</span>
+      <span class="btn-arrow">&rarr;</span>
     </a>
 
-    <p class="inauguration-footnote">
-      Clicking will present the ceremonial opening curtain and transition directly to the live homepage.
-    </p>
+    <div class="ceremony-footnote">
+      Plant Protection Association of India &middot; Est. 1972
+    </div>
+  </main>
 
-  </div>
-</section>
-{% endblock %}
+</body>
+</html>
