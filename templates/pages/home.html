@@ -1989,12 +1989,16 @@
         varying vec2 v_tex;
         void main() {
           vec4 col = texture2D(u_tex, v_tex);
-          // Key out green background: green exceeds both red and blue
-          float greenness = col.g - max(col.r, col.b);
-          if (greenness > 0.12 && col.g > 0.35) {
+          // Complete green eradication: ANY pixel where green dominates over red and blue
+          // Red curtain: R is dominant (~0.8-1.0), G is very low (~0.1-0.2)
+          // Wooden floor: R is dominant (~0.4), G is ~0.18, B is ~0.08
+          // Green screen (all shades, tints, and shadows): G > R && G > B
+          if (col.g > col.r && col.g > col.b && col.g > 0.10) {
             gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
           } else {
-            gl_FragColor = col;
+            // Edge despill: completely neutralize any residual green reflection on curtain edges
+            float cleanG = min(col.g, max(col.r * 0.85, col.b));
+            gl_FragColor = vec4(col.r, cleanG, col.b, col.a);
           }
         }
       `;
@@ -2058,8 +2062,8 @@
           gl.drawArrays(gl.TRIANGLES, 0, 6);
         }
 
-        // When curtains are wide open (~2.6 - 2.8s in), trigger smooth fade reveal
-        if (video.currentTime >= 2.7 || video.ended) {
+        // When curtains are wide open (~2.45s in), trigger smooth fade reveal
+        if (video.currentTime >= 2.45 || video.ended) {
           dismissCurtain();
           return;
         }
