@@ -390,7 +390,8 @@
     .hero-jubilee-wrapper {
       display: inline-flex;
       align-self: center;
-      margin-bottom: 24px;
+      margin-top: 0;
+      margin-bottom: 12px;
     }
 
     .hero-jubilee-wrapper:hover {
@@ -399,12 +400,12 @@
     }
 
     .hero-jubilee-emblem {
-      height: clamp(180px, 24vh, 330px);
+      height: clamp(140px, 18vh, 230px);
       width: auto;
       object-fit: contain;
       display: block;
       image-rendering: -webkit-optimize-contrast;
-      filter: drop-shadow(0 14px 32px rgba(217, 119, 6, 0.8)) drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+      filter: drop-shadow(0 10px 24px rgba(217, 119, 6, 0.55)) drop-shadow(0 4px 8px rgba(0,0,0,0.2));
     }
 
     .hero-main-title {
@@ -425,7 +426,7 @@
       font-size: clamp(11.5px, 0.88vw, 13.5px);
       font-weight: 700;
       color: #B7791F;
-      margin-bottom: 18px;
+      margin-bottom: 6px;
       line-height: 1.35;
       text-align: center;
       width: 100%;
@@ -433,15 +434,22 @@
       letter-spacing: 0.01em;
     }
 
+    .hero-ornament-divider {
+      width: clamp(140px, 15vw, 200px);
+      height: auto;
+      display: block;
+      margin: 8px auto;
+      opacity: 0.7;
+    }
+
     .hero-main-subtitle {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(14px, 0.98vw, 15.5px);
+      font-size: clamp(13px, 0.9vw, 14.5px);
       font-weight: 400;
       color: #4B5563;
-      line-height: 1.65;
+      line-height: 1.6;
       max-width: 100%;
-      text-align: justify;
-      text-justify: inter-word;
+      text-align: center;
     }
 
     /* --- Prominent, Extra-Large Search & Quick Pills UI --- */
@@ -546,9 +554,9 @@
     .hero-middle-content {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: left;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
     }
     
     /* --- Left-Aligned 2-Column Main Grid (Left: 3:4 Carousel, Right: Expansive Balanced Events Card) --- */
@@ -557,7 +565,7 @@
       grid-template-columns: 1fr 1.15fr 1fr;
       gap: 24px;
       width: 100%;
-      align-items: center;
+      align-items: flex-start;
     }
 
     /* Left Column: Strict 3:4 Hero Carousel Card (Left-Aligned) */
@@ -1468,14 +1476,16 @@
           </div>
 
           
-          <!-- Middle Column: Title & Text (No Card Background, Left Aligned) -->
+          <!-- Middle Column: Title & Text (Centered, Top-Aligned with Carousel & Events) -->
           <div class="hero-middle-content">
             <div class="hero-jubilee-wrapper">
               <img src="{% static 'images/golden_jubilee_emblem.png' %}?v=20261009_logo_old" alt="PPAI Golden Jubilee 1972 - 2022" class="hero-jubilee-emblem">
             </div>
             <h1 class="hero-main-title">Five Decades of Excellence in Plant Protection</h1>
             <h4 class="hero-tagline">Advancing Science, Safeguarding Crops, Sustaining Agriculture</h4>
+            <img src="{% static 'images/ornamental_divider.png' %}" alt="Divider" class="hero-ornament-divider">
             <p class="hero-main-subtitle">PPAI celebrated its landmark Golden Jubilee (1972&ndash;2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.</p>
+            <img src="{% static 'images/ornamental_divider.png' %}" alt="Divider" class="hero-ornament-divider">
           </div>
 
           <!-- Right Column: Matching Upcoming Events Card (Exact Photo Layout) -->
