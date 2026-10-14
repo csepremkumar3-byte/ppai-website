@@ -400,12 +400,12 @@
     }
 
     .hero-jubilee-emblem {
-      height: clamp(160px, 20vh, 255px);
+      height: clamp(140px, 17vh, 215px);
       width: auto;
       object-fit: contain;
       display: block;
       image-rendering: -webkit-optimize-contrast;
-      filter: drop-shadow(0 10px 24px rgba(217, 119, 6, 0.55)) drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 8px 18px rgba(217, 119, 6, 0.45)) drop-shadow(0 3px 6px rgba(0,0,0,0.18));
     }
 
     .hero-middle-header {
@@ -441,8 +441,16 @@
       letter-spacing: 0.01em;
     }
 
+    .hero-middle-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
     .hero-ornament-divider {
-      width: clamp(170px, 17vw, 230px);
+      width: clamp(160px, 16vw, 220px);
       height: auto;
       display: block;
       margin: 0 auto;
@@ -452,10 +460,10 @@
 
     .hero-main-subtitle {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(13px, 0.92vw, 14.5px);
+      font-size: clamp(14px, 1.05vw, 16.5px);
       font-weight: 400;
-      color: #4B5563;
-      line-height: 1.62;
+      color: #374151;
+      line-height: 1.68;
       max-width: 98%;
       text-align: center;
       margin: 0;
@@ -1498,14 +1506,12 @@
               <h4 class="hero-tagline">Advancing Science, Safeguarding Crops, Sustaining Agriculture</h4>
             </div>
 
-            <!-- Divider under tagline and before content -->
-            <img src="{% static 'images/ornamental_divider.png' %}" alt="Divider" class="hero-ornament-divider">
-
-            <!-- Subtitle content (centered, not justified) -->
-            <p class="hero-main-subtitle">PPAI celebrated its landmark Golden Jubilee (1972&ndash;2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.</p>
-
-            <!-- Divider after content (anchors the bottom edge) -->
-            <img src="{% static 'images/ornamental_divider.png' %}" alt="Divider" class="hero-ornament-divider">
+            <!-- Body group: Divider 1 + Increased Subtitle Content + Divider 2 (tight & controlled spacing) -->
+            <div class="hero-middle-body">
+              <img src="{% static 'images/ornamental_divider.png' %}" alt="Divider" class="hero-ornament-divider">
+              <p class="hero-main-subtitle">PPAI celebrated its landmark Golden Jubilee (1972&ndash;2022), commemorating fifty years of continuous contributions to Indian agricultural science. Over the decades, the Association has evolved into a multidisciplinary body encompassing Agricultural Entomology, Plant Pathology, Nematology, Weed Science, Plant Biosecurity, and Pesticide Chemistry.</p>
+              <img src="{% static 'images/ornamental_divider.png' %}" alt="Divider" class="hero-ornament-divider">
+            </div>
           </div>
 
           <!-- Right Column: Matching Upcoming Events Card (Exact Photo Layout) -->
