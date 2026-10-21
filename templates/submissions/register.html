@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register for IJPP Manuscript Portal — PPAI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+<style>
+  .portal-reg-container {
+    max-width: 720px;
+    margin: 30px auto 80px auto;
+  }
+  .portal-auth-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(11, 36, 23, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 36px rgba(11, 36, 23, 0.07);
+    padding: 36px 36px;
+  }
+  .portal-auth-header {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+  .portal-auth-header .portal-badge {
+    display: inline-block;
+    background: rgba(0, 178, 114, 0.1);
+    color: #00B272;
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .portal-auth-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0B2417;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .portal-auth-header p {
+    font-size: 14px;
+    color: #5B7065;
+  }
+  .form-section-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0B2417;
+    padding-bottom: 8px;
+    margin: 22px 0 16px 0;
+    border-bottom: 1.5px solid rgba(11, 36, 23, 0.08);
+  }
+  .error-text {
+    color: #DC2626;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portal-wrapper">
+  <div class="portal-reg-container">
+
+    {% if messages %}
+    <div class="portal-messages">
+      {% for message in messages %}
+      <div class="portal-alert {{ message.tags }}">
+        <span>{{ message }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="portal-auth-card">
+      <div class="portal-auth-header">
+        <span class="portal-badge">Indian Journal of Plant Protection</span>
+        <h1>Create Portal Account</h1>
+        <p>Register as an Author, Peer Reviewer, or Editorial Board Member</p>
+      </div>
+
+      <form method="POST" action="{% url 'portal_register' %}">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="portal-alert error">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="form-section-title" style="margin-top: 0;">1. Role & Identity</div>
+
+        <div class="portal-form-grid">
+          <div class="portal-form-group full-width">
+            <label for="{{ form.role.id_for_label }}">Select Primary Role <span style="color:#DC2626">*</span></label>
+            {{ form.role }}
+            <span class="field-hint">Authors submit & track manuscripts. Reviewers review papers assigned by the Editor.</span>
+            {% if form.role.errors %}<div class="error-text">{{ form.role.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="portal-form-group">
+            <label for="{{ form.full_name.id_for_label }}">Full Name (with Title) <span style="color:#DC2626">*</span></label>
+            {{ form.full_name }}
+            {% if form.full_name.errors %}<div class="error-text">{{ form.full_name.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="portal-form-group">
+            <label for="{{ form.email.id_for_label }}">Official / Institutional Email <span style="color:#DC2626">*</span></label>
+            {{ form.email }}
+            {% if form.email.errors %}<div class="error-text">{{ form.email.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="portal-form-group">
+            <label for="{{ form.phone.id_for_label }}">Contact Number</label>
+            {{ form.phone }}
+            {% if form.phone.errors %}<div class="error-text">{{ form.phone.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="portal-form-group">
+            <label for="{{ form.orcid_id.id_for_label }}">ORCID iD (Optional)</label>
+            {{ form.orcid_id }}
+            {% if form.orcid_id.errors %}<div class="error-text">{{ form.orcid_id.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div class="form-section-title">2. Professional Affiliation & Specialization</div>
+
+        <div class="portal-form-grid">
+          <div class="portal-form-group full-width">
+            <label for="{{ form.affiliation.id_for_label }}">Institution / University / Department <span style="color:#DC2626">*</span></label>
+            {{ form.affiliation }}
+            {% if form.affiliation.errors %}<div class="error-text">{{ form.affiliation.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="portal-form-group">
+            <label for="{{ form.designation.id_for_label }}">Designation</label>
+            {{ form.designation }}
+            {% if form.designation.errors %}<div class="error-text">{{ form.designation.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="portal-form-group">
+            <label for="{{ form.specialization.id_for_label }}">Field of Specialization</label>
+            {{ form.specialization }}
+            {% if form.specialization.errors %}<div class="error-text">{{ form.specialization.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div class="form-section-title">3. Account Security</div>
+
+        <div class="portal-form-grid">
+          <div class="portal-form-group">
+            <label for="{{ form.password.id_for_label }}">Password <span style="color:#DC2626">*</span></label>
+            {{ form.password }}
+            {% if form.password.errors %}<div class="error-text">{{ form.password.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="portal-form-group">
+            <label for="{{ form.confirm_password.id_for_label }}">Confirm Password <span style="color:#DC2626">*</span></label>
+            {{ form.confirm_password }}
+            {% if form.confirm_password.errors %}<div class="error-text">{{ form.confirm_password.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div style="margin-top: 28px;">
+          <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 13px; font-size: 15px;">
+            Complete Registration & Enter Portal
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(11, 36, 23, 0.08);">
+        <p style="font-size: 13.5px; color: #5B7065;">
+          Already have an account?
+          <a href="{% url 'portal_login' %}" style="color: #00B272; font-weight: 700;">Sign In here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

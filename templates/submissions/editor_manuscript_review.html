@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editorial Management: {{ manuscript.tracking_id }} — IJPP Portal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+<style>
+  .editor-grid-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 992px) {
+    .editor-grid-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  .rubric-score-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: #0B2417;
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 13px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portal-wrapper">
+
+  <!-- Header Bar -->
+  <div class="portal-header-bar">
+    <div class="portal-header-left">
+      <div class="portal-user-avatar" style="background: linear-gradient(135deg, #0B2417, #234E52);">
+        🏛️
+      </div>
+      <div class="portal-user-meta">
+        <h2>Editorial Evaluation: {{ manuscript.tracking_id }}</h2>
+        <p>
+          <span class="status-badge {{ manuscript.status }}">{{ manuscript.get_status_display }}</span>
+          <span>Author: <strong>{{ manuscript.author.get_full_name|default:manuscript.author.username }}</strong> ({{ manuscript.author.email }})</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="portal-header-actions">
+      <a href="{% url 'editor_dashboard' %}" class="btn-portal-secondary btn-portal-sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Editor Command Center
+      </a>
+    </div>
+  </div>
+
+  {% if messages %}
+  <div class="portal-messages">
+    {% for message in messages %}
+    <div class="portal-alert {{ message.tags }}">
+      <span>{{ message }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="editor-grid-layout">
+
+    <!-- Left Column: Manuscript Details, Revisions & Reviewer Comments -->
+    <div>
+
+      <!-- Manuscript Core Info -->
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <h2>Manuscript Dossier</h2>
+          <div style="display: flex; gap: 8px;">
+            {% if manuscript.manuscript_file %}
+            <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
+              📥 Download Manuscript
+            </a>
+            {% endif %}
+            {% if manuscript.supplementary_file %}
+            <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+              📥 Supplementary
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <h3 style="font-size: 17px; font-weight: 800; color: #0B2417; line-height: 1.4;">{{ manuscript.title }}</h3>
+          <div style="font-size: 13px; color: #64746D; margin-top: 4px;">
+            {{ manuscript.get_article_type_display }} • {{ manuscript.get_subject_area_display }} • Submitted {{ manuscript.created_at|date:"M d, Y" }}
+          </div>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Abstract</h4>
+          <p style="font-size: 13.5px; color: #1D2924; line-height: 1.6; background: #F8FAF9; padding: 14px; border-radius: 8px; white-space: pre-line;">{{ manuscript.abstract }}</p>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Keywords</h4>
+          <p style="font-size: 13px; color: #0B2417;">{{ manuscript.keywords }}</p>
+        </div>
+
+        {% if manuscript.co_authors %}
+        <div style="margin-bottom: 14px;">
+          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Co-Authors</h4>
+          <p style="font-size: 13px; color: #0B2417; white-space: pre-line;">{{ manuscript.co_authors }}</p>
+        </div>
+        {% endif %}
+
+        {% if manuscript.cover_letter %}
+        <div style="margin-bottom: 14px;">
+          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Cover Letter</h4>
+          <p style="font-size: 13px; color: #365042; font-style: italic; background: #FFFDF5; padding: 10px; border-radius: 6px; border-left: 3px solid #EAB308;">{{ manuscript.cover_letter }}</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Peer Review Reports (Submitted by Reviewers) -->
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <h2>Peer Review Reports ({{ reviews|length }})</h2>
+        </div>
+
+        {% if reviews %}
+          {% for r in reviews %}
+          <div style="border: 1px solid rgba(11, 36, 23, 0.1); border-radius: 12px; padding: 18px; margin-bottom: 18px; background: {% if r.status == 'completed' %}#FFFFFF{% else %}#FBFDFB{% endif %};">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <strong style="color: #0B2417; font-size: 15px;">{{ r.reviewer.get_full_name|default:r.reviewer.username }}</strong>
+                <div style="font-size: 12px; color: #64746D;">{{ r.reviewer.journal_profile.affiliation|default:"Assigned Reviewer" }}</div>
+              </div>
+              <div>
+                <span class="status-badge {% if r.status == 'completed' %}accepted{% elif r.status == 'declined' %}rejected{% elif r.status == 'accepted' %}under_review{% else %}submitted{% endif %}">
+                  {{ r.get_status_display }}
+                </span>
+              </div>
+            </div>
+
+            {% if r.status == 'completed' %}
+            <!-- Rubric Scores Table -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; background: #F8FAF9; padding: 10px; border-radius: 8px;">
+              <div style="text-align: center;">
+                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Originality</div>
+                <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.originality_score }}/5</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Technical Quality</div>
+                <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.technical_quality_score }}/5</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Clarity</div>
+                <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.clarity_score }}/5</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Significance</div>
+                <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.significance_score }}/5</div>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <strong style="color: #0B2417; font-size: 13.5px;">Reviewer Recommendation: </strong>
+              <span style="font-weight: 800; color: #00B272;">{{ r.get_recommendation_display }}</span>
+            </div>
+
+            <div class="review-callout" style="margin-bottom: 10px;">
+              <h4>Comments to Author:</h4>
+              <p>{{ r.comments_for_author|default:"None provided." }}</p>
+            </div>
+
+            {% if r.confidential_comments_to_editor %}
+            <div class="review-callout warning">
+              <h4>🔒 Confidential Comments to Editor:</h4>
+              <p>{{ r.confidential_comments_to_editor }}</p>
+            </div>
+            {% endif %}
+
+            {% if r.annotated_file %}
+            <div style="margin-top: 8px;">
+              <a href="{{ r.annotated_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+                📥 Download Reviewer Annotated File
+              </a>
+            </div>
+            {% endif %}
+
+            {% else %}
+            <p style="font-size: 13px; color: #64746D;">
+              Invited on {{ r.invitation_date|date:"M d, Y" }}. Due by: <strong>{{ r.due_date|date:"M d, Y" }}</strong>.
+            </p>
+            {% endif %}
+          </div>
+          {% endfor %}
+        {% else %}
+        <p style="font-size: 14px; color: #64746D; padding: 12px 0;">No reviewers have been assigned to this manuscript yet. Select a reviewer from the panel on the right.</p>
+        {% endif %}
+      </div>
+
+      <!-- Revision History -->
+      {% if revisions %}
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <h2>Author Revisions Submitted</h2>
+        </div>
+        {% for rev in revisions %}
+        <div style="background: #F8FAF9; border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <strong>Revision {{ rev.revision_number }} ({{ rev.submitted_at|date:"M d, Y, h:i A" }})</strong>
+            <a href="{{ rev.revised_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+              📥 Download Revision {{ rev.revision_number }}
+            </a>
+          </div>
+          <div>
+            <div style="font-size: 12px; font-weight: 700; color: #64746D; margin-bottom: 4px;">Author Point-by-Point Response:</div>
+            <p style="font-size: 13px; color: #1D2924; white-space: pre-line;">{{ rev.response_to_reviewers }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- Right Column: Reviewer Assignment & Editorial Decision Dispatch -->
+    <div>
+
+      <!-- Action Panel 1: Assign Reviewer -->
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <h2>Assign Peer Reviewer</h2>
+        </div>
+
+        {% if available_reviewers %}
+        <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}">
+          {% csrf_token %}
+          <input type="hidden" name="assign_reviewer" value="1">
+
+          <div class="portal-form-group" style="margin-bottom: 14px;">
+            <label for="reviewer_id">Select Qualified Reviewer</label>
+            <select name="reviewer_id" id="reviewer_id" class="portal-select" required>
+              <option value="">-- Choose Reviewer from Panel --</option>
+              {% for rev_prof in available_reviewers %}
+              <option value="{{ rev_prof.user.id }}">
+                {{ rev_prof.user.get_full_name|default:rev_prof.user.username }} ({{ rev_prof.specialization|default:rev_prof.affiliation|truncatechars:30 }})
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="portal-form-group" style="margin-bottom: 18px;">
+            <label for="due_days">Review Turnaround Window (Days)</label>
+            <input type="number" id="due_days" name="due_days" class="portal-input" value="21" min="7" max="60" required>
+          </div>
+
+          <button type="submit" class="btn-portal-primary" style="width: 100%;">
+            Send Review Invitation
+          </button>
+        </form>
+        {% else %}
+        <p style="font-size: 13px; color: #64746D;">All eligible reviewers in the system have already been assigned to this paper.</p>
+        {% endif %}
+      </div>
+
+      <!-- Action Panel 2: Editorial Decision (Approve / Return Comments to Author / Reject) -->
+      <div class="portal-card" style="border: 2px solid rgba(0, 178, 114, 0.4);">
+        <div class="portal-card-header">
+          <h2>Issue Editorial Decision</h2>
+          <p>Consolidate comments and dispatch verdict back to the author.</p>
+        </div>
+
+        <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}">
+          {% csrf_token %}
+          <input type="hidden" name="submit_decision" value="1">
+
+          <div class="portal-form-group" style="margin-bottom: 16px;">
+            <label for="decision">Decision Verdict <span style="color:#DC2626">*</span></label>
+            <select name="decision" id="decision" class="portal-select" required>
+              <option value="">-- Choose Decision --</option>
+              <option value="accept" {% if manuscript.editor_decision == 'accept' %}selected{% endif %}>Accept for Publication</option>
+              <option value="minor_revision" {% if manuscript.editor_decision == 'minor_revision' %}selected{% endif %}>Request Minor Revisions</option>
+              <option value="major_revision" {% if manuscript.editor_decision == 'major_revision' %}selected{% endif %}>Request Major Revisions</option>
+              <option value="reject" {% if manuscript.editor_decision == 'reject' %}selected{% endif %}>Reject Manuscript</option>
+            </select>
+          </div>
+
+          <div class="portal-form-group" style="margin-bottom: 16px;">
+            <label for="comments_to_author">Decision Letter / Consolidated Comments to Author <span style="color:#DC2626">*</span></label>
+            <textarea name="comments_to_author" id="comments_to_author" class="portal-textarea" rows="7" placeholder="Detailed feedback and instructions sent to author...">{{ manuscript.editor_comments_to_author }}</textarea>
+            <span class="field-hint">This text is directly visible to the author on their dashboard.</span>
+          </div>
+
+          <div class="portal-form-group" style="margin-bottom: 20px;">
+            <label for="internal_notes">Confidential Editorial Record Notes</label>
+            <textarea name="internal_notes" id="internal_notes" class="portal-textarea" rows="3" placeholder="Notes for editorial board archive only...">{{ manuscript.editor_internal_notes }}</textarea>
+          </div>
+
+          <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 12px; font-size: 14.5px;">
+            Dispatch Decision & Return Comments
+          </button>
+        </form>
+      </div>
+
+      <!-- Activity Timeline -->
+      <div class="portal-card">
+        <div class="portal-card-header">
+          <h2>Audit Trail</h2>
+        </div>
+        <ul class="audit-timeline">
+          {% for log in activity_logs %}
+          <li class="audit-item">
+            <div class="audit-title">{{ log.action }}</div>
+            <div class="audit-meta">{{ log.timestamp|date:"M d, Y, h:i A" }}</div>
+            {% if log.details %}<div class="audit-desc">{{ log.details }}</div>{% endif %}
+          </li>
+          {% empty %}
+          <li style="font-size: 13px; color: #64746D;">No audit logs recorded.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

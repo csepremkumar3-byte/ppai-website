@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manuscript Submission & Peer Review Portal — IJPP / PPAI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+<style>
+  .portal-login-container {
+    max-width: 480px;
+    margin: 40px auto 80px auto;
+  }
+  .portal-auth-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(11, 36, 23, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 36px rgba(11, 36, 23, 0.07);
+    padding: 36px 32px;
+  }
+  .portal-auth-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .portal-auth-header .portal-badge {
+    display: inline-block;
+    background: rgba(0, 178, 114, 0.1);
+    color: #00B272;
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .portal-auth-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0B2417;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .portal-auth-header p {
+    font-size: 13.5px;
+    color: #5B7065;
+  }
+  .role-indicator-pills {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 18px 0;
+  }
+  .role-indicator-pills span {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: #F4F8F5;
+    color: #0B2417;
+    border: 1px solid rgba(11, 36, 23, 0.08);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portal-wrapper">
+  <div class="portal-login-container">
+
+    {% if messages %}
+    <div class="portal-messages">
+      {% for message in messages %}
+      <div class="portal-alert {{ message.tags }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ message }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="portal-auth-card">
+      <div class="portal-auth-header">
+        <span class="portal-badge">IJPP Editorial Management</span>
+        <h1>Manuscript Portal Login</h1>
+        <p>Single sign-on for Authors, Peer Reviewers & Editorial Board</p>
+
+        <div class="role-indicator-pills">
+          <span>✍️ Author</span>
+          <span>🔍 Reviewer</span>
+          <span>🏛️ Editor</span>
+        </div>
+      </div>
+
+      <form method="POST" action="{% url 'portal_login' %}">
+        {% csrf_token %}
+        <div class="portal-form-group" style="margin-bottom: 18px;">
+          <label for="email">Email Address / Username</label>
+          <input type="text" id="email" name="email" class="portal-input" placeholder="e.g. author@icar.gov.in" required autofocus>
+        </div>
+
+        <div class="portal-form-group" style="margin-bottom: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label for="password">Password</label>
+          </div>
+          <input type="password" id="password" name="password" class="portal-input" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+          Sign In to Portal
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(11, 36, 23, 0.08);">
+        <p style="font-size: 13.5px; color: #5B7065;">
+          Don't have an IJPP portal account?
+          <a href="{% url 'portal_register' %}" style="color: #00B272; font-weight: 700;">Register as Author / Reviewer</a>
+        </p>
+        <p style="font-size: 12.5px; color: #8A9992; margin-top: 10px;">
+          Looking for society membership login?
+          <a href="{% url 'login' %}" style="color: #0B2417; font-weight: 600; text-decoration: underline;">Member Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

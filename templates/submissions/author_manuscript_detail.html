@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}[{{ manuscript.tracking_id }}] Manuscript Tracking — IJPP Portal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+<style>
+  .detail-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    background: #F8FAF9;
+    border: 1px solid rgba(11, 36, 23, 0.08);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+  }
+  .meta-item label {
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64746D;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .meta-item span {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0B2417;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portal-wrapper">
+
+  <!-- Header Bar -->
+  <div class="portal-header-bar">
+    <div class="portal-header-left">
+      <div class="portal-user-avatar">
+        📄
+      </div>
+      <div class="portal-user-meta">
+        <h2>{{ manuscript.tracking_id }}</h2>
+        <p>
+          <span class="status-badge {{ manuscript.status }}">{{ manuscript.get_status_display }}</span>
+          <span>Submitted on {{ manuscript.created_at|date:"F d, Y" }}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="portal-header-actions">
+      {% if manuscript.status == 'revisions_requested' %}
+      <a href="{% url 'author_submit_revision' manuscript.tracking_id %}" class="btn-portal-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        Submit Revised Manuscript
+      </a>
+      {% endif %}
+
+      <a href="{% url 'author_dashboard' %}" class="btn-portal-secondary btn-portal-sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Author Dashboard
+      </a>
+    </div>
+  </div>
+
+  {% if messages %}
+  <div class="portal-messages">
+    {% for message in messages %}
+    <div class="portal-alert {{ message.tags }}">
+      <span>{{ message }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Workflow Stepper -->
+  <div class="portal-card" style="padding: 20px 24px;">
+    <div class="workflow-stepper">
+      <!-- Step 1 -->
+      <div class="step-node completed">
+        <div class="step-circle">✓</div>
+        <div class="step-label">Submitted</div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-node {% if manuscript.status in 'under_review,review_completed,revisions_requested,revised_submitted,accepted' %}completed{% else %}active{% endif %}">
+        <div class="step-circle">
+          {% if manuscript.status in 'under_review,review_completed,revisions_requested,revised_submitted,accepted' %}✓{% else %}2{% endif %}
+        </div>
+        <div class="step-label">Peer Review</div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-node {% if manuscript.status == 'revisions_requested' or manuscript.status == 'revised_submitted' %}active{% elif manuscript.status == 'accepted' %}completed{% elif manuscript.status == 'rejected' %}rejected{% endif %}">
+        <div class="step-circle">
+          {% if manuscript.status == 'accepted' %}✓{% elif manuscript.status == 'rejected' %}✕{% else %}3{% endif %}
+        </div>
+        <div class="step-label">Editorial Decision</div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-node {% if manuscript.status == 'accepted' %}completed{% endif %}">
+        <div class="step-circle">
+          {% if manuscript.status == 'accepted' %}★{% else %}4{% endif %}
+        </div>
+        <div class="step-label">Final Acceptance</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revisions Requested Callout Box -->
+  {% if manuscript.status == 'revisions_requested' or manuscript.editor_comments_to_author %}
+  <div class="portal-card" style="border-left: 5px solid {% if manuscript.status == 'accepted' %}#00B272{% elif manuscript.status == 'rejected' %}#EF4444{% else %}#EA580C{% endif %};">
+    <div class="portal-card-header">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        Editorial Decision Letter & Feedback
+      </h2>
+      <span class="status-badge {{ manuscript.status }}">{{ manuscript.get_status_display }}</span>
+    </div>
+
+    {% if manuscript.editor_decision != 'pending' %}
+    <div style="margin-bottom: 12px;">
+      <strong style="color: #0B2417;">Official Decision: </strong>
+      <span style="font-weight: 700; text-transform: uppercase;">{{ manuscript.get_editor_decision_display }}</span>
+      {% if manuscript.decision_date %}
+        <span style="font-size: 13px; color: #64746D; margin-left: 8px;">({{ manuscript.decision_date|date:"F d, Y" }})</span>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if manuscript.editor_comments_to_author %}
+    <div class="review-callout {% if manuscript.status == 'revisions_requested' %}warning{% endif %}">
+      <h4>Consolidated Comments to Author:</h4>
+      <p>{{ manuscript.editor_comments_to_author }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Blind Reviewer Comments -->
+    {% if completed_reviews %}
+    <div style="margin-top: 20px;">
+      <h3 style="font-size: 16px; font-weight: 800; color: #0B2417; margin-bottom: 12px;">Blinded Peer Reviewer Feedback:</h3>
+      {% for rev in completed_reviews %}
+      <div class="review-callout" style="border-left-color: #3B82F6; margin-bottom: 14px;">
+        <h4>Reviewer {{ forloop.counter }} Remarks</h4>
+        {% if rev.comments_for_author %}
+          <p>{{ rev.comments_for_author }}</p>
+        {% else %}
+          <p style="color: #64746D; font-style: italic;">No additional comments recorded.</p>
+        {% endif %}
+
+        {% if rev.annotated_file %}
+        <div style="margin-top: 10px;">
+          <a href="{{ rev.annotated_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+            📥 Download Reviewer Annotated File
+          </a>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if manuscript.status == 'revisions_requested' %}
+    <div style="margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(11, 36, 23, 0.08); display: flex; justify-content: flex-end;">
+      <a href="{% url 'author_submit_revision' manuscript.tracking_id %}" class="btn-portal-primary">
+        Submit Revised Version (Point-by-Point Response)
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Manuscript Details -->
+  <div class="portal-card">
+    <div class="portal-card-header">
+      <h2>Manuscript Information</h2>
+      {% if manuscript.manuscript_file %}
+      <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download Original File
+      </a>
+      {% endif %}
+    </div>
+
+    <div class="detail-meta-grid">
+      <div class="meta-item">
+        <label>Tracking Reference</label>
+        <span>{{ manuscript.tracking_id }}</span>
+      </div>
+      <div class="meta-item">
+        <label>Article Type</label>
+        <span>{{ manuscript.get_article_type_display }}</span>
+      </div>
+      <div class="meta-item">
+        <label>Subject Area</label>
+        <span>{{ manuscript.get_subject_area_display }}</span>
+      </div>
+      <div class="meta-item">
+        <label>Submission Date</label>
+        <span>{{ manuscript.created_at|date:"M d, Y, h:i A" }}</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="font-size: 15px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">Title</h3>
+      <p style="font-size: 16px; font-weight: 700; color: #0B2417; line-height: 1.4;">{{ manuscript.title }}</p>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="font-size: 15px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">Abstract</h3>
+      <p style="font-size: 14px; color: #1D2924; line-height: 1.6; white-space: pre-line; background: #F8FAF9; padding: 14px 18px; border-radius: 8px;">{{ manuscript.abstract }}</p>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h3 style="font-size: 15px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">Keywords</h3>
+      <p style="font-size: 13.5px; color: #5B7065;">{{ manuscript.keywords }}</p>
+    </div>
+
+    {% if manuscript.co_authors %}
+    <div style="margin-bottom: 20px;">
+      <h3 style="font-size: 15px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">Co-Authors</h3>
+      <p style="font-size: 13.5px; color: #1D2924; white-space: pre-line;">{{ manuscript.co_authors }}</p>
+    </div>
+    {% endif %}
+
+    {% if manuscript.supplementary_file %}
+    <div style="margin-top: 16px;">
+      <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+        📥 Download Supplementary Files
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Revisions History -->
+  {% if revisions %}
+  <div class="portal-card">
+    <div class="portal-card-header">
+      <h2>Revision History</h2>
+    </div>
+    <div class="table-responsive">
+      <table class="portal-table">
+        <thead>
+          <tr>
+            <th>Rev #</th>
+            <th>Submission Date</th>
+            <th>Revised File</th>
+            <th>Response Letter</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rev in revisions %}
+          <tr>
+            <td><strong>Revision {{ rev.revision_number }}</strong></td>
+            <td>{{ rev.submitted_at|date:"M d, Y, h:i A" }}</td>
+            <td>
+              <a href="{{ rev.revised_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+                📥 Download Rev {{ rev.revision_number }}
+              </a>
+            </td>
+            <td>
+              <details>
+                <summary style="cursor: pointer; color: #00B272; font-weight: 700;">View Author Response</summary>
+                <p style="margin-top: 8px; font-size: 13px; color: #1D2924; white-space: pre-line; background: #F8FAF9; padding: 10px; border-radius: 6px;">
+                  {{ rev.response_to_reviewers }}
+                </p>
+              </details>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Activity Audit Log -->
+  <div class="portal-card">
+    <div class="portal-card-header">
+      <h2>Activity Trail & Milestones</h2>
+    </div>
+
+    {% if activity_logs %}
+    <ul class="audit-timeline">
+      {% for log in activity_logs %}
+      <li class="audit-item">
+        <div class="audit-title">{{ log.action }}</div>
+        <div class="audit-meta">{{ log.timestamp|date:"M d, Y, h:i A" }} {% if log.user %}by {{ log.user.get_full_name|default:log.user.username }}{% endif %}</div>
+        {% if log.details %}
+        <div class="audit-desc">{{ log.details }}</div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p style="font-size: 13.5px; color: #64746D;">No audit logs recorded yet.</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
