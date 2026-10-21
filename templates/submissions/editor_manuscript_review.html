@@ -122,10 +122,13 @@
         {% endif %}
       </div>
 
-      <!-- Comment on submitted manuscript by author (Reviewer Reports) -->
+      <!-- Comment on submitted manuscript by author (Review Reports) -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Comment on submitted manuscript by author (Review Reports)</h2>
+          <div>
+            <h2>Comment on submitted manuscript by author</h2>
+            <p>Comments done by reviewer come to Editor first. After Editor approves, comments go to authors.</p>
+          </div>
         </div>
 
         {% if reviews %}
@@ -136,10 +139,16 @@
                 <strong style="color: #0B2417; font-size: 15px;">{{ r.reviewer.get_full_name|default:r.reviewer.username }}</strong>
                 <div style="font-size: 12px; color: #64746D;">{{ r.reviewer.journal_profile.affiliation|default:"Assigned Reviewer" }}</div>
               </div>
-              <div>
-                <span class="status-badge {% if r.status == 'completed' %}accepted{% elif r.status == 'declined' %}rejected{% elif r.status == 'accepted' %}under_review{% else %}submitted{% endif %}">
-                  {{ r.get_status_display }}
-                </span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                {% if r.status == 'completed' %}
+                  {% if r.is_approved_by_editor %}
+                    <span class="status-badge accepted">Approved for Authors</span>
+                  {% else %}
+                    <span class="status-badge under_review">With Editor (Pending Approval)</span>
+                  {% endif %}
+                {% else %}
+                  <span class="status-badge {{ r.status }}">{{ r.get_status_display }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -188,6 +197,27 @@
               </a>
             </div>
             {% endif %}
+
+            <!-- Editor Approval Action Bar for this Reviewer -->
+            <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(11,36,23,0.12); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <span style="font-size: 12.5px; color: #5B7065;">
+                {% if r.is_approved_by_editor %}
+                  <strong style="color: #00B272;">✓ Approved by Editor</strong> &mdash; Visible to Author after decision dispatch.
+                {% else %}
+                  <strong style="color: #EA580C;">🔒 Held with Editor</strong> &mdash; Not visible to Author until Editor approves.
+                {% endif %}
+              </span>
+              <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="toggle_review_approval" value="1">
+                <input type="hidden" name="assignment_id" value="{{ r.id }}">
+                {% if r.is_approved_by_editor %}
+                  <button type="submit" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626;">Revoke Approval</button>
+                {% else %}
+                  <button type="submit" class="btn-portal-primary btn-portal-sm">Approve Comments for Authors</button>
+                {% endif %}
+              </form>
+            </div>
 
             {% else %}
             <p style="font-size: 13px; color: #64746D;">
@@ -293,6 +323,15 @@
             <label for="comments_to_author">Return comments to Authors <span style="color:#DC2626">*</span></label>
             <textarea name="comments_to_author" id="comments_to_author" class="portal-textarea" rows="7" placeholder="Consolidated comments and revisions returned to the author...">{{ manuscript.editor_comments_to_author }}</textarea>
             <span class="field-hint">Comments returned to author on their dashboard.</span>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label class="portal-checkbox-row">
+              <input type="checkbox" name="approve_reviewer_comments" value="1" class="portal-checkbox" checked>
+              <span style="font-size: 13px; color: #0B2417; font-weight: 700;">
+                Approve and release Reviewer comments to Authors with this decision
+              </span>
+            </label>
           </div>
 
           <div class="portal-form-group" style="margin-bottom: 20px;">

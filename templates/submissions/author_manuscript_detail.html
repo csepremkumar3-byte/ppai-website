@@ -111,7 +111,27 @@
     </div>
   </div>
 
-  <!-- Revisions Requested Callout Box -->
+  <!-- Callout when reviewer comments are with Editor awaiting approval -->
+  {% if manuscript.status == 'review_completed' %}
+  <div class="portal-card" style="border-left: 5px solid #2563EB;">
+    <div class="portal-card-header">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Review Completed &mdash; With Editor for Evaluation &amp; Approval
+      </h2>
+      <span class="status-badge review_completed">Pending Editor Approval</span>
+    </div>
+    <div class="review-callout">
+      <p style="font-size: 14px; color: #1D2924; line-height: 1.6;">
+        The peer reviewer has completed their evaluation and submitted comments to the Editor.
+        In accordance with the peer review workflow, <strong>comments done by reviewer go to the Editor first</strong>.
+        The Editor is currently reviewing the report and will approve access / return comments to you once the decision is issued.
+      </p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Revisions Requested Callout Box (Only shown after Editor approves & issues decision) -->
   {% if manuscript.status == 'revisions_requested' or manuscript.editor_comments_to_author %}
   <div class="portal-card" style="border-left: 5px solid {% if manuscript.status == 'accepted' %}#00B272{% elif manuscript.status == 'rejected' %}#EF4444{% else %}#EA580C{% endif %};">
     <div class="portal-card-header">
@@ -139,13 +159,18 @@
     </div>
     {% endif %}
 
-    <!-- Blind Reviewer Comments -->
+    <!-- Reviewer Comments Approved by Editor & Released to Author -->
     {% if completed_reviews %}
     <div style="margin-top: 20px;">
-      <h3 style="font-size: 16px; font-weight: 800; color: #0B2417; margin-bottom: 12px;">Comment on submitted manuscript by author (Reviewer Feedback):</h3>
+      <h3 style="font-size: 16px; font-weight: 800; color: #0B2417; margin-bottom: 12px;">
+        Reviewer Comments Approved by Editor &amp; Returned to Author:
+      </h3>
       {% for rev in completed_reviews %}
-      <div class="review-callout" style="border-left-color: #3B82F6; margin-bottom: 14px;">
-        <h4>Reviewer {{ forloop.counter }} Remarks</h4>
+      <div class="review-callout" style="border-left-color: #00B272; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <h4>Reviewer {{ forloop.counter }} Remarks</h4>
+          <span class="status-badge accepted" style="font-size: 11px;">Approved by Editor</span>
+        </div>
         {% if rev.comments_for_author %}
           <p>{{ rev.comments_for_author }}</p>
         {% else %}

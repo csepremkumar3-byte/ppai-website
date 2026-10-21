@@ -112,8 +112,11 @@ def author_manuscript_detail(request, tracking_id):
     revisions = manuscript.revisions.all()
     activity_logs = manuscript.activity_logs.all()
 
-    # Blind reviewer comments returned to author (filter completed assignments with feedback)
-    completed_reviews = manuscript.review_assignments.filter(status='completed')
+    # Comments done by reviewer go to editor first. ONLY after editor approves and issues decision, it goes to authors!
+    if manuscript.status in ['revisions_requested', 'accepted', 'rejected'] and manuscript.editor_decision != 'pending':
+        completed_reviews = manuscript.review_assignments.filter(status='completed', is_approved_by_editor=True)
+    else:
+        completed_reviews = ReviewAssignment.objects.none()
 
     return render(request, 'submissions/author_manuscript_detail.html', {
         'manuscript': manuscript,
@@ -251,6 +254,16 @@ def editor_manuscript_review(request, tracking_id):
             messages.success(request, f"Review invitation assigned to {reviewer_user.get_full_name() or reviewer_user.username}.")
             return redirect('editor_manuscript_review', tracking_id=tracking_id)
 
+    # Handle explicit Reviewer Comment Approval by Editor
+    if request.method == 'POST' and 'toggle_review_approval' in request.POST:
+        assignment_id = request.POST.get('assignment_id')
+        rev = get_object_or_404(ReviewAssignment, id=assignment_id, manuscript=manuscript)
+        rev.is_approved_by_editor = not rev.is_approved_by_editor
+        rev.save()
+        st_label = "approved to be sent to author" if rev.is_approved_by_editor else "held for editor only"
+        messages.success(request, f"Reviewer evaluation {st_label}.")
+        return redirect('editor_manuscript_review', tracking_id=tracking_id)
+
     # Handle Editorial Decision Form submission (Accept / Revision / Reject)
     if request.method == 'POST' and 'submit_decision' in request.POST:
         decision = request.POST.get('decision')
@@ -272,6 +285,10 @@ def editor_manuscript_review(request, tracking_id):
             manuscript.assigned_editor = request.user
             manuscript.decision_date = timezone.now()
             manuscript.save()
+
+            # Approve reviewer comments so they are released to author with this decision
+            if request.POST.get('approve_reviewer_comments', '1') == '1':
+                manuscript.review_assignments.filter(status='completed').update(is_approved_by_editor=True)
 
             decision_display = dict(EditorDecisionForm.DECISION_CHOICES).get(decision, decision)
             SubmissionActivityLog.objects.create(

@@ -125,10 +125,11 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertTrue(User.objects.filter(email='raman.reviewer@university.ac.in').exists())
         self.client.logout()
 
-    def test_03_full_paper_flow_loop(self):
+    def test_03_full_paper_flow_loop_and_editor_approval_release(self):
         """End-to-End Paper Flow:
         Register -> Login -> Author manuscript submission -> Editor (view and edit) then approve access ->
-        Reviewer (view and edit access) -> Comment on submitted manuscript by author -> Return comments to Authors -> Revision -> Acceptance
+        Reviewer (view and edit access) -> Comment on submitted manuscript by author (goes to editor first) ->
+        Editor approves -> Return comments to Authors -> Revision -> Acceptance
         """
         # 1. Author submits manuscript
         dummy_file = SimpleUploadedFile("paper.docx", b"Manuscript content", content_type="application/msword")
@@ -186,30 +187,47 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(eval_resp.status_code, 200)
         assignment.refresh_from_db()
         self.assertEqual(assignment.status, 'completed')
+        self.assertFalse(assignment.is_approved_by_editor)  # Held with Editor first!
         manuscript.refresh_from_db()
         self.assertEqual(manuscript.status, 'review_completed')
         self.client.logout()
 
-        # 5. Editor reviews feedback and issues decision: Return comments to Authors
+        # Verify: comments done by reviewer go to editor first (Author CANNOT see them yet!)
+        self.client.login(username='author@university.edu', password='AuthorPass123!')
+        author_view_pre = self.client.get(reverse('author_manuscript_detail', kwargs={'tracking_id': manuscript.tracking_id}))
+        self.assertEqual(author_view_pre.status_code, 200)
+        self.assertNotContains(author_view_pre, 'Interesting methodology. Please elaborate on spore concentration metrics in Table 2.')
+        self.assertContains(author_view_pre, 'Pending Editor Approval')
+        self.client.logout()
+
+        # 5. Editor reviews feedback, APPROVES reviewer comments, and issues decision: Return comments to Authors
         self.client.login(username='editor@ppai.org.in', password='EditorPass123!')
         decision_resp = self.client.post(
             reverse('editor_manuscript_review', kwargs={'tracking_id': manuscript.tracking_id}),
             {
                 'submit_decision': '1',
                 'decision': 'minor_revision',
+                'approve_reviewer_comments': '1',  # Editor approves comments to go to author!
                 'comments_to_author': 'Please address Reviewer points regarding spore concentration in Table 2 and resubmit.',
                 'internal_notes': 'Awaiting revised tables.'
             },
             follow=True
         )
         self.assertEqual(decision_resp.status_code, 200)
+        assignment.refresh_from_db()
+        self.assertTrue(assignment.is_approved_by_editor)  # Now approved by editor!
         manuscript.refresh_from_db()
         self.assertEqual(manuscript.status, 'revisions_requested')
         self.assertEqual(manuscript.editor_decision, 'minor_revision')
         self.client.logout()
 
-        # 6. Author views comments and submits revised manuscript (Return comments to Authors response)
+        # 6. Author visits after Editor approves: Reviewer comments are NOW visible to Author!
         self.client.login(username='author@university.edu', password='AuthorPass123!')
+        author_view_post = self.client.get(reverse('author_manuscript_detail', kwargs={'tracking_id': manuscript.tracking_id}))
+        self.assertEqual(author_view_post.status_code, 200)
+        self.assertContains(author_view_post, 'Interesting methodology. Please elaborate on spore concentration metrics in Table 2.')
+
+        # Author submits revised manuscript (Return comments to Authors response)
         rev_file = SimpleUploadedFile("revised_paper.docx", b"Revised manuscript with updated Table 2", content_type="application/msword")
         rev_resp = self.client.post(
             reverse('author_submit_revision', kwargs={'tracking_id': manuscript.tracking_id}),
@@ -232,6 +250,7 @@ class PeerReviewWorkflowTests(TestCase):
             {
                 'submit_decision': '1',
                 'decision': 'accept',
+                'approve_reviewer_comments': '1',
                 'comments_to_author': 'We are pleased to approve access and accept your revised manuscript for publication in the Indian Journal of Plant Protection (IJPP)!',
                 'internal_notes': 'Accepted for upcoming volume.'
             },

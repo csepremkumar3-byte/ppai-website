@@ -174,6 +174,7 @@ class ReviewAssignment(models.Model):
     confidential_comments_to_editor = models.TextField(blank=True, help_text="Confidential remarks seen only by the editor")
     annotated_file = models.FileField(upload_to=reviewer_annotated_path, blank=True, null=True, help_text="Optional manuscript copy with reviewer comments/track changes")
 
+    is_approved_by_editor = models.BooleanField(default=False, help_text="Editor approves releasing comments to author")
     invitation_date = models.DateTimeField(auto_now_add=True)
     completed_date = models.DateTimeField(null=True, blank=True)
 
