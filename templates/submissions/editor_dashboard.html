@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Editor (view and edit) then approve access — Plant Protection Association of India & IJPP{% endblock %}
+{% block title %}Editor Dashboard — Plant Protection Association of India (PPAI){% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -53,24 +53,24 @@
   <div class="portal-header-bar">
     <div class="portal-header-left">
       <div class="portal-user-avatar" style="background: linear-gradient(135deg, #0B2417, #234E52);">
-        🏛️
+        E
       </div>
       <div class="portal-user-meta">
-        <h2>Editor (view and edit) then approve access</h2>
+        <h2>Editor Command Center</h2>
         <p>
           <span class="role-badge editor">Editor</span>
-          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
+          <span>Plant Protection Association of India (PPAI)</span>
         </p>
       </div>
     </div>
 
     <div class="portal-header-actions">
       <a href="{% url 'author_dashboard' %}" class="portal-tab-pill">
-        <span>✍️ Author Dashboard</span>
+        <span>Author Dashboard</span>
       </a>
       {% if profile.is_reviewer or profile.role == 'reviewer' %}
       <a href="{% url 'reviewer_dashboard' %}" class="portal-tab-pill">
-        <span>🔍 Reviewer (View and edit access)</span>
+        <span>Reviewer Panel</span>
       </a>
       {% endif %}
       <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
@@ -89,71 +89,28 @@
   </div>
   {% endif %}
 
-  <!-- Editor KPI Cards -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-card-info">
-        <h3>Awaiting Screening</h3>
-        <div class="stat-value" style="color: #2563EB;">{{ counts.submitted }}</div>
-      </div>
-      <div class="stat-card-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563EB;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-card-info">
-        <h3>Reviewer (View &amp; Edit)</h3>
-        <div class="stat-value" style="color: #F59E0B;">{{ counts.under_review }}</div>
-      </div>
-      <div class="stat-card-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-card-info">
-        <h3>Comments Ready for Decision</h3>
-        <div class="stat-value" style="color: #9333EA;">{{ counts.review_completed }}</div>
-      </div>
-      <div class="stat-card-icon" style="background: rgba(147, 51, 234, 0.1); color: #9333EA;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-card-info">
-        <h3>Revisions Resubmitted</h3>
-        <div class="stat-value" style="color: #06B6D4;">{{ counts.revised_submitted }}</div>
-      </div>
-      <div class="stat-card-icon" style="background: rgba(6, 182, 212, 0.1); color: #06B6D4;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-      </div>
-    </div>
-  </div>
-
-  <!-- Status Filter Pills -->
+  <!-- Status Filter Pills (No bulky stats cards) -->
   <div class="filter-bar">
     <a href="{% url 'editor_dashboard' %}?status=all" class="filter-pill {% if status_filter == 'all' %}active{% endif %}">
       All Manuscripts <span class="count">{{ counts.all }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=submitted" class="filter-pill {% if status_filter == 'submitted' %}active{% endif %}">
-      Author manuscript submission <span class="count">{{ counts.submitted }}</span>
+      Submitted <span class="count">{{ counts.submitted }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=under_review" class="filter-pill {% if status_filter == 'under_review' %}active{% endif %}">
-      Reviewer (view and edit access) <span class="count">{{ counts.under_review }}</span>
+      Under Review <span class="count">{{ counts.under_review }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=review_completed" class="filter-pill {% if status_filter == 'review_completed' %}active{% endif %}">
-      Comment on submitted manuscript <span class="count">{{ counts.review_completed }}</span>
+      Review Completed <span class="count">{{ counts.review_completed }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=revised_submitted" class="filter-pill {% if status_filter == 'revised_submitted' %}active{% endif %}">
       Revised Submitted <span class="count">{{ counts.revised_submitted }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=revisions_requested" class="filter-pill {% if status_filter == 'revisions_requested' %}active{% endif %}">
-      Return comments to Authors <span class="count">{{ counts.revisions_requested }}</span>
+      Revisions Requested <span class="count">{{ counts.revisions_requested }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=accepted" class="filter-pill {% if status_filter == 'accepted' %}active{% endif %}">
-      Approve Access (Accepted) <span class="count">{{ counts.accepted }}</span>
+      Accepted <span class="count">{{ counts.accepted }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=rejected" class="filter-pill {% if status_filter == 'rejected' %}active{% endif %}">
       Rejected <span class="count">{{ counts.rejected }}</span>
@@ -164,8 +121,8 @@
   <div class="portal-card">
     <div class="portal-card-header">
       <div>
-        <h2>Author manuscript submission &mdash; Editor (view and edit) then approve access</h2>
-        <p>Plant Protection Association of India (PPAI) &bull; IJPP (Indian Journal of Plant Protection)</p>
+        <h2>Editorial Manuscripts &mdash; View, Edit, Assign Reviewer &amp; Approve</h2>
+        <p>Plant Protection Association of India (PPAI)</p>
       </div>
     </div>
 
@@ -193,26 +150,32 @@
               <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="paper-title">
                 {{ m.title }}
               </a>
-              <span class="paper-meta">{{ m.get_subject_area_display }} • {{ m.get_article_type_display }}</span>
+              <span class="paper-meta">{{ m.get_subject_area_display }} &bull; {{ m.get_article_type_display }}</span>
             </td>
             <td>
               <strong style="color: #0B2417; font-size: 13.5px;">{{ m.author.get_full_name|default:m.author.username }}</strong>
               <div style="font-size: 12px; color: #64746D;">{{ m.author.journal_profile.affiliation|truncatechars:35 }}</div>
             </td>
             <td>
-              {% with assignments=m.review_assignments.all %}
-              {% if assignments %}
-                <span style="font-size: 13px; font-weight: 700; color: #0B2417;">
-                  {{ assignments|length }} Assigned
-                </span>
-                <div style="font-size: 11.5px; color: #64746D;">
-                  {% for a in assignments %}
-                    {{ a.reviewer.first_name|default:a.reviewer.username }}{% if not forloop.last %}, {% endif %}
-                  {% endfor %}
-                </div>
-              {% else %}
-                <span style="font-size: 12px; color: #EA580C; font-weight: 700;">Needs Reviewer</span>
-              {% endif %}
+              {% with revs=m.review_assignments.all %}
+                {% if revs %}
+                  <div style="font-size: 12px; display: flex; flex-direction: column; gap: 3px;">
+                    {% for r in revs %}
+                    <span>
+                      &bull; {{ r.reviewer.get_full_name|default:r.reviewer.username }}
+                      {% if r.status == 'completed' %}
+                        <strong style="color: #00B272;">(Reviewed)</strong>
+                      {% elif r.status == 'accepted' %}
+                        <strong style="color: #2563EB;">(Evaluating)</strong>
+                      {% else %}
+                        <span style="color: #EA580C;">(Invited)</span>
+                      {% endif %}
+                    </span>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <span style="font-size: 12px; color: #DC2626; font-weight: 700;">No reviewer assigned</span>
+                {% endif %}
               {% endwith %}
             </td>
             <td>
@@ -225,7 +188,7 @@
             </td>
             <td style="text-align: right; white-space: nowrap;">
               <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-primary btn-portal-sm">
-                View &amp; Edit &bull; Approve Access
+                View &amp; Edit
               </a>
             </td>
           </tr>
@@ -235,7 +198,8 @@
     </div>
     {% else %}
     <div style="text-align: center; padding: 48px 20px;">
-      <p style="font-size: 15px; color: #64746D;">No manuscripts match the selected status filter.</p>
+      <h3 style="font-size: 18px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">No manuscripts found</h3>
+      <p style="font-size: 14px; color: #5B7065;">There are no manuscripts matching this filter status.</p>
     </div>
     {% endif %}
   </div>

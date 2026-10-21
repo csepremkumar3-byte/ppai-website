@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Editor (view and edit) then approve access: {{ manuscript.tracking_id }} — PPAI & IJPP{% endblock %}
+{% block title %}Editor Dossier: {{ manuscript.tracking_id }} — Plant Protection Association of India (PPAI){% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -38,13 +38,13 @@
   <div class="portal-header-bar">
     <div class="portal-header-left">
       <div class="portal-user-avatar" style="background: linear-gradient(135deg, #0B2417, #234E52);">
-        🏛️
+        E
       </div>
       <div class="portal-user-meta">
-        <h2>Editor (view and edit) then approve access: {{ manuscript.tracking_id }}</h2>
+        <h2>Editorial Dossier: {{ manuscript.tracking_id }}</h2>
         <p>
           <span class="status-badge {{ manuscript.status }}">{{ manuscript.get_status_display }}</span>
-          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
+          <span>Plant Protection Association of India (PPAI)</span>
         </p>
       </div>
     </div>
@@ -72,28 +72,87 @@
     <!-- Left Column: Manuscript Details, Revisions & Reviewer Comments -->
     <div>
 
-      <!-- Manuscript Core Info -->
+      <!-- Manuscript Core Info (View & Edit Access) -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Author manuscript submission &mdash; Dossier</h2>
-          <div style="display: flex; gap: 8px;">
+          <div>
+            <h2>Manuscript Dossier (View &amp; Edit)</h2>
+            <p>Author: <strong>{{ manuscript.author.get_full_name|default:manuscript.author.username }}</strong> &bull; {{ manuscript.author.journal_profile.affiliation|default:"PPAI" }}</p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn-portal-secondary btn-portal-sm" onclick="toggleEditModal()">
+              ✏️ Edit Details
+            </button>
             {% if manuscript.manuscript_file %}
             <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
-              📥 Download Manuscript
+              ⬇️ Download Manuscript
             </a>
             {% endif %}
             {% if manuscript.supplementary_file %}
             <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-              📥 Supplementary
+              📁 Supplementary
             </a>
             {% endif %}
           </div>
         </div>
 
+        <!-- Collapsible Edit Form for Editor -->
+        <div id="editor-edit-form-box" style="display: none; background: #F3F7F5; border: 1px solid #D1E5DC; border-radius: 8px; padding: 18px; margin-bottom: 20px;">
+          <h3 style="font-size: 15px; font-weight: 800; color: #0B2417; margin-bottom: 12px;">✏️ Edit Manuscript Metadata</h3>
+          <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}">
+            {% csrf_token %}
+            <input type="hidden" name="edit_manuscript" value="1">
+
+            <div class="portal-form-group" style="margin-bottom: 12px;">
+              <label for="edit_title" style="font-weight: 700; font-size: 13px;">Title <span style="color:#DC2626">*</span></label>
+              <input type="text" id="edit_title" name="title" class="portal-input" value="{{ manuscript.title }}" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div class="portal-form-group">
+                <label for="edit_article_type" style="font-weight: 700; font-size: 13px;">Article Type</label>
+                <select name="article_type" id="edit_article_type" class="portal-select">
+                  {% for code, label in article_types %}
+                  <option value="{{ code }}" {% if manuscript.article_type == code %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="portal-form-group">
+                <label for="edit_subject_area" style="font-weight: 700; font-size: 13px;">Subject Discipline</label>
+                <select name="subject_area" id="edit_subject_area" class="portal-select">
+                  {% for code, label in subject_areas %}
+                  <option value="{{ code }}" {% if manuscript.subject_area == code %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="portal-form-group" style="margin-bottom: 12px;">
+              <label for="edit_abstract" style="font-weight: 700; font-size: 13px;">Abstract <span style="color:#DC2626">*</span></label>
+              <textarea name="abstract" id="edit_abstract" class="portal-textarea" rows="5" required>{{ manuscript.abstract }}</textarea>
+            </div>
+
+            <div class="portal-form-group" style="margin-bottom: 12px;">
+              <label for="edit_keywords" style="font-weight: 700; font-size: 13px;">Keywords</label>
+              <input type="text" id="edit_keywords" name="keywords" class="portal-input" value="{{ manuscript.keywords }}">
+            </div>
+
+            <div class="portal-form-group" style="margin-bottom: 14px;">
+              <label for="edit_co_authors" style="font-weight: 700; font-size: 13px;">Co-Authors</label>
+              <textarea name="co_authors" id="edit_co_authors" class="portal-textarea" rows="2">{{ manuscript.co_authors }}</textarea>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button type="submit" class="btn-portal-primary btn-portal-sm">Save Changes</button>
+              <button type="button" class="btn-portal-secondary btn-portal-sm" onclick="toggleEditModal()">Cancel</button>
+            </div>
+          </form>
+        </div>
+
         <div style="margin-bottom: 16px;">
           <h3 style="font-size: 17px; font-weight: 800; color: #0B2417; line-height: 1.4;">{{ manuscript.title }}</h3>
           <div style="font-size: 13px; color: #64746D; margin-top: 4px;">
-            {{ manuscript.get_article_type_display }} • {{ manuscript.get_subject_area_display }} • Submitted {{ manuscript.created_at|date:"M d, Y" }}
+            {{ manuscript.get_article_type_display }} &bull; {{ manuscript.get_subject_area_display }} &bull; Submitted {{ manuscript.created_at|date:"M d, Y" }}
           </div>
         </div>
 
@@ -122,11 +181,11 @@
         {% endif %}
       </div>
 
-      <!-- Comment on submitted manuscript by author (Review Reports) -->
+      <!-- Reviewer Comments on Manuscript (Editor Approves Here) -->
       <div class="portal-card">
         <div class="portal-card-header">
           <div>
-            <h2>Comment on submitted manuscript by author</h2>
+            <h2>Reviewer Evaluations &amp; Comments</h2>
             <p>Comments done by reviewer come to Editor first. After Editor approves, comments go to authors.</p>
           </div>
         </div>
@@ -193,7 +252,7 @@
             {% if r.annotated_file %}
             <div style="margin-top: 8px;">
               <a href="{{ r.annotated_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-                📥 Download Reviewer Annotated File
+                📎 Download Reviewer Annotated File
               </a>
             </div>
             {% endif %}
@@ -204,7 +263,7 @@
                 {% if r.is_approved_by_editor %}
                   <strong style="color: #00B272;">✓ Approved by Editor</strong> &mdash; Visible to Author after decision dispatch.
                 {% else %}
-                  <strong style="color: #EA580C;">🔒 Held with Editor</strong> &mdash; Not visible to Author until Editor approves.
+                  <strong style="color: #EA580C;">⏳ Held with Editor</strong> &mdash; Not visible to Author until Editor approves.
                 {% endif %}
               </span>
               <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}" style="display:inline;">
@@ -235,14 +294,14 @@
       {% if revisions %}
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Return comments to Authors &mdash; Revisions Submitted</h2>
+          <h2>Revisions Submitted by Author</h2>
         </div>
         {% for rev in revisions %}
         <div style="background: #F8FAF9; border-radius: 8px; padding: 14px; margin-bottom: 12px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong>Revision {{ rev.revision_number }} ({{ rev.submitted_at|date:"M d, Y, h:i A" }})</strong>
             <a href="{{ rev.revised_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-              📥 Download Revision {{ rev.revision_number }}
+              ⬇️ Download Revision {{ rev.revision_number }}
             </a>
           </div>
           <div>
@@ -259,11 +318,11 @@
     <!-- Right Column: Reviewer Assignment & Editorial Decision Dispatch -->
     <div>
 
-      <!-- Action Panel 1: Reviewer (view and edit access) -->
+      <!-- Action Panel 1: Assign Reviewer -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Reviewer (view and edit access)</h2>
-          <p>Assign reviewer to comment on submitted manuscript</p>
+          <h2>Assign Reviewer</h2>
+          <p>Select qualified reviewer to evaluate manuscript</p>
         </div>
 
         {% if available_reviewers %}
@@ -289,7 +348,7 @@
           </div>
 
           <button type="submit" class="btn-portal-primary" style="width: 100%;">
-            Grant Reviewer (View and edit access)
+            Assign Reviewer
           </button>
         </form>
         {% else %}
@@ -297,11 +356,11 @@
         {% endif %}
       </div>
 
-      <!-- Action Panel 2: Editor (view and edit) then approve access -> Loop: return comments to Authors -->
+      <!-- Action Panel 2: Editorial Decision & Return Comments to Author -->
       <div class="portal-card" style="border: 2px solid rgba(0, 178, 114, 0.4);">
         <div class="portal-card-header">
-          <h2>Editor (view and edit) then approve access</h2>
-          <p>Approve access or Return comments to Authors</p>
+          <h2>Editorial Decision &amp; Feedback</h2>
+          <p>Approve or Return comments to Author</p>
         </div>
 
         <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}">
@@ -313,14 +372,14 @@
             <select name="decision" id="decision" class="portal-select" required>
               <option value="">-- Choose Decision --</option>
               <option value="accept" {% if manuscript.editor_decision == 'accept' %}selected{% endif %}>Approve Access &bull; Accept for Publication</option>
-              <option value="minor_revision" {% if manuscript.editor_decision == 'minor_revision' %}selected{% endif %}>Return comments to Authors (Minor Revision)</option>
-              <option value="major_revision" {% if manuscript.editor_decision == 'major_revision' %}selected{% endif %}>Return comments to Authors (Major Revision)</option>
+              <option value="minor_revision" {% if manuscript.editor_decision == 'minor_revision' %}selected{% endif %}>Return comments to Author (Minor Revision)</option>
+              <option value="major_revision" {% if manuscript.editor_decision == 'major_revision' %}selected{% endif %}>Return comments to Author (Major Revision)</option>
               <option value="reject" {% if manuscript.editor_decision == 'reject' %}selected{% endif %}>Reject Manuscript</option>
             </select>
           </div>
 
           <div class="portal-form-group" style="margin-bottom: 16px;">
-            <label for="comments_to_author">Return comments to Authors <span style="color:#DC2626">*</span></label>
+            <label for="comments_to_author">Comments to Author <span style="color:#DC2626">*</span></label>
             <textarea name="comments_to_author" id="comments_to_author" class="portal-textarea" rows="7" placeholder="Consolidated comments and revisions returned to the author...">{{ manuscript.editor_comments_to_author }}</textarea>
             <span class="field-hint">Comments returned to author on their dashboard.</span>
           </div>
@@ -329,7 +388,7 @@
             <label class="portal-checkbox-row">
               <input type="checkbox" name="approve_reviewer_comments" value="1" class="portal-checkbox" checked>
               <span style="font-size: 13px; color: #0B2417; font-weight: 700;">
-                Approve and release Reviewer comments to Authors with this decision
+                Approve and release Reviewer comments to Author with this decision
               </span>
             </label>
           </div>
@@ -339,28 +398,10 @@
             <textarea name="internal_notes" id="internal_notes" class="portal-textarea" rows="3" placeholder="Notes for editorial board archive only...">{{ manuscript.editor_internal_notes }}</textarea>
           </div>
 
-          <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 12px; font-size: 14.5px;">
-            Submit Decision &bull; Return comments to Authors
+          <button type="submit" class="btn-portal-primary" style="width: 100%; font-size: 15px; padding: 12px;">
+            Send Decision &amp; Return Comments
           </button>
         </form>
-      </div>
-
-      <!-- Activity Timeline -->
-      <div class="portal-card">
-        <div class="portal-card-header">
-          <h2>Audit Trail</h2>
-        </div>
-        <ul class="audit-timeline">
-          {% for log in activity_logs %}
-          <li class="audit-item">
-            <div class="audit-title">{{ log.action }}</div>
-            <div class="audit-meta">{{ log.timestamp|date:"M d, Y, h:i A" }}</div>
-            {% if log.details %}<div class="audit-desc">{{ log.details }}</div>{% endif %}
-          </li>
-          {% empty %}
-          <li style="font-size: 13px; color: #64746D;">No audit logs recorded.</li>
-          {% endfor %}
-        </ul>
       </div>
 
     </div>
@@ -368,4 +409,16 @@
   </div>
 
 </div>
+
+<script>
+function toggleEditModal() {
+  var box = document.getElementById('editor-edit-form-box');
+  if (box.style.display === 'none' || box.style.display === '') {
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    box.style.display = 'none';
+  }
+}
+</script>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Comment on submitted manuscript by author: {{ manuscript.tracking_id }} — PPAI & IJPP{% endblock %}
+{% block title %}Review Manuscript: {{ manuscript.tracking_id }} — Plant Protection Association of India (PPAI){% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -45,13 +45,13 @@
   <div class="portal-header-bar">
     <div class="portal-header-left">
       <div class="portal-user-avatar" style="background: linear-gradient(135deg, #B7791F, #EAB308);">
-        📝
+        R
       </div>
       <div class="portal-user-meta">
-        <h2>Reviewer (view and edit access): {{ manuscript.tracking_id }}</h2>
+        <h2>Peer Review: {{ manuscript.tracking_id }}</h2>
         <p>
           <span class="role-badge reviewer">Reviewer</span>
-          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
+          <span>Plant Protection Association of India (PPAI)</span>
         </p>
       </div>
     </div>
@@ -80,10 +80,10 @@
     <div>
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Author manuscript submission &mdash; Dossier</h2>
+          <h2>Manuscript Dossier</h2>
           {% if manuscript.manuscript_file %}
           <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
-            📥 Download Full Manuscript
+            ⬇️ Download Full Manuscript
           </a>
           {% endif %}
         </div>
@@ -91,7 +91,7 @@
         <div style="margin-bottom: 16px;">
           <h3 style="font-size: 18px; font-weight: 800; color: #0B2417; line-height: 1.4;">{{ manuscript.title }}</h3>
           <div style="font-size: 13px; color: #64746D; margin-top: 4px;">
-            {{ manuscript.get_article_type_display }} • {{ manuscript.get_subject_area_display }}
+            {{ manuscript.get_article_type_display }} &bull; {{ manuscript.get_subject_area_display }}
           </div>
         </div>
 
@@ -108,7 +108,7 @@
         {% if manuscript.supplementary_file %}
         <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(11, 36, 23, 0.08);">
           <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-            📥 Supplementary Material / Data
+            📁 Supplementary Material / Data
           </a>
         </div>
         {% endif %}
@@ -125,19 +125,19 @@
       </div>
     </div>
 
-    <!-- Right Column: Comment on submitted manuscript by author -->
+    <!-- Right Column: Reviewer Comments -->
     <div>
       <div class="portal-card">
         <div class="portal-card-header">
           <h2>
             {% if assignment.status == 'completed' %}
-              Comment on submitted manuscript by author (Completed)
+              Peer Review Evaluation (Completed)
             {% else %}
-              Comment on submitted manuscript by author
+              Peer Review Evaluation &amp; Comments
             {% endif %}
           </h2>
           {% if assignment.status == 'completed' %}
-            <span class="status-badge accepted">Comment Recorded</span>
+            <span class="status-badge accepted">Submitted to Editor</span>
           {% endif %}
         </div>
 
@@ -165,7 +165,7 @@
 
           {% if assignment.confidential_comments_to_editor %}
           <div class="review-callout warning" style="margin-bottom: 16px;">
-            <h4>Confidential Comments to Editor:</h4>
+            <h4>🔒 Confidential Comments to Editor:</h4>
             <p>{{ assignment.confidential_comments_to_editor }}</p>
           </div>
           {% endif %}
@@ -173,7 +173,7 @@
           {% if assignment.annotated_file %}
           <div>
             <a href="{{ assignment.annotated_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-              📥 Download Your Uploaded Annotated File
+              📎 Download Your Uploaded Annotated File
             </a>
           </div>
           {% endif %}
@@ -225,7 +225,7 @@
             </div>
 
             <div class="portal-form-group" style="margin-bottom: 20px;">
-              <label for="{{ form.comments_for_author.id_for_label }}">Comment on submitted manuscript by author <span style="color:#DC2626">*</span></label>
+              <label for="{{ form.comments_for_author.id_for_label }}">Comments for Author <span style="color:#DC2626">*</span></label>
               {{ form.comments_for_author }}
               <span class="field-hint">Constructive critique highlighting strengths, major comments, and corrections for the author.</span>
               {% if form.comments_for_author.errors %}<div class="error-text">{{ form.comments_for_author.errors.0 }}</div>{% endif %}
@@ -247,7 +247,7 @@
             <div style="display: flex; gap: 12px; justify-content: flex-end;">
               <a href="{% url 'reviewer_dashboard' %}" class="btn-portal-secondary">Cancel</a>
               <button type="submit" class="btn-portal-primary" style="padding: 12px 28px;">
-                Submit comment on submitted manuscript by author
+                Submit Comments to Editor
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
             </div>

@@ -28,7 +28,14 @@ def get_user_profile(user):
 
 
 def portal_login(request):
-    """Redirects to unified login."""
+    """Redirects to role-based dashboard if authenticated, else login."""
+    if request.user.is_authenticated:
+        profile = get_user_profile(request.user)
+        if profile.is_editor or request.user.is_staff or request.user.is_superuser:
+            return redirect('editor_dashboard')
+        elif profile.is_reviewer:
+            return redirect('reviewer_dashboard')
+        return redirect('author_dashboard')
     return redirect('login')
 
 
@@ -223,6 +230,38 @@ def editor_manuscript_review(request, tracking_id):
         Q(is_reviewer=True) | Q(role='reviewer')
     ).exclude(user=manuscript.author).exclude(user_id__in=assigned_reviewer_ids).select_related('user')
 
+    # Handle Editor Editing Manuscript Details (view and edit access)
+    if request.method == 'POST' and 'edit_manuscript' in request.POST:
+        title = request.POST.get('title', '').strip()
+        abstract = request.POST.get('abstract', '').strip()
+        keywords = request.POST.get('keywords', '').strip()
+        subject_area = request.POST.get('subject_area', '').strip()
+        article_type = request.POST.get('article_type', '').strip()
+        co_authors = request.POST.get('co_authors', '').strip()
+
+        if title:
+            manuscript.title = title
+        if abstract:
+            manuscript.abstract = abstract
+        if keywords:
+            manuscript.keywords = keywords
+        if subject_area:
+            manuscript.subject_area = subject_area
+        if article_type:
+            manuscript.article_type = article_type
+        if co_authors is not None:
+            manuscript.co_authors = co_authors
+        manuscript.save()
+
+        SubmissionActivityLog.objects.create(
+            manuscript=manuscript,
+            user=request.user,
+            action="Manuscript Updated by Editor",
+            details=f"Editor {request.user.get_full_name() or request.user.username} updated manuscript details."
+        )
+        messages.success(request, "Manuscript details have been successfully updated.")
+        return redirect('editor_manuscript_review', tracking_id=tracking_id)
+
     # Handle Reviewer Assignment Form submission
     if request.method == 'POST' and 'assign_reviewer' in request.POST:
         reviewer_id = request.POST.get('reviewer_id')
@@ -308,6 +347,8 @@ def editor_manuscript_review(request, tracking_id):
         'revisions': revisions,
         'activity_logs': activity_logs,
         'available_reviewers': available_reviewers,
+        'article_types': Manuscript.ARTICLE_TYPES,
+        'subject_areas': Manuscript.SUBJECT_AREAS,
     })
 
 

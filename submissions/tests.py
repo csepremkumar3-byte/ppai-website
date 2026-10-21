@@ -68,7 +68,7 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertRedirects(response, reverse('author_dashboard'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Plant Protection Association of India')
-        self.assertContains(response, 'Author manuscript submission')
+        self.assertContains(response, 'My Submissions')
         self.client.logout()
 
         # Reviewer login -> reviewer_dashboard
@@ -78,7 +78,8 @@ class PeerReviewWorkflowTests(TestCase):
         }, follow=True)
         self.assertRedirects(response, reverse('reviewer_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Reviewer (view and edit access)')
+        self.assertContains(response, 'Reviewer')
+        self.assertContains(response, 'Assigned Manuscripts')
         self.client.logout()
 
         # Editor login -> editor_dashboard
@@ -88,7 +89,7 @@ class PeerReviewWorkflowTests(TestCase):
         }, follow=True)
         self.assertRedirects(response, reverse('editor_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Editor (view and edit) then approve access')
+        self.assertContains(response, 'Editor Command Center')
         self.client.logout()
 
     def test_02_existing_register_with_roles(self):
