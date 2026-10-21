@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Membership Registration — Plant Protection Association of India (PPAI)</title>
+  <title>Register (Role-Based Registration) — Plant Protection Association of India (PPAI) & IJPP</title>
   
   <!-- Favicon / Web Icons -->
   {% if site_settings and site_settings.logo %}
@@ -53,15 +53,15 @@
       align-items: center;
       justify-content: center;
       background: #F4F8F5;
-      padding: 16px;
+      padding: 20px 16px;
     }
 
     .auth-card {
       width: 100%;
-      max-width: 500px;
+      max-width: 580px;
       background: #FFFFFF;
-      border-radius: 16px;
-      padding: 24px 30px;
+      border-radius: 18px;
+      padding: 26px 32px;
       box-shadow: var(--shadow-lg);
       border: 1px solid var(--border-color);
       position: relative;
@@ -91,58 +91,82 @@
 
     .brand-header {
       text-align: center;
-      margin-bottom: 12px;
-      padding-bottom: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--border-color);
     }
 
     .brand-logo {
       height: 48px;
       width: auto;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .brand-title {
-      font-size: 13.5px;
+      font-size: 14.5px;
       font-weight: 800;
       color: var(--deep-forest);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+
+    .brand-journal {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--vibrant-green);
+      margin-top: 3px;
     }
 
     .brand-sub {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
     .form-title {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 800;
       color: var(--deep-forest);
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
       letter-spacing: -0.02em;
     }
 
-    /* Radio Pills */
-    .member-type-container {
-      display: flex;
+    .form-subtitle {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #5B7065;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    /* Role Selection Pills */
+    .role-pills-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--deep-forest);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .role-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
       background: #EDF5F0;
-      padding: 4px;
-      border-radius: 100px;
+      padding: 6px;
+      border-radius: 12px;
       border: 1px solid #D8E8DF;
     }
 
-    .member-type-option {
-      flex: 1;
-      text-align: center;
+    .role-option {
       position: relative;
+      text-align: center;
     }
 
-    .member-type-option input {
+    .role-option input {
       position: absolute;
       opacity: 0;
       cursor: pointer;
@@ -153,21 +177,32 @@
       z-index: 2;
     }
 
-    .member-type-option label {
-      display: block;
-      padding: 6px 10px;
+    .role-option label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 6px;
       font-size: 12px;
       font-weight: 700;
       color: var(--text-muted);
-      border-radius: 100px;
+      border-radius: 8px;
       transition: all 0.2s;
       cursor: pointer;
+      line-height: 1.25;
     }
 
-    .member-type-option input:checked + label {
+    .role-option label small {
+      font-size: 10px;
+      font-weight: 600;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    .role-option input:checked + label {
       background: var(--vibrant-green);
       color: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(0, 178, 114, 0.3);
+      box-shadow: 0 3px 10px rgba(0, 178, 114, 0.3);
     }
 
     /* Form Grid */
@@ -177,9 +212,15 @@
       gap: 12px;
     }
 
+    @media (max-width: 540px) {
+      .form-grid-row, .role-selection-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Input Groups */
     .input-group {
-      margin-bottom: 11px;
+      margin-bottom: 12px;
       position: relative;
     }
 
@@ -199,8 +240,8 @@
 
     .input-field {
       width: 100%;
-      padding: 8.5px 12px;
-      font-size: 12.5px;
+      padding: 9px 12px;
+      font-size: 13px;
       font-family: inherit;
       color: var(--text-main);
       background: #F9FCFA;
@@ -235,20 +276,19 @@
     /* Submit Button */
     .btn-submit {
       width: 100%;
-      padding: 11px;
+      padding: 12px;
       background: var(--vibrant-green);
       color: #FFFFFF;
       border: none;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       font-family: inherit;
       cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       transition: all 0.2s;
       box-shadow: 0 3px 10px rgba(0, 178, 114, 0.25);
-      margin-top: 4px;
+      margin-top: 8px;
     }
 
     .btn-submit:hover {
@@ -259,8 +299,8 @@
 
     .auth-footer {
       text-align: center;
-      margin-top: 12px;
-      font-size: 12px;
+      margin-top: 14px;
+      font-size: 12.5px;
       color: var(--text-muted);
     }
 
@@ -278,10 +318,10 @@
       background: rgba(220, 38, 38, 0.08);
       border: 1px solid rgba(220, 38, 38, 0.2);
       color: #DC2626;
-      padding: 8px 12px;
+      padding: 9px 12px;
       border-radius: 6px;
-      font-size: 11.5px;
-      margin-bottom: 10px;
+      font-size: 12px;
+      margin-bottom: 12px;
       font-weight: 600;
     }
   </style>
@@ -296,18 +336,20 @@
       </a>
     </div>
 
-    <!-- Brand Header -->
+    <!-- Brand Header with Plant Protection Association of India & IJPP -->
     <div class="brand-header">
       {% if site_settings and site_settings.logo %}
         <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo">
       {% else %}
         <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo">
       {% endif %}
-      <div class="brand-title">Plant Protection Association of India</div>
+      <div class="brand-title">Plant Protection Association of India (PPAI)</div>
+      <div class="brand-journal">IJPP (Indian Journal of Plant Protection)</div>
       <div class="brand-sub">ICAR-NBPGR RS, Rajendranagar, Hyderabad &ndash; 500030</div>
     </div>
 
-    <h1 class="form-title">Membership Registration</h1>
+    <h1 class="form-title">Register (Role-Based Registration)</h1>
+    <div class="form-subtitle">Author, Editor and Reviewer (Role-Based Registration)</div>
 
     {% if error %}
       <div class="alert-error">{{ error }}</div>
@@ -316,39 +358,78 @@
     <form method="POST" action="{% url 'register' %}">
       {% csrf_token %}
 
-      <!-- Member Type Toggle (Inland / Foreign) -->
-      <div class="member-type-container">
-        <div class="member-type-option">
-          <input type="radio" id="inland" name="member_type" value="inland" checked>
-          <label for="inland">Inland Member</label>
+      <!-- Role Selection matching Paper Flow -->
+      <label class="role-pills-label">Select Role in Paper Flow <span style="color:#DC2626">*</span></label>
+      <div class="role-selection-grid">
+        <div class="role-option">
+          <input type="radio" id="role_author" name="role" value="author" {% if not role or role == 'author' %}checked{% endif %}>
+          <label for="role_author">
+            <span>✍️ Author</span>
+            <small>Manuscript Submission</small>
+          </label>
         </div>
-        <div class="member-type-option">
-          <input type="radio" id="foreign" name="member_type" value="foreign">
-          <label for="foreign">Foreign Member</label>
+        <div class="role-option">
+          <input type="radio" id="role_reviewer" name="role" value="reviewer" {% if role == 'reviewer' %}checked{% endif %}>
+          <label for="role_reviewer">
+            <span>🔍 Reviewer</span>
+            <small>Peer Review &amp; Comments</small>
+          </label>
+        </div>
+        <div class="role-option">
+          <input type="radio" id="role_editor" name="role" value="editor" {% if role == 'editor' %}checked{% endif %}>
+          <label for="role_editor">
+            <span>🏛️ Editor</span>
+            <small>Triage &amp; Approve Access</small>
+          </label>
         </div>
       </div>
 
       <!-- Full Name -->
       <div class="input-group">
-        <label class="input-label" for="full_name">Full Name</label>
+        <label class="input-label" for="full_name">Full Name (with Title) <span style="color:#DC2626">*</span></label>
         <div class="input-field-wrapper">
-          <input type="text" id="full_name" name="full_name" class="input-field" placeholder="Dr. / Prof. / Mr. / Ms." required>
+          <input type="text" id="full_name" name="full_name" class="input-field" placeholder="Dr. / Prof. / Mr. / Ms. Rajesh Sharma" value="{{ full_name|default:'' }}" required>
         </div>
       </div>
 
       <!-- 2-Column Row: Email & Contact -->
       <div class="form-grid-row">
         <div class="input-group">
-          <label class="input-label" for="email">Email Address</label>
+          <label class="input-label" for="email">Official / Institutional Email <span style="color:#DC2626">*</span></label>
           <div class="input-field-wrapper">
-            <input type="email" id="email" name="email" class="input-field" placeholder="name@institution.edu.in" required>
+            <input type="email" id="email" name="email" class="input-field" placeholder="name@institution.edu.in" value="{{ email|default:'' }}" required>
           </div>
         </div>
 
         <div class="input-group">
           <label class="input-label" for="contact">Contact Number</label>
           <div class="input-field-wrapper">
-            <input type="tel" id="contact" name="contact" class="input-field" placeholder="+91 98765 43210" required>
+            <input type="tel" id="contact" name="contact" class="input-field" placeholder="+91 98765 43210" value="{{ contact|default:'' }}">
+          </div>
+        </div>
+      </div>
+
+      <!-- Affiliation -->
+      <div class="input-group">
+        <label class="input-label" for="affiliation">Institution / University / Department <span style="color:#DC2626">*</span></label>
+        <div class="input-field-wrapper">
+          <input type="text" id="affiliation" name="affiliation" class="input-field" placeholder="e.g. ICAR-IARI, Division of Entomology, New Delhi" value="{{ affiliation|default:'' }}" required>
+        </div>
+      </div>
+
+      <!-- 2-Column Row: Designation & Specialization -->
+      <div class="form-grid-row">
+        <div class="input-group">
+          <label class="input-label" for="designation">Designation</label>
+          <div class="input-field-wrapper">
+            <input type="text" id="designation" name="designation" class="input-field" placeholder="e.g. Principal Scientist / Scholar" value="{{ designation|default:'' }}">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="specialization">Field of Specialization</label>
+          <div class="input-field-wrapper">
+            <input type="text" id="specialization" name="specialization" class="input-field" placeholder="e.g. Entomology / Plant Pathology / IPM" value="{{ specialization|default:'' }}">
           </div>
         </div>
       </div>
@@ -356,9 +437,9 @@
       <!-- 2-Column Row: Password & Confirm Password -->
       <div class="form-grid-row">
         <div class="input-group">
-          <label class="input-label" for="password">Password</label>
+          <label class="input-label" for="password">Password <span style="color:#DC2626">*</span></label>
           <div class="input-field-wrapper">
-            <input type="password" id="password" name="password" class="input-field" placeholder="Password" required minlength="6">
+            <input type="password" id="password" name="password" class="input-field" placeholder="Create password" required minlength="6">
             <button type="button" class="toggle-password" onclick="togglePass('password', this)" aria-label="Toggle password visibility">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </button>
@@ -366,9 +447,9 @@
         </div>
 
         <div class="input-group">
-          <label class="input-label" for="confirm_password">Confirm Password</label>
+          <label class="input-label" for="confirm_password">Confirm Password <span style="color:#DC2626">*</span></label>
           <div class="input-field-wrapper">
-            <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm" required minlength="6">
+            <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm password" required minlength="6">
             <button type="button" class="toggle-password" onclick="togglePass('confirm_password', this)" aria-label="Toggle password visibility">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </button>
@@ -376,14 +457,14 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
+      <!-- Submit Button matching Paper Flow -->
       <button type="submit" class="btn-submit">
-        Save &amp; Continue
+        Register (Role-Based Registration)
       </button>
 
-      <!-- Bottom Login Link -->
+      <!-- Bottom Login Link matching Paper Flow -->
       <div class="auth-footer">
-        Already Registered? <a href="{% url 'login' %}">Click here to login</a>
+        Already Registered? <a href="{% url 'login' %}">Login (Role-Based Access)</a>
       </div>
     </form>
   </div>
@@ -393,10 +474,10 @@
       const input = document.getElementById(id);
       if (input.type === 'password') {
         input.type = 'text';
-        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
       } else {
         input.type = 'password';
-        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
       }
     }
   </script>

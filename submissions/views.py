@@ -28,123 +28,27 @@ def get_user_profile(user):
 
 
 def portal_login(request):
-    """Role-aware login view that redirects users directly to their appropriate dashboard."""
-    if request.user.is_authenticated:
-        profile = get_user_profile(request.user)
-        if profile.is_editor or request.user.is_staff or request.user.is_superuser:
-            return redirect('editor_dashboard')
-        elif profile.is_reviewer:
-            return redirect('reviewer_dashboard')
-        return redirect('author_dashboard')
-
-    if request.method == 'POST':
-        email = request.POST.get('email', '').strip().lower()
-        password = request.POST.get('password', '')
-
-        # Authenticate with username or email
-        user = authenticate(request, username=email, password=password)
-        if user is None:
-            # Check if username differs from email
-            try:
-                user_obj = User.objects.get(email__iexact=email)
-                user = authenticate(request, username=user_obj.username, password=password)
-            except User.DoesNotExist:
-                user = None
-
-        if user is not None:
-            auth_login(request, user)
-            profile = get_user_profile(user)
-
-            # Check next parameter if present
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-
-            # Redirect by role
-            if profile.is_editor or user.is_staff or user.is_superuser:
-                messages.success(request, f"Welcome back, Editor {user.get_full_name() or user.username}!")
-                return redirect('editor_dashboard')
-            elif profile.is_reviewer:
-                messages.success(request, f"Welcome back, Reviewer {user.get_full_name() or user.username}!")
-                return redirect('reviewer_dashboard')
-            else:
-                messages.success(request, f"Welcome, {user.get_full_name() or user.username}!")
-                return redirect('author_dashboard')
-        else:
-            messages.error(request, "Invalid email address or password. Please try again.")
-
-    return render(request, 'submissions/login.html')
+    """Redirects to unified login."""
+    return redirect('login')
 
 
 def portal_register(request):
-    """Role-based registration for Authors, Reviewers, and Editorial Board members."""
-    if request.user.is_authenticated:
-        return redirect('portal_login')
-
-    if request.method == 'POST':
-        form = RoleRegistrationForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            full_name = form.cleaned_data['full_name']
-            role = form.cleaned_data['role']
-
-            # Split name into first/last
-            name_parts = full_name.split(None, 1)
-            first_name = name_parts[0]
-            last_name = name_parts[1] if len(name_parts) > 1 else ''
-
-            user = User.objects.create_user(
-                username=email,
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name
-            )
-
-            is_reviewer = (role == 'reviewer')
-            is_editor = (role == 'editor')
-
-            profile = UserProfile.objects.create(
-                user=user,
-                role=role,
-                is_author=True,  # All registered users can be authors
-                is_reviewer=is_reviewer,
-                is_editor=is_editor,
-                phone=form.cleaned_data.get('phone', ''),
-                affiliation=form.cleaned_data['affiliation'],
-                designation=form.cleaned_data.get('designation', ''),
-                specialization=form.cleaned_data.get('specialization', ''),
-                orcid_id=form.cleaned_data.get('orcid_id', ''),
-            )
-
-            # Automatically log the newly registered user in
-            auth_login(request, user)
-            messages.success(request, f"Welcome to IJPP Editorial System! Your account as {profile.get_role_display()} has been created.")
-
-            if is_editor:
-                return redirect('editor_dashboard')
-            elif is_reviewer:
-                return redirect('reviewer_dashboard')
-            return redirect('author_dashboard')
-    else:
-        form = RoleRegistrationForm()
-
-    return render(request, 'submissions/register.html', {'form': form})
+    """Redirects to unified registration."""
+    return redirect('register')
 
 
 def portal_logout(request):
     """Logs out and redirects back to portal login."""
     auth_logout(request)
     messages.info(request, "You have been logged out of the IJPP Editorial Portal.")
-    return redirect('portal_login')
+    return redirect('login')
 
 
 # ==============================================================================
 # AUTHOR PORTAL VIEWS
 # ==============================================================================
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def author_dashboard(request):
     """Author home: summary metrics and list of all submitted manuscripts."""
     profile = get_user_profile(request.user)
@@ -164,7 +68,7 @@ def author_dashboard(request):
     })
 
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def submit_manuscript(request):
     """Author submission form: file uploads and metadata entry."""
     profile = get_user_profile(request.user)
@@ -195,7 +99,7 @@ def submit_manuscript(request):
     })
 
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def author_manuscript_detail(request, tracking_id):
     """Author view: track timeline, status, and view editor comments/feedback."""
     profile = get_user_profile(request.user)
@@ -220,7 +124,7 @@ def author_manuscript_detail(request, tracking_id):
     })
 
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def author_submit_revision(request, tracking_id):
     """Allows author to submit a revised manuscript and response letter."""
     manuscript = get_object_or_404(Manuscript, tracking_id=tracking_id, author=request.user)
@@ -265,7 +169,7 @@ def author_submit_revision(request, tracking_id):
 # EDITOR PORTAL VIEWS
 # ==============================================================================
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def editor_dashboard(request):
     """Editor command center: triage, reviewer assignment, and decision management."""
     profile = get_user_profile(request.user)
@@ -298,7 +202,7 @@ def editor_dashboard(request):
     })
 
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def editor_manuscript_review(request, tracking_id):
     """Full editorial view: inspect manuscript, assign reviewers, and return decision/comments."""
     profile = get_user_profile(request.user)
@@ -394,7 +298,7 @@ def editor_manuscript_review(request, tracking_id):
 # REVIEWER PORTAL VIEWS
 # ==============================================================================
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def reviewer_dashboard(request):
     """Reviewer home: assigned manuscripts awaiting evaluation or in progress."""
     profile = get_user_profile(request.user)
@@ -418,7 +322,7 @@ def reviewer_dashboard(request):
     })
 
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def reviewer_respond_invitation(request, assignment_id, response_action):
     """Allows reviewer to Accept or Decline a review request."""
     assignment = get_object_or_404(ReviewAssignment, id=assignment_id, reviewer=request.user)
@@ -448,7 +352,7 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
     return redirect('reviewer_dashboard')
 
 
-@login_required(login_url='portal_login')
+@login_required(login_url='login')
 def reviewer_evaluate_manuscript(request, assignment_id):
     """Reviewer evaluation form: scores, author comments, confidential editor notes."""
     assignment = get_object_or_404(ReviewAssignment, id=assignment_id, reviewer=request.user)

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Editorial Management: {{ manuscript.tracking_id }} — IJPP Portal{% endblock %}
+{% block title %}Editor (view and edit) then approve access: {{ manuscript.tracking_id }} — PPAI & IJPP{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -41,10 +41,10 @@
         🏛️
       </div>
       <div class="portal-user-meta">
-        <h2>Editorial Evaluation: {{ manuscript.tracking_id }}</h2>
+        <h2>Editor (view and edit) then approve access: {{ manuscript.tracking_id }}</h2>
         <p>
           <span class="status-badge {{ manuscript.status }}">{{ manuscript.get_status_display }}</span>
-          <span>Author: <strong>{{ manuscript.author.get_full_name|default:manuscript.author.username }}</strong> ({{ manuscript.author.email }})</span>
+          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
         </p>
       </div>
     </div>
@@ -75,7 +75,7 @@
       <!-- Manuscript Core Info -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Manuscript Dossier</h2>
+          <h2>Author manuscript submission &mdash; Dossier</h2>
           <div style="display: flex; gap: 8px;">
             {% if manuscript.manuscript_file %}
             <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
@@ -122,10 +122,10 @@
         {% endif %}
       </div>
 
-      <!-- Peer Review Reports (Submitted by Reviewers) -->
+      <!-- Comment on submitted manuscript by author (Reviewer Reports) -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Peer Review Reports ({{ reviews|length }})</h2>
+          <h2>Comment on submitted manuscript by author (Review Reports)</h2>
         </div>
 
         {% if reviews %}
@@ -170,7 +170,7 @@
             </div>
 
             <div class="review-callout" style="margin-bottom: 10px;">
-              <h4>Comments to Author:</h4>
+              <h4>Comments for Author:</h4>
               <p>{{ r.comments_for_author|default:"None provided." }}</p>
             </div>
 
@@ -205,7 +205,7 @@
       {% if revisions %}
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Author Revisions Submitted</h2>
+          <h2>Return comments to Authors &mdash; Revisions Submitted</h2>
         </div>
         {% for rev in revisions %}
         <div style="background: #F8FAF9; border-radius: 8px; padding: 14px; margin-bottom: 12px;">
@@ -229,10 +229,11 @@
     <!-- Right Column: Reviewer Assignment & Editorial Decision Dispatch -->
     <div>
 
-      <!-- Action Panel 1: Assign Reviewer -->
+      <!-- Action Panel 1: Reviewer (view and edit access) -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Assign Peer Reviewer</h2>
+          <h2>Reviewer (view and edit access)</h2>
+          <p>Assign reviewer to comment on submitted manuscript</p>
         </div>
 
         {% if available_reviewers %}
@@ -258,7 +259,7 @@
           </div>
 
           <button type="submit" class="btn-portal-primary" style="width: 100%;">
-            Send Review Invitation
+            Grant Reviewer (View and edit access)
           </button>
         </form>
         {% else %}
@@ -266,11 +267,11 @@
         {% endif %}
       </div>
 
-      <!-- Action Panel 2: Editorial Decision (Approve / Return Comments to Author / Reject) -->
+      <!-- Action Panel 2: Editor (view and edit) then approve access -> Loop: return comments to Authors -->
       <div class="portal-card" style="border: 2px solid rgba(0, 178, 114, 0.4);">
         <div class="portal-card-header">
-          <h2>Issue Editorial Decision</h2>
-          <p>Consolidate comments and dispatch verdict back to the author.</p>
+          <h2>Editor (view and edit) then approve access</h2>
+          <p>Approve access or Return comments to Authors</p>
         </div>
 
         <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}">
@@ -281,17 +282,17 @@
             <label for="decision">Decision Verdict <span style="color:#DC2626">*</span></label>
             <select name="decision" id="decision" class="portal-select" required>
               <option value="">-- Choose Decision --</option>
-              <option value="accept" {% if manuscript.editor_decision == 'accept' %}selected{% endif %}>Accept for Publication</option>
-              <option value="minor_revision" {% if manuscript.editor_decision == 'minor_revision' %}selected{% endif %}>Request Minor Revisions</option>
-              <option value="major_revision" {% if manuscript.editor_decision == 'major_revision' %}selected{% endif %}>Request Major Revisions</option>
+              <option value="accept" {% if manuscript.editor_decision == 'accept' %}selected{% endif %}>Approve Access &bull; Accept for Publication</option>
+              <option value="minor_revision" {% if manuscript.editor_decision == 'minor_revision' %}selected{% endif %}>Return comments to Authors (Minor Revision)</option>
+              <option value="major_revision" {% if manuscript.editor_decision == 'major_revision' %}selected{% endif %}>Return comments to Authors (Major Revision)</option>
               <option value="reject" {% if manuscript.editor_decision == 'reject' %}selected{% endif %}>Reject Manuscript</option>
             </select>
           </div>
 
           <div class="portal-form-group" style="margin-bottom: 16px;">
-            <label for="comments_to_author">Decision Letter / Consolidated Comments to Author <span style="color:#DC2626">*</span></label>
-            <textarea name="comments_to_author" id="comments_to_author" class="portal-textarea" rows="7" placeholder="Detailed feedback and instructions sent to author...">{{ manuscript.editor_comments_to_author }}</textarea>
-            <span class="field-hint">This text is directly visible to the author on their dashboard.</span>
+            <label for="comments_to_author">Return comments to Authors <span style="color:#DC2626">*</span></label>
+            <textarea name="comments_to_author" id="comments_to_author" class="portal-textarea" rows="7" placeholder="Consolidated comments and revisions returned to the author...">{{ manuscript.editor_comments_to_author }}</textarea>
+            <span class="field-hint">Comments returned to author on their dashboard.</span>
           </div>
 
           <div class="portal-form-group" style="margin-bottom: 20px;">
@@ -300,7 +301,7 @@
           </div>
 
           <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 12px; font-size: 14.5px;">
-            Dispatch Decision & Return Comments
+            Submit Decision &bull; Return comments to Authors
           </button>
         </form>
       </div>

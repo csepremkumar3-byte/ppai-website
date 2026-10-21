@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Submit Revision: {{ manuscript.tracking_id }} — IJPP Portal{% endblock %}
+{% block title %}Author manuscript submission (Revision): {{ manuscript.tracking_id }} — PPAI & IJPP{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -32,10 +32,10 @@
         ✏️
       </div>
       <div class="portal-user-meta">
-        <h2>Submit Revision: {{ manuscript.tracking_id }}</h2>
+        <h2>Author manuscript submission: Revision {{ manuscript.tracking_id }}</h2>
         <p>
-          <span class="role-badge author">Author Portal</span>
-          <span>{{ manuscript.title|truncatechars:70 }}</span>
+          <span class="role-badge author">Author</span>
+          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
         </p>
       </div>
     </div>
@@ -62,7 +62,7 @@
   {% if manuscript.editor_comments_to_author %}
   <div class="portal-card" style="border-left: 5px solid #EA580C;">
     <div class="portal-card-header">
-      <h2>Editor Remarks Requiring Revision</h2>
+      <h2>Return comments to Authors</h2>
     </div>
     <div class="review-callout warning">
       <p>{{ manuscript.editor_comments_to_author }}</p>
@@ -72,7 +72,7 @@
 
   <div class="portal-card">
     <div class="portal-card-header">
-      <h2>Upload Revised Manuscript & Response</h2>
+      <h2>Author manuscript submission &mdash; Upload Revised Version &amp; Rebuttal</h2>
       <p>Address each comment point-by-point and attach the updated document.</p>
     </div>
 
@@ -98,7 +98,7 @@
         </div>
 
         <div class="portal-form-group full-width">
-          <label for="{{ form.response_to_reviewers.id_for_label }}">Point-by-Point Response to Reviewer & Editor Comments <span style="color:#DC2626">*</span></label>
+          <label for="{{ form.response_to_reviewers.id_for_label }}">Point-by-Point Response to Reviewer &amp; Editor Comments <span style="color:#DC2626">*</span></label>
           {{ form.response_to_reviewers }}
           <span class="field-hint">Detail how each critique was incorporated into the text, citing page or line numbers.</span>
           {% if form.response_to_reviewers.errors %}<div class="error-text">{{ form.response_to_reviewers.errors.0 }}</div>{% endif %}
@@ -108,7 +108,7 @@
       <div style="display: flex; gap: 14px; align-items: center; justify-content: flex-end; margin-top: 24px;">
         <a href="{% url 'author_manuscript_detail' manuscript.tracking_id %}" class="btn-portal-secondary">Cancel</a>
         <button type="submit" class="btn-portal-primary" style="padding: 12px 32px; font-size: 15px;">
-          Submit Revised Manuscript to Editorial Board
+          Submit Revised Manuscript &bull; Return comments to Authors response
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
       </div>

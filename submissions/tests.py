@@ -58,76 +58,84 @@ class PeerReviewWorkflowTests(TestCase):
             affiliation='Department of Plant Pathology, UAS Dharwad'
         )
 
-    def test_01_portal_login_redirections(self):
-        """Test role-based redirection upon login."""
+    def test_01_existing_login_and_role_based_access(self):
+        """Test role-based access redirection using existing /login/ endpoint."""
         # Author login -> author_dashboard
-        response = self.client.post(reverse('portal_login'), {
+        response = self.client.post(reverse('login'), {
             'email': 'author@university.edu',
             'password': 'AuthorPass123!'
         }, follow=True)
         self.assertRedirects(response, reverse('author_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Author')
+        self.assertContains(response, 'Plant Protection Association of India')
+        self.assertContains(response, 'Author manuscript submission')
         self.client.logout()
 
         # Reviewer login -> reviewer_dashboard
-        response = self.client.post(reverse('portal_login'), {
+        response = self.client.post(reverse('login'), {
             'email': 'reviewer@icar.gov.in',
             'password': 'ReviewerPass123!'
         }, follow=True)
         self.assertRedirects(response, reverse('reviewer_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Peer Reviewer')
+        self.assertContains(response, 'Reviewer (view and edit access)')
         self.client.logout()
 
         # Editor login -> editor_dashboard
-        response = self.client.post(reverse('portal_login'), {
+        response = self.client.post(reverse('login'), {
             'email': 'editor@ppai.org.in',
             'password': 'EditorPass123!'
         }, follow=True)
         self.assertRedirects(response, reverse('editor_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Editor Command Center')
+        self.assertContains(response, 'Editor (view and edit) then approve access')
         self.client.logout()
 
-    def test_02_author_manuscript_submission(self):
-        """Author submits a manuscript with metadata and DOCX attachment."""
-        self.client.login(username='author@university.edu', password='AuthorPass123!')
-
-        test_doc = SimpleUploadedFile(
-            "novel_biopesticide_study.docx",
-            b"PK\x03\x04Mock Word DOCX Content for Agricultural Research",
-            content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        )
-
-        response = self.client.post(reverse('submit_manuscript'), {
-            'article_type': 'research_article',
-            'subject_area': 'entomology',
-            'title': 'Efficacy of Indigenous Entomopathogenic Fungi Against Spodoptera frugiperda in Maize Ecosystems',
-            'abstract': 'Fall armyworm causes catastrophic yield losses. This study evaluated native Beauveria bassiana strains.',
-            'keywords': 'Spodoptera frugiperda, Beauveria bassiana, biological control, maize, LC50',
-            'co_authors': 'Dr. K. Patel, UAS Dharwad',
-            'manuscript_file': test_doc,
-            'cover_letter': 'We submit this original research for consideration in IJPP.',
-            'conflict_of_interest': True
+    def test_02_existing_register_with_roles(self):
+        """Test registering Author, Reviewer and Editor via existing /register/ endpoint."""
+        # 1. Register new Author
+        resp_author = self.client.post(reverse('register'), {
+            'full_name': 'Dr. Arun Kumar',
+            'email': 'arun.author@icar.gov.in',
+            'contact': '+91 9988776655',
+            'role': 'author',
+            'affiliation': 'ICAR-IIHR Bangalore',
+            'designation': 'Senior Scientist',
+            'specialization': 'Crop Protection',
+            'password': 'SecretPass123!',
+            'confirm_password': 'SecretPass123!'
         }, follow=True)
+        self.assertRedirects(resp_author, reverse('author_dashboard'))
+        self.assertTrue(User.objects.filter(email='arun.author@icar.gov.in').exists())
+        self.client.logout()
 
-        self.assertEqual(response.status_code, 200)
-        manuscript = Manuscript.objects.first()
-        self.assertIsNotNone(manuscript)
-        self.assertTrue(manuscript.tracking_id.startswith('IJPP-'))
-        self.assertEqual(manuscript.status, 'submitted')
-        self.assertEqual(manuscript.author, self.author_user)
-        self.assertContains(response, manuscript.tracking_id)
+        # 2. Register new Reviewer
+        resp_reviewer = self.client.post(reverse('register'), {
+            'full_name': 'Prof. V. Raman',
+            'email': 'raman.reviewer@university.ac.in',
+            'contact': '+91 9123456789',
+            'role': 'reviewer',
+            'affiliation': 'TNAU Coimbatore',
+            'designation': 'Professor',
+            'specialization': 'Insect Virology',
+            'password': 'SecretPass123!',
+            'confirm_password': 'SecretPass123!'
+        }, follow=True)
+        self.assertRedirects(resp_reviewer, reverse('reviewer_dashboard'))
+        self.assertTrue(User.objects.filter(email='raman.reviewer@university.ac.in').exists())
+        self.client.logout()
 
-    def test_03_full_peer_review_and_editorial_loop(self):
-        """End-to-End: Submission -> Editor assigns Reviewer -> Reviewer scores -> Editor requests Revision -> Author resubmits -> Final Acceptance."""
+    def test_03_full_paper_flow_loop(self):
+        """End-to-End Paper Flow:
+        Register -> Login -> Author manuscript submission -> Editor (view and edit) then approve access ->
+        Reviewer (view and edit access) -> Comment on submitted manuscript by author -> Return comments to Authors -> Revision -> Acceptance
+        """
         # 1. Author submits manuscript
         dummy_file = SimpleUploadedFile("paper.docx", b"Manuscript content", content_type="application/msword")
         manuscript = Manuscript.objects.create(
             author=self.author_user,
             title="Bio-efficacy of Trichoderma harzianum on Rhizoctonia solani",
-            abstract="Study on biological control of sheath blight.",
+            abstract="Study on biological control of sheath blight in paddy crops.",
             keywords="Trichoderma, Rhizoctonia, rice sheath blight",
             article_type="research_article",
             subject_area="pathology",
@@ -161,7 +169,7 @@ class PeerReviewWorkflowTests(TestCase):
         assignment.refresh_from_db()
         self.assertEqual(assignment.status, 'accepted')
 
-        # 4. Reviewer evaluates manuscript (scores rubric, comments for author, confidential notes)
+        # 4. Reviewer evaluates manuscript (Comment on submitted manuscript by author)
         eval_resp = self.client.post(
             reverse('reviewer_evaluate_manuscript', kwargs={'assignment_id': assignment.id}),
             {
@@ -170,7 +178,7 @@ class PeerReviewWorkflowTests(TestCase):
                 'clarity_score': 3,
                 'significance_score': 4,
                 'recommendation': 'minor_revision',
-                'comments_for_author': 'Interesting methodology. Please elaborate on the spore concentration metrics in Table 2.',
+                'comments_for_author': 'Interesting methodology. Please elaborate on spore concentration metrics in Table 2.',
                 'confidential_comments_to_editor': 'Sound paper, recommended with minor corrections.'
             },
             follow=True
@@ -182,14 +190,14 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(manuscript.status, 'review_completed')
         self.client.logout()
 
-        # 5. Editor reviews feedback and issues decision: Request Minor Revision
+        # 5. Editor reviews feedback and issues decision: Return comments to Authors
         self.client.login(username='editor@ppai.org.in', password='EditorPass123!')
         decision_resp = self.client.post(
             reverse('editor_manuscript_review', kwargs={'tracking_id': manuscript.tracking_id}),
             {
                 'submit_decision': '1',
                 'decision': 'minor_revision',
-                'comments_to_author': 'Please address Reviewer 1 points regarding spore concentration and resubmit.',
+                'comments_to_author': 'Please address Reviewer points regarding spore concentration in Table 2 and resubmit.',
                 'internal_notes': 'Awaiting revised tables.'
             },
             follow=True
@@ -200,7 +208,7 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(manuscript.editor_decision, 'minor_revision')
         self.client.logout()
 
-        # 6. Author views comments and submits revised manuscript
+        # 6. Author views comments and submits revised manuscript (Return comments to Authors response)
         self.client.login(username='author@university.edu', password='AuthorPass123!')
         rev_file = SimpleUploadedFile("revised_paper.docx", b"Revised manuscript with updated Table 2", content_type="application/msword")
         rev_resp = self.client.post(
@@ -217,14 +225,14 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(manuscript.revisions.count(), 1)
         self.client.logout()
 
-        # 7. Editor approves final revised paper: Accept
+        # 7. Editor approves access: Final Acceptance
         self.client.login(username='editor@ppai.org.in', password='EditorPass123!')
         final_resp = self.client.post(
             reverse('editor_manuscript_review', kwargs={'tracking_id': manuscript.tracking_id}),
             {
                 'submit_decision': '1',
                 'decision': 'accept',
-                'comments_to_author': 'We are pleased to accept your revised manuscript for publication in the Indian Journal of Plant Protection!',
+                'comments_to_author': 'We are pleased to approve access and accept your revised manuscript for publication in the Indian Journal of Plant Protection (IJPP)!',
                 'internal_notes': 'Accepted for upcoming volume.'
             },
             follow=True

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Peer Review: {{ manuscript.tracking_id }} — IJPP Portal{% endblock %}
+{% block title %}Comment on submitted manuscript by author: {{ manuscript.tracking_id }} — PPAI & IJPP{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -48,10 +48,10 @@
         📝
       </div>
       <div class="portal-user-meta">
-        <h2>Peer Review Assessment: {{ manuscript.tracking_id }}</h2>
+        <h2>Reviewer (view and edit access): {{ manuscript.tracking_id }}</h2>
         <p>
-          <span class="role-badge reviewer">Reviewer Evaluation</span>
-          <span>Due Date: <strong>{{ assignment.due_date|date:"F d, Y"|default:"Not specified" }}</strong></span>
+          <span class="role-badge reviewer">Reviewer</span>
+          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
         </p>
       </div>
     </div>
@@ -80,7 +80,7 @@
     <div>
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Manuscript Under Review</h2>
+          <h2>Author manuscript submission &mdash; Dossier</h2>
           {% if manuscript.manuscript_file %}
           <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
             📥 Download Full Manuscript
@@ -116,28 +116,28 @@
 
       <!-- Blind Review Guidelines -->
       <div class="portal-card" style="background: #F4FBF7; border-color: #C7EED8;">
-        <h4 style="font-size: 14.5px; font-weight: 800; color: #0B2417; margin-bottom: 8px;">Peer Reviewer Ethics & Standards</h4>
+        <h4 style="font-size: 14.5px; font-weight: 800; color: #0B2417; margin-bottom: 8px;">Plant Protection Association of India &bull; Peer Review Guidelines</h4>
         <ul style="margin-left: 20px; font-size: 13px; color: #365042; line-height: 1.6;">
-          <li>Maintain strict confidentiality of the manuscript data and ideas.</li>
-          <li>Provide constructive, objective, and specific feedback for the author.</li>
-          <li>Report any suspected plagiarism, duplicate publication, or conflict of interest in the confidential comments to the Editor.</li>
+          <li>Maintain confidentiality of the manuscript research findings.</li>
+          <li>Provide constructive comments to improve the scientific rigor.</li>
+          <li>Return evaluation promptly to the Editor.</li>
         </ul>
       </div>
     </div>
 
-    <!-- Right Column: Evaluation Form / Scores / Comments -->
+    <!-- Right Column: Comment on submitted manuscript by author -->
     <div>
       <div class="portal-card">
         <div class="portal-card-header">
           <h2>
             {% if assignment.status == 'completed' %}
-              Submitted Evaluation (Completed)
+              Comment on submitted manuscript by author (Completed)
             {% else %}
-              Fill Evaluation Rubric & Feedback
+              Comment on submitted manuscript by author
             {% endif %}
           </h2>
           {% if assignment.status == 'completed' %}
-            <span class="status-badge accepted">Review Completed</span>
+            <span class="status-badge accepted">Comment Recorded</span>
           {% endif %}
         </div>
 
@@ -225,16 +225,16 @@
             </div>
 
             <div class="portal-form-group" style="margin-bottom: 20px;">
-              <label for="{{ form.comments_for_author.id_for_label }}">Detailed Comments for Author (Blinded) <span style="color:#DC2626">*</span></label>
+              <label for="{{ form.comments_for_author.id_for_label }}">Comment on submitted manuscript by author <span style="color:#DC2626">*</span></label>
               {{ form.comments_for_author }}
-              <span class="field-hint">Constructive critique highlighting strengths, major flaws, methodology suggestions, and corrections.</span>
+              <span class="field-hint">Constructive critique highlighting strengths, major comments, and corrections for the author.</span>
               {% if form.comments_for_author.errors %}<div class="error-text">{{ form.comments_for_author.errors.0 }}</div>{% endif %}
             </div>
 
             <div class="portal-form-group" style="margin-bottom: 20px;">
               <label for="{{ form.confidential_comments_to_editor.id_for_label }}">Confidential Remarks for Editor Only</label>
               {{ form.confidential_comments_to_editor }}
-              <span class="field-hint">Never disclosed to author. Mention ethical concerns, priority recommendations, or plagiarism doubts.</span>
+              <span class="field-hint">Never disclosed to author. Mention ethical concerns or priority recommendations.</span>
               {% if form.confidential_comments_to_editor.errors %}<div class="error-text">{{ form.confidential_comments_to_editor.errors.0 }}</div>{% endif %}
             </div>
 
@@ -247,7 +247,7 @@
             <div style="display: flex; gap: 12px; justify-content: flex-end;">
               <a href="{% url 'reviewer_dashboard' %}" class="btn-portal-secondary">Cancel</a>
               <button type="submit" class="btn-portal-primary" style="padding: 12px 28px;">
-                Submit Peer Review to Editor
+                Submit comment on submitted manuscript by author
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
             </div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Reviewer Dashboard — IJPP Peer Review Portal{% endblock %}
+{% block title %}Reviewer (view and edit access) — Plant Protection Association of India & IJPP{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -19,8 +19,8 @@
       <div class="portal-user-meta">
         <h2>{{ request.user.get_full_name|default:request.user.username }}</h2>
         <p>
-          <span class="role-badge reviewer">Peer Reviewer</span>
-          <span>{{ profile.specialization|default:profile.affiliation|default:"Editorial Review Panel" }}</span>
+          <span class="role-badge reviewer">Reviewer (view and edit access)</span>
+          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
         </p>
       </div>
     </div>
@@ -31,7 +31,7 @@
       </a>
       {% if profile.is_editor or request.user.is_staff %}
       <a href="{% url 'editor_dashboard' %}" class="portal-tab-pill">
-        <span>🏛️ Editorial Center</span>
+        <span>🏛️ Editor (view and edit)</span>
       </a>
       {% endif %}
       <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
@@ -64,7 +64,7 @@
 
     <div class="stat-card">
       <div class="stat-card-info">
-        <h3>Pending Invitations</h3>
+        <h3>Invitations Pending</h3>
         <div class="stat-value" style="color: #EA580C;">{{ stats.pending }}</div>
       </div>
       <div class="stat-card-icon" style="background: rgba(234, 88, 12, 0.1); color: #EA580C;">
@@ -74,7 +74,7 @@
 
     <div class="stat-card">
       <div class="stat-card-info">
-        <h3>Reviews In Progress</h3>
+        <h3>In Progress</h3>
         <div class="stat-value" style="color: #2563EB;">{{ stats.in_progress }}</div>
       </div>
       <div class="stat-card-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563EB;">
@@ -84,7 +84,7 @@
 
     <div class="stat-card">
       <div class="stat-card-info">
-        <h3>Completed Reviews</h3>
+        <h3>Comment Submitted</h3>
         <div class="stat-value" style="color: #00B272;">{{ stats.completed }}</div>
       </div>
       <div class="stat-card-icon" style="background: rgba(0, 178, 114, 0.1); color: #00B272;">
@@ -97,8 +97,8 @@
   <div class="portal-card">
     <div class="portal-card-header">
       <div>
-        <h2>Assigned Peer Reviews</h2>
-        <p>Review manuscripts assigned to your area of expertise by the editorial office.</p>
+        <h2>Reviewer (view and edit access) &mdash; Assigned Manuscripts</h2>
+        <p>Plant Protection Association of India (PPAI) &bull; IJPP (Indian Journal of Plant Protection)</p>
       </div>
     </div>
 
@@ -139,7 +139,7 @@
               {% elif a.status == 'accepted' %}
                 <span class="status-badge submitted">Review In Progress</span>
               {% elif a.status == 'completed' %}
-                <span class="status-badge accepted">Review Completed</span>
+                <span class="status-badge accepted">Comment Submitted</span>
               {% elif a.status == 'declined' %}
                 <span class="status-badge rejected">Declined</span>
               {% endif %}
@@ -147,18 +147,18 @@
             <td style="text-align: right; white-space: nowrap;">
               {% if a.status == 'pending' %}
                 <a href="{% url 'reviewer_respond_invitation' a.id 'accept' %}" class="btn-portal-primary btn-portal-sm" style="margin-right: 6px;">
-                  Accept Review
+                  Accept (View and Edit)
                 </a>
                 <a href="{% url 'reviewer_respond_invitation' a.id 'decline' %}" class="btn-portal-secondary btn-portal-sm" onclick="return confirm('Are you sure you wish to decline this review invitation?');">
                   Decline
                 </a>
               {% elif a.status == 'accepted' %}
                 <a href="{% url 'reviewer_evaluate_manuscript' a.id %}" class="btn-portal-primary btn-portal-sm">
-                  Complete Review & Score
+                  Comment on submitted manuscript by author
                 </a>
               {% elif a.status == 'completed' %}
                 <a href="{% url 'reviewer_evaluate_manuscript' a.id %}" class="btn-portal-secondary btn-portal-sm">
-                  View Submitted Score
+                  View Submitted Comment
                 </a>
               {% endif %}
             </td>
@@ -173,8 +173,8 @@
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       </div>
       <h3 style="font-size: 18px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">No manuscripts currently assigned</h3>
-      <p style="font-size: 14px; color: #5B7065; max-width: 440px; margin: 0 auto 20px auto;">
-        When the IJPP editorial board assigns manuscripts aligned with your research specialization ({{ profile.specialization|default:"Crop Protection" }}), they will appear here.
+      <p style="font-size: 14px; color: #5B7065; max-width: 460px; margin: 0 auto 20px auto;">
+        When the Editor grants you view and edit access to comment on submitted manuscripts, they will appear here.
       </p>
     </div>
     {% endif %}

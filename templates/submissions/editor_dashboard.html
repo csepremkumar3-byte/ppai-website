@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Editor Command Center — IJPP Editorial Portal{% endblock %}
+{% block title %}Editor (view and edit) then approve access — Plant Protection Association of India & IJPP{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -56,21 +56,21 @@
         🏛️
       </div>
       <div class="portal-user-meta">
-        <h2>Editor Command Center</h2>
+        <h2>Editor (view and edit) then approve access</h2>
         <p>
-          <span class="role-badge editor">Editorial Board</span>
-          <span>{{ request.user.get_full_name|default:request.user.username }}</span>
+          <span class="role-badge editor">Editor</span>
+          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
         </p>
       </div>
     </div>
 
     <div class="portal-header-actions">
       <a href="{% url 'author_dashboard' %}" class="portal-tab-pill">
-        <span>✍️ Author View</span>
+        <span>✍️ Author Dashboard</span>
       </a>
       {% if profile.is_reviewer or profile.role == 'reviewer' %}
       <a href="{% url 'reviewer_dashboard' %}" class="portal-tab-pill">
-        <span>🔍 Reviewer View</span>
+        <span>🔍 Reviewer (View and edit access)</span>
       </a>
       {% endif %}
       <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
@@ -103,7 +103,7 @@
 
     <div class="stat-card">
       <div class="stat-card-info">
-        <h3>With Reviewers</h3>
+        <h3>Reviewer (View &amp; Edit)</h3>
         <div class="stat-value" style="color: #F59E0B;">{{ counts.under_review }}</div>
       </div>
       <div class="stat-card-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
@@ -113,7 +113,7 @@
 
     <div class="stat-card">
       <div class="stat-card-info">
-        <h3>Reviews Ready for Decision</h3>
+        <h3>Comments Ready for Decision</h3>
         <div class="stat-value" style="color: #9333EA;">{{ counts.review_completed }}</div>
       </div>
       <div class="stat-card-icon" style="background: rgba(147, 51, 234, 0.1); color: #9333EA;">
@@ -138,22 +138,22 @@
       All Manuscripts <span class="count">{{ counts.all }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=submitted" class="filter-pill {% if status_filter == 'submitted' %}active{% endif %}">
-      Initial Submissions <span class="count">{{ counts.submitted }}</span>
+      Author manuscript submission <span class="count">{{ counts.submitted }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=under_review" class="filter-pill {% if status_filter == 'under_review' %}active{% endif %}">
-      Under Peer Review <span class="count">{{ counts.under_review }}</span>
+      Reviewer (view and edit access) <span class="count">{{ counts.under_review }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=review_completed" class="filter-pill {% if status_filter == 'review_completed' %}active{% endif %}">
-      Reviews Completed <span class="count">{{ counts.review_completed }}</span>
+      Comment on submitted manuscript <span class="count">{{ counts.review_completed }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=revised_submitted" class="filter-pill {% if status_filter == 'revised_submitted' %}active{% endif %}">
       Revised Submitted <span class="count">{{ counts.revised_submitted }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=revisions_requested" class="filter-pill {% if status_filter == 'revisions_requested' %}active{% endif %}">
-      Revisions Pending <span class="count">{{ counts.revisions_requested }}</span>
+      Return comments to Authors <span class="count">{{ counts.revisions_requested }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=accepted" class="filter-pill {% if status_filter == 'accepted' %}active{% endif %}">
-      Accepted <span class="count">{{ counts.accepted }}</span>
+      Approve Access (Accepted) <span class="count">{{ counts.accepted }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=rejected" class="filter-pill {% if status_filter == 'rejected' %}active{% endif %}">
       Rejected <span class="count">{{ counts.rejected }}</span>
@@ -164,8 +164,8 @@
   <div class="portal-card">
     <div class="portal-card-header">
       <div>
-        <h2>Manuscripts Under Management</h2>
-        <p>Assign peer reviewers, inspect submitted files, and issue final publication decisions.</p>
+        <h2>Author manuscript submission &mdash; Editor (view and edit) then approve access</h2>
+        <p>Plant Protection Association of India (PPAI) &bull; IJPP (Indian Journal of Plant Protection)</p>
       </div>
     </div>
 
@@ -225,7 +225,7 @@
             </td>
             <td style="text-align: right; white-space: nowrap;">
               <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-primary btn-portal-sm">
-                Manage & Decide
+                View &amp; Edit &bull; Approve Access
               </a>
             </td>
           </tr>

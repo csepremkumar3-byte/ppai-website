@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Submit New Manuscript — IJPP Portal{% endblock %}
+{% block title %}Author manuscript submission — Plant Protection Association of India (PPAI) & IJPP{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -59,10 +59,10 @@
         ✍️
       </div>
       <div class="portal-user-meta">
-        <h2>Submit New Manuscript</h2>
+        <h2>Author manuscript submission</h2>
         <p>
-          <span class="role-badge author">Author Portal</span>
-          <span>Indian Journal of Plant Protection (IJPP)</span>
+          <span class="role-badge author">Author</span>
+          <span>Plant Protection Association of India (PPAI) &amp; IJPP (Indian Journal of Plant Protection)</span>
         </p>
       </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="portal-header-actions">
       <a href="{% url 'author_dashboard' %}" class="btn-portal-secondary btn-portal-sm">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        Back to Dashboard
+        Author Dashboard
       </a>
     </div>
   </div>
@@ -88,13 +88,12 @@
   <div class="submission-guidelines-box">
     <h4>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00B272" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-      Important Manuscript Submission Instructions
+      Plant Protection Association of India &bull; IJPP Author manuscript submission Guidelines
     </h4>
     <ul>
       <li>Upload manuscript as a Microsoft Word document (<strong>.docx / .doc</strong>) or <strong>PDF</strong> file (maximum size 30 MB).</li>
-      <li>Ensure all author names, affiliations, and emails are entered correctly in the metadata fields.</li>
-      <li>Include abstract (up to 350 words) and 5 to 8 keywords separated by commas.</li>
-      <li>Your submission will undergo editorial triage before assignment to peer reviewers.</li>
+      <li>Enter full co-authors with affiliation and email address.</li>
+      <li>Your submission directly flows to <strong>Editor (view and edit) then approve access</strong> for peer review.</li>
     </ul>
   </div>
 
@@ -142,7 +141,7 @@
         <div class="portal-form-group full-width">
           <label for="{{ form.abstract.id_for_label }}">Abstract (Max 350 words) <span style="color:#DC2626">*</span></label>
           {{ form.abstract }}
-          <span class="field-hint">Must summarize background, methodology, significant results, and key conclusions.</span>
+          <span class="field-hint">Summary of background, methodology, results and plant protection significance.</span>
           {% if form.abstract.errors %}<div class="error-text">{{ form.abstract.errors.0 }}</div>{% endif %}
         </div>
 
@@ -199,7 +198,7 @@
         <label class="portal-checkbox-row">
           {{ form.conflict_of_interest }}
           <span style="font-size: 13.5px; color: #0B2417; line-height: 1.5;">
-            <strong>Ethical & Conflict of Interest Declaration:</strong> I confirm that this manuscript is original, has not been published previously, is not under consideration for publication elsewhere, and all co-authors have approved its submission to the Indian Journal of Plant Protection.
+            <strong>Ethical & Conflict of Interest Declaration:</strong> I confirm that this manuscript is original, has not been published previously, is not under consideration for publication elsewhere, and all co-authors have approved its submission to the Plant Protection Association of India &bull; IJPP (Indian Journal of Plant Protection).
           </span>
         </label>
         {% if form.conflict_of_interest.errors %}<div class="error-text">{{ form.conflict_of_interest.errors.0 }}</div>{% endif %}
@@ -208,7 +207,7 @@
       <div style="display: flex; gap: 14px; align-items: center; justify-content: flex-end;">
         <a href="{% url 'author_dashboard' %}" class="btn-portal-secondary">Cancel</a>
         <button type="submit" class="btn-portal-primary" style="padding: 12px 32px; font-size: 15px;">
-          Submit Manuscript for Peer Review
+          Author manuscript submission &bull; Submit to Editor
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
       </div>

@@ -389,13 +389,39 @@ def election(request):
 
 def register(request):
     context = get_common_context()
+    if request.user.is_authenticated:
+        from submissions.views import get_user_profile
+        profile = get_user_profile(request.user)
+        if profile.is_editor or request.user.is_staff or request.user.is_superuser:
+            return redirect('editor_dashboard')
+        elif profile.is_reviewer:
+            return redirect('reviewer_dashboard')
+        return redirect('author_dashboard')
+
     if request.method == 'POST':
         full_name = request.POST.get('full_name', '').strip()
-        email = request.POST.get('email', '').strip()
+        email = request.POST.get('email', '').strip().lower()
         contact_num = request.POST.get('contact', '').strip()
+        role = request.POST.get('role', 'author').strip().lower()
+        affiliation = request.POST.get('affiliation', '').strip()
+        designation = request.POST.get('designation', '').strip()
+        specialization = request.POST.get('specialization', '').strip()
+        orcid_id = request.POST.get('orcid_id', '').strip()
         password = request.POST.get('password', '')
         confirm_password = request.POST.get('confirm_password', '')
         member_type = request.POST.get('member_type', 'inland')
+
+        context.update({
+            'full_name': full_name,
+            'email': email,
+            'contact': contact_num,
+            'role': role,
+            'affiliation': affiliation,
+            'designation': designation,
+            'specialization': specialization,
+            'orcid_id': orcid_id,
+            'member_type': member_type,
+        })
 
         if not email or not password:
             context['error'] = 'Please fill in all required fields.'
@@ -405,32 +431,89 @@ def register(request):
             context['error'] = 'Passwords do not match.'
             return render(request, 'pages/register.html', context)
 
-        if User.objects.filter(username=email).exists() or User.objects.filter(email=email).exists():
-            context['error'] = 'An account with this email address already exists.'
+        if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
+            context['error'] = 'An account with this email address already exists. Please login.'
             return render(request, 'pages/register.html', context)
+
+        # Split name into first and last
+        name_parts = full_name.split(None, 1)
+        first_name = name_parts[0] if name_parts else ''
+        last_name = name_parts[1] if len(name_parts) > 1 else ''
 
         # Securely create user with PBKDF2/SHA256 password encryption
         user = User.objects.create_user(
             username=email,
             email=email,
             password=password,
-            first_name=full_name
+            first_name=first_name,
+            last_name=last_name
         )
         user.save()
-        context['success'] = 'Registration successful! You can now log in.'
-        return render(request, 'pages/login.html', context)
+
+        # Link UserProfile with role-based access
+        from submissions.models import UserProfile
+        is_reviewer = (role == 'reviewer')
+        is_editor = (role == 'editor')
+
+        UserProfile.objects.create(
+            user=user,
+            role=role if role in ['author', 'reviewer', 'editor'] else 'author',
+            is_author=True,
+            is_reviewer=is_reviewer,
+            is_editor=is_editor,
+            phone=contact_num,
+            affiliation=affiliation,
+            designation=designation,
+            specialization=specialization,
+            orcid_id=orcid_id,
+        )
+
+        auth_login(request, user)
+        if is_editor:
+            return redirect('editor_dashboard')
+        elif is_reviewer:
+            return redirect('reviewer_dashboard')
+        else:
+            return redirect('author_dashboard')
 
     return render(request, 'pages/register.html', context)
 
 def login_view(request):
     context = get_common_context()
+    if request.user.is_authenticated:
+        from submissions.views import get_user_profile
+        profile = get_user_profile(request.user)
+        if profile.is_editor or request.user.is_staff or request.user.is_superuser:
+            return redirect('editor_dashboard')
+        elif profile.is_reviewer:
+            return redirect('reviewer_dashboard')
+        return redirect('author_dashboard')
+
     if request.method == 'POST':
-        email = request.POST.get('email', '').strip()
+        email = request.POST.get('email', '').strip().lower()
         password = request.POST.get('password', '')
         user = authenticate(request, username=email, password=password)
+        if user is None:
+            try:
+                user_obj = User.objects.get(email__iexact=email)
+                user = authenticate(request, username=user_obj.username, password=password)
+            except (User.DoesNotExist, User.MultipleObjectsReturned):
+                user = None
+
         if user is not None:
             auth_login(request, user)
-            return redirect('home')
+            next_url = request.GET.get('next') or request.POST.get('next')
+            if next_url:
+                return redirect(next_url)
+
+            from submissions.views import get_user_profile
+            profile = get_user_profile(user)
+            if profile.is_editor or user.is_staff or user.is_superuser:
+                return redirect('editor_dashboard')
+            elif profile.is_reviewer:
+                return redirect('reviewer_dashboard')
+            else:
+                return redirect('author_dashboard')
         else:
             context['error'] = 'Invalid email address or password. Please try again.'
             return render(request, 'pages/login.html', context)
