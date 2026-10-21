@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login (Role-Based Access) — Plant Protection Association of India (PPAI) & IJPP</title>
+  <title>Login — Plant Protection Association of India (PPAI)</title>
   
   <!-- Favicon / Web Icons -->
   {% if site_settings and site_settings.logo %}
@@ -111,13 +111,6 @@
       line-height: 1.3;
     }
 
-    .brand-journal {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--vibrant-green);
-      margin-top: 3px;
-    }
-
     .brand-sub {
       font-size: 11px;
       color: var(--text-muted);
@@ -129,26 +122,8 @@
       font-weight: 800;
       color: var(--deep-forest);
       text-align: center;
-      margin-bottom: 6px;
-      letter-spacing: -0.02em;
-    }
-
-    .flow-badge {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
       margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .flow-pill {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--deep-forest);
-      background: #EDF5F0;
-      border: 1px solid #D8E8DF;
-      padding: 3px 9px;
-      border-radius: 100px;
+      letter-spacing: -0.02em;
     }
 
     /* Input Groups */
@@ -280,7 +255,7 @@
       </a>
     </div>
 
-    <!-- Brand Header with Plant Protection Association of India & IJPP -->
+    <!-- Brand Header -->
     <div class="brand-header">
       {% if site_settings and site_settings.logo %}
         <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo">
@@ -288,18 +263,11 @@
         <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo">
       {% endif %}
       <div class="brand-title">Plant Protection Association of India (PPAI)</div>
-      <div class="brand-journal">IJPP (Indian Journal of Plant Protection)</div>
       <div class="brand-sub">ICAR-NBPGR RS, Rajendranagar, Hyderabad &ndash; 500030</div>
     </div>
 
-    <!-- Form Heading matching Paper Flow -->
-    <h1 class="form-title">Login (Role-Based Access)</h1>
-    
-    <div class="flow-badge">
-      <span class="flow-pill">Author</span>
-      <span class="flow-pill">Editor</span>
-      <span class="flow-pill">Reviewer</span>
-    </div>
+    <!-- Form Heading -->
+    <h1 class="form-title">Login</h1>
 
     {% if success %}
       <div class="alert-success">{{ success }}</div>
@@ -331,14 +299,14 @@
         </div>
       </div>
 
-      <!-- Submit Button matching Paper Flow -->
+      <!-- Submit Button -->
       <button type="submit" class="btn-submit">
-        Login (Role-Based Access)
+        Login
       </button>
 
-      <!-- Bottom Register Link matching Paper Flow -->
+      <!-- Bottom Register Link -->
       <div class="auth-footer">
-        New User / Researcher? <a href="{% url 'register' %}">Register &mdash; Author, Editor and Reviewer</a>
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
       </div>
     </form>
   </div>

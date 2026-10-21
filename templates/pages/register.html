@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register (Role-Based Registration) — Plant Protection Association of India (PPAI) & IJPP</title>
+  <title>Register — Plant Protection Association of India (PPAI)</title>
   
   <!-- Favicon / Web Icons -->
   {% if site_settings and site_settings.logo %}
@@ -111,13 +111,6 @@
       line-height: 1.3;
     }
 
-    .brand-journal {
-      font-size: 12.5px;
-      font-weight: 800;
-      color: var(--vibrant-green);
-      margin-top: 3px;
-    }
-
     .brand-sub {
       font-size: 11px;
       color: var(--text-muted);
@@ -125,20 +118,12 @@
     }
 
     .form-title {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 800;
       color: var(--deep-forest);
       text-align: center;
-      margin-bottom: 4px;
+      margin-bottom: 16px;
       letter-spacing: -0.02em;
-    }
-
-    .form-subtitle {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #5B7065;
-      text-align: center;
-      margin-bottom: 14px;
     }
 
     /* Role Selection Pills */
@@ -336,7 +321,7 @@
       </a>
     </div>
 
-    <!-- Brand Header with Plant Protection Association of India & IJPP -->
+    <!-- Brand Header -->
     <div class="brand-header">
       {% if site_settings and site_settings.logo %}
         <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo">
@@ -344,12 +329,10 @@
         <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo">
       {% endif %}
       <div class="brand-title">Plant Protection Association of India (PPAI)</div>
-      <div class="brand-journal">IJPP (Indian Journal of Plant Protection)</div>
       <div class="brand-sub">ICAR-NBPGR RS, Rajendranagar, Hyderabad &ndash; 500030</div>
     </div>
 
-    <h1 class="form-title">Register (Role-Based Registration)</h1>
-    <div class="form-subtitle">Author, Editor and Reviewer (Role-Based Registration)</div>
+    <h1 class="form-title">Register</h1>
 
     {% if error %}
       <div class="alert-error">{{ error }}</div>
@@ -358,8 +341,8 @@
     <form method="POST" action="{% url 'register' %}">
       {% csrf_token %}
 
-      <!-- Role Selection matching Paper Flow -->
-      <label class="role-pills-label">Select Role in Paper Flow <span style="color:#DC2626">*</span></label>
+      <!-- Role Selection -->
+      <label class="role-pills-label">Select Role <span style="color:#DC2626">*</span></label>
       <div class="role-selection-grid">
         <div class="role-option">
           <input type="radio" id="role_author" name="role" value="author" {% if not role or role == 'author' %}checked{% endif %}>
@@ -372,14 +355,14 @@
           <input type="radio" id="role_reviewer" name="role" value="reviewer" {% if role == 'reviewer' %}checked{% endif %}>
           <label for="role_reviewer">
             <span>🔍 Reviewer</span>
-            <small>Peer Review &amp; Comments</small>
+            <small>Peer Review</small>
           </label>
         </div>
         <div class="role-option">
           <input type="radio" id="role_editor" name="role" value="editor" {% if role == 'editor' %}checked{% endif %}>
           <label for="role_editor">
             <span>🏛️ Editor</span>
-            <small>Triage &amp; Approve Access</small>
+            <small>Editorial</small>
           </label>
         </div>
       </div>
@@ -457,14 +440,14 @@
         </div>
       </div>
 
-      <!-- Submit Button matching Paper Flow -->
+      <!-- Submit Button -->
       <button type="submit" class="btn-submit">
-        Register (Role-Based Registration)
+        Register
       </button>
 
-      <!-- Bottom Login Link matching Paper Flow -->
+      <!-- Bottom Login Link -->
       <div class="auth-footer">
-        Already Registered? <a href="{% url 'login' %}">Login (Role-Based Access)</a>
+        Already have an account? <a href="{% url 'login' %}">Click here to login</a>
       </div>
     </form>
   </div>
