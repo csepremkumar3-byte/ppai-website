@@ -347,21 +347,21 @@
         <div class="role-option">
           <input type="radio" id="role_author" name="role" value="author" {% if not role or role == 'author' %}checked{% endif %}>
           <label for="role_author">
-            <span>✍️ Author</span>
+            <span style="font-weight: 800; color: var(--deep-forest);">Author</span>
             <small>Manuscript Submission</small>
           </label>
         </div>
         <div class="role-option">
           <input type="radio" id="role_reviewer" name="role" value="reviewer" {% if role == 'reviewer' %}checked{% endif %}>
           <label for="role_reviewer">
-            <span>🔍 Reviewer</span>
+            <span style="font-weight: 800; color: var(--deep-forest);">Reviewer</span>
             <small>Peer Review</small>
           </label>
         </div>
         <div class="role-option">
           <input type="radio" id="role_editor" name="role" value="editor" {% if role == 'editor' %}checked{% endif %}>
           <label for="role_editor">
-            <span>🏛️ Editor</span>
+            <span style="font-weight: 800; color: var(--deep-forest);">Editor</span>
             <small>Editorial</small>
           </label>
         </div>

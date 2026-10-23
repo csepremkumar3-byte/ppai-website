@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Page Not Found (404) — Plant Protection Association of India (PPAI){% endblock %}
+
+{% block content %}
+<div class="content-wrapper" style="min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: 60px 20px;">
+  <div style="background: #FFFFFF; border: 1px solid rgba(11, 36, 23, 0.08); border-radius: 16px; padding: 48px 36px; max-width: 580px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(11, 36, 23, 0.05);">
+    <div style="width: 72px; height: 72px; margin: 0 auto 20px auto; border-radius: 50%; background: rgba(0, 178, 114, 0.1); color: #00B272; display: flex; align-items: center; justify-content: center;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+    </div>
+    <h1 style="font-size: 26px; font-weight: 800; color: #0B2417; margin-bottom: 10px;">Page Not Found</h1>
+    <p style="font-size: 15px; color: #5B7065; line-height: 1.6; margin-bottom: 28px;">
+      The page you requested could not be located. It may have moved or the address may have been typed incorrectly.
+    </p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="{% url 'home' %}" style="display: inline-flex; align-items: center; gap: 8px; background: #00B272; color: #FFFFFF; font-weight: 700; padding: 12px 24px; border-radius: 100px; text-decoration: none;">
+        Return to Home
+      </a>
+      <a href="{% url 'login' %}" style="display: inline-flex; align-items: center; gap: 8px; background: #0B2417; color: #FFFFFF; font-weight: 700; padding: 12px 24px; border-radius: 100px; text-decoration: none;">
+        Editorial Login
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

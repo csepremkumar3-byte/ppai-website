@@ -134,10 +134,14 @@ class Manuscript(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.tracking_id:
-            # Generate IJPP-YYYY-XXXX tracking ID
+            # Generate collision-safe IJPP-YYYY-XXXX tracking ID
             year = timezone.now().year
             count = Manuscript.objects.filter(created_at__year=year).count() + 1
-            self.tracking_id = f"IJPP-{year}-{count:04d}"
+            candidate_id = f"IJPP-{year}-{count:04d}"
+            while Manuscript.objects.filter(tracking_id=candidate_id).exists():
+                count += 1
+                candidate_id = f"IJPP-{year}-{count:04d}"
+            self.tracking_id = candidate_id
         super().save(*args, **kwargs)
 
 

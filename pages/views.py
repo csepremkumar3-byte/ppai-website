@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.db import transaction
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
@@ -424,57 +426,62 @@ def register(request):
         })
 
         if not email or not password:
-            context['error'] = 'Please fill in all required fields.'
+            context['error'] = 'Please fill in all required fields (Email and Password).'
             return render(request, 'pages/register.html', context)
 
         if password != confirm_password:
-            context['error'] = 'Passwords do not match.'
+            context['error'] = 'Passwords do not match. Please re-enter your password.'
+            return render(request, 'pages/register.html', context)
+
+        if len(password) < 6:
+            context['error'] = 'Password must be at least 6 characters long.'
             return render(request, 'pages/register.html', context)
 
         if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
             context['error'] = 'An account with this email address already exists. Please login.'
             return render(request, 'pages/register.html', context)
 
-        # Split name into first and last
-        name_parts = full_name.split(None, 1)
-        first_name = name_parts[0] if name_parts else ''
-        last_name = name_parts[1] if len(name_parts) > 1 else ''
+        try:
+            with transaction.atomic():
+                name_parts = full_name.split(None, 1)
+                first_name = name_parts[0] if name_parts else ''
+                last_name = name_parts[1] if len(name_parts) > 1 else ''
 
-        # Securely create user with PBKDF2/SHA256 password encryption
-        user = User.objects.create_user(
-            username=email,
-            email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name
-        )
-        user.save()
+                user = User.objects.create_user(
+                    username=email,
+                    email=email,
+                    password=password,
+                    first_name=first_name,
+                    last_name=last_name
+                )
 
-        # Link UserProfile with role-based access
-        from submissions.models import UserProfile
-        is_reviewer = (role == 'reviewer')
-        is_editor = (role == 'editor')
+                from submissions.models import UserProfile
+                is_reviewer = (role == 'reviewer')
+                is_editor = (role == 'editor')
 
-        UserProfile.objects.create(
-            user=user,
-            role=role if role in ['author', 'reviewer', 'editor'] else 'author',
-            is_author=True,
-            is_reviewer=is_reviewer,
-            is_editor=is_editor,
-            phone=contact_num,
-            affiliation=affiliation,
-            designation=designation,
-            specialization=specialization,
-            orcid_id=orcid_id,
-        )
+                UserProfile.objects.update_or_create(
+                    user=user,
+                    defaults={
+                        'role': role if role in ['author', 'reviewer', 'editor'] else 'author',
+                        'is_author': True,
+                        'is_reviewer': is_reviewer,
+                        'is_editor': is_editor,
+                        'phone': contact_num,
+                        'affiliation': affiliation,
+                        'designation': designation,
+                        'specialization': specialization,
+                        'orcid_id': orcid_id,
+                    }
+                )
 
-        auth_login(request, user)
-        if is_editor:
-            return redirect('editor_dashboard')
-        elif is_reviewer:
-            return redirect('reviewer_dashboard')
-        else:
-            return redirect('author_dashboard')
+            # Workflow: After registration -> redirect to login with success message
+            role_label = {'author': 'Author', 'reviewer': 'Reviewer', 'editor': 'Editor'}.get(role, 'Author')
+            messages.success(request, f'Registration successful as {role_label}! Please login with your email and password to access your dashboard.')
+            return redirect('login')
+
+        except Exception as e:
+            context['error'] = f'Unable to complete registration: {str(e)}'
+            return render(request, 'pages/register.html', context)
 
     return render(request, 'pages/register.html', context)
 
@@ -492,31 +499,41 @@ def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email', '').strip().lower()
         password = request.POST.get('password', '')
-        user = authenticate(request, username=email, password=password)
-        if user is None:
-            try:
-                user_obj = User.objects.get(email__iexact=email)
-                user = authenticate(request, username=user_obj.username, password=password)
-            except (User.DoesNotExist, User.MultipleObjectsReturned):
-                user = None
 
-        if user is not None:
-            auth_login(request, user)
-            next_url = request.GET.get('next') or request.POST.get('next')
-            if next_url:
-                return redirect(next_url)
-
-            from submissions.views import get_user_profile
-            profile = get_user_profile(user)
-            if profile.is_editor or user.is_staff or user.is_superuser:
-                return redirect('editor_dashboard')
-            elif profile.is_reviewer:
-                return redirect('reviewer_dashboard')
-            else:
-                return redirect('author_dashboard')
-        else:
-            context['error'] = 'Invalid email address or password. Please try again.'
+        if not email or not password:
+            context['error'] = 'Please enter both your email and password.'
             return render(request, 'pages/login.html', context)
+
+        try:
+            user = authenticate(request, username=email, password=password)
+            if user is None:
+                try:
+                    user_obj = User.objects.get(email__iexact=email)
+                    user = authenticate(request, username=user_obj.username, password=password)
+                except (User.DoesNotExist, User.MultipleObjectsReturned):
+                    user = None
+
+            if user is not None:
+                auth_login(request, user)
+                next_url = request.GET.get('next') or request.POST.get('next')
+                if next_url and next_url.startswith('/'):
+                    return redirect(next_url)
+
+                from submissions.views import get_user_profile
+                profile = get_user_profile(user)
+                if profile.is_editor or user.is_staff or user.is_superuser:
+                    return redirect('editor_dashboard')
+                elif profile.is_reviewer:
+                    return redirect('reviewer_dashboard')
+                else:
+                    return redirect('author_dashboard')
+            else:
+                context['error'] = 'Invalid email address or password. Please try again.'
+                return render(request, 'pages/login.html', context)
+        except Exception as e:
+            context['error'] = f'Login error: {str(e)}'
+            return render(request, 'pages/login.html', context)
+
     return render(request, 'pages/login.html', context)
 
 def search_view(request):

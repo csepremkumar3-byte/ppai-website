@@ -93,8 +93,8 @@ class PeerReviewWorkflowTests(TestCase):
         self.client.logout()
 
     def test_02_existing_register_with_roles(self):
-        """Test registering Author, Reviewer and Editor via existing /register/ endpoint."""
-        # 1. Register new Author
+        """Test registration flow: Register -> Redirect to Login -> Login -> Role Dashboard."""
+        # 1. Register new Author -> Redirects to login with success message
         resp_author = self.client.post(reverse('register'), {
             'full_name': 'Dr. Arun Kumar',
             'email': 'arun.author@icar.gov.in',
@@ -106,11 +106,19 @@ class PeerReviewWorkflowTests(TestCase):
             'password': 'SecretPass123!',
             'confirm_password': 'SecretPass123!'
         }, follow=True)
-        self.assertRedirects(resp_author, reverse('author_dashboard'))
+        self.assertRedirects(resp_author, reverse('login'))
+        self.assertContains(resp_author, 'Registration successful as Author')
         self.assertTrue(User.objects.filter(email='arun.author@icar.gov.in').exists())
+
+        # Author logs in -> Redirects to author dashboard
+        login_author = self.client.post(reverse('login'), {
+            'email': 'arun.author@icar.gov.in',
+            'password': 'SecretPass123!'
+        }, follow=True)
+        self.assertRedirects(login_author, reverse('author_dashboard'))
         self.client.logout()
 
-        # 2. Register new Reviewer
+        # 2. Register new Reviewer -> Redirects to login with success message
         resp_reviewer = self.client.post(reverse('register'), {
             'full_name': 'Prof. V. Raman',
             'email': 'raman.reviewer@university.ac.in',
@@ -122,8 +130,16 @@ class PeerReviewWorkflowTests(TestCase):
             'password': 'SecretPass123!',
             'confirm_password': 'SecretPass123!'
         }, follow=True)
-        self.assertRedirects(resp_reviewer, reverse('reviewer_dashboard'))
+        self.assertRedirects(resp_reviewer, reverse('login'))
+        self.assertContains(resp_reviewer, 'Registration successful as Reviewer')
         self.assertTrue(User.objects.filter(email='raman.reviewer@university.ac.in').exists())
+
+        # Reviewer logs in -> Redirects to reviewer dashboard
+        login_reviewer = self.client.post(reverse('login'), {
+            'email': 'raman.reviewer@university.ac.in',
+            'password': 'SecretPass123!'
+        }, follow=True)
+        self.assertRedirects(login_reviewer, reverse('reviewer_dashboard'))
         self.client.logout()
 
     def test_03_full_paper_flow_loop_and_editor_approval_release(self):

@@ -269,6 +269,12 @@
     <!-- Form Heading -->
     <h1 class="form-title">Login</h1>
 
+        {% if messages %}
+      {% for message in messages %}
+        <div class="alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
     {% if success %}
       <div class="alert-success">{{ success }}</div>
     {% endif %}
