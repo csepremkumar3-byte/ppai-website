@@ -1,21 +1,23 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 from submissions.models import UserProfile, Manuscript, ReviewAssignment, ManuscriptRevision, SubmissionActivityLog
 
 
 class Command(BaseCommand):
-    help = "Deletes all test users, user profiles, manuscripts, and peer review data while keeping society records intact."
+    help = "Deletes all login, registration, and submission data while preserving society data."
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--keep-superusers',
+            '--reset-admin',
             action='store_true',
-            help='Preserve superuser accounts while deleting all other users and submissions.',
+            help='Recreates a single clean default admin superuser (admin / Admin@12345) after wiping.',
         )
 
     def handle(self, *args, **options):
-        keep_superusers = options.get('keep_superusers', False)
+        reset_admin = options.get('reset_admin', True)
 
+        Session.objects.all().delete()
         rev_count = ReviewAssignment.objects.count()
         ReviewAssignment.objects.all().delete()
 
@@ -31,18 +33,24 @@ class Command(BaseCommand):
         prof_count = UserProfile.objects.count()
         UserProfile.objects.all().delete()
 
-        if keep_superusers:
-            deleted_users, _ = User.objects.filter(is_superuser=False).delete()
-        else:
-            deleted_users, _ = User.objects.all().delete()
+        deleted_users, _ = User.objects.all().delete()
 
-        self.stdout.write(self.style.SUCCESS(
-            f"Successfully cleared:\n"
-            f" - {deleted_users} User account(s)\n"
-            f" - {prof_count} User profile(s)\n"
-            f" - {manu_count} Manuscript(s)\n"
-            f" - {rev_count} Review assignment(s)\n"
-            f" - {rev_sub_count} Manuscript revision(s)\n"
-            f" - {act_count} Submission log(s)\n"
-            f"All society data (Executive Council, Editorial Board, Volumes, Awards) remain 100% intact."
-        ))
+        msg = (
+            f"Successfully wiped all login and registration data:\n"
+            f" - {deleted_users} User account(s) deleted\n"
+            f" - {prof_count} User profile(s) deleted\n"
+            f" - {manu_count} Manuscript(s) deleted\n"
+            f" - {rev_count} Review assignment(s) deleted\n"
+            f" - All active sessions cleared.\n"
+        )
+
+        if reset_admin:
+            admin_user = User.objects.create_superuser('admin', 'admin@ppai.org.in', 'Admin@12345')
+            p, _ = UserProfile.objects.get_or_create(user=admin_user)
+            p.role = 'editor'
+            p.is_editor = True
+            p.is_author = True
+            p.save()
+            msg += "\nClean default admin restored: admin / Admin@12345 (role: Editor)."
+
+        self.stdout.write(self.style.SUCCESS(msg))
