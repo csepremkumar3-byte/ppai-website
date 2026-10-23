@@ -232,18 +232,6 @@
     .auth-footer a:hover {
       text-decoration: underline;
     }
-
-    .role-info-note {
-      background: #F8FAF9;
-      border: 1px solid #D8E8DF;
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin-top: 14px;
-      font-size: 11.5px;
-      color: #5B7065;
-      line-height: 1.4;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -304,13 +292,11 @@
         <div class="input-group">
           <label class="input-label" for="password">Password <span style="color:#DC2626">*</span></label>
           <input type="password" id="password" name="password" class="input-field" placeholder="At least 8 chars" required minlength="8" autocomplete="new-password">
-          <span class="field-hint" id="passwordHint">Min 8 chars, letters &amp; numbers</span>
           <div class="field-error" id="passwordError">Must be &ge;8 chars with letters &amp; numbers.</div>
         </div>
         <div class="input-group">
           <label class="input-label" for="confirm_password">Confirm Password <span style="color:#DC2626">*</span></label>
-          <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Re-enter password" required minlength="8" autocomplete="new-password">
-          <span class="field-hint" id="matchHint">Re-enter same password</span>
+          <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm password" required minlength="8" autocomplete="new-password">
           <div class="field-error" id="matchError">Passwords do not match.</div>
         </div>
       </div>
@@ -319,10 +305,6 @@
       <button type="submit" class="btn-submit" id="submitBtn">
         Register as Author
       </button>
-
-      <div class="role-info-note">
-        Reviewer and Editorial accounts are provisioned directly by the Editorial Office.
-      </div>
 
       <!-- Bottom Login Link -->
       <div class="auth-footer">
@@ -337,10 +319,8 @@
     const emailError = document.getElementById('emailError');
     const pwdInput = document.getElementById('password');
     const pwdError = document.getElementById('passwordError');
-    const pwdHint = document.getElementById('passwordHint');
     const cpwdInput = document.getElementById('confirm_password');
     const matchError = document.getElementById('matchError');
-    const matchHint = document.getElementById('matchHint');
     const nameInput = document.getElementById('full_name');
     const nameError = document.getElementById('nameError');
     const affInput = document.getElementById('affiliation');
@@ -372,15 +352,11 @@
         pwdInput.classList.add('is-invalid');
         pwdInput.classList.remove('is-valid');
         pwdError.style.display = 'block';
-        pwdHint.style.display = 'none';
         return false;
       } else {
         pwdInput.classList.remove('is-invalid');
         pwdInput.classList.add('is-valid');
         pwdError.style.display = 'none';
-        pwdHint.style.display = 'block';
-        pwdHint.style.color = '#00B272';
-        pwdHint.textContent = 'Password meets requirements';
         return true;
       }
     }
@@ -392,15 +368,11 @@
         cpwdInput.classList.add('is-invalid');
         cpwdInput.classList.remove('is-valid');
         matchError.style.display = 'block';
-        matchHint.style.display = 'none';
         return false;
       } else {
         cpwdInput.classList.remove('is-invalid');
         cpwdInput.classList.add('is-valid');
         matchError.style.display = 'none';
-        matchHint.style.display = 'block';
-        matchHint.style.color = '#00B272';
-        matchHint.textContent = 'Passwords match';
         return true;
       }
     }
