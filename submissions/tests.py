@@ -69,7 +69,7 @@ class PeerReviewWorkflowTests(TestCase):
         self.admin_profile = UserProfile.objects.create(
             user=self.admin_user,
             role='admin',
-            is_editor=True,
+            is_editor=False,
             affiliation='PPAI Central Office'
         )
 
@@ -396,6 +396,13 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertNotContains(dash_resp, 'Editor Panel')
         self.assertNotContains(dash_resp, 'Share this password with the user')
         self.assertNotContains(dash_resp, 'All active accounts across Author, Reviewer, and Editorial roles')
+
+        # Verify Admin is NOT counted as an editor
+        self.assertEqual(dash_resp.context['counts']['editors'], 1)  # Only self.editor_user from setUp, NOT admin
+
+        # Admin trying to access editor dashboard is redirected to admin_dashboard
+        editor_access_resp = self.client.get(reverse('editor_dashboard'))
+        self.assertRedirects(editor_access_resp, reverse('admin_dashboard'))
 
         # Password without uppercase rejection in admin dashboard
         resp_no_upper = self.client.post(reverse('admin_dashboard'), {

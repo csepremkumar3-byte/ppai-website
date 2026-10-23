@@ -27,11 +27,13 @@ def get_user_profile(user):
             profile, created = UserProfile.objects.get_or_create(user=user)
         else:
             raise e
-    # If user is superuser/admin, mark admin role and editor permissions
+    # If user is superuser/admin, mark admin role (Admin is NOT an editor)
     if user.is_superuser:
-        if profile.role != 'admin' or not profile.is_editor:
+        if profile.role != 'admin' or profile.is_editor or profile.is_reviewer or profile.is_author:
             profile.role = 'admin'
-            profile.is_editor = True
+            profile.is_editor = False
+            profile.is_reviewer = False
+            profile.is_author = False
             profile.save()
     elif user.is_staff:
         if not profile.is_editor:
@@ -47,7 +49,7 @@ def portal_login(request):
         profile = get_user_profile(request.user)
         if request.user.is_superuser or getattr(profile, 'role', '') == 'admin':
             return redirect('admin_dashboard')
-        elif profile.is_editor or request.user.is_staff:
+        elif profile.is_editor or (request.user.is_staff and not request.user.is_superuser):
             return redirect('editor_dashboard')
         elif profile.is_reviewer:
             return redirect('reviewer_dashboard')
@@ -75,6 +77,9 @@ def portal_logout(request):
 def author_dashboard(request):
     """Author home: summary metrics and list of all submitted manuscripts."""
     profile = get_user_profile(request.user)
+    if request.user.is_superuser or getattr(profile, 'role', '') == 'admin':
+        return redirect('admin_dashboard')
+
     manuscripts = Manuscript.objects.filter(author=request.user).prefetch_related('revisions', 'review_assignments')
 
     stats = {
@@ -199,7 +204,10 @@ def author_submit_revision(request, tracking_id):
 def editor_dashboard(request):
     """Editor command center: triage, reviewer assignment, and decision management."""
     profile = get_user_profile(request.user)
-    if not (profile.is_editor or request.user.is_staff or request.user.is_superuser):
+    if request.user.is_superuser or getattr(profile, 'role', '') == 'admin':
+        return redirect('admin_dashboard')
+
+    if not (profile.is_editor or (request.user.is_staff and not request.user.is_superuser)):
         messages.error(request, "Access restricted to Editorial Board members.")
         return redirect('author_dashboard')
 
@@ -376,7 +384,10 @@ def editor_manuscript_review(request, tracking_id):
 def reviewer_dashboard(request):
     """Reviewer home: assigned manuscripts awaiting evaluation or in progress."""
     profile = get_user_profile(request.user)
-    if not (profile.is_reviewer or profile.role == 'reviewer' or profile.is_editor or request.user.is_staff):
+    if request.user.is_superuser or getattr(profile, 'role', '') == 'admin':
+        return redirect('admin_dashboard')
+
+    if not (profile.is_reviewer or profile.role == 'reviewer'):
         messages.error(request, "Reviewer panel access required.")
         return redirect('author_dashboard')
 
@@ -641,17 +652,17 @@ def admin_dashboard(request):
 
     counts = {
         'all': users_qs.count(),
-        'editors': users_qs.filter(Q(journal_profile__is_editor=True) | Q(is_staff=True)).distinct().count(),
-        'reviewers': users_qs.filter(journal_profile__is_reviewer=True).count(),
+        'editors': users_qs.filter(journal_profile__is_editor=True).exclude(is_superuser=True).distinct().count(),
+        'reviewers': users_qs.filter(journal_profile__is_reviewer=True).exclude(is_superuser=True).count(),
         'authors': users_qs.filter(
             Q(journal_profile__is_editor=False, journal_profile__is_reviewer=False, is_superuser=False, is_staff=False)
         ).count(),
     }
 
     if filter_role == 'editor':
-        filtered_users = [u for u in users_qs if u.is_staff or (hasattr(u, 'journal_profile') and u.journal_profile.is_editor)]
+        filtered_users = [u for u in users_qs if not u.is_superuser and hasattr(u, 'journal_profile') and u.journal_profile.is_editor]
     elif filter_role == 'reviewer':
-        filtered_users = [u for u in users_qs if hasattr(u, 'journal_profile') and u.journal_profile.is_reviewer]
+        filtered_users = [u for u in users_qs if not u.is_superuser and hasattr(u, 'journal_profile') and u.journal_profile.is_reviewer]
     elif filter_role == 'author':
         filtered_users = [
             u for u in users_qs

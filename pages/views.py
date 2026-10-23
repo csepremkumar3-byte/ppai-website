@@ -515,7 +515,7 @@ def login_view(request):
         profile = get_user_profile(request.user)
         if request.user.is_superuser or getattr(profile, 'role', '') == 'admin':
             return redirect('admin_dashboard')
-        elif profile.is_editor or request.user.is_staff:
+        elif profile.is_editor or (request.user.is_staff and not request.user.is_superuser):
             return redirect('editor_dashboard')
         elif profile.is_reviewer:
             return redirect('reviewer_dashboard')
@@ -548,7 +548,7 @@ def login_view(request):
                 profile = get_user_profile(user)
                 if user.is_superuser or getattr(profile, 'role', '') == 'admin':
                     return redirect('admin_dashboard')
-                elif profile.is_editor or user.is_staff:
+                elif profile.is_editor or (user.is_staff and not user.is_superuser):
                     return redirect('editor_dashboard')
                 elif profile.is_reviewer:
                     return redirect('reviewer_dashboard')
