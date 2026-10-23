@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Editor Dashboard — Plant Protection Association of India (PPAI){% endblock %}
+{% block title %}Editor Dashboard &mdash; Plant Protection Association of India (PPAI){% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -56,7 +56,7 @@
         E
       </div>
       <div class="portal-user-meta">
-        <h2>Editor Command Center</h2>
+        <h2>Editor Dashboard</h2>
         <p>
           <span class="role-badge editor">Editor</span>
           <span>Plant Protection Association of India (PPAI)</span>
@@ -89,10 +89,10 @@
   </div>
   {% endif %}
 
-  <!-- Status Filter Pills (No bulky stats cards) -->
+  <!-- Status Filter Pills -->
   <div class="filter-bar">
     <a href="{% url 'editor_dashboard' %}?status=all" class="filter-pill {% if status_filter == 'all' %}active{% endif %}">
-      All Manuscripts <span class="count">{{ counts.all }}</span>
+      All <span class="count">{{ counts.all }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=submitted" class="filter-pill {% if status_filter == 'submitted' %}active{% endif %}">
       Submitted <span class="count">{{ counts.submitted }}</span>
@@ -103,11 +103,8 @@
     <a href="{% url 'editor_dashboard' %}?status=review_completed" class="filter-pill {% if status_filter == 'review_completed' %}active{% endif %}">
       Review Completed <span class="count">{{ counts.review_completed }}</span>
     </a>
-    <a href="{% url 'editor_dashboard' %}?status=revised_submitted" class="filter-pill {% if status_filter == 'revised_submitted' %}active{% endif %}">
-      Revised Submitted <span class="count">{{ counts.revised_submitted }}</span>
-    </a>
     <a href="{% url 'editor_dashboard' %}?status=revisions_requested" class="filter-pill {% if status_filter == 'revisions_requested' %}active{% endif %}">
-      Revisions Requested <span class="count">{{ counts.revisions_requested }}</span>
+      Revisions <span class="count">{{ counts.revisions_requested }}</span>
     </a>
     <a href="{% url 'editor_dashboard' %}?status=accepted" class="filter-pill {% if status_filter == 'accepted' %}active{% endif %}">
       Accepted <span class="count">{{ counts.accepted }}</span>
@@ -121,8 +118,8 @@
   <div class="portal-card">
     <div class="portal-card-header">
       <div>
-        <h2>Editorial Manuscripts &mdash; View, Edit, Assign Reviewer &amp; Approve</h2>
-        <p>Plant Protection Association of India (PPAI)</p>
+        <h2>Editorial Manuscripts</h2>
+        <p>Review submitted papers, assign reviewers, and render decisions</p>
       </div>
     </div>
 
@@ -132,10 +129,10 @@
         <thead>
           <tr>
             <th>Tracking ID</th>
-            <th>Title & Discipline</th>
-            <th>Author & Affiliation</th>
+            <th>Title &amp; Discipline</th>
+            <th>Author</th>
             <th>Reviewers</th>
-            <th>Date</th>
+            <th>Submitted</th>
             <th>Status</th>
             <th style="text-align: right;">Action</th>
           </tr>
@@ -150,11 +147,11 @@
               <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="paper-title">
                 {{ m.title }}
               </a>
-              <span class="paper-meta">{{ m.get_subject_area_display }} &bull; {{ m.get_article_type_display }}</span>
+              <span class="paper-meta">{{ m.get_subject_area_display }}</span>
             </td>
             <td>
               <strong style="color: #0B2417; font-size: 13.5px;">{{ m.author.get_full_name|default:m.author.username }}</strong>
-              <div style="font-size: 12px; color: #64746D;">{{ m.author.journal_profile.affiliation|truncatechars:35 }}</div>
+              <div style="font-size: 11.5px; color: #64746D;">{{ m.author.journal_profile.affiliation|truncatechars:30 }}</div>
             </td>
             <td>
               {% with revs=m.review_assignments.all %}
@@ -164,9 +161,9 @@
                     <span>
                       &bull; {{ r.reviewer.get_full_name|default:r.reviewer.username }}
                       {% if r.status == 'completed' %}
-                        <strong style="color: #00B272;">(Reviewed)</strong>
+                        <strong style="color: #00B272;">(Done)</strong>
                       {% elif r.status == 'accepted' %}
-                        <strong style="color: #2563EB;">(Evaluating)</strong>
+                        <strong style="color: #2563EB;">(In Review)</strong>
                       {% else %}
                         <span style="color: #EA580C;">(Invited)</span>
                       {% endif %}
@@ -174,7 +171,7 @@
                     {% endfor %}
                   </div>
                 {% else %}
-                  <span style="font-size: 12px; color: #DC2626; font-weight: 700;">No reviewer assigned</span>
+                  <span style="font-size: 12px; color: #DC2626; font-weight: 700;">Unassigned</span>
                 {% endif %}
               {% endwith %}
             </td>
@@ -188,7 +185,7 @@
             </td>
             <td style="text-align: right; white-space: nowrap;">
               <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-primary btn-portal-sm">
-                View &amp; Edit
+                View &amp; Review
               </a>
             </td>
           </tr>
@@ -198,8 +195,8 @@
     </div>
     {% else %}
     <div style="text-align: center; padding: 48px 20px;">
-      <h3 style="font-size: 18px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">No manuscripts found</h3>
-      <p style="font-size: 14px; color: #5B7065;">There are no manuscripts matching this filter status.</p>
+      <h3 style="font-size: 17px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">No manuscripts found</h3>
+      <p style="font-size: 13.5px; color: #5B7065;">There are no submissions currently matching this status filter.</p>
     </div>
     {% endif %}
   </div>

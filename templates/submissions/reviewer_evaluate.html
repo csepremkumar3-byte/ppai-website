@@ -83,7 +83,7 @@
           <h2>Manuscript Dossier</h2>
           {% if manuscript.manuscript_file %}
           <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
-            ⬇️ Download Full Manuscript
+             Download Full Manuscript
           </a>
           {% endif %}
         </div>
@@ -108,7 +108,7 @@
         {% if manuscript.supplementary_file %}
         <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(11, 36, 23, 0.08);">
           <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-            📁 Supplementary Material / Data
+             Supplementary Material / Data
           </a>
         </div>
         {% endif %}
@@ -165,7 +165,7 @@
 
           {% if assignment.confidential_comments_to_editor %}
           <div class="review-callout warning" style="margin-bottom: 16px;">
-            <h4>🔒 Confidential Comments to Editor:</h4>
+            <h4> Confidential Comments to Editor:</h4>
             <p>{{ assignment.confidential_comments_to_editor }}</p>
           </div>
           {% endif %}
@@ -173,7 +173,7 @@
           {% if assignment.annotated_file %}
           <div>
             <a href="{{ assignment.annotated_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-              📎 Download Your Uploaded Annotated File
+               Download Your Uploaded Annotated File
             </a>
           </div>
           {% endif %}

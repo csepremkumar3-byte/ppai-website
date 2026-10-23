@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Editor Dossier: {{ manuscript.tracking_id }} — Plant Protection Association of India (PPAI){% endblock %}
+{% block title %}Review Manuscript: {{ manuscript.tracking_id }} &mdash; Editor{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -9,7 +9,7 @@
   .editor-grid-layout {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 24px;
+    gap: 22px;
   }
   @media (max-width: 992px) {
     .editor-grid-layout {
@@ -51,8 +51,8 @@
 
     <div class="portal-header-actions">
       <a href="{% url 'editor_dashboard' %}" class="btn-portal-secondary btn-portal-sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        Editor Command Center
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Editor Dashboard
       </a>
     </div>
   </div>
@@ -69,28 +69,28 @@
 
   <div class="editor-grid-layout">
 
-    <!-- Left Column: Manuscript Details, Revisions & Reviewer Comments -->
+    <!-- Left Column: Manuscript Dossier, Revisions & Reviewer Comments -->
     <div>
 
-      <!-- Manuscript Core Info (View & Edit Access) -->
+      <!-- Manuscript Core Info -->
       <div class="portal-card">
         <div class="portal-card-header">
           <div>
-            <h2>Manuscript Dossier (View &amp; Edit)</h2>
+            <h2>Manuscript Dossier</h2>
             <p>Author: <strong>{{ manuscript.author.get_full_name|default:manuscript.author.username }}</strong> &bull; {{ manuscript.author.journal_profile.affiliation|default:"PPAI" }}</p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button type="button" class="btn-portal-secondary btn-portal-sm" onclick="toggleEditModal()">
-              ✏️ Edit Details
+              Edit Details
             </button>
             {% if manuscript.manuscript_file %}
             <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
-              ⬇️ Download Manuscript
+              Download Manuscript
             </a>
             {% endif %}
             {% if manuscript.supplementary_file %}
             <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-              📁 Supplementary
+              Supplementary
             </a>
             {% endif %}
           </div>
@@ -98,7 +98,7 @@
 
         <!-- Collapsible Edit Form for Editor -->
         <div id="editor-edit-form-box" style="display: none; background: #F3F7F5; border: 1px solid #D1E5DC; border-radius: 8px; padding: 18px; margin-bottom: 20px;">
-          <h3 style="font-size: 15px; font-weight: 800; color: #0B2417; margin-bottom: 12px;">✏️ Edit Manuscript Metadata</h3>
+          <h3 style="font-size: 15px; font-weight: 800; color: #0B2417; margin-bottom: 12px;">Edit Manuscript Details</h3>
           <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}">
             {% csrf_token %}
             <input type="hidden" name="edit_manuscript" value="1">
@@ -150,60 +150,53 @@
         </div>
 
         <div style="margin-bottom: 16px;">
-          <h3 style="font-size: 17px; font-weight: 800; color: #0B2417; line-height: 1.4;">{{ manuscript.title }}</h3>
-          <div style="font-size: 13px; color: #64746D; margin-top: 4px;">
+          <h3 style="font-size: 16.5px; font-weight: 800; color: #0B2417; line-height: 1.4;">{{ manuscript.title }}</h3>
+          <div style="font-size: 12.5px; color: #64746D; margin-top: 4px;">
             {{ manuscript.get_article_type_display }} &bull; {{ manuscript.get_subject_area_display }} &bull; Submitted {{ manuscript.created_at|date:"M d, Y" }}
           </div>
         </div>
 
-        <div style="margin-bottom: 18px;">
-          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Abstract</h4>
+        <div style="margin-bottom: 16px;">
+          <h4 style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Abstract</h4>
           <p style="font-size: 13.5px; color: #1D2924; line-height: 1.6; background: #F8FAF9; padding: 14px; border-radius: 8px; white-space: pre-line;">{{ manuscript.abstract }}</p>
         </div>
 
         <div style="margin-bottom: 14px;">
-          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Keywords</h4>
+          <h4 style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Keywords</h4>
           <p style="font-size: 13px; color: #0B2417;">{{ manuscript.keywords }}</p>
         </div>
 
         {% if manuscript.co_authors %}
         <div style="margin-bottom: 14px;">
-          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Co-Authors</h4>
+          <h4 style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Co-Authors</h4>
           <p style="font-size: 13px; color: #0B2417; white-space: pre-line;">{{ manuscript.co_authors }}</p>
-        </div>
-        {% endif %}
-
-        {% if manuscript.cover_letter %}
-        <div style="margin-bottom: 14px;">
-          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Cover Letter</h4>
-          <p style="font-size: 13px; color: #365042; font-style: italic; background: #FFFDF5; padding: 10px; border-radius: 6px; border-left: 3px solid #EAB308;">{{ manuscript.cover_letter }}</p>
         </div>
         {% endif %}
       </div>
 
-      <!-- Reviewer Comments on Manuscript (Editor Approves Here) -->
+      <!-- Reviewer Comments on Manuscript -->
       <div class="portal-card">
         <div class="portal-card-header">
           <div>
             <h2>Reviewer Evaluations &amp; Comments</h2>
-            <p>Comments done by reviewer come to Editor first. After Editor approves, comments go to authors.</p>
+            <p>Comments are held with Editor first until approved for author release.</p>
           </div>
         </div>
 
         {% if reviews %}
           {% for r in reviews %}
-          <div style="border: 1px solid rgba(11, 36, 23, 0.1); border-radius: 12px; padding: 18px; margin-bottom: 18px; background: {% if r.status == 'completed' %}#FFFFFF{% else %}#FBFDFB{% endif %};">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div style="border: 1px solid rgba(11, 36, 23, 0.1); border-radius: 10px; padding: 16px; margin-bottom: 16px; background: {% if r.status == 'completed' %}#FFFFFF{% else %}#FBFDFB{% endif %};">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
               <div>
-                <strong style="color: #0B2417; font-size: 15px;">{{ r.reviewer.get_full_name|default:r.reviewer.username }}</strong>
-                <div style="font-size: 12px; color: #64746D;">{{ r.reviewer.journal_profile.affiliation|default:"Assigned Reviewer" }}</div>
+                <strong style="color: #0B2417; font-size: 14.5px;">{{ r.reviewer.get_full_name|default:r.reviewer.username }}</strong>
+                <div style="font-size: 11.5px; color: #64746D;">{{ r.reviewer.journal_profile.affiliation|default:"Assigned Reviewer" }}</div>
               </div>
-              <div style="display: flex; align-items: center; gap: 8px;">
+              <div>
                 {% if r.status == 'completed' %}
                   {% if r.is_approved_by_editor %}
-                    <span class="status-badge accepted">Approved for Authors</span>
+                    <span class="status-badge accepted">Approved for Author</span>
                   {% else %}
-                    <span class="status-badge under_review">With Editor (Pending Approval)</span>
+                    <span class="status-badge under_review">Pending Editor Approval</span>
                   {% endif %}
                 {% else %}
                   <span class="status-badge {{ r.status }}">{{ r.get_status_display }}</span>
@@ -213,57 +206,57 @@
 
             {% if r.status == 'completed' %}
             <!-- Rubric Scores Table -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; background: #F8FAF9; padding: 10px; border-radius: 8px;">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; background: #F8FAF9; padding: 8px; border-radius: 6px;">
               <div style="text-align: center;">
-                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Originality</div>
+                <div style="font-size: 10.5px; color: #64746D; font-weight: 700;">Originality</div>
                 <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.originality_score }}/5</div>
               </div>
               <div style="text-align: center;">
-                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Technical Quality</div>
+                <div style="font-size: 10.5px; color: #64746D; font-weight: 700;">Quality</div>
                 <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.technical_quality_score }}/5</div>
               </div>
               <div style="text-align: center;">
-                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Clarity</div>
+                <div style="font-size: 10.5px; color: #64746D; font-weight: 700;">Clarity</div>
                 <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.clarity_score }}/5</div>
               </div>
               <div style="text-align: center;">
-                <div style="font-size: 11px; color: #64746D; font-weight: 700;">Significance</div>
+                <div style="font-size: 10.5px; color: #64746D; font-weight: 700;">Significance</div>
                 <div class="rubric-score-badge" style="margin-top: 4px;">{{ r.significance_score }}/5</div>
               </div>
             </div>
 
-            <div style="margin-bottom: 12px;">
-              <strong style="color: #0B2417; font-size: 13.5px;">Reviewer Recommendation: </strong>
+            <div style="margin-bottom: 10px;">
+              <strong style="color: #0B2417; font-size: 13px;">Recommendation: </strong>
               <span style="font-weight: 800; color: #00B272;">{{ r.get_recommendation_display }}</span>
             </div>
 
             <div class="review-callout" style="margin-bottom: 10px;">
               <h4>Comments for Author:</h4>
-              <p>{{ r.comments_for_author|default:"None provided." }}</p>
+              <p style="white-space: pre-line;">{{ r.comments_for_author|default:"None provided." }}</p>
             </div>
 
             {% if r.confidential_comments_to_editor %}
-            <div class="review-callout warning">
-              <h4>🔒 Confidential Comments to Editor:</h4>
-              <p>{{ r.confidential_comments_to_editor }}</p>
+            <div class="review-callout warning" style="margin-bottom: 10px;">
+              <h4>Confidential Notes to Editor:</h4>
+              <p style="white-space: pre-line;">{{ r.confidential_comments_to_editor }}</p>
             </div>
             {% endif %}
 
             {% if r.annotated_file %}
             <div style="margin-top: 8px;">
               <a href="{{ r.annotated_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-                📎 Download Reviewer Annotated File
+                Download Reviewer Annotated File
               </a>
             </div>
             {% endif %}
 
-            <!-- Editor Approval Action Bar for this Reviewer -->
-            <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(11,36,23,0.12); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-              <span style="font-size: 12.5px; color: #5B7065;">
+            <!-- Approval Action Bar -->
+            <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(11,36,23,0.12); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <span style="font-size: 12px; color: #5B7065;">
                 {% if r.is_approved_by_editor %}
-                  <strong style="color: #00B272;">✓ Approved by Editor</strong> &mdash; Visible to Author after decision dispatch.
+                  <strong style="color: #00B272;">Approved by Editor</strong> &mdash; Visible to Author upon decision release.
                 {% else %}
-                  <strong style="color: #EA580C;">⏳ Held with Editor</strong> &mdash; Not visible to Author until Editor approves.
+                  <strong style="color: #EA580C;">Held with Editor</strong> &mdash; Not visible to Author until approved.
                 {% endif %}
               </span>
               <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}" style="display:inline;">
@@ -273,20 +266,20 @@
                 {% if r.is_approved_by_editor %}
                   <button type="submit" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626;">Revoke Approval</button>
                 {% else %}
-                  <button type="submit" class="btn-portal-primary btn-portal-sm">Approve Comments for Authors</button>
+                  <button type="submit" class="btn-portal-primary btn-portal-sm">Approve for Author</button>
                 {% endif %}
               </form>
             </div>
 
             {% else %}
             <p style="font-size: 13px; color: #64746D;">
-              Invited on {{ r.invitation_date|date:"M d, Y" }}. Due by: <strong>{{ r.due_date|date:"M d, Y" }}</strong>.
+              Invited on {{ r.invitation_date|date:"M d, Y" }}. Turnaround due by: <strong>{{ r.due_date|date:"M d, Y" }}</strong>.
             </p>
             {% endif %}
           </div>
           {% endfor %}
         {% else %}
-        <p style="font-size: 14px; color: #64746D; padding: 12px 0;">No reviewers have been assigned to this manuscript yet. Select a reviewer from the panel on the right.</p>
+        <p style="font-size: 13.5px; color: #64746D; padding: 12px 0;">No reviewers assigned yet. Select a reviewer from the panel on the right.</p>
         {% endif %}
       </div>
 
@@ -299,13 +292,13 @@
         {% for rev in revisions %}
         <div style="background: #F8FAF9; border-radius: 8px; padding: 14px; margin-bottom: 12px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong>Revision {{ rev.revision_number }} ({{ rev.submitted_at|date:"M d, Y, h:i A" }})</strong>
+            <strong>Revision {{ rev.revision_number }} ({{ rev.submitted_at|date:"M d, Y" }})</strong>
             <a href="{{ rev.revised_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-              ⬇️ Download Revision {{ rev.revision_number }}
+              Download File
             </a>
           </div>
           <div>
-            <div style="font-size: 12px; font-weight: 700; color: #64746D; margin-bottom: 4px;">Author Point-by-Point Response:</div>
+            <div style="font-size: 11.5px; font-weight: 700; color: #64746D; margin-bottom: 4px;">Author Response:</div>
             <p style="font-size: 13px; color: #1D2924; white-space: pre-line;">{{ rev.response_to_reviewers }}</p>
           </div>
         </div>
@@ -315,14 +308,14 @@
 
     </div>
 
-    <!-- Right Column: Reviewer Assignment & Editorial Decision Dispatch -->
+    <!-- Right Column: Reviewer Assignment & Editorial Decision -->
     <div>
 
-      <!-- Action Panel 1: Assign Reviewer -->
+      <!-- Panel 1: Assign Reviewer -->
       <div class="portal-card">
         <div class="portal-card-header">
           <h2>Assign Reviewer</h2>
-          <p>Select qualified reviewer to evaluate manuscript</p>
+          <p>Select qualified reviewer for peer evaluation</p>
         </div>
 
         {% if available_reviewers %}
@@ -330,20 +323,20 @@
           {% csrf_token %}
           <input type="hidden" name="assign_reviewer" value="1">
 
-          <div class="portal-form-group" style="margin-bottom: 14px;">
-            <label for="reviewer_id">Select Qualified Reviewer</label>
+          <div class="portal-form-group" style="margin-bottom: 12px;">
+            <label for="reviewer_id">Select Reviewer</label>
             <select name="reviewer_id" id="reviewer_id" class="portal-select" required>
-              <option value="">-- Choose Reviewer from Panel --</option>
+              <option value="">-- Choose Reviewer --</option>
               {% for rev_prof in available_reviewers %}
               <option value="{{ rev_prof.user.id }}">
-                {{ rev_prof.user.get_full_name|default:rev_prof.user.username }} ({{ rev_prof.specialization|default:rev_prof.affiliation|truncatechars:30 }})
+                {{ rev_prof.user.get_full_name|default:rev_prof.user.username }} ({{ rev_prof.specialization|default:rev_prof.affiliation|truncatechars:28 }})
               </option>
               {% endfor %}
             </select>
           </div>
 
-          <div class="portal-form-group" style="margin-bottom: 18px;">
-            <label for="due_days">Review Turnaround Window (Days)</label>
+          <div class="portal-form-group" style="margin-bottom: 16px;">
+            <label for="due_days">Turnaround Window (Days)</label>
             <input type="number" id="due_days" name="due_days" class="portal-input" value="21" min="7" max="60" required>
           </div>
 
@@ -352,54 +345,53 @@
           </button>
         </form>
         {% else %}
-        <p style="font-size: 13px; color: #64746D;">All eligible reviewers in the system have already been assigned to this paper.</p>
+        <p style="font-size: 13px; color: #64746D;">All eligible reviewers have been assigned.</p>
         {% endif %}
       </div>
 
-      <!-- Action Panel 2: Editorial Decision & Return Comments to Author -->
+      <!-- Panel 2: Editorial Decision -->
       <div class="portal-card" style="border: 2px solid rgba(0, 178, 114, 0.4);">
         <div class="portal-card-header">
-          <h2>Editorial Decision &amp; Feedback</h2>
-          <p>Approve or Return comments to Author</p>
+          <h2>Editorial Decision</h2>
+          <p>Issue verdict and return feedback to author</p>
         </div>
 
         <form method="POST" action="{% url 'editor_manuscript_review' manuscript.tracking_id %}">
           {% csrf_token %}
           <input type="hidden" name="submit_decision" value="1">
 
-          <div class="portal-form-group" style="margin-bottom: 16px;">
+          <div class="portal-form-group" style="margin-bottom: 14px;">
             <label for="decision">Decision Verdict <span style="color:#DC2626">*</span></label>
             <select name="decision" id="decision" class="portal-select" required>
-              <option value="">-- Choose Decision --</option>
-              <option value="accept" {% if manuscript.editor_decision == 'accept' %}selected{% endif %}>Approve Access &bull; Accept for Publication</option>
-              <option value="minor_revision" {% if manuscript.editor_decision == 'minor_revision' %}selected{% endif %}>Return comments to Author (Minor Revision)</option>
-              <option value="major_revision" {% if manuscript.editor_decision == 'major_revision' %}selected{% endif %}>Return comments to Author (Major Revision)</option>
+              <option value="">-- Choose Verdict --</option>
+              <option value="accept" {% if manuscript.editor_decision == 'accept' %}selected{% endif %}>Accept for Publication</option>
+              <option value="minor_revision" {% if manuscript.editor_decision == 'minor_revision' %}selected{% endif %}>Minor Revision Required</option>
+              <option value="major_revision" {% if manuscript.editor_decision == 'major_revision' %}selected{% endif %}>Major Revision Required</option>
               <option value="reject" {% if manuscript.editor_decision == 'reject' %}selected{% endif %}>Reject Manuscript</option>
             </select>
           </div>
 
-          <div class="portal-form-group" style="margin-bottom: 16px;">
+          <div class="portal-form-group" style="margin-bottom: 14px;">
             <label for="comments_to_author">Comments to Author <span style="color:#DC2626">*</span></label>
-            <textarea name="comments_to_author" id="comments_to_author" class="portal-textarea" rows="7" placeholder="Consolidated comments and revisions returned to the author...">{{ manuscript.editor_comments_to_author }}</textarea>
-            <span class="field-hint">Comments returned to author on their dashboard.</span>
+            <textarea name="comments_to_author" id="comments_to_author" class="portal-textarea" rows="6" placeholder="Editorial feedback returned to author...">{{ manuscript.editor_comments_to_author }}</textarea>
           </div>
 
-          <div style="margin-bottom: 16px;">
+          <div style="margin-bottom: 14px;">
             <label class="portal-checkbox-row">
               <input type="checkbox" name="approve_reviewer_comments" value="1" class="portal-checkbox" checked>
-              <span style="font-size: 13px; color: #0B2417; font-weight: 700;">
-                Approve and release Reviewer comments to Author with this decision
+              <span style="font-size: 12.5px; color: #0B2417; font-weight: 700;">
+                Release approved Reviewer comments to Author with this decision
               </span>
             </label>
           </div>
 
-          <div class="portal-form-group" style="margin-bottom: 20px;">
-            <label for="internal_notes">Confidential Editorial Record Notes</label>
-            <textarea name="internal_notes" id="internal_notes" class="portal-textarea" rows="3" placeholder="Notes for editorial board archive only...">{{ manuscript.editor_internal_notes }}</textarea>
+          <div class="portal-form-group" style="margin-bottom: 18px;">
+            <label for="internal_notes">Confidential Archive Notes</label>
+            <textarea name="internal_notes" id="internal_notes" class="portal-textarea" rows="2" placeholder="Internal editorial notes...">{{ manuscript.editor_internal_notes }}</textarea>
           </div>
 
-          <button type="submit" class="btn-portal-primary" style="width: 100%; font-size: 15px; padding: 12px;">
-            Send Decision &amp; Return Comments
+          <button type="submit" class="btn-portal-primary" style="width: 100%;">
+            Send Decision to Author
           </button>
         </form>
       </div>
@@ -415,7 +407,6 @@ function toggleEditModal() {
   var box = document.getElementById('editor-edit-form-box');
   if (box.style.display === 'none' || box.style.display === '') {
     box.style.display = 'block';
-    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } else {
     box.style.display = 'none';
   }

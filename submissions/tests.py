@@ -68,7 +68,7 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertRedirects(response, reverse('author_dashboard'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Plant Protection Association of India')
-        self.assertContains(response, 'My Submissions')
+        self.assertContains(response, 'Submitted Manuscripts')
         self.client.logout()
 
         # Reviewer login -> reviewer_dashboard
@@ -89,7 +89,7 @@ class PeerReviewWorkflowTests(TestCase):
         }, follow=True)
         self.assertRedirects(response, reverse('editor_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Editor Command Center')
+        self.assertContains(response, 'Editorial Manuscripts')
         self.client.logout()
 
     def test_02_existing_register_with_roles(self):
@@ -214,7 +214,7 @@ class PeerReviewWorkflowTests(TestCase):
         author_view_pre = self.client.get(reverse('author_manuscript_detail', kwargs={'tracking_id': manuscript.tracking_id}))
         self.assertEqual(author_view_pre.status_code, 200)
         self.assertNotContains(author_view_pre, 'Interesting methodology. Please elaborate on spore concentration metrics in Table 2.')
-        self.assertContains(author_view_pre, 'Pending Editor Approval')
+        self.assertContains(author_view_pre, 'Review Completed &mdash; With Editor')
         self.client.logout()
 
         # 5. Editor reviews feedback, APPROVES reviewer comments, and issues decision: Return comments to Authors

@@ -4,23 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register — Plant Protection Association of India (PPAI)</title>
+  <title>Register &mdash; Plant Protection Association of India (PPAI)</title>
   
   <!-- Favicon / Web Icons -->
   {% if site_settings and site_settings.logo %}
     <link rel="icon" type="image/png" sizes="32x32" href="{{ site_settings.logo.url }}">
     <link rel="icon" type="image/png" sizes="48x48" href="{{ site_settings.logo.url }}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{{ site_settings.logo.url }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ site_settings.logo.url }}">
     <link rel="shortcut icon" type="image/png" href="{{ site_settings.logo.url }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ site_settings.logo.url }}">
   {% else %}
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/ppai_logo.png' %}">
-    <link rel="icon" type="image/png" sizes="48x48" href="{% static 'images/ppai_logo.png' %}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'images/ppai_logo.png' %}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'images/ppai_logo.png' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'images/ppai_logo.png' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/ppai_logo.png' %}">
   {% endif %}
 
   <!-- Google Fonts -->
@@ -53,32 +46,28 @@
       align-items: center;
       justify-content: center;
       background: #F4F8F5;
-      padding: 20px 16px;
+      padding: 24px 16px;
     }
 
     .auth-card {
       width: 100%;
-      max-width: 580px;
+      max-width: 520px;
       background: #FFFFFF;
       border-radius: 18px;
-      padding: 26px 32px;
+      padding: 28px 32px;
       box-shadow: var(--shadow-lg);
       border: 1px solid var(--border-color);
-      position: relative;
     }
 
     .top-bar-nav {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-muted);
       text-decoration: none;
@@ -91,30 +80,29 @@
 
     .brand-header {
       text-align: center;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--border-color);
     }
 
     .brand-logo {
       height: 48px;
       width: auto;
-      margin-bottom: 6px;
+      object-fit: contain;
+      margin-bottom: 8px;
     }
 
     .brand-title {
-      font-size: 14.5px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--deep-forest);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
       line-height: 1.3;
     }
 
     .brand-sub {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .form-title {
@@ -129,37 +117,23 @@
     /* Role Selection Pills */
     .role-pills-label {
       font-size: 12px;
-      font-weight: 800;
-      color: var(--deep-forest);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
       display: block;
-      margin-bottom: 6px;
     }
 
     .role-selection-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-bottom: 16px;
-      background: #EDF5F0;
-      padding: 6px;
-      border-radius: 12px;
-      border: 1px solid #D8E8DF;
+      margin-bottom: 18px;
     }
 
-    .role-option {
-      position: relative;
-      text-align: center;
-    }
-
-    .role-option input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 2;
+    .role-option input[type="radio"] {
+      display: none;
     }
 
     .role-option label {
@@ -167,124 +141,116 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 8px 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      border-radius: 8px;
-      transition: all 0.2s;
+      padding: 10px 6px;
+      border: 1.5px solid #D8E8DF;
+      background: #F8FAF9;
+      border-radius: 10px;
       cursor: pointer;
-      line-height: 1.25;
+      transition: all 0.2s ease;
+      text-align: center;
+      height: 100%;
+    }
+
+    .role-option label span {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--deep-forest);
     }
 
     .role-option label small {
-      font-size: 10px;
-      font-weight: 600;
-      opacity: 0.85;
+      font-size: 10.5px;
+      color: var(--text-muted);
       margin-top: 2px;
+      font-weight: 600;
     }
 
-    .role-option input:checked + label {
-      background: var(--vibrant-green);
-      color: #FFFFFF;
-      box-shadow: 0 3px 10px rgba(0, 178, 114, 0.3);
+    .role-option input[type="radio"]:checked + label {
+      border-color: var(--vibrant-green);
+      background: #E8F7F0;
+      box-shadow: 0 0 0 1px var(--vibrant-green);
     }
 
-    /* Form Grid */
-    .form-grid-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .role-option input[type="radio"]:checked + label span {
+      color: var(--vibrant-green);
     }
 
-    @media (max-width: 540px) {
-      .form-grid-row, .role-selection-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Input Groups */
+    /* Form Fields */
     .input-group {
-      margin-bottom: 12px;
-      position: relative;
+      margin-bottom: 14px;
     }
 
     .input-label {
       display: block;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--deep-forest);
-      margin-bottom: 4px;
-    }
-
-    .input-field-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
+      margin-bottom: 5px;
     }
 
     .input-field {
       width: 100%;
-      padding: 9px 12px;
-      font-size: 13px;
+      height: 42px;
+      padding: 0 12px;
+      font-size: 13.5px;
       font-family: inherit;
       color: var(--text-main);
-      background: #F9FCFA;
-      border: 1.5px solid #D5E4DB;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-color);
       border-radius: 8px;
       outline: none;
-      transition: all 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .input-field:focus {
-      background: #FFFFFF;
       border-color: var(--vibrant-green);
       box-shadow: 0 0 0 3px rgba(0, 178, 114, 0.15);
     }
 
-    .toggle-password {
-      position: absolute;
-      right: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      padding: 2px;
+    .form-grid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .toggle-password:hover {
-      color: var(--vibrant-green);
+    @media (max-width: 500px) {
+      .form-grid-row {
+        grid-template-columns: 1fr;
+      }
     }
 
-    /* Submit Button */
+    .alert-error {
+      background: rgba(220, 38, 38, 0.08);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+      color: #DC2626;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
     .btn-submit {
       width: 100%;
-      padding: 12px;
+      height: 44px;
       background: var(--vibrant-green);
       color: #FFFFFF;
       border: none;
       border-radius: 8px;
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
-      letter-spacing: 0.3px;
-      transition: all 0.2s;
-      box-shadow: 0 3px 10px rgba(0, 178, 114, 0.25);
-      margin-top: 8px;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 6px;
     }
 
     .btn-submit:hover {
       background: var(--vibrant-green-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 5px 15px rgba(0, 178, 114, 0.35);
     }
 
     .auth-footer {
       text-align: center;
-      margin-top: 14px;
+      margin-top: 16px;
       font-size: 12.5px;
       color: var(--text-muted);
     }
@@ -298,17 +264,6 @@
     .auth-footer a:hover {
       text-decoration: underline;
     }
-
-    .alert-error {
-      background: rgba(220, 38, 38, 0.08);
-      border: 1px solid rgba(220, 38, 38, 0.2);
-      color: #DC2626;
-      padding: 9px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
@@ -316,7 +271,7 @@
   <div class="auth-card">
     <div class="top-bar-nav">
       <a href="{% url 'home' %}" class="back-link">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
         Back to Home
       </a>
     </div>
@@ -347,21 +302,21 @@
         <div class="role-option">
           <input type="radio" id="role_author" name="role" value="author" {% if not role or role == 'author' %}checked{% endif %}>
           <label for="role_author">
-            <span style="font-weight: 800; color: var(--deep-forest);">Author</span>
-            <small>Manuscript Submission</small>
+            <span>Author</span>
+            <small>Submit Papers</small>
           </label>
         </div>
         <div class="role-option">
           <input type="radio" id="role_reviewer" name="role" value="reviewer" {% if role == 'reviewer' %}checked{% endif %}>
           <label for="role_reviewer">
-            <span style="font-weight: 800; color: var(--deep-forest);">Reviewer</span>
+            <span>Reviewer</span>
             <small>Peer Review</small>
           </label>
         </div>
         <div class="role-option">
           <input type="radio" id="role_editor" name="role" value="editor" {% if role == 'editor' %}checked{% endif %}>
           <label for="role_editor">
-            <span style="font-weight: 800; color: var(--deep-forest);">Editor</span>
+            <span>Editor</span>
             <small>Editorial</small>
           </label>
         </div>
@@ -369,74 +324,31 @@
 
       <!-- Full Name -->
       <div class="input-group">
-        <label class="input-label" for="full_name">Full Name (with Title) <span style="color:#DC2626">*</span></label>
-        <div class="input-field-wrapper">
-          <input type="text" id="full_name" name="full_name" class="input-field" placeholder="Dr. / Prof. / Mr. / Ms. Rajesh Sharma" value="{{ full_name|default:'' }}" required>
-        </div>
+        <label class="input-label" for="full_name">Full Name <span style="color:#DC2626">*</span></label>
+        <input type="text" id="full_name" name="full_name" class="input-field" placeholder="e.g. Dr. Rajesh Sharma" value="{{ full_name|default:'' }}" required>
       </div>
 
-      <!-- 2-Column Row: Email & Contact -->
-      <div class="form-grid-row">
-        <div class="input-group">
-          <label class="input-label" for="email">Official / Institutional Email <span style="color:#DC2626">*</span></label>
-          <div class="input-field-wrapper">
-            <input type="email" id="email" name="email" class="input-field" placeholder="name@institution.edu.in" value="{{ email|default:'' }}" required>
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="contact">Contact Number</label>
-          <div class="input-field-wrapper">
-            <input type="tel" id="contact" name="contact" class="input-field" placeholder="+91 98765 43210" value="{{ contact|default:'' }}">
-          </div>
-        </div>
+      <!-- Email -->
+      <div class="input-group">
+        <label class="input-label" for="email">Email Address <span style="color:#DC2626">*</span></label>
+        <input type="email" id="email" name="email" class="input-field" placeholder="name@institution.edu.in" value="{{ email|default:'' }}" required>
       </div>
 
       <!-- Affiliation -->
       <div class="input-group">
-        <label class="input-label" for="affiliation">Institution / University / Department <span style="color:#DC2626">*</span></label>
-        <div class="input-field-wrapper">
-          <input type="text" id="affiliation" name="affiliation" class="input-field" placeholder="e.g. ICAR-IARI, Division of Entomology, New Delhi" value="{{ affiliation|default:'' }}" required>
-        </div>
+        <label class="input-label" for="affiliation">Institution / University <span style="color:#DC2626">*</span></label>
+        <input type="text" id="affiliation" name="affiliation" class="input-field" placeholder="e.g. ICAR-IARI, Division of Entomology" value="{{ affiliation|default:'' }}" required>
       </div>
 
-      <!-- 2-Column Row: Designation & Specialization -->
-      <div class="form-grid-row">
-        <div class="input-group">
-          <label class="input-label" for="designation">Designation</label>
-          <div class="input-field-wrapper">
-            <input type="text" id="designation" name="designation" class="input-field" placeholder="e.g. Principal Scientist / Scholar" value="{{ designation|default:'' }}">
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="specialization">Field of Specialization</label>
-          <div class="input-field-wrapper">
-            <input type="text" id="specialization" name="specialization" class="input-field" placeholder="e.g. Entomology / Plant Pathology / IPM" value="{{ specialization|default:'' }}">
-          </div>
-        </div>
-      </div>
-
-      <!-- 2-Column Row: Password & Confirm Password -->
+      <!-- Password & Confirm Password -->
       <div class="form-grid-row">
         <div class="input-group">
           <label class="input-label" for="password">Password <span style="color:#DC2626">*</span></label>
-          <div class="input-field-wrapper">
-            <input type="password" id="password" name="password" class="input-field" placeholder="Create password" required minlength="6">
-            <button type="button" class="toggle-password" onclick="togglePass('password', this)" aria-label="Toggle password visibility">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </button>
-          </div>
+          <input type="password" id="password" name="password" class="input-field" placeholder="Create password" required minlength="6">
         </div>
-
         <div class="input-group">
           <label class="input-label" for="confirm_password">Confirm Password <span style="color:#DC2626">*</span></label>
-          <div class="input-field-wrapper">
-            <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm password" required minlength="6">
-            <button type="button" class="toggle-password" onclick="togglePass('confirm_password', this)" aria-label="Toggle password visibility">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </button>
-          </div>
+          <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm password" required minlength="6">
         </div>
       </div>
 
@@ -447,22 +359,10 @@
 
       <!-- Bottom Login Link -->
       <div class="auth-footer">
-        Already have an account? <a href="{% url 'login' %}">Click here to login</a>
+        Already have an account? <a href="{% url 'login' %}">Login here</a>
       </div>
     </form>
   </div>
 
-  <script>
-    function togglePass(id, btn) {
-      const input = document.getElementById(id);
-      if (input.type === 'password') {
-        input.type = 'text';
-        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
-      } else {
-        input.type = 'password';
-        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-      }
-    }
-  </script>
 </body>
 </html>
