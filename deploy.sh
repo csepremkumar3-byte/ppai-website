@@ -17,9 +17,6 @@ pip install -r requirements.txt
 echo "=== Applying database migrations ==="
 python manage.py migrate
 
-echo "=== Seeding / Refreshing PPAI database records ==="
-python manage.py seed_ppai
-
 echo "=== Collecting static files ==="
 python manage.py collectstatic --noinput
 
