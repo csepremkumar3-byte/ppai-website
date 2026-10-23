@@ -514,6 +514,10 @@ def editor_add_user(request):
             context['error'] = 'Password must be at least 6 characters long.'
             return render(request, 'submissions/add_editorial_user.html', context)
 
+        if not any(c.isupper() for c in password):
+            context['error'] = 'Password must contain at least one uppercase letter.'
+            return render(request, 'submissions/add_editorial_user.html', context)
+
         # Create user
         name_parts = full_name.split(None, 1)
         first_name = name_parts[0] if name_parts else ''
@@ -584,6 +588,8 @@ def admin_dashboard(request):
             messages.error(request, f"An account with email {email} already exists.")
         elif len(password) < 6:
             messages.error(request, "Password must be at least 6 characters long.")
+        elif not any(c.isupper() for c in password):
+            messages.error(request, "Password must contain at least one uppercase letter.")
         else:
             name_parts = full_name.split(None, 1)
             first_name = name_parts[0] if name_parts else ''

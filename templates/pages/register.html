@@ -292,7 +292,7 @@
         <div class="input-group">
           <label class="input-label" for="password">Password <span style="color:#DC2626">*</span></label>
           <input type="password" id="password" name="password" class="input-field" placeholder="At least 8 chars" required minlength="8" autocomplete="new-password">
-          <div class="field-error" id="passwordError">Must be &ge;8 chars with letters &amp; numbers.</div>
+          <div class="field-error" id="passwordError">Must be &ge;8 chars with uppercase, letters &amp; numbers.</div>
         </div>
         <div class="input-group">
           <label class="input-label" for="confirm_password">Confirm Password <span style="color:#DC2626">*</span></label>
@@ -345,9 +345,10 @@
 
     function validatePassword() {
       const val = pwdInput.value;
+      const hasUpper = /[A-Z]/.test(val);
       const hasLetter = /[a-zA-Z]/.test(val);
       const hasNumber = /[0-9]/.test(val);
-      const valid = val.length >= 8 && hasLetter && hasNumber;
+      const valid = val.length >= 8 && hasLetter && hasNumber && hasUpper;
       if (!valid) {
         pwdInput.classList.add('is-invalid');
         pwdInput.classList.remove('is-valid');

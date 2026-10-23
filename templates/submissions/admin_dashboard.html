@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Administrator Dashboard &mdash; Plant Protection Association of India (PPAI){% endblock %}
@@ -137,9 +137,6 @@
     </div>
 
     <div class="portal-header-actions">
-      <a href="{% url 'editor_dashboard' %}" class="portal-tab-pill">
-        <span>Editor Panel</span>
-      </a>
       <a href="/admin/" target="_blank" class="portal-tab-pill">
         <span>Django Admin</span>
       </a>
@@ -187,7 +184,6 @@
       <div class="portal-card-header">
         <div>
           <h2>Register Editor or Reviewer</h2>
-          <p>Create account &amp; assign role in one step</p>
         </div>
       </div>
 
@@ -226,7 +222,6 @@
         <div class="portal-form-group" style="margin-bottom: 14px;">
           <label for="email">Email Address <span style="color:#DC2626">*</span></label>
           <input type="email" id="email" name="email" class="portal-input" placeholder="e.g. sunita.rao@icar.gov.in" required>
-          <span class="field-hint">Used for login and manuscript alerts</span>
         </div>
 
         <!-- Institution / Affiliation -->
@@ -244,8 +239,7 @@
         <!-- Password -->
         <div class="portal-form-group" style="margin-bottom: 20px;">
           <label for="password">Login Password <span style="color:#DC2626">*</span></label>
-          <input type="text" id="password" name="password" class="portal-input" placeholder="Initial password (min 6 chars)" required minlength="6">
-          <span class="field-hint">Share this password with the user</span>
+          <input type="text" id="password" name="password" class="portal-input" placeholder="Initial password (min 6 chars, uppercase required)" required minlength="6" pattern="(?=.*[A-Z]).{6,}" title="Must be at least 6 characters and contain at least one uppercase letter.">
         </div>
 
         <button type="submit" class="btn-portal-primary" style="width: 100%; justify-content: center; padding: 12px;">
@@ -259,7 +253,6 @@
       <div class="portal-card-header">
         <div>
           <h2>System Users &amp; Roles</h2>
-          <p>All active accounts across Author, Reviewer, and Editorial roles</p>
         </div>
       </div>
 

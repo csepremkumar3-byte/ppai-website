@@ -441,9 +441,13 @@ def register(request):
             context['error'] = 'Please enter a password.'
             return render(request, 'pages/register.html', context)
 
-        # Password validation: minimum 8 characters, letters and numbers
+        # Password validation: minimum 8 characters, letters, numbers, and at least one uppercase letter
         if len(password) < 8:
             context['error'] = 'Password must be at least 8 characters long.'
+            return render(request, 'pages/register.html', context)
+
+        if not any(c.isupper() for c in password):
+            context['error'] = 'Password must contain at least one uppercase letter.'
             return render(request, 'pages/register.html', context)
 
         if not (any(c.isalpha() for c in password) and any(c.isdigit() for c in password)):

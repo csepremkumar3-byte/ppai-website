@@ -153,6 +153,17 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(resp_alpha_only.status_code, 200)
         self.assertContains(resp_alpha_only, 'Password must contain both letters and numbers')
 
+        # 3b. Password uppercase letter requirement
+        resp_no_upper = self.client.post(reverse('register'), {
+            'full_name': 'Dr. Test Author',
+            'email': 'valid.author@icar.gov.in',
+            'affiliation': 'ICAR-IIHR Bangalore',
+            'password': 'nouppercasepassword123',
+            'confirm_password': 'nouppercasepassword123'
+        })
+        self.assertEqual(resp_no_upper.status_code, 200)
+        self.assertContains(resp_no_upper, 'Password must contain at least one uppercase letter')
+
         # 4. Passwords mismatch rejection
         resp_mismatch = self.client.post(reverse('register'), {
             'full_name': 'Dr. Test Author',
@@ -380,6 +391,22 @@ class PeerReviewWorkflowTests(TestCase):
         dash_resp = self.client.get(reverse('admin_dashboard'))
         self.assertEqual(dash_resp.status_code, 200)
         self.assertContains(dash_resp, 'Administrator Command Center')
+
+        # Verify clutter texts and Editor Panel have been removed
+        self.assertNotContains(dash_resp, 'Editor Panel')
+        self.assertNotContains(dash_resp, 'Share this password with the user')
+        self.assertNotContains(dash_resp, 'All active accounts across Author, Reviewer, and Editorial roles')
+
+        # Password without uppercase rejection in admin dashboard
+        resp_no_upper = self.client.post(reverse('admin_dashboard'), {
+            'action': 'create_user',
+            'role': 'editor',
+            'full_name': 'Dr. No Upper',
+            'email': 'noupper.editor@ppai.org.in',
+            'affiliation': 'ICAR',
+            'password': 'nouppercasepass123'
+        }, follow=True)
+        self.assertContains(resp_no_upper, 'Password must contain at least one uppercase letter')
 
         # 1. Admin creates an Editor
         create_editor_resp = self.client.post(reverse('admin_dashboard'), {
