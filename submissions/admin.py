@@ -39,6 +39,15 @@ class UserProfileAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__first_name', 'user__last_name', 'user__email', 'affiliation', 'specialization')
     fields = ('user', 'role', 'affiliation', 'designation', 'specialization', 'phone', 'orcid_id', 'bio', 'is_approved_reviewer', 'is_approved_editor')
 
+    def get_urls(self):
+        from django.urls import path
+        from . import views as sub_views
+        urls = super().get_urls()
+        custom_urls = [
+            path('add-editorial-user/', self.admin_site.admin_view(sub_views.editor_add_user), name='admin_add_editorial_user'),
+        ]
+        return custom_urls + urls
+
 
 class ReviewAssignmentInline(admin.TabularInline):
     model = ReviewAssignment

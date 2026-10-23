@@ -460,3 +460,93 @@ def reviewer_evaluate_manuscript(request, assignment_id):
         'manuscript': assignment.manuscript,
         'form': form,
     })
+
+
+@login_required
+def editor_add_user(request):
+    """Allows Editor/Admin to register new Editors or Reviewers in a dedicated 1-step form."""
+    profile = get_user_profile(request.user)
+    if not (profile.is_editor or request.user.is_staff or request.user.is_superuser):
+        return HttpResponseForbidden("Access restricted to Editors and Administrators.")
+
+    context = {}
+    if request.method == 'POST':
+        role = request.POST.get('role', 'reviewer').strip().lower()
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip().lower()
+        affiliation = request.POST.get('affiliation', '').strip()
+        specialization = request.POST.get('specialization', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        context.update({
+            'role': role,
+            'full_name': full_name,
+            'email': email,
+            'affiliation': affiliation,
+            'specialization': specialization,
+        })
+
+        if not full_name:
+            context['error'] = 'Please enter the full name.'
+            return render(request, 'submissions/add_editorial_user.html', context)
+
+        if not email:
+            context['error'] = 'Please enter a valid email address.'
+            return render(request, 'submissions/add_editorial_user.html', context)
+
+        import re
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            context['error'] = 'Please enter a valid email address format.'
+            return render(request, 'submissions/add_editorial_user.html', context)
+
+        if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
+            context['error'] = f'An account with email {email} already exists.'
+            return render(request, 'submissions/add_editorial_user.html', context)
+
+        if len(password) < 6:
+            context['error'] = 'Password must be at least 6 characters long.'
+            return render(request, 'submissions/add_editorial_user.html', context)
+
+        # Create user
+        name_parts = full_name.split(None, 1)
+        first_name = name_parts[0] if name_parts else ''
+        last_name = name_parts[1] if len(name_parts) > 1 else ''
+
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        is_editor = (role == 'editor')
+        is_reviewer = (role == 'reviewer')
+
+        if is_editor:
+            user.is_staff = True
+            user.save()
+
+        user_prof, _ = UserProfile.objects.update_or_create(
+            user=user,
+            defaults={
+                'role': 'editor' if is_editor else 'reviewer',
+                'is_editor': is_editor,
+                'is_reviewer': is_reviewer,
+                'is_author': True,
+                'is_approved_reviewer': is_reviewer,
+                'is_approved_editor': is_editor,
+                'affiliation': affiliation,
+                'specialization': specialization,
+            }
+        )
+
+        role_name = 'Editor' if is_editor else 'Reviewer'
+        messages.success(
+            request,
+            f"Successfully registered {role_name}: {full_name} ({email})! They can now log in at /login/."
+        )
+        return redirect('editor_dashboard')
+
+    return render(request, 'submissions/add_editorial_user.html', context)
+

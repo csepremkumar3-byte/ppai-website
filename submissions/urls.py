@@ -16,6 +16,7 @@ urlpatterns = [
 
     # Editor Workflow
     path('portal/editor/', views.editor_dashboard, name='editor_dashboard'),
+    path('portal/editor/add-user/', views.editor_add_user, name='editor_add_user'),
     path('portal/editor/manuscript/<str:tracking_id>/', views.editor_manuscript_review, name='editor_manuscript_review'),
 
     # Reviewer Workflow
