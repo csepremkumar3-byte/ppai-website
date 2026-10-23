@@ -92,25 +92,75 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertContains(response, 'Editorial Manuscripts')
         self.client.logout()
 
-    def test_02_existing_register_with_roles(self):
-        """Test registration flow: Register -> Redirect to Login -> Login -> Role Dashboard."""
-        # 1. Register new Author -> Redirects to login with success message
+    def test_02_author_registration_and_validation(self):
+        """Test public Author registration with strict email and password validation, and backoffice role login."""
+        # 1. Invalid email format rejection
+        resp_invalid_email = self.client.post(reverse('register'), {
+            'full_name': 'Dr. Test Author',
+            'email': 'not-an-email',
+            'affiliation': 'ICAR-IIHR Bangalore',
+            'password': 'Password123!',
+            'confirm_password': 'Password123!'
+        })
+        self.assertEqual(resp_invalid_email.status_code, 200)
+        self.assertContains(resp_invalid_email, 'Please enter a valid email address')
+
+        # 2. Password length rejection (< 8 characters)
+        resp_short_pwd = self.client.post(reverse('register'), {
+            'full_name': 'Dr. Test Author',
+            'email': 'valid.author@icar.gov.in',
+            'affiliation': 'ICAR-IIHR Bangalore',
+            'password': 'Pass1',
+            'confirm_password': 'Pass1'
+        })
+        self.assertEqual(resp_short_pwd.status_code, 200)
+        self.assertContains(resp_short_pwd, 'Password must be at least 8 characters long')
+
+        # 3. Password letters & numbers requirement
+        resp_alpha_only = self.client.post(reverse('register'), {
+            'full_name': 'Dr. Test Author',
+            'email': 'valid.author@icar.gov.in',
+            'affiliation': 'ICAR-IIHR Bangalore',
+            'password': 'OnlyLettersPassword',
+            'confirm_password': 'OnlyLettersPassword'
+        })
+        self.assertEqual(resp_alpha_only.status_code, 200)
+        self.assertContains(resp_alpha_only, 'Password must contain both letters and numbers')
+
+        # 4. Passwords mismatch rejection
+        resp_mismatch = self.client.post(reverse('register'), {
+            'full_name': 'Dr. Test Author',
+            'email': 'valid.author@icar.gov.in',
+            'affiliation': 'ICAR-IIHR Bangalore',
+            'password': 'Password123!',
+            'confirm_password': 'DifferentPass123!'
+        })
+        self.assertEqual(resp_mismatch.status_code, 200)
+        self.assertContains(resp_mismatch, 'Passwords do not match')
+
+        # 5. Successful Author Registration -> Redirects to login with success message
         resp_author = self.client.post(reverse('register'), {
             'full_name': 'Dr. Arun Kumar',
             'email': 'arun.author@icar.gov.in',
-            'contact': '+91 9988776655',
-            'role': 'author',
             'affiliation': 'ICAR-IIHR Bangalore',
-            'designation': 'Senior Scientist',
-            'specialization': 'Crop Protection',
             'password': 'SecretPass123!',
             'confirm_password': 'SecretPass123!'
         }, follow=True)
         self.assertRedirects(resp_author, reverse('login'))
-        self.assertContains(resp_author, 'Registration successful as Author')
+        self.assertContains(resp_author, 'Author registration successful')
         self.assertTrue(User.objects.filter(email='arun.author@icar.gov.in').exists())
 
-        # Author logs in -> Redirects to author dashboard
+        # Duplicate email registration rejected
+        resp_dup = self.client.post(reverse('register'), {
+            'full_name': 'Another User',
+            'email': 'arun.author@icar.gov.in',
+            'affiliation': 'Different Org',
+            'password': 'SecretPass123!',
+            'confirm_password': 'SecretPass123!'
+        })
+        self.assertContains(resp_dup, 'An account with this email address already exists')
+
+        # Author logs in -> Redirects directly to Author Dashboard
         login_author = self.client.post(reverse('login'), {
             'email': 'arun.author@icar.gov.in',
             'password': 'SecretPass123!'
@@ -118,28 +168,46 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertRedirects(login_author, reverse('author_dashboard'))
         self.client.logout()
 
-        # 2. Register new Reviewer -> Redirects to login with success message
-        resp_reviewer = self.client.post(reverse('register'), {
-            'full_name': 'Prof. V. Raman',
-            'email': 'raman.reviewer@university.ac.in',
-            'contact': '+91 9123456789',
-            'role': 'reviewer',
-            'affiliation': 'TNAU Coimbatore',
-            'designation': 'Professor',
-            'specialization': 'Insect Virology',
-            'password': 'SecretPass123!',
-            'confirm_password': 'SecretPass123!'
-        }, follow=True)
-        self.assertRedirects(resp_reviewer, reverse('login'))
-        self.assertContains(resp_reviewer, 'Registration successful as Reviewer')
-        self.assertTrue(User.objects.filter(email='raman.reviewer@university.ac.in').exists())
-
-        # Reviewer logs in -> Redirects to reviewer dashboard
+        # 6. Backoffice / Admin provisioned Reviewer logs in -> Redirects to Reviewer Dashboard
+        rev_admin_user = User.objects.create_user(
+            username='admin.reviewer@university.edu',
+            email='admin.reviewer@university.edu',
+            password='ReviewerPass123!',
+            first_name='Prof.',
+            last_name='Raman'
+        )
+        UserProfile.objects.create(
+            user=rev_admin_user,
+            role='reviewer',
+            is_reviewer=True,
+            affiliation='TNAU Coimbatore'
+        )
         login_reviewer = self.client.post(reverse('login'), {
-            'email': 'raman.reviewer@university.ac.in',
-            'password': 'SecretPass123!'
+            'email': 'admin.reviewer@university.edu',
+            'password': 'ReviewerPass123!'
         }, follow=True)
         self.assertRedirects(login_reviewer, reverse('reviewer_dashboard'))
+        self.client.logout()
+
+        # 7. Backoffice / Admin provisioned Editor logs in -> Redirects to Editor Dashboard
+        ed_admin_user = User.objects.create_user(
+            username='admin.editor@ppai.org.in',
+            email='admin.editor@ppai.org.in',
+            password='EditorPass123!',
+            first_name='Dr.',
+            last_name='Editorial'
+        )
+        UserProfile.objects.create(
+            user=ed_admin_user,
+            role='editor',
+            is_editor=True,
+            affiliation='IJPP Editorial Office'
+        )
+        login_editor = self.client.post(reverse('login'), {
+            'email': 'admin.editor@ppai.org.in',
+            'password': 'EditorPass123!'
+        }, follow=True)
+        self.assertRedirects(login_editor, reverse('editor_dashboard'))
         self.client.logout()
 
     def test_03_full_paper_flow_loop_and_editor_approval_release(self):

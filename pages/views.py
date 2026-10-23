@@ -403,42 +403,55 @@ def register(request):
     if request.method == 'POST':
         full_name = request.POST.get('full_name', '').strip()
         email = request.POST.get('email', '').strip().lower()
-        contact_num = request.POST.get('contact', '').strip()
-        role = request.POST.get('role', 'author').strip().lower()
         affiliation = request.POST.get('affiliation', '').strip()
-        designation = request.POST.get('designation', '').strip()
-        specialization = request.POST.get('specialization', '').strip()
-        orcid_id = request.POST.get('orcid_id', '').strip()
         password = request.POST.get('password', '')
         confirm_password = request.POST.get('confirm_password', '')
-        member_type = request.POST.get('member_type', 'inland')
+        role = 'author'  # Public registration is strictly for Authors
 
         context.update({
             'full_name': full_name,
             'email': email,
-            'contact': contact_num,
-            'role': role,
             'affiliation': affiliation,
-            'designation': designation,
-            'specialization': specialization,
-            'orcid_id': orcid_id,
-            'member_type': member_type,
         })
 
-        if not email or not password:
-            context['error'] = 'Please fill in all required fields (Email and Password).'
+        if not full_name:
+            context['error'] = 'Please enter your full name.'
+            return render(request, 'pages/register.html', context)
+
+        if not affiliation:
+            context['error'] = 'Please enter your institutional affiliation.'
+            return render(request, 'pages/register.html', context)
+
+        if not email:
+            context['error'] = 'Please enter your email address.'
+            return render(request, 'pages/register.html', context)
+
+        # Email format validation
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_regex, email):
+            context['error'] = 'Please enter a valid email address (e.g. author@institution.edu.in).'
+            return render(request, 'pages/register.html', context)
+
+        # Duplicate email check
+        if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
+            context['error'] = 'An account with this email address already exists. Please login.'
+            return render(request, 'pages/register.html', context)
+
+        if not password:
+            context['error'] = 'Please enter a password.'
+            return render(request, 'pages/register.html', context)
+
+        # Password validation: minimum 8 characters, letters and numbers
+        if len(password) < 8:
+            context['error'] = 'Password must be at least 8 characters long.'
+            return render(request, 'pages/register.html', context)
+
+        if not (any(c.isalpha() for c in password) and any(c.isdigit() for c in password)):
+            context['error'] = 'Password must contain both letters and numbers for security.'
             return render(request, 'pages/register.html', context)
 
         if password != confirm_password:
             context['error'] = 'Passwords do not match. Please re-enter your password.'
-            return render(request, 'pages/register.html', context)
-
-        if len(password) < 6:
-            context['error'] = 'Password must be at least 6 characters long.'
-            return render(request, 'pages/register.html', context)
-
-        if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
-            context['error'] = 'An account with this email address already exists. Please login.'
             return render(request, 'pages/register.html', context)
 
         def _create_user_and_profile():
@@ -456,21 +469,14 @@ def register(request):
                 )
 
                 from submissions.models import UserProfile
-                is_reviewer = (role == 'reviewer')
-                is_editor = (role == 'editor')
-
                 UserProfile.objects.update_or_create(
                     user=user,
                     defaults={
-                        'role': role if role in ['author', 'reviewer', 'editor'] else 'author',
+                        'role': 'author',
                         'is_author': True,
-                        'is_reviewer': is_reviewer,
-                        'is_editor': is_editor,
-                        'phone': contact_num,
+                        'is_reviewer': False,
+                        'is_editor': False,
                         'affiliation': affiliation,
-                        'designation': designation,
-                        'specialization': specialization,
-                        'orcid_id': orcid_id,
                     }
                 )
                 return user
@@ -488,8 +494,7 @@ def register(request):
                     raise initial_err
 
             # Workflow: After registration -> redirect to login with success message
-            role_label = {'author': 'Author', 'reviewer': 'Reviewer', 'editor': 'Editor'}.get(role, 'Author')
-            messages.success(request, f'Registration successful as {role_label}! Please login with your email and password to access your dashboard.')
+            messages.success(request, 'Author registration successful! Please login with your email and password to access your dashboard.')
             return redirect('login')
 
         except Exception as e:
@@ -497,6 +502,7 @@ def register(request):
             return render(request, 'pages/register.html', context)
 
     return render(request, 'pages/register.html', context)
+
 
 def login_view(request):
     context = get_common_context()

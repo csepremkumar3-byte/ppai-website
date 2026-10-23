@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register &mdash; Plant Protection Association of India (PPAI)</title>
+  <title>Author Registration &mdash; Plant Protection Association of India (PPAI)</title>
   
   <!-- Favicon / Web Icons -->
   {% if site_settings and site_settings.logo %}
@@ -51,7 +51,7 @@
 
     .auth-card {
       width: 100%;
-      max-width: 520px;
+      max-width: 500px;
       background: #FFFFFF;
       border-radius: 18px;
       padding: 28px 32px;
@@ -106,77 +106,25 @@
     }
 
     .form-title {
-      font-size: 20px;
+      font-size: 21px;
       font-weight: 800;
       color: var(--deep-forest);
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 4px;
       letter-spacing: -0.02em;
     }
 
-    /* Role Selection Pills */
-    .role-pills-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .form-subtitle {
+      font-size: 12.5px;
       color: var(--text-muted);
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    .role-selection-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .role-option input[type="radio"] {
-      display: none;
-    }
-
-    .role-option label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 6px;
-      border: 1.5px solid #D8E8DF;
-      background: #F8FAF9;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
       text-align: center;
-      height: 100%;
-    }
-
-    .role-option label span {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--deep-forest);
-    }
-
-    .role-option label small {
-      font-size: 10.5px;
-      color: var(--text-muted);
-      margin-top: 2px;
-      font-weight: 600;
-    }
-
-    .role-option input[type="radio"]:checked + label {
-      border-color: var(--vibrant-green);
-      background: #E8F7F0;
-      box-shadow: 0 0 0 1px var(--vibrant-green);
-    }
-
-    .role-option input[type="radio"]:checked + label span {
-      color: var(--vibrant-green);
+      margin-bottom: 18px;
     }
 
     /* Form Fields */
     .input-group {
       margin-bottom: 14px;
+      position: relative;
     }
 
     .input-label {
@@ -206,6 +154,30 @@
       box-shadow: 0 0 0 3px rgba(0, 178, 114, 0.15);
     }
 
+    .input-field.is-invalid {
+      border-color: #DC2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+    }
+
+    .input-field.is-valid {
+      border-color: var(--vibrant-green);
+    }
+
+    .field-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: block;
+    }
+
+    .field-error {
+      font-size: 11.5px;
+      color: #DC2626;
+      font-weight: 600;
+      margin-top: 4px;
+      display: none;
+    }
+
     .form-grid-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -222,10 +194,10 @@
       background: rgba(220, 38, 38, 0.08);
       border: 1px solid rgba(220, 38, 38, 0.2);
       color: #DC2626;
-      padding: 9px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-bottom: 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      margin-bottom: 16px;
       font-weight: 600;
     }
 
@@ -238,14 +210,17 @@
       border-radius: 8px;
       font-size: 14px;
       font-weight: 700;
-      font-family: inherit;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .btn-submit:hover {
       background: var(--vibrant-green-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
     }
 
     .auth-footer {
@@ -263,6 +238,18 @@
 
     .auth-footer a:hover {
       text-decoration: underline;
+    }
+
+    .role-info-note {
+      background: #F8FAF9;
+      border: 1px solid #D8E8DF;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 14px;
+      font-size: 11.5px;
+      color: #5B7065;
+      line-height: 1.4;
+      text-align: center;
     }
   </style>
 </head>
@@ -284,78 +271,66 @@
         <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo">
       {% endif %}
       <div class="brand-title">Plant Protection Association of India (PPAI)</div>
-      <div class="brand-sub">ICAR-NBPGR RS, Rajendranagar, Hyderabad &ndash; 500030</div>
+      <div class="brand-sub">Indian Journal of Plant Protection (IJPP)</div>
     </div>
 
-    <h1 class="form-title">Register</h1>
+    <h1 class="form-title">Author Registration</h1>
+    <p class="form-subtitle">Create an author account to submit and track your manuscripts</p>
 
     {% if error %}
       <div class="alert-error">{{ error }}</div>
     {% endif %}
 
-    <form method="POST" action="{% url 'register' %}">
+    <form method="POST" action="{% url 'register' %}" id="registerForm" novalidate>
       {% csrf_token %}
-
-      <!-- Role Selection -->
-      <label class="role-pills-label">Select Role <span style="color:#DC2626">*</span></label>
-      <div class="role-selection-grid">
-        <div class="role-option">
-          <input type="radio" id="role_author" name="role" value="author" {% if not role or role == 'author' %}checked{% endif %}>
-          <label for="role_author">
-            <span>Author</span>
-            <small>Submit Papers</small>
-          </label>
-        </div>
-        <div class="role-option">
-          <input type="radio" id="role_reviewer" name="role" value="reviewer" {% if role == 'reviewer' %}checked{% endif %}>
-          <label for="role_reviewer">
-            <span>Reviewer</span>
-            <small>Peer Review</small>
-          </label>
-        </div>
-        <div class="role-option">
-          <input type="radio" id="role_editor" name="role" value="editor" {% if role == 'editor' %}checked{% endif %}>
-          <label for="role_editor">
-            <span>Editor</span>
-            <small>Editorial</small>
-          </label>
-        </div>
-      </div>
+      <input type="hidden" name="role" value="author">
 
       <!-- Full Name -->
       <div class="input-group">
         <label class="input-label" for="full_name">Full Name <span style="color:#DC2626">*</span></label>
         <input type="text" id="full_name" name="full_name" class="input-field" placeholder="e.g. Dr. Rajesh Sharma" value="{{ full_name|default:'' }}" required>
+        <div class="field-error" id="nameError">Please enter your full name.</div>
       </div>
 
       <!-- Email -->
       <div class="input-group">
         <label class="input-label" for="email">Email Address <span style="color:#DC2626">*</span></label>
-        <input type="email" id="email" name="email" class="input-field" placeholder="name@institution.edu.in" value="{{ email|default:'' }}" required>
+        <input type="email" id="email" name="email" class="input-field" placeholder="author@institution.edu.in" value="{{ email|default:'' }}" required autocomplete="email">
+        <span class="field-hint">Must be a valid email (e.g. name@domain.com)</span>
+        <div class="field-error" id="emailError">Please enter a valid email address.</div>
       </div>
 
       <!-- Affiliation -->
       <div class="input-group">
-        <label class="input-label" for="affiliation">Institution / University <span style="color:#DC2626">*</span></label>
+        <label class="input-label" for="affiliation">Institution / University / Organization <span style="color:#DC2626">*</span></label>
         <input type="text" id="affiliation" name="affiliation" class="input-field" placeholder="e.g. ICAR-IARI, Division of Entomology" value="{{ affiliation|default:'' }}" required>
+        <div class="field-error" id="affiliationError">Please enter your institutional affiliation.</div>
       </div>
 
       <!-- Password & Confirm Password -->
       <div class="form-grid-row">
         <div class="input-group">
           <label class="input-label" for="password">Password <span style="color:#DC2626">*</span></label>
-          <input type="password" id="password" name="password" class="input-field" placeholder="Create password" required minlength="6">
+          <input type="password" id="password" name="password" class="input-field" placeholder="At least 8 chars" required minlength="8" autocomplete="new-password">
+          <span class="field-hint" id="passwordHint">Min 8 chars, letters &amp; numbers</span>
+          <div class="field-error" id="passwordError">Must be &ge;8 chars with letters &amp; numbers.</div>
         </div>
         <div class="input-group">
           <label class="input-label" for="confirm_password">Confirm Password <span style="color:#DC2626">*</span></label>
-          <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm password" required minlength="6">
+          <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Re-enter password" required minlength="8" autocomplete="new-password">
+          <span class="field-hint" id="matchHint">Re-enter same password</span>
+          <div class="field-error" id="matchError">Passwords do not match.</div>
         </div>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="btn-submit">
-        Register
+      <button type="submit" class="btn-submit" id="submitBtn">
+        Register as Author
       </button>
+
+      <div class="role-info-note">
+        Reviewer and Editorial accounts are provisioned directly by the Editorial Office.
+      </div>
 
       <!-- Bottom Login Link -->
       <div class="auth-footer">
@@ -363,6 +338,117 @@
       </div>
     </form>
   </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    const pwdInput = document.getElementById('password');
+    const pwdError = document.getElementById('passwordError');
+    const pwdHint = document.getElementById('passwordHint');
+    const cpwdInput = document.getElementById('confirm_password');
+    const matchError = document.getElementById('matchError');
+    const matchHint = document.getElementById('matchHint');
+    const nameInput = document.getElementById('full_name');
+    const nameError = document.getElementById('nameError');
+    const affInput = document.getElementById('affiliation');
+    const affError = document.getElementById('affiliationError');
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    function validateEmail() {
+      const val = emailInput.value.trim();
+      if (!val || !emailRegex.test(val)) {
+        emailInput.classList.add('is-invalid');
+        emailInput.classList.remove('is-valid');
+        emailError.style.display = 'block';
+        return false;
+      } else {
+        emailInput.classList.remove('is-invalid');
+        emailInput.classList.add('is-valid');
+        emailError.style.display = 'none';
+        return true;
+      }
+    }
+
+    function validatePassword() {
+      const val = pwdInput.value;
+      const hasLetter = /[a-zA-Z]/.test(val);
+      const hasNumber = /[0-9]/.test(val);
+      const valid = val.length >= 8 && hasLetter && hasNumber;
+      if (!valid) {
+        pwdInput.classList.add('is-invalid');
+        pwdInput.classList.remove('is-valid');
+        pwdError.style.display = 'block';
+        pwdHint.style.display = 'none';
+        return false;
+      } else {
+        pwdInput.classList.remove('is-invalid');
+        pwdInput.classList.add('is-valid');
+        pwdError.style.display = 'none';
+        pwdHint.style.display = 'block';
+        pwdHint.style.color = '#00B272';
+        pwdHint.textContent = 'Password meets requirements';
+        return true;
+      }
+    }
+
+    function validateConfirm() {
+      const val = pwdInput.value;
+      const cval = cpwdInput.value;
+      if (!cval || val !== cval) {
+        cpwdInput.classList.add('is-invalid');
+        cpwdInput.classList.remove('is-valid');
+        matchError.style.display = 'block';
+        matchHint.style.display = 'none';
+        return false;
+      } else {
+        cpwdInput.classList.remove('is-invalid');
+        cpwdInput.classList.add('is-valid');
+        matchError.style.display = 'none';
+        matchHint.style.display = 'block';
+        matchHint.style.color = '#00B272';
+        matchHint.textContent = 'Passwords match';
+        return true;
+      }
+    }
+
+    emailInput.addEventListener('input', validateEmail);
+    pwdInput.addEventListener('input', () => {
+      validatePassword();
+      if (cpwdInput.value) validateConfirm();
+    });
+    cpwdInput.addEventListener('input', validateConfirm);
+
+    form.addEventListener('submit', function(e) {
+      let valid = true;
+      if (!nameInput.value.trim()) {
+        nameInput.classList.add('is-invalid');
+        nameError.style.display = 'block';
+        valid = false;
+      } else {
+        nameInput.classList.remove('is-invalid');
+        nameError.style.display = 'none';
+      }
+
+      if (!affInput.value.trim()) {
+        affInput.classList.add('is-invalid');
+        affError.style.display = 'block';
+        valid = false;
+      } else {
+        affInput.classList.remove('is-invalid');
+        affError.style.display = 'none';
+      }
+
+      if (!validateEmail()) valid = false;
+      if (!validatePassword()) valid = false;
+      if (!validateConfirm()) valid = false;
+
+      if (!valid) {
+        e.preventDefault();
+      }
+    });
+  </script>
 
 </body>
 </html>

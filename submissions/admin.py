@@ -1,5 +1,35 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 from .models import UserProfile, Manuscript, ReviewAssignment, ManuscriptRevision, SubmissionActivityLog
+
+
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
+    can_delete = False
+    verbose_name_plural = 'Editorial & Journal Roles'
+    fk_name = 'user'
+    fields = ('role', 'affiliation', 'designation', 'specialization', 'phone', 'orcid_id', 'is_approved_reviewer', 'is_approved_editor')
+    extra = 0
+
+
+# Re-register UserAdmin with UserProfile inline so editors/reviewers can be configured directly
+try:
+    admin.site.unregister(User)
+except admin.sites.NotRegistered:
+    pass
+
+@admin.register(User)
+class CustomUserAdmin(BaseUserAdmin):
+    inlines = (UserProfileInline,)
+    list_display = ('username', 'email', 'first_name', 'last_name', 'get_role', 'is_staff')
+
+    def get_role(self, obj):
+        try:
+            return obj.journal_profile.get_role_display()
+        except Exception:
+            return "Author"
+    get_role.short_description = "Journal Role"
 
 
 @admin.register(UserProfile)
@@ -7,6 +37,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'role', 'affiliation', 'specialization', 'is_approved_reviewer', 'is_approved_editor', 'created_at')
     list_filter = ('role', 'is_approved_reviewer', 'is_approved_editor')
     search_fields = ('user__username', 'user__first_name', 'user__last_name', 'user__email', 'affiliation', 'specialization')
+    fields = ('user', 'role', 'affiliation', 'designation', 'specialization', 'phone', 'orcid_id', 'bio', 'is_approved_reviewer', 'is_approved_editor')
 
 
 class ReviewAssignmentInline(admin.TabularInline):

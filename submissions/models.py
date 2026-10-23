@@ -55,6 +55,17 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.get_full_name() or self.user.username} ({self.get_role_display()})"
 
+    def save(self, *args, **kwargs):
+        if self.role == 'editor':
+            self.is_editor = True
+            self.is_author = True
+        elif self.role == 'reviewer':
+            self.is_reviewer = True
+            self.is_author = True
+        elif self.role == 'author':
+            self.is_author = True
+        super().save(*args, **kwargs)
+
 
 class Manuscript(models.Model):
     STATUS_CHOICES = [
