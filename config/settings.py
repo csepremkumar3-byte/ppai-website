@@ -76,15 +76,28 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 # Production = PostgreSQL, Local = SQLite
-if os.environ.get('DJANGO_ENV') == 'production':
+if os.environ.get('DATABASE_URL'):
+    from urllib.parse import urlparse
+    _db_url = urlparse(os.environ.get('DATABASE_URL'))
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': _db_url.path.lstrip('/'),
+            'USER': _db_url.username or '',
+            'PASSWORD': _db_url.password or '',
+            'HOST': _db_url.hostname or 'localhost',
+            'PORT': str(_db_url.port or 5432),
+        }
+    }
+elif os.environ.get('DJANGO_ENV') == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.environ.get('DB_NAME', 'ppai_db'),
             'USER': os.environ.get('DB_USER', 'ppai_user'),
             'PASSWORD': os.environ.get('DB_PASSWORD'),
-            'HOST': 'localhost',
-            'PORT': '5432',
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
         }
     }
 else:

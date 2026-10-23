@@ -441,7 +441,7 @@ def register(request):
             context['error'] = 'An account with this email address already exists. Please login.'
             return render(request, 'pages/register.html', context)
 
-        try:
+        def _create_user_and_profile():
             with transaction.atomic():
                 name_parts = full_name.split(None, 1)
                 first_name = name_parts[0] if name_parts else ''
@@ -473,6 +473,19 @@ def register(request):
                         'orcid_id': orcid_id,
                     }
                 )
+                return user
+
+        try:
+            try:
+                user = _create_user_and_profile()
+            except Exception as initial_err:
+                err_str = str(initial_err).lower()
+                if 'relation' in err_str or 'does not exist' in err_str or 'no such table' in err_str:
+                    from django.core.management import call_command
+                    call_command('migrate', interactive=False)
+                    user = _create_user_and_profile()
+                else:
+                    raise initial_err
 
             # Workflow: After registration -> redirect to login with success message
             role_label = {'author': 'Author', 'reviewer': 'Reviewer', 'editor': 'Editor'}.get(role, 'Author')

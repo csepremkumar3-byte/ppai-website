@@ -17,7 +17,16 @@ from .forms import (
 
 def get_user_profile(user):
     """Safely retrieves or creates a UserProfile for the given user."""
-    profile, created = UserProfile.objects.get_or_create(user=user)
+    try:
+        profile, created = UserProfile.objects.get_or_create(user=user)
+    except Exception as e:
+        err_str = str(e).lower()
+        if 'relation' in err_str or 'does not exist' in err_str or 'no such table' in err_str:
+            from django.core.management import call_command
+            call_command('migrate', interactive=False)
+            profile, created = UserProfile.objects.get_or_create(user=user)
+        else:
+            raise e
     # If user is staff/superuser, make sure they have editor permissions
     if user.is_staff or user.is_superuser:
         if not profile.is_editor:
