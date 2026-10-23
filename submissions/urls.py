@@ -23,4 +23,8 @@ urlpatterns = [
     path('portal/reviewer/', views.reviewer_dashboard, name='reviewer_dashboard'),
     path('portal/reviewer/invitation/<int:assignment_id>/<str:response_action>/', views.reviewer_respond_invitation, name='reviewer_respond_invitation'),
     path('portal/reviewer/evaluate/<int:assignment_id>/', views.reviewer_evaluate_manuscript, name='reviewer_evaluate_manuscript'),
+
+    # Administrator Workflow
+    path('portal/admin/', views.admin_dashboard, name='admin_dashboard'),
+    path('portal/admin/delete-user/<int:user_id>/', views.admin_delete_user, name='admin_delete_user'),
 ]

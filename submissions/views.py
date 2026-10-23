@@ -27,8 +27,13 @@ def get_user_profile(user):
             profile, created = UserProfile.objects.get_or_create(user=user)
         else:
             raise e
-    # If user is staff/superuser, make sure they have editor permissions
-    if user.is_staff or user.is_superuser:
+    # If user is superuser/admin, mark admin role and editor permissions
+    if user.is_superuser:
+        if profile.role != 'admin' or not profile.is_editor:
+            profile.role = 'admin'
+            profile.is_editor = True
+            profile.save()
+    elif user.is_staff:
         if not profile.is_editor:
             profile.is_editor = True
             profile.role = 'editor'
@@ -40,7 +45,9 @@ def portal_login(request):
     """Redirects to role-based dashboard if authenticated, else login."""
     if request.user.is_authenticated:
         profile = get_user_profile(request.user)
-        if profile.is_editor or request.user.is_staff or request.user.is_superuser:
+        if request.user.is_superuser or getattr(profile, 'role', '') == 'admin':
+            return redirect('admin_dashboard')
+        elif profile.is_editor or request.user.is_staff:
             return redirect('editor_dashboard')
         elif profile.is_reviewer:
             return redirect('reviewer_dashboard')
@@ -549,4 +556,128 @@ def editor_add_user(request):
         return redirect('editor_dashboard')
 
     return render(request, 'submissions/add_editorial_user.html', context)
+
+
+# ==============================================================================
+# ADMINISTRATOR COMMAND CENTER VIEWS
+# ==============================================================================
+
+@login_required(login_url='login')
+def admin_dashboard(request):
+    """Admin Command Center: view/filter users, register editors/reviewers, delete users."""
+    profile = get_user_profile(request.user)
+    if not (request.user.is_superuser or getattr(profile, 'role', '') == 'admin'):
+        messages.error(request, "Access restricted to Administrators.")
+        return redirect('portal_login')
+
+    if request.method == 'POST' and request.POST.get('action') == 'create_user':
+        role = request.POST.get('role', 'reviewer').strip().lower()
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip().lower()
+        affiliation = request.POST.get('affiliation', '').strip()
+        specialization = request.POST.get('specialization', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        if not full_name or not email or not password or not affiliation:
+            messages.error(request, "Full name, email, affiliation, and password are required.")
+        elif User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
+            messages.error(request, f"An account with email {email} already exists.")
+        elif len(password) < 6:
+            messages.error(request, "Password must be at least 6 characters long.")
+        else:
+            name_parts = full_name.split(None, 1)
+            first_name = name_parts[0] if name_parts else ''
+            last_name = name_parts[1] if len(name_parts) > 1 else ''
+
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name
+            )
+
+            is_editor = (role == 'editor')
+            is_reviewer = (role == 'reviewer')
+
+            if is_editor:
+                user.is_staff = True
+                user.save()
+
+            UserProfile.objects.update_or_create(
+                user=user,
+                defaults={
+                    'role': 'editor' if is_editor else 'reviewer',
+                    'is_editor': is_editor,
+                    'is_reviewer': is_reviewer,
+                    'is_author': True,
+                    'is_approved_reviewer': is_reviewer,
+                    'is_approved_editor': is_editor,
+                    'affiliation': affiliation,
+                    'specialization': specialization,
+                }
+            )
+
+            role_name = 'Editor' if is_editor else 'Reviewer'
+            messages.success(request, f"Successfully created {role_name}: {full_name} ({email})! They can now log in.")
+            return redirect('admin_dashboard')
+
+    # Filtering users
+    filter_role = request.GET.get('role', 'all').strip().lower()
+
+    # Ensure all users have a journal_profile
+    users_qs = User.objects.all().select_related('journal_profile').order_by('-date_joined')
+    for u in users_qs:
+        if not hasattr(u, 'journal_profile'):
+            get_user_profile(u)
+
+    users_qs = User.objects.all().select_related('journal_profile').order_by('-date_joined')
+
+    counts = {
+        'all': users_qs.count(),
+        'editors': users_qs.filter(Q(journal_profile__is_editor=True) | Q(is_staff=True)).distinct().count(),
+        'reviewers': users_qs.filter(journal_profile__is_reviewer=True).count(),
+        'authors': users_qs.filter(
+            Q(journal_profile__is_editor=False, journal_profile__is_reviewer=False, is_superuser=False, is_staff=False)
+        ).count(),
+    }
+
+    if filter_role == 'editor':
+        filtered_users = [u for u in users_qs if u.is_staff or (hasattr(u, 'journal_profile') and u.journal_profile.is_editor)]
+    elif filter_role == 'reviewer':
+        filtered_users = [u for u in users_qs if hasattr(u, 'journal_profile') and u.journal_profile.is_reviewer]
+    elif filter_role == 'author':
+        filtered_users = [
+            u for u in users_qs
+            if not u.is_superuser and not u.is_staff and hasattr(u, 'journal_profile') and not u.journal_profile.is_editor and not u.journal_profile.is_reviewer
+        ]
+    else:
+        filter_role = 'all'
+        filtered_users = list(users_qs)
+
+    return render(request, 'submissions/admin_dashboard.html', {
+        'profile': profile,
+        'users': filtered_users,
+        'filter_role': filter_role,
+        'counts': counts,
+    })
+
+
+@login_required(login_url='login')
+def admin_delete_user(request, user_id):
+    """Deletes a user account from the admin dashboard."""
+    profile = get_user_profile(request.user)
+    if not (request.user.is_superuser or getattr(profile, 'role', '') == 'admin'):
+        messages.error(request, "Access restricted to Administrators.")
+        return redirect('portal_login')
+
+    if user_id == request.user.id:
+        messages.error(request, "You cannot delete your own administrator account.")
+        return redirect('admin_dashboard')
+
+    target_user = get_object_or_404(User, id=user_id)
+    username = target_user.username
+    target_user.delete()
+    messages.success(request, f"User '{username}' was successfully deleted.")
+    return redirect('admin_dashboard')
 

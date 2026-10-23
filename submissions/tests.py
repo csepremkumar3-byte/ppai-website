@@ -58,8 +58,34 @@ class PeerReviewWorkflowTests(TestCase):
             affiliation='Department of Plant Pathology, UAS Dharwad'
         )
 
+        # 4. Setup Admin / Superuser
+        self.admin_user = User.objects.create_superuser(
+            username='admin@ppai.org.in',
+            email='admin@ppai.org.in',
+            password='AdminPass123!',
+            first_name='System',
+            last_name='Administrator'
+        )
+        self.admin_profile = UserProfile.objects.create(
+            user=self.admin_user,
+            role='admin',
+            is_editor=True,
+            affiliation='PPAI Central Office'
+        )
+
     def test_01_existing_login_and_role_based_access(self):
         """Test role-based access redirection using existing /login/ endpoint."""
+        # Admin login -> admin_dashboard
+        response = self.client.post(reverse('login'), {
+            'email': 'admin@ppai.org.in',
+            'password': 'AdminPass123!'
+        }, follow=True)
+        self.assertRedirects(response, reverse('admin_dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Administrator Command Center')
+        self.assertContains(response, 'Register Editor or Reviewer')
+        self.client.logout()
+
         # Author login -> author_dashboard
         response = self.client.post(reverse('login'), {
             'email': 'author@university.edu',
@@ -345,4 +371,70 @@ class PeerReviewWorkflowTests(TestCase):
         manuscript.refresh_from_db()
         self.assertEqual(manuscript.status, 'accepted')
         self.assertEqual(manuscript.editor_decision, 'accept')
+        self.client.logout()
+
+    def test_04_admin_dashboard_user_management(self):
+        """Test Admin Dashboard creation of Editors and Reviewers, and user deletion."""
+        # Login as Admin
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        dash_resp = self.client.get(reverse('admin_dashboard'))
+        self.assertEqual(dash_resp.status_code, 200)
+        self.assertContains(dash_resp, 'Administrator Command Center')
+
+        # 1. Admin creates an Editor
+        create_editor_resp = self.client.post(reverse('admin_dashboard'), {
+            'action': 'create_user',
+            'role': 'editor',
+            'full_name': 'Prof. Anita Sharma',
+            'email': 'anita.editor@ppai.org.in',
+            'affiliation': 'ICAR-NCIPM, New Delhi',
+            'specialization': 'Plant Virology',
+            'password': 'AnitaPass123!'
+        }, follow=True)
+        self.assertEqual(create_editor_resp.status_code, 200)
+        self.assertContains(create_editor_resp, 'Successfully created Editor: Prof. Anita Sharma')
+
+        # 2. Admin creates a Reviewer
+        create_rev_resp = self.client.post(reverse('admin_dashboard'), {
+            'action': 'create_user',
+            'role': 'reviewer',
+            'full_name': 'Dr. Vikram Patel',
+            'email': 'vikram.reviewer@icar.gov.in',
+            'affiliation': 'ICAR-IARI, New Delhi',
+            'specialization': 'Mycology',
+            'password': 'VikramPass123!'
+        }, follow=True)
+        self.assertEqual(create_rev_resp.status_code, 200)
+        self.assertContains(create_rev_resp, 'Successfully created Reviewer: Dr. Vikram Patel')
+
+        # Filter check
+        filter_resp = self.client.get(reverse('admin_dashboard') + '?role=reviewer')
+        self.assertEqual(filter_resp.status_code, 200)
+        self.assertContains(filter_resp, 'vikram.reviewer@icar.gov.in')
+
+        self.client.logout()
+
+        # 3. Newly created Editor logs in -> routes to editor_dashboard
+        login_editor = self.client.post(reverse('login'), {
+            'email': 'anita.editor@ppai.org.in',
+            'password': 'AnitaPass123!'
+        }, follow=True)
+        self.assertRedirects(login_editor, reverse('editor_dashboard'))
+        self.client.logout()
+
+        # 4. Newly created Reviewer logs in -> routes to reviewer_dashboard
+        login_reviewer = self.client.post(reverse('login'), {
+            'email': 'vikram.reviewer@icar.gov.in',
+            'password': 'VikramPass123!'
+        }, follow=True)
+        self.assertRedirects(login_reviewer, reverse('reviewer_dashboard'))
+        self.client.logout()
+
+        # 5. Admin deletes user
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        vikram_user = User.objects.get(email='vikram.reviewer@icar.gov.in')
+        del_resp = self.client.get(reverse('admin_delete_user', kwargs={'user_id': vikram_user.id}), follow=True)
+        self.assertEqual(del_resp.status_code, 200)
+        self.assertContains(del_resp, "was successfully deleted")
+        self.assertFalse(User.objects.filter(email='vikram.reviewer@icar.gov.in').exists())
         self.client.logout()

@@ -509,7 +509,9 @@ def login_view(request):
     if request.user.is_authenticated:
         from submissions.views import get_user_profile
         profile = get_user_profile(request.user)
-        if profile.is_editor or request.user.is_staff or request.user.is_superuser:
+        if request.user.is_superuser or getattr(profile, 'role', '') == 'admin':
+            return redirect('admin_dashboard')
+        elif profile.is_editor or request.user.is_staff:
             return redirect('editor_dashboard')
         elif profile.is_reviewer:
             return redirect('reviewer_dashboard')
@@ -540,7 +542,9 @@ def login_view(request):
 
                 from submissions.views import get_user_profile
                 profile = get_user_profile(user)
-                if profile.is_editor or user.is_staff or user.is_superuser:
+                if user.is_superuser or getattr(profile, 'role', '') == 'admin':
+                    return redirect('admin_dashboard')
+                elif profile.is_editor or user.is_staff:
                     return redirect('editor_dashboard')
                 elif profile.is_reviewer:
                     return redirect('reviewer_dashboard')
