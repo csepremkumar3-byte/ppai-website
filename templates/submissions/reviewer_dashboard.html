@@ -26,14 +26,6 @@
     </div>
 
     <div class="portal-header-actions">
-      <a href="{% url 'author_dashboard' %}" class="portal-tab-pill">
-        <span>Author Dashboard</span>
-      </a>
-      {% if profile.is_editor or request.user.is_staff %}
-      <a href="{% url 'editor_dashboard' %}" class="portal-tab-pill">
-        <span>Editor Panel</span>
-      </a>
-      {% endif %}
       <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
         Sign Out
       </a>

@@ -32,18 +32,6 @@
         Submit Manuscript
       </a>
 
-      {% if profile.is_reviewer or profile.role == 'reviewer' %}
-      <a href="{% url 'reviewer_dashboard' %}" class="portal-tab-pill">
-        <span>Reviewer Panel</span>
-      </a>
-      {% endif %}
-
-      {% if profile.is_editor or request.user.is_staff %}
-      <a href="{% url 'editor_dashboard' %}" class="portal-tab-pill">
-        <span>Editor Panel</span>
-      </a>
-      {% endif %}
-
       <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
         Sign Out
       </a>
