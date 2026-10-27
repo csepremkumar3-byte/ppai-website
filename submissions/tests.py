@@ -85,6 +85,7 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertContains(response, 'Chief Editor Console')
         self.assertContains(response, 'Register')
         self.assertContains(response, 'Associate Editor')
+        self.assertContains(response, 'Reviewer')
         self.assertNotContains(response, 'Administrator Command Center')
         self.assertNotContains(response, 'Django Admin')
         self.client.logout()
@@ -396,6 +397,7 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertContains(dash_resp, 'Chief Editor Console')
         self.assertContains(dash_resp, 'Register')
         self.assertContains(dash_resp, 'Associate Editor')
+        self.assertContains(dash_resp, 'Reviewer')
 
         # Verify clutter texts and Editor Panel have been removed
         self.assertNotContains(dash_resp, 'Administrator Command Center')

@@ -192,10 +192,22 @@
         <input type="hidden" name="action" value="create_user">
 
         <!-- Account Role -->
-        <div class="portal-form-group" style="margin-bottom: 14px;">
-          <label for="role_display">Account Role <span style="color:#DC2626">*</span></label>
-          <input type="text" id="role_display" class="portal-input" value="Associate Editor" readonly style="background: #F4F8F5; font-weight: 700; color: #0B2417; cursor: default;">
-          <input type="hidden" name="role" value="editor">
+        <label style="display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: #5B7065; margin-bottom: 6px;">
+          Account Role <span style="color:#DC2626">*</span>
+        </label>
+        <div class="role-toggle-grid">
+          <div class="role-toggle-option">
+            <input type="radio" id="role_editor" name="role" value="editor" checked>
+            <label for="role_editor">
+              <strong>Associate Editor</strong>
+            </label>
+          </div>
+          <div class="role-toggle-option">
+            <input type="radio" id="role_reviewer" name="role" value="reviewer">
+            <label for="role_reviewer">
+              <strong>Reviewer</strong>
+            </label>
+          </div>
         </div>
 
         <!-- Full Name -->
