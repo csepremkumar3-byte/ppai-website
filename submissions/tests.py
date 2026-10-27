@@ -109,7 +109,13 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertRedirects(response, reverse('reviewer_dashboard'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Reviewer')
-        self.assertContains(response, 'Assigned Manuscripts')
+        self.assertContains(response, 'Reviewer Console')
+        self.assertContains(response, 'New Reviewer Assignments')
+        self.assertContains(response, 'Pending Assignment')
+        self.assertContains(response, 'Complete Assignments')
+        self.assertContains(response, 'Review Instructions')
+        self.assertContains(response, 'Feedback for the Authors')
+        self.assertContains(response, 'Your Assignments')
         self.client.logout()
 
         # Editor login -> editor_dashboard
@@ -295,6 +301,16 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(accept_resp.status_code, 200)
         assignment.refresh_from_db()
         self.assertEqual(assignment.status, 'accepted')
+
+        # Reviewer visits evaluation workspace via card
+        eval_get = self.client.get(reverse('reviewer_evaluate_manuscript', kwargs={'assignment_id': assignment.id}))
+        self.assertEqual(eval_get.status_code, 200)
+        self.assertContains(eval_get, 'Review Status')
+        self.assertContains(eval_get, 'Manuscript Information')
+        self.assertContains(eval_get, 'Manuscript Files')
+        self.assertContains(eval_get, 'Overall Recommendation')
+        self.assertContains(eval_get, 'Comments for Author')
+        self.assertContains(eval_get, 'Confidential Remarks for Associate Editor Only')
 
         # 4. Reviewer evaluates manuscript (Comment on submitted manuscript by author)
         eval_resp = self.client.post(

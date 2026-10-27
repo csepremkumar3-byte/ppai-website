@@ -391,10 +391,13 @@ def reviewer_dashboard(request):
         messages.error(request, "Reviewer panel access required.")
         return redirect('author_dashboard')
 
-    assignments = ReviewAssignment.objects.filter(reviewer=request.user).select_related('manuscript', 'assigned_by')
+    assignments = ReviewAssignment.objects.filter(reviewer=request.user).select_related('manuscript', 'assigned_by').order_by('-id')
 
     stats = {
         'total': assignments.count(),
+        'new_assignments': assignments.filter(status='pending').count(),
+        'pending_assignments': assignments.filter(status='accepted').count(),
+        'complete_assignments': assignments.filter(status='completed').count(),
         'pending': assignments.filter(status='pending').count(),
         'in_progress': assignments.filter(status='accepted').count(),
         'completed': assignments.filter(status='completed').count(),
@@ -445,6 +448,17 @@ def reviewer_evaluate_manuscript(request, assignment_id):
     if assignment.status == 'declined':
         messages.error(request, "You previously declined this review request.")
         return redirect('reviewer_dashboard')
+
+    # Automatically transition pending assignment to accepted upon opening workspace
+    if assignment.status == 'pending':
+        assignment.status = 'accepted'
+        assignment.save()
+        SubmissionActivityLog.objects.create(
+            manuscript=assignment.manuscript,
+            user=request.user,
+            action="Review Workspace Opened",
+            details=f"Reviewer {request.user.get_full_name() or request.user.username} opened review workspace."
+        )
 
     if request.method == 'POST':
         form = ReviewEvaluationForm(request.POST, request.FILES, instance=assignment)

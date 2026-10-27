@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Review Manuscript: {{ manuscript.tracking_id }} — Plant Protection Association of India (PPAI){% endblock %}
+{% block title %}Review Manuscript: {{ manuscript.tracking_id }} &mdash; Plant Protection Association of India (PPAI){% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -10,6 +10,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
+    align-items: start;
   }
   @media (max-width: 992px) {
     .review-layout-grid {
@@ -35,6 +36,50 @@
     color: #0B2417;
     margin-bottom: 12px;
   }
+
+  /* Status Banner */
+  .review-status-banner {
+    background: #FFFFFF;
+    border: 1px solid rgba(11, 36, 23, 0.08);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(11, 36, 23, 0.03);
+  }
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .status-item span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #5B7065;
+    letter-spacing: 0.04em;
+  }
+  .status-item strong {
+    font-size: 14px;
+    color: #0B2417;
+  }
+
+  /* File Download Box */
+  .file-download-box {
+    background: #F4F8F5;
+    border: 1.5px dashed rgba(0, 178, 114, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+  }
 </style>
 {% endblock %}
 
@@ -44,12 +89,14 @@
   <!-- Header Bar -->
   <div class="portal-header-bar">
     <div class="portal-header-left">
-      <div class="portal-user-avatar" style="background: linear-gradient(135deg, #B7791F, #EAB308);">
-        R
+      <div class="portal-user-avatar" style="background: linear-gradient(135deg, #B7791F, #D97706); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: 800; font-size: 18px;">
+        {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
       </div>
       <div class="portal-user-meta">
-        <h2>Peer Review: {{ manuscript.tracking_id }}</h2>
-        <p>
+        <h2 style="font-size: 20px; font-weight: 800; color: #0B2417; margin: 0 0 4px 0;">
+          Peer Review Workspace: {{ manuscript.tracking_id }}
+        </h2>
+        <p style="margin: 0; display: flex; align-items: center; gap: 8px;">
           <span class="role-badge reviewer">Reviewer</span>
           <span>Plant Protection Association of India (PPAI)</span>
         </p>
@@ -57,9 +104,12 @@
     </div>
 
     <div class="portal-header-actions">
-      <a href="{% url 'reviewer_dashboard' %}" class="btn-portal-secondary btn-portal-sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        Reviewer Dashboard
+      <a href="{% url 'reviewer_dashboard' %}" class="portal-tab-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Reviewer Console</span>
+      </a>
+      <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
+        Sign Out
       </a>
     </div>
   </div>
@@ -74,106 +124,170 @@
   </div>
   {% endif %}
 
+  <!-- Review Status Banner -->
+  <div class="review-status-banner">
+    <div class="status-item">
+      <span>Review Status</span>
+      <div>
+        {% if assignment.status == 'completed' %}
+          <span class="status-badge accepted">Review Completed &amp; Submitted</span>
+        {% elif assignment.status == 'accepted' %}
+          <span class="status-badge submitted">Review In Progress</span>
+        {% elif assignment.status == 'pending' %}
+          <span class="status-badge revisions_requested">Invitation Pending</span>
+        {% else %}
+          <span class="status-badge rejected">Declined</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="status-item">
+      <span>Manuscript Tracking ID</span>
+      <strong style="color: #00B272;">{{ manuscript.tracking_id }}</strong>
+    </div>
+
+    <div class="status-item">
+      <span>Review Due Date</span>
+      <strong>{{ assignment.due_date|date:"M d, Y"|default:"Within 14 days" }}</strong>
+    </div>
+
+    <div class="status-item">
+      <span>Assigned On</span>
+      <strong>{{ assignment.created_at|date:"M d, Y"|default:"Recent" }}</strong>
+    </div>
+  </div>
+
   <div class="review-layout-grid">
 
-    <!-- Left Column: Manuscript Under Review (Blinded for Authorship) -->
+    <!-- Left Column: Manuscript Information & Files -->
     <div>
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>Manuscript Dossier</h2>
-          {% if manuscript.manuscript_file %}
-          <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
-             Download Full Manuscript
-          </a>
-          {% endif %}
+          <div>
+            <h2>Manuscript Information</h2>
+            <p>Metadata submitted by author (Blinded for impartial peer review)</p>
+          </div>
         </div>
 
         <div style="margin-bottom: 16px;">
-          <h3 style="font-size: 18px; font-weight: 800; color: #0B2417; line-height: 1.4;">{{ manuscript.title }}</h3>
-          <div style="font-size: 13px; color: #64746D; margin-top: 4px;">
-            {{ manuscript.get_article_type_display }} &bull; {{ manuscript.get_subject_area_display }}
+          <h3 style="font-size: 17px; font-weight: 800; color: #0B2417; line-height: 1.4; margin-bottom: 6px;">
+            {{ manuscript.title }}
+          </h3>
+          <div style="font-size: 13px; color: #5B7065;">
+            <strong>Discipline:</strong> {{ manuscript.get_subject_area_display }} &bull;
+            <strong>Type:</strong> {{ manuscript.get_article_type_display }}
           </div>
         </div>
 
         <div style="margin-bottom: 18px;">
-          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 6px;">Abstract</h4>
-          <p style="font-size: 14px; color: #1D2924; line-height: 1.6; background: #F8FAF9; padding: 16px; border-radius: 8px; white-space: pre-line;">{{ manuscript.abstract }}</p>
+          <h4 style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #5B7065; margin-bottom: 6px;">Abstract</h4>
+          <p style="font-size: 13.5px; color: #1D2924; line-height: 1.65; background: #F8FAF9; padding: 16px; border-radius: 8px; white-space: pre-line; border: 1px solid rgba(11, 36, 23, 0.06);">{{ manuscript.abstract }}</p>
         </div>
 
-        <div style="margin-bottom: 16px;">
-          <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #64746D; margin-bottom: 4px;">Keywords</h4>
-          <p style="font-size: 13.5px; color: #0B2417;">{{ manuscript.keywords }}</p>
+        <div style="margin-bottom: 18px;">
+          <h4 style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #5B7065; margin-bottom: 4px;">Keywords</h4>
+          <p style="font-size: 13.5px; color: #0B2417; font-weight: 600;">{{ manuscript.keywords }}</p>
         </div>
 
-        {% if manuscript.supplementary_file %}
-        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(11, 36, 23, 0.08);">
-          <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-             Supplementary Material / Data
-          </a>
+        <!-- Manuscript Files Box -->
+        <div>
+          <h4 style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #5B7065; margin-bottom: 8px;">Manuscript Files</h4>
+
+          {% if manuscript.manuscript_file %}
+          <div class="file-download-box">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00B272" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <div>
+                <strong style="font-size: 13.5px; color: #0B2417; display: block;">Primary Manuscript File</strong>
+                <span style="font-size: 11.5px; color: #5B7065;">DOCX / PDF Document</span>
+              </div>
+            </div>
+            <a href="{{ manuscript.manuscript_file.url }}" class="btn-portal-primary btn-portal-sm" download>
+              Download File
+            </a>
+          </div>
+          {% endif %}
+
+          {% if manuscript.supplementary_file %}
+          <div class="file-download-box" style="margin-top: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <div>
+                <strong style="font-size: 13.5px; color: #0B2417; display: block;">Supplementary Data / Figures</strong>
+                <span style="font-size: 11.5px; color: #5B7065;">Additional raw data file</span>
+              </div>
+            </div>
+            <a href="{{ manuscript.supplementary_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
+              Download Data
+            </a>
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
       </div>
 
-      <!-- Blind Review Guidelines -->
-      <div class="portal-card" style="background: #F4FBF7; border-color: #C7EED8;">
-        <h4 style="font-size: 14.5px; font-weight: 800; color: #0B2417; margin-bottom: 8px;">Plant Protection Association of India &bull; Peer Review Guidelines</h4>
-        <ul style="margin-left: 20px; font-size: 13px; color: #365042; line-height: 1.6;">
-          <li>Maintain confidentiality of the manuscript research findings.</li>
-          <li>Provide constructive comments to improve the scientific rigor.</li>
-          <li>Return evaluation promptly to the Editor.</li>
-        </ul>
+      <!-- Quick Guidance Card -->
+      <div class="portal-card" style="background: #F8FAF9; border-color: rgba(11, 36, 23, 0.08);">
+        <h4 style="font-size: 13.5px; font-weight: 800; color: #0B2417; margin-bottom: 8px;">Review Policy &bull; PPAI</h4>
+        <p style="font-size: 12.5px; color: #5B7065; line-height: 1.6; margin: 0;">
+          Your comments for the author will be reviewed by the Associate Editor before release. Confidential remarks remain permanently hidden from the authors.
+        </p>
       </div>
     </div>
 
-    <!-- Right Column: Reviewer Comments -->
+    <!-- Right Column: Evaluation & Recommendation Form -->
     <div>
       <div class="portal-card">
         <div class="portal-card-header">
-          <h2>
-            {% if assignment.status == 'completed' %}
-              Peer Review Evaluation (Completed)
-            {% else %}
-              Peer Review Evaluation &amp; Comments
-            {% endif %}
-          </h2>
+          <div>
+            <h2>
+              {% if assignment.status == 'completed' %}
+                Submitted Evaluation
+              {% else %}
+                Review Recommendation &amp; Feedback
+              {% endif %}
+            </h2>
+            <p>Score the manuscript and enter feedback for author and editor</p>
+          </div>
           {% if assignment.status == 'completed' %}
-            <span class="status-badge accepted">Submitted to Editor</span>
+            <span class="status-badge accepted">Submitted to Associate Editor</span>
           {% endif %}
         </div>
 
         {% if assignment.status == 'completed' %}
           <!-- Read-only summary for completed review -->
           <div class="rubric-card">
-            <h4>Rubric Scores</h4>
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-              <div><strong>Originality:</strong> {{ assignment.originality_score }} / 5</div>
+            <h4>Quantitative Rubric Scores</h4>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 13.5px;">
+              <div><strong>Novelty &amp; Originality:</strong> {{ assignment.originality_score }} / 5</div>
               <div><strong>Technical Quality:</strong> {{ assignment.technical_quality_score }} / 5</div>
-              <div><strong>Clarity:</strong> {{ assignment.clarity_score }} / 5</div>
-              <div><strong>Significance:</strong> {{ assignment.significance_score }} / 5</div>
+              <div><strong>Clarity &amp; Language:</strong> {{ assignment.clarity_score }} / 5</div>
+              <div><strong>Agricultural Significance:</strong> {{ assignment.significance_score }} / 5</div>
             </div>
           </div>
 
-          <div style="margin-bottom: 16px;">
-            <strong style="color: #0B2417;">Recommendation:</strong>
-            <span style="font-weight: 800; color: #00B272;">{{ assignment.get_recommendation_display }}</span>
+          <div style="margin-bottom: 18px; padding: 14px; background: #E8F7F0; border-radius: 8px; border: 1px solid #A6E3C8;">
+            <strong style="color: #0B2417; font-size: 13px;">Your Overall Recommendation:</strong>
+            <div style="font-size: 16px; font-weight: 800; color: #007C4F; margin-top: 4px;">
+              {{ assignment.get_recommendation_display }}
+            </div>
           </div>
 
           <div class="review-callout" style="margin-bottom: 16px;">
-            <h4>Comments for Author:</h4>
-            <p>{{ assignment.comments_for_author|default:"None" }}</p>
+            <h4 style="font-size: 13px; font-weight: 800; color: #0B2417; margin-bottom: 6px;">Comments for Author:</h4>
+            <p style="font-size: 13.5px; color: #1D2924; line-height: 1.6; white-space: pre-line;">{{ assignment.comments_for_author|default:"None" }}</p>
           </div>
 
           {% if assignment.confidential_comments_to_editor %}
           <div class="review-callout warning" style="margin-bottom: 16px;">
-            <h4> Confidential Comments to Editor:</h4>
-            <p>{{ assignment.confidential_comments_to_editor }}</p>
+            <h4 style="font-size: 13px; font-weight: 800; color: #92400E; margin-bottom: 6px;">Confidential Remarks for Associate Editor Only:</h4>
+            <p style="font-size: 13.5px; color: #78350F; line-height: 1.6; white-space: pre-line;">{{ assignment.confidential_comments_to_editor }}</p>
           </div>
           {% endif %}
 
           {% if assignment.annotated_file %}
-          <div>
+          <div style="margin-top: 16px;">
             <a href="{{ assignment.annotated_file.url }}" class="btn-portal-secondary btn-portal-sm" download>
-               Download Your Uploaded Annotated File
+              Download Uploaded Annotated Manuscript
             </a>
           </div>
           {% endif %}
@@ -192,10 +306,11 @@
             </div>
             {% endif %}
 
+            <!-- Rubric Scores -->
             <div class="rubric-card">
-              <h4>1. Quantitative Evaluation Rubric (1 = Poor to 5 = Outstanding)</h4>
+              <h4>1. Scientific Rubric Scores (1 = Poor &bull; 5 = Outstanding)</h4>
 
-              <div class="portal-form-grid" style="margin-bottom: 12px;">
+              <div class="portal-form-grid" style="margin-bottom: 8px;">
                 <div class="portal-form-group">
                   <label for="{{ form.originality_score.id_for_label }}">Novelty / Originality <span style="color:#DC2626">*</span></label>
                   {{ form.originality_score }}
@@ -207,7 +322,7 @@
                 </div>
 
                 <div class="portal-form-group">
-                  <label for="{{ form.clarity_score.id_for_label }}">Clarity & Language <span style="color:#DC2626">*</span></label>
+                  <label for="{{ form.clarity_score.id_for_label }}">Clarity &amp; Language <span style="color:#DC2626">*</span></label>
                   {{ form.clarity_score }}
                 </div>
 
@@ -218,36 +333,49 @@
               </div>
             </div>
 
+            <!-- Recommendation Dropdown (Accept, Minor Revision, Major Revision, Reject) -->
             <div class="portal-form-group" style="margin-bottom: 20px;">
-              <label for="{{ form.recommendation.id_for_label }}">Overall Recommendation <span style="color:#DC2626">*</span></label>
+              <label for="{{ form.recommendation.id_for_label }}">
+                2. Overall Recommendation (e.g. Major Revision, Minor Revision, Accept, Reject) <span style="color:#DC2626">*</span>
+              </label>
               {{ form.recommendation }}
+              <span class="field-hint">Select your verdict: Major Revision, Minor Revision, Accept, or Reject.</span>
               {% if form.recommendation.errors %}<div class="error-text">{{ form.recommendation.errors.0 }}</div>{% endif %}
             </div>
 
+            <!-- Comments for Author -->
             <div class="portal-form-group" style="margin-bottom: 20px;">
-              <label for="{{ form.comments_for_author.id_for_label }}">Comments for Author <span style="color:#DC2626">*</span></label>
+              <label for="{{ form.comments_for_author.id_for_label }}">
+                3. Comments for Author <span style="color:#DC2626">*</span>
+              </label>
               {{ form.comments_for_author }}
               <span class="field-hint">Constructive critique highlighting strengths, major comments, and corrections for the author.</span>
               {% if form.comments_for_author.errors %}<div class="error-text">{{ form.comments_for_author.errors.0 }}</div>{% endif %}
             </div>
 
+            <!-- Confidential Comments for Editor -->
             <div class="portal-form-group" style="margin-bottom: 20px;">
-              <label for="{{ form.confidential_comments_to_editor.id_for_label }}">Confidential Remarks for Editor Only</label>
+              <label for="{{ form.confidential_comments_to_editor.id_for_label }}">
+                4. Confidential Remarks for Associate Editor Only
+              </label>
               {{ form.confidential_comments_to_editor }}
-              <span class="field-hint">Never disclosed to author. Mention ethical concerns or priority recommendations.</span>
+              <span class="field-hint">Visible only to the Associate Editor and Chief Editor. Never shared with authors.</span>
               {% if form.confidential_comments_to_editor.errors %}<div class="error-text">{{ form.confidential_comments_to_editor.errors.0 }}</div>{% endif %}
             </div>
 
+            <!-- Optional Annotated File -->
             <div class="portal-form-group" style="margin-bottom: 24px;">
-              <label for="{{ form.annotated_file.id_for_label }}">Upload Annotated Manuscript (Optional Word/PDF with track changes)</label>
+              <label for="{{ form.annotated_file.id_for_label }}">
+                5. Upload Annotated Manuscript (Optional Word/PDF)
+              </label>
               {{ form.annotated_file }}
               {% if form.annotated_file.errors %}<div class="error-text">{{ form.annotated_file.errors.0 }}</div>{% endif %}
             </div>
 
-            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+            <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
               <a href="{% url 'reviewer_dashboard' %}" class="btn-portal-secondary">Cancel</a>
               <button type="submit" class="btn-portal-primary" style="padding: 12px 28px;">
-                Submit Comments to Editor
+                Submit Comments to Associate Editor
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
             </div>
