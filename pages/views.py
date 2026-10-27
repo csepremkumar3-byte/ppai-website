@@ -544,8 +544,21 @@ def login_view(request):
                 if next_url and next_url.startswith('/'):
                     return redirect(next_url)
 
+                selected_role = request.POST.get('selected_role', '').strip().lower()
                 from submissions.views import get_user_profile
                 profile = get_user_profile(user)
+
+                # If user selected a specific role and is authorized for it, route directly
+                if selected_role == 'reviewer' and profile.is_reviewer:
+                    return redirect('reviewer_dashboard')
+                elif selected_role in ['associate_editor', 'editor'] and (profile.is_editor or (user.is_staff and not user.is_superuser)):
+                    return redirect('editor_dashboard')
+                elif selected_role in ['chief_editor', 'admin'] and (user.is_superuser or getattr(profile, 'role', '') == 'admin'):
+                    return redirect('admin_dashboard')
+                elif selected_role == 'author' and not user.is_superuser and not user.is_staff:
+                    return redirect('author_dashboard')
+
+                # Default role routing
                 if user.is_superuser or getattr(profile, 'role', '') == 'admin':
                     return redirect('admin_dashboard')
                 elif profile.is_editor or (user.is_staff and not user.is_superuser):

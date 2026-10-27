@@ -204,6 +204,48 @@
     .auth-footer a:hover {
       text-decoration: underline;
     }
+
+    /* Interactive Role Chips */
+    .role-chips-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: -2px;
+      margin-bottom: 18px;
+    }
+
+    .role-chip {
+      background: #E8F7F0;
+      color: #007C4F;
+      border: 1px solid rgba(0, 178, 114, 0.22);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      user-select: none;
+      outline: none;
+    }
+
+    .role-chip:hover {
+      background: #D3EFE2;
+      border-color: rgba(0, 178, 114, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .role-chip.active {
+      background: #007C4F;
+      color: #FFFFFF;
+      border-color: #007C4F;
+      box-shadow: 0 2px 6px rgba(0, 124, 79, 0.22);
+    }
   </style>
 </head>
 <body>
@@ -258,16 +300,19 @@
         <input type="password" id="password" name="password" class="input-field" placeholder="Enter password" required>
       </div>
 
-      <!-- Login Roles Under Username and Password -->
-      <div style="display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: -2px; margin-bottom: 18px;">
-        <span style="font-size: 11.5px; font-weight: 600; color: #007C4F; background: #E8F7F0; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 178, 114, 0.22);">Author</span>
-        <span style="font-size: 11.5px; font-weight: 600; color: #007C4F; background: #E8F7F0; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 178, 114, 0.22);">Chief Editor</span>
-        <span style="font-size: 11.5px; font-weight: 600; color: #007C4F; background: #E8F7F0; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 178, 114, 0.22);">Associate Editor</span>
-        <span style="font-size: 11.5px; font-weight: 600; color: #007C4F; background: #E8F7F0; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 178, 114, 0.22);">Reviewer</span>
+      <!-- Hidden Input for Selected Role -->
+      <input type="hidden" name="selected_role" id="selectedRole" value="{{ selected_role|default:'author' }}">
+
+      <!-- Interactive Login Roles Under Username and Password -->
+      <div class="role-chips-group" id="roleChipsGroup">
+        <button type="button" class="role-chip active" data-role="author">Author</button>
+        <button type="button" class="role-chip" data-role="chief_editor">Chief Editor</button>
+        <button type="button" class="role-chip" data-role="associate_editor">Associate Editor</button>
+        <button type="button" class="role-chip" data-role="reviewer">Reviewer</button>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="btn-submit">
+      <button type="submit" class="btn-submit" id="submitBtn">
         Login
       </button>
 
@@ -278,5 +323,43 @@
     </form>
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const chips = document.querySelectorAll('.role-chip');
+      const hiddenInput = document.getElementById('selectedRole');
+      const emailInput = document.getElementById('email');
+      const emailLabel = document.querySelector('label[for="email"]');
+
+      const placeholders = {
+        'author': 'Enter author email or username',
+        'chief_editor': 'Enter chief editor email or username',
+        'associate_editor': 'Enter associate editor email or username',
+        'reviewer': 'Enter reviewer email or username'
+      };
+
+      const labels = {
+        'author': 'Author Email or Username',
+        'chief_editor': 'Chief Editor Email or Username',
+        'associate_editor': 'Associate Editor Email or Username',
+        'reviewer': 'Reviewer Email or Username'
+      };
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', function(e) {
+          e.preventDefault();
+          chips.forEach(c => c.classList.remove('active'));
+          this.classList.add('active');
+          const role = this.getAttribute('data-role');
+          if (hiddenInput) hiddenInput.value = role;
+          if (emailInput && placeholders[role]) {
+            emailInput.placeholder = placeholders[role];
+          }
+          if (emailLabel && labels[role]) {
+            emailLabel.textContent = labels[role];
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
