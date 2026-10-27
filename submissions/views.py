@@ -614,7 +614,7 @@ def admin_dashboard(request):
                 last_name=last_name
             )
 
-            is_editor = (role == 'editor')
+            is_editor = (role in ['editor', 'associate_editor', 'associate editor'])
             is_reviewer = (role == 'reviewer')
 
             if is_editor:
@@ -635,8 +635,8 @@ def admin_dashboard(request):
                 }
             )
 
-            role_name = 'Editor' if is_editor else 'Reviewer'
-            messages.success(request, f"Successfully created {role_name}: {full_name} ({email})! They can now log in.")
+            role_name = 'Associate Editor' if is_editor else 'Reviewer'
+            messages.success(request, f"Successfully registered {role_name}: {full_name} ({email})! They can now log in.")
             return redirect('admin_dashboard')
 
     # Filtering users

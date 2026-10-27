@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Administrator Dashboard &mdash; Plant Protection Association of India (PPAI){% endblock %}
+{% block title %}Chief Editor Console &mdash; Plant Protection Association of India (PPAI){% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -125,12 +125,12 @@
   <div class="portal-header-bar">
     <div class="portal-header-left">
       <div class="portal-user-avatar" style="background: linear-gradient(135deg, #4C1D95, #6D28D9);">
-        A
+        C
       </div>
       <div class="portal-user-meta">
-        <h2>Administrator Command Center</h2>
+        <h2>Chief Editor Console</h2>
         <p>
-          <span class="role-badge admin">Administrator</span>
+          <span class="role-badge admin">Chief Editor</span>
           <span>Plant Protection Association of India (PPAI)</span>
         </p>
       </div>
@@ -138,7 +138,7 @@
 
     <div class="portal-header-actions">
       <a href="/admin/" target="_blank" class="portal-tab-pill">
-        <span>Django Admin</span>
+        <span>Admin</span>
       </a>
       <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
         Sign Out
@@ -163,7 +163,7 @@
       <strong>{{ counts.all }}</strong>
     </div>
     <div class="stat-box">
-      <span>Editors</span>
+      <span>Associate Editors</span>
       <strong style="color: #00B272;">{{ counts.editors }}</strong>
     </div>
     <div class="stat-box">
@@ -179,11 +179,11 @@
   <!-- Two Column Layout: Creation Form (Left) & User List (Right) -->
   <div class="admin-grid-layout">
 
-    <!-- Column 1: Register Editor or Reviewer -->
+    <!-- Column 1: Register Associate Editor -->
     <div class="portal-card">
       <div class="portal-card-header">
         <div>
-          <h2>Register Editor or Reviewer</h2>
+          <h2>Register</h2>
         </div>
       </div>
 
@@ -191,25 +191,11 @@
         {% csrf_token %}
         <input type="hidden" name="action" value="create_user">
 
-        <!-- Role Selector -->
-        <label style="display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: #5B7065; margin-bottom: 6px;">
-          Account Role <span style="color:#DC2626">*</span>
-        </label>
-        <div class="role-toggle-grid">
-          <div class="role-toggle-option">
-            <input type="radio" id="role_reviewer" name="role" value="reviewer" checked>
-            <label for="role_reviewer">
-              <strong>Reviewer</strong>
-              <span>Review assigned papers</span>
-            </label>
-          </div>
-          <div class="role-toggle-option">
-            <input type="radio" id="role_editor" name="role" value="editor">
-            <label for="role_editor">
-              <strong>Editor</strong>
-              <span>Manage submissions</span>
-            </label>
-          </div>
+        <!-- Account Role -->
+        <div class="portal-form-group" style="margin-bottom: 14px;">
+          <label for="role_display">Account Role <span style="color:#DC2626">*</span></label>
+          <input type="text" id="role_display" class="portal-input" value="Associate Editor" readonly style="background: #F4F8F5; font-weight: 700; color: #0B2417; cursor: default;">
+          <input type="hidden" name="role" value="editor">
         </div>
 
         <!-- Full Name -->
@@ -243,7 +229,7 @@
         </div>
 
         <button type="submit" class="btn-portal-primary" style="width: 100%; justify-content: center; padding: 12px;">
-          Create &amp; Grant Access
+          Register
         </button>
       </form>
     </div>
@@ -252,7 +238,7 @@
     <div class="portal-card">
       <div class="portal-card-header">
         <div>
-          <h2>System Users &amp; Roles</h2>
+          <h2>Chief Editor Console</h2>
         </div>
       </div>
 
@@ -262,7 +248,7 @@
           All Users ({{ counts.all }})
         </a>
         <a href="{% url 'admin_dashboard' %}?role=editor" class="filter-pill-btn {% if filter_role == 'editor' %}active{% endif %}">
-          Editors ({{ counts.editors }})
+          Associate Editors ({{ counts.editors }})
         </a>
         <a href="{% url 'admin_dashboard' %}?role=reviewer" class="filter-pill-btn {% if filter_role == 'reviewer' %}active{% endif %}">
           Reviewers ({{ counts.reviewers }})
@@ -293,9 +279,9 @@
               </td>
               <td>
                 {% if u.is_superuser %}
-                  <span class="role-badge admin">Administrator</span>
+                  <span class="role-badge admin">Chief Editor</span>
                 {% elif u.journal_profile.is_editor %}
-                  <span class="role-badge editor">Editor</span>
+                  <span class="role-badge editor">Associate Editor</span>
                 {% elif u.journal_profile.is_reviewer %}
                   <span class="role-badge reviewer">Reviewer</span>
                 {% else %}

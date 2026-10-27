@@ -82,8 +82,11 @@ class PeerReviewWorkflowTests(TestCase):
         }, follow=True)
         self.assertRedirects(response, reverse('admin_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Administrator Command Center')
-        self.assertContains(response, 'Register Editor or Reviewer')
+        self.assertContains(response, 'Chief Editor Console')
+        self.assertContains(response, 'Register')
+        self.assertContains(response, 'Associate Editor')
+        self.assertNotContains(response, 'Administrator Command Center')
+        self.assertNotContains(response, 'Django Admin')
         self.client.logout()
 
         # Author login -> author_dashboard
@@ -390,9 +393,13 @@ class PeerReviewWorkflowTests(TestCase):
         self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
         dash_resp = self.client.get(reverse('admin_dashboard'))
         self.assertEqual(dash_resp.status_code, 200)
-        self.assertContains(dash_resp, 'Administrator Command Center')
+        self.assertContains(dash_resp, 'Chief Editor Console')
+        self.assertContains(dash_resp, 'Register')
+        self.assertContains(dash_resp, 'Associate Editor')
 
         # Verify clutter texts and Editor Panel have been removed
+        self.assertNotContains(dash_resp, 'Administrator Command Center')
+        self.assertNotContains(dash_resp, 'Django Admin')
         self.assertNotContains(dash_resp, 'Editor Panel')
         self.assertNotContains(dash_resp, 'Share this password with the user')
         self.assertNotContains(dash_resp, 'All active accounts across Author, Reviewer, and Editorial roles')
@@ -426,7 +433,7 @@ class PeerReviewWorkflowTests(TestCase):
             'password': 'AnitaPass123!'
         }, follow=True)
         self.assertEqual(create_editor_resp.status_code, 200)
-        self.assertContains(create_editor_resp, 'Successfully created Editor: Prof. Anita Sharma')
+        self.assertContains(create_editor_resp, 'Successfully registered Associate Editor: Prof. Anita Sharma')
 
         # 2. Admin creates a Reviewer
         create_rev_resp = self.client.post(reverse('admin_dashboard'), {
@@ -439,7 +446,7 @@ class PeerReviewWorkflowTests(TestCase):
             'password': 'VikramPass123!'
         }, follow=True)
         self.assertEqual(create_rev_resp.status_code, 200)
-        self.assertContains(create_rev_resp, 'Successfully created Reviewer: Dr. Vikram Patel')
+        self.assertContains(create_rev_resp, 'Successfully registered Reviewer: Dr. Vikram Patel')
 
         # Filter check
         filter_resp = self.client.get(reverse('admin_dashboard') + '?role=reviewer')
