@@ -88,9 +88,10 @@
         <p>Single sign-on for Authors, Peer Reviewers & Editorial Board</p>
 
         <div class="role-indicator-pills">
-          <span> Author</span>
-          <span> Reviewer</span>
-          <span> Editor</span>
+          <span>Author</span>
+          <span>Chief Editor</span>
+          <span>Associate Editor</span>
+          <span>Reviewer</span>
         </div>
       </div>
 
@@ -98,7 +99,7 @@
         {% csrf_token %}
         <div class="portal-form-group" style="margin-bottom: 18px;">
           <label for="email">Email Address / Username</label>
-          <input type="text" id="email" name="email" class="portal-input" placeholder="e.g. author@icar.gov.in" required autofocus>
+          <input type="text" id="email" name="email" class="portal-input" placeholder="Enter email or username" required autofocus>
         </div>
 
         <div class="portal-form-group" style="margin-bottom: 22px;">

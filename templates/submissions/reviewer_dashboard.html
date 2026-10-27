@@ -130,11 +130,9 @@
         <h2 style="font-size: 20px; font-weight: 800; color: #0B2417; margin: 0 0 4px 0;">
           {{ request.user.get_full_name|default:request.user.username }}
         </h2>
-        <p style="margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <p style="margin: 0; display: flex; align-items: center; gap: 8px;">
           <span class="role-badge reviewer">Reviewer</span>
-          <span style="font-size: 13px; color: #5B7065;">
-            {{ profile.affiliation|default:"Plant Protection Association of India (PPAI)" }}
-          </span>
+          <span>Plant Protection Association of India (PPAI)</span>
         </p>
       </div>
     </div>
