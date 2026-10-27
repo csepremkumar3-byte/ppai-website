@@ -434,7 +434,7 @@ def register(request):
 
         # Duplicate email check
         if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
-            context['error'] = 'An account with this email address already exists. Please login.'
+            context['error'] = 'Registration Alert: An account with this email address already exists. Two accounts cannot share the same login credentials. Please log in or use a different email.'
             return render(request, 'pages/register.html', context)
 
         if not password:
@@ -539,34 +539,54 @@ def login_view(request):
                     user = None
 
             if user is not None:
+                selected_role = request.POST.get('selected_role', '').strip().lower()
+                from submissions.views import get_user_profile
+                profile = get_user_profile(user)
+
+                # Strict validation of selected role
+                if selected_role:
+                    if selected_role in ['chief_editor', 'admin']:
+                        if not (user.is_superuser or getattr(profile, 'role', '') == 'admin'):
+                            context['error'] = 'Role Validation Alert: This account is not authorized as Chief Editor.'
+                            return render(request, 'pages/login.html', context)
+                        target_dashboard = 'admin_dashboard'
+                    elif selected_role in ['associate_editor', 'editor']:
+                        if not (profile.is_editor or (user.is_staff and not user.is_superuser)):
+                            context['error'] = 'Role Validation Alert: This account is not authorized as an Associate Editor.'
+                            return render(request, 'pages/login.html', context)
+                        target_dashboard = 'editor_dashboard'
+                    elif selected_role == 'reviewer':
+                        if not profile.is_reviewer:
+                            context['error'] = 'Role Validation Alert: This account is not registered as a Reviewer.'
+                            return render(request, 'pages/login.html', context)
+                        target_dashboard = 'reviewer_dashboard'
+                    elif selected_role == 'author':
+                        if user.is_superuser:
+                            context['error'] = 'Role Validation Alert: Chief Editor accounts cannot log in under Author. Please select Chief Editor.'
+                            return render(request, 'pages/login.html', context)
+                        elif user.is_staff and not user.is_superuser:
+                            context['error'] = 'Role Validation Alert: Associate Editor accounts cannot log in under Author. Please select Associate Editor.'
+                            return render(request, 'pages/login.html', context)
+                        target_dashboard = 'author_dashboard'
+                    else:
+                        target_dashboard = 'author_dashboard'
+                else:
+                    # Auto-detect role if selected_role is not specified (e.g. standard tests)
+                    if user.is_superuser or getattr(profile, 'role', '') == 'admin':
+                        target_dashboard = 'admin_dashboard'
+                    elif profile.is_editor or (user.is_staff and not user.is_superuser):
+                        target_dashboard = 'editor_dashboard'
+                    elif profile.is_reviewer:
+                        target_dashboard = 'reviewer_dashboard'
+                    else:
+                        target_dashboard = 'author_dashboard'
+
                 auth_login(request, user)
                 next_url = request.GET.get('next') or request.POST.get('next')
                 if next_url and next_url.startswith('/'):
                     return redirect(next_url)
 
-                selected_role = request.POST.get('selected_role', '').strip().lower()
-                from submissions.views import get_user_profile
-                profile = get_user_profile(user)
-
-                # If user selected a specific role and is authorized for it, route directly
-                if selected_role == 'reviewer' and profile.is_reviewer:
-                    return redirect('reviewer_dashboard')
-                elif selected_role in ['associate_editor', 'editor'] and (profile.is_editor or (user.is_staff and not user.is_superuser)):
-                    return redirect('editor_dashboard')
-                elif selected_role in ['chief_editor', 'admin'] and (user.is_superuser or getattr(profile, 'role', '') == 'admin'):
-                    return redirect('admin_dashboard')
-                elif selected_role == 'author' and not user.is_superuser and not user.is_staff:
-                    return redirect('author_dashboard')
-
-                # Default role routing
-                if user.is_superuser or getattr(profile, 'role', '') == 'admin':
-                    return redirect('admin_dashboard')
-                elif profile.is_editor or (user.is_staff and not user.is_superuser):
-                    return redirect('editor_dashboard')
-                elif profile.is_reviewer:
-                    return redirect('reviewer_dashboard')
-                else:
-                    return redirect('author_dashboard')
+                return redirect(target_dashboard)
             else:
                 context['error'] = 'Invalid email address or password. Please try again.'
                 return render(request, 'pages/login.html', context)

@@ -610,7 +610,7 @@ def admin_dashboard(request):
         if not full_name or not email or not password or not affiliation:
             messages.error(request, "Full name, email, affiliation, and password are required.")
         elif User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
-            messages.error(request, f"An account with email {email} already exists.")
+            messages.error(request, f"Registration Alert: An account with email {email} already exists. Two users cannot share the same login credentials.")
         elif len(password) < 6:
             messages.error(request, "Password must be at least 6 characters long.")
         elif not any(c.isupper() for c in password):

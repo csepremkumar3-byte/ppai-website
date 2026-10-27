@@ -251,25 +251,17 @@
 <body>
 
   <div class="auth-card">
-    <div class="top-bar-nav">
-      <a href="{% url 'home' %}" class="back-link">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        Back to Home
-      </a>
-    </div>
-
     <!-- Brand Header -->
-    <div class="brand-header">
+    <div class="brand-header" style="border-bottom: none; margin-bottom: 8px; padding-bottom: 0;">
       {% if site_settings and site_settings.logo %}
-        <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo">
+        <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo" style="height: 52px; margin-bottom: 4px;">
       {% else %}
-        <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo">
+        <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo" style="height: 52px; margin-bottom: 4px;">
       {% endif %}
-      <div class="brand-title">Plant Protection Association of India (PPAI)</div>
     </div>
 
     <!-- Form Heading -->
-    <h1 class="form-title" style="margin-bottom: 20px;">Login</h1>
+    <h1 class="form-title" style="margin-bottom: 18px;">Login</h1>
 
     {% if messages %}
       {% for message in messages %}
@@ -328,20 +320,12 @@
       const chips = document.querySelectorAll('.role-chip');
       const hiddenInput = document.getElementById('selectedRole');
       const emailInput = document.getElementById('email');
-      const emailLabel = document.querySelector('label[for="email"]');
 
       const placeholders = {
         'author': 'Enter author email or username',
         'chief_editor': 'Enter chief editor email or username',
         'associate_editor': 'Enter associate editor email or username',
         'reviewer': 'Enter reviewer email or username'
-      };
-
-      const labels = {
-        'author': 'Author Email or Username',
-        'chief_editor': 'Chief Editor Email or Username',
-        'associate_editor': 'Associate Editor Email or Username',
-        'reviewer': 'Reviewer Email or Username'
       };
 
       chips.forEach(chip => {
@@ -353,9 +337,6 @@
           if (hiddenInput) hiddenInput.value = role;
           if (emailInput && placeholders[role]) {
             emailInput.placeholder = placeholders[role];
-          }
-          if (emailLabel && labels[role]) {
-            emailLabel.textContent = labels[role];
           }
         });
       });

@@ -237,24 +237,16 @@
 <body>
 
   <div class="auth-card">
-    <div class="top-bar-nav">
-      <a href="{% url 'home' %}" class="back-link">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        Back to Home
-      </a>
-    </div>
-
     <!-- Brand Header -->
-    <div class="brand-header">
+    <div class="brand-header" style="border-bottom: none; margin-bottom: 8px; padding-bottom: 0;">
       {% if site_settings and site_settings.logo %}
-        <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo">
+        <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo" style="height: 52px; margin-bottom: 4px;">
       {% else %}
-        <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo">
+        <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo" style="height: 52px; margin-bottom: 4px;">
       {% endif %}
-      <div class="brand-title">Plant Protection Association of India (PPAI)</div>
     </div>
 
-    <h1 class="form-title">Author Registration</h1>
+    <h1 class="form-title" style="margin-bottom: 18px;">Author Registration</h1>
 
     {% if error %}
       <div class="alert-error">{{ error }}</div>
@@ -282,7 +274,7 @@
       <!-- Affiliation -->
       <div class="input-group">
         <label class="input-label" for="affiliation">Institution / University / Organization <span style="color:#DC2626">*</span></label>
-        <input type="text" id="affiliation" name="affiliation" class="input-field" placeholder="e.g. ICAR-IARI, Division of Entomology" value="{{ affiliation|default:'' }}" required>
+        <input type="text" id="affiliation" name="affiliation" class="input-field" placeholder="e.g. Department of Agricultural Entomology, University" value="{{ affiliation|default:'' }}" required>
         <div class="field-error" id="affiliationError">Please enter your institutional affiliation.</div>
       </div>
 
