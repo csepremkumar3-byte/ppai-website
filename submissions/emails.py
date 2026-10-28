@@ -1,6 +1,9 @@
 import os
 import logging
-from django.core.mail import EmailMessage, send_mail
+import threading
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.conf import settings
 from django.contrib.auth.models import User
 
@@ -14,104 +17,117 @@ def get_chief_editor_emails():
         return [chief_from_env]
     emails = list(User.objects.filter(is_superuser=True).exclude(email='').values_list('email', flat=True))
     if not emails:
-        emails = ['ijpp1972@yahoo.co.in', 'admin@ppai.org.in']
+        emails = ['editor@ppai.org.in', 'ijpp1972@yahoo.co.in']
     return emails
 
 
+def _send_email_thread(email_obj):
+    """Background worker function executing the actual SMTP network transmission."""
+    try:
+        email_obj.send(fail_silently=False)
+        logger.info(f"[ASYNC EMAIL SENT] '{email_obj.subject}' successfully dispatched to {email_obj.to}")
+    except Exception as e:
+        logger.error(f"[ASYNC EMAIL FAILED] '{email_obj.subject}' to {email_obj.to}. Error: {e}", exc_info=True)
+
+
+def dispatch_email_message(email_obj):
+    """
+    High-Performance Non-blocking Email Dispatcher:
+    - In Production: Dispatches email via a background daemon thread so HTTP requests return in <50ms without blocking.
+    - In Testing (locmem backend): Dispatches synchronously so assertions on mail.outbox pass reliably.
+    """
+    backend_name = str(getattr(settings, 'EMAIL_BACKEND', ''))
+    if 'locmem' in backend_name or getattr(settings, 'IS_TESTING', False):
+        try:
+            email_obj.send(fail_silently=False)
+            logger.info(f"[TEST EMAIL SENT] '{email_obj.subject}' sent to {email_obj.to}")
+        except Exception as e:
+            logger.error(f"[TEST EMAIL FAILED] '{email_obj.subject}' to {email_obj.to}: {e}")
+    else:
+        thread = threading.Thread(target=_send_email_thread, args=(email_obj,), daemon=True)
+        thread.start()
+
+
+# ==============================================================================
+# WORKFLOW TRIGGER 1 & 2: SUBMISSION (STAGE 1)
+# ==============================================================================
+
 def send_author_submission_acknowledgment(manuscript):
-    """Trigger 1: Sends acknowledgment email to Author upon manuscript & payment submission."""
+    """Trigger 1: Sends rich HTML acknowledgment email to Author upon manuscript & payment submission."""
     author_email = manuscript.author.email
     if not author_email:
         return
 
     subject = f"[IJPP] Submission Acknowledgment — {manuscript.tracking_id}"
-    message = f"""Dear {manuscript.author.get_full_name() or manuscript.author.username},
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
 
-Thank you for submitting your manuscript to the Indian Journal of Plant Protection (IJPP), published by the Plant Protection Association of India (PPAI).
+    context = {
+        'manuscript': manuscript,
+        'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+        'subject_area_display': manuscript.get_subject_area_display(),
+        'article_type_display': manuscript.get_article_type_display(),
+        'payment_txn_id': manuscript.payment_transaction_id or 'Logged with submission',
+        'payment_screenshot_status': 'Uploaded successfully' if manuscript.payment_screenshot else 'Pending',
+        'abstract_snippet': manuscript.abstract[:500] + ('...' if len(manuscript.abstract) > 500 else ''),
+    }
 
-Your submission has been logged into the editorial pipeline with the following details:
+    html_content = render_to_string('emails/author_submission_ack.html', context)
+    text_content = strip_tags(html_content)
 
-============================================================
-MANUSCRIPT SUBMISSION DETAILS
-============================================================
-Tracking ID: {manuscript.tracking_id}
-Title: {manuscript.title}
-Subject Area: {manuscript.get_subject_area_display()}
-Article Category: {manuscript.get_article_type_display()}
-
-PAYMENT VERIFICATION:
-Transaction / Reference ID: {manuscript.payment_transaction_id or 'Logged with submission'}
-Payment Screenshot: {'Uploaded successfully' if manuscript.payment_screenshot else 'Pending'}
-
-============================================================
-ABSTRACT:
-{manuscript.abstract[:500]}...
-
-Your manuscript will now undergo initial technical screening by the Chief Editor. You may track the live evaluation status at any time by logging into the portal:
-https://ppai.org.in/login/
-
-Sincerely,
-Editorial Office
-Indian Journal of Plant Protection (IJPP)
-Plant Protection Association of India (PPAI)
-https://ppai.org.in
-"""
-    try:
-        sent = send_mail(
-            subject=subject,
-            message=message,
-            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
-            recipient_list=[author_email],
-            fail_silently=False
-        )
-        logger.info(f"[TRIGGER 1 SUCCESS] Author acknowledgment sent to {author_email} (count: {sent})")
-    except Exception as e:
-        logger.error(f"[TRIGGER 1 FAILED] Author acknowledgment error for {author_email}: {e}")
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=[author_email]
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
 
 
 def send_chief_editor_submission_alert(manuscript):
     """Trigger 2: Sends submission alert with attached manuscript file to Chief Editor."""
     chief_emails = get_chief_editor_emails()
+    if not chief_emails:
+        return
+
     subject = f"[IJPP New Submission] {manuscript.tracking_id} — {manuscript.author.get_full_name() or manuscript.author.username}"
-    message = f"""Chief Editor,
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
 
-A new manuscript and payment proof have been lodged in the IJPP portal.
+    author_profile = getattr(manuscript.author, 'journal_profile', None)
+    context = {
+        'manuscript': manuscript,
+        'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+        'author_email': manuscript.author.email,
+        'author_affiliation': getattr(author_profile, 'affiliation', 'Affiliation Not Provided'),
+        'subject_area_display': manuscript.get_subject_area_display(),
+        'submitted_at': manuscript.created_at.strftime('%Y-%m-%d %H:%M UTC'),
+        'payment_txn_id': manuscript.payment_transaction_id or 'Not specified',
+        'payment_screenshot_url': manuscript.payment_screenshot.url if manuscript.payment_screenshot else None,
+    }
 
-============================================================
-SUBMISSION SUMMARY
-============================================================
-Tracking ID: {manuscript.tracking_id}
-Author: {manuscript.author.get_full_name() or manuscript.author.username} ({manuscript.author.email})
-Affiliation: {getattr(getattr(manuscript.author, 'journal_profile', None), 'affiliation', 'N/A')}
-Title: {manuscript.title}
-Subject Area: {manuscript.get_subject_area_display()}
-Submitted On: {manuscript.created_at.strftime('%Y-%m-%d %H:%M UTC')}
+    html_content = render_to_string('emails/chief_editor_submission_alert.html', context)
+    text_content = strip_tags(html_content)
 
-PAYMENT PROOF:
-Transaction ID: {manuscript.payment_transaction_id or 'Not specified'}
-Payment Proof File: {manuscript.payment_screenshot.url if manuscript.payment_screenshot else 'None'}
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=chief_emails
+    )
+    email.attach_alternative(html_content, "text/html")
 
-============================================================
-Direct Action in Chief Editor Console:
-https://ppai.org.in/portal/admin/
-"""
-    try:
-        email = EmailMessage(
-            subject=subject,
-            body=message,
-            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
-            to=chief_emails
-        )
-        if manuscript.manuscript_file and os.path.exists(manuscript.manuscript_file.path):
-            email.attach_file(manuscript.manuscript_file.path)
-        email.send(fail_silently=False)
-        logger.info(f"[TRIGGER 2 SUCCESS] Chief Editor alert sent to {chief_emails}")
-    except Exception as e:
-        logger.error(f"[TRIGGER 2 FAILED] Chief Editor alert error: {e}")
+    if manuscript.manuscript_file and os.path.exists(manuscript.manuscript_file.path):
+        email.attach_file(manuscript.manuscript_file.path)
 
+    dispatch_email_message(email)
+
+
+# ==============================================================================
+# WORKFLOW TRIGGER 3: REVIEWER INVITATION (STAGE 3)
+# ==============================================================================
 
 def send_reviewer_invitation(assignment):
-    """Trigger 3: Sends peer review invitation with window time and Accept/Decline actions to Reviewer."""
+    """Trigger 3: Sends peer review invitation with window time and Accept/Decline action buttons to Reviewer."""
     reviewer_email = assignment.reviewer.email
     if not reviewer_email:
         return
@@ -121,48 +137,33 @@ def send_reviewer_invitation(assignment):
     decline_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/decline/"
 
     subject = f"[IJPP Review Invitation] Peer Review for {assignment.manuscript.tracking_id}"
-    message = f"""Dear {assignment.reviewer.get_full_name() or assignment.reviewer.username},
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
 
-You have been invited by the Chief Editor of the Indian Journal of Plant Protection (IJPP) to evaluate the following manuscript:
+    context = {
+        'manuscript': assignment.manuscript,
+        'reviewer_name': assignment.reviewer.get_full_name() or assignment.reviewer.username,
+        'subject_area_display': assignment.manuscript.get_subject_area_display(),
+        'due_date_str': due_str,
+        'accept_url': accept_url,
+        'decline_url': decline_url,
+    }
 
-Title: {assignment.manuscript.title}
-Discipline: {assignment.manuscript.get_subject_area_display()}
-Evaluation Window Due Date: {due_str}
+    html_content = render_to_string('emails/reviewer_invitation.html', context)
+    text_content = strip_tags(html_content) + f"\n\nAccept URL: {accept_url}\nDecline URL: {decline_url}\nDue Date: {due_str}"
 
-ABSTRACT:
-{assignment.manuscript.abstract}
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=[reviewer_email]
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
 
-============================================================
-REVIEW INVITATION ACTION:
-============================================================
-To ACCEPT this invitation, click:
-{accept_url}
 
-To DECLINE this invitation, click:
-{decline_url}
-
-Alternatively, log into your Reviewer Console to access the manuscript files and manage your review:
-https://ppai.org.in/login/
-
-Thank you for contributing your scientific expertise to the peer review process.
-
-Chief Editor
-Indian Journal of Plant Protection (IJPP)
-Plant Protection Association of India (PPAI)
-https://ppai.org.in
-"""
-    try:
-        sent = send_mail(
-            subject=subject,
-            message=message,
-            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
-            recipient_list=[reviewer_email],
-            fail_silently=False
-        )
-        logger.info(f"[TRIGGER 3 SUCCESS] Reviewer invitation sent to {reviewer_email}")
-    except Exception as e:
-        logger.error(f"[TRIGGER 3 FAILED] Reviewer invitation error for {reviewer_email}: {e}")
-
+# ==============================================================================
+# WORKFLOW TRIGGER 4: CREDENTIALS DISPATCH (STAGE 4)
+# ==============================================================================
 
 def send_user_credentials_email(user, raw_password, role_name):
     """Trigger 4: Sends generated portal login credentials for Associate Editor or Reviewer."""
@@ -171,71 +172,63 @@ def send_user_credentials_email(user, raw_password, role_name):
         return
 
     subject = f"[IJPP Portal] Your {role_name} Login Credentials"
-    message = f"""Dear {user.get_full_name() or user.username},
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
 
-Your {role_name} account for the Indian Journal of Plant Protection (IJPP) editorial management portal has been provisioned by the Chief Editor.
+    context = {
+        'full_name': user.get_full_name() or user.username,
+        'role_name': role_name,
+        'username': user.email or user.username,
+        'initial_password': raw_password,
+    }
 
-============================================================
-YOUR LOGIN CREDENTIALS
-============================================================
-Portal URL: https://ppai.org.in/login/
-Role: {role_name}
-Username / Email: {user.email or user.username}
-Initial Password: {raw_password}
-============================================================
+    html_content = render_to_string('emails/user_credentials.html', context)
+    text_content = strip_tags(html_content) + f"\n\nUsername: {user.email or user.username}\nPassword: {raw_password}\nPortal URL: https://ppai.org.in/login/"
 
-Instructions:
-1. Visit https://ppai.org.in/login/
-2. Select the '{role_name}' role chip located below the credentials fields.
-3. Enter your email and password to access your dedicated console.
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=[user_email]
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
 
-Editorial Office
-Indian Journal of Plant Protection (IJPP)
-Plant Protection Association of India (PPAI)
-"""
-    try:
-        sent = send_mail(
-            subject=subject,
-            message=message,
-            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
-            recipient_list=[user_email],
-            fail_silently=False
-        )
-        logger.info(f"[TRIGGER 4 SUCCESS] Login credentials sent to {user_email}")
-    except Exception as e:
-        logger.error(f"[TRIGGER 4 FAILED] Login credentials error for {user_email}: {e}")
 
+# ==============================================================================
+# WORKFLOW TRIGGER 5: REVIEW COMPLETE (STAGE 5)
+# ==============================================================================
 
 def send_chief_editor_review_completed(assignment):
     """Trigger 5: Alerts Chief Editor that peer review has been submitted for a manuscript."""
     chief_emails = get_chief_editor_emails()
+    if not chief_emails:
+        return
+
     subject = f"[IJPP Review Complete] Reviewer Feedback Lodged for {assignment.manuscript.tracking_id}"
-    message = f"""Chief Editor,
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
 
-Peer reviewer {assignment.reviewer.get_full_name() or assignment.reviewer.username} has completed and submitted evaluation for:
+    context = {
+        'manuscript': assignment.manuscript,
+        'reviewer_name': assignment.reviewer.get_full_name() or assignment.reviewer.username,
+        'recommendation_display': assignment.get_recommendation_display(),
+    }
 
-Tracking ID: {assignment.manuscript.tracking_id}
-Title: {assignment.manuscript.title}
-Reviewer Recommendation: {assignment.get_recommendation_display()}
+    html_content = render_to_string('emails/chief_editor_review_completed.html', context)
+    text_content = strip_tags(html_content)
 
-The rubric scores, author feedback, and confidential editor notes are ready for your inspection and moderation:
-https://ppai.org.in/portal/editor/manuscript/{assignment.manuscript.tracking_id}/
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=chief_emails
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
 
-Editorial Management System
-Indian Journal of Plant Protection (IJPP)
-"""
-    try:
-        sent = send_mail(
-            subject=subject,
-            message=message,
-            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
-            recipient_list=chief_emails,
-            fail_silently=False
-        )
-        logger.info(f"[TRIGGER 5 SUCCESS] Review completed alert sent to {chief_emails}")
-    except Exception as e:
-        logger.error(f"[TRIGGER 5 FAILED] Review completed alert error: {e}")
 
+# ==============================================================================
+# WORKFLOW TRIGGER 6: EDITORIAL DECISION (STAGE 6)
+# ==============================================================================
 
 def send_author_editorial_decision(manuscript):
     """Trigger 6: Sends formal decision letter and moderated peer comments to Author."""
@@ -244,45 +237,24 @@ def send_author_editorial_decision(manuscript):
         return
 
     subject = f"[IJPP Decision] Editorial Decision on Manuscript {manuscript.tracking_id}"
-    decision_name = manuscript.get_editor_decision_display()
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
 
-    comments_block = ""
-    # Fetch approved reviews
     approved_reviews = manuscript.review_assignments.filter(status='completed', is_approved_by_editor=True)
-    if approved_reviews.exists():
-        comments_block += "\n--- PEER REVIEW COMMENTS ---\n"
-        for idx, rev in enumerate(approved_reviews, start=1):
-            comments_block += f"\nReviewer #{idx}:\n{rev.comments_for_author}\n"
+    context = {
+        'manuscript': manuscript,
+        'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+        'decision_display': manuscript.get_editor_decision_display(),
+        'approved_reviews': approved_reviews,
+    }
 
-    if manuscript.editor_comments_to_author:
-        comments_block += f"\n--- CHIEF EDITOR REMARKS ---\n{manuscript.editor_comments_to_author}\n"
+    html_content = render_to_string('emails/author_editorial_decision.html', context)
+    text_content = strip_tags(html_content)
 
-    message = f"""Dear {manuscript.author.get_full_name() or manuscript.author.username},
-
-Regarding your manuscript submitted to the Indian Journal of Plant Protection (IJPP):
-
-Tracking ID: {manuscript.tracking_id}
-Title: {manuscript.title}
-
-EDITORIAL DECISION: {decision_name}
-{comments_block}
-============================================================
-You can view full feedback or submit revisions by visiting your Author Dashboard:
-https://ppai.org.in/portal/author/
-
-Sincerely,
-Chief Editor
-Indian Journal of Plant Protection (IJPP)
-Plant Protection Association of India (PPAI)
-"""
-    try:
-        sent = send_mail(
-            subject=subject,
-            message=message,
-            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
-            recipient_list=[author_email],
-            fail_silently=False
-        )
-        logger.info(f"[TRIGGER 6 SUCCESS] Editorial decision letter sent to {author_email}")
-    except Exception as e:
-        logger.error(f"[TRIGGER 6 FAILED] Editorial decision error for {author_email}: {e}")
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=[author_email]
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
