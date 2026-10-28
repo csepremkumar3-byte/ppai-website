@@ -13,6 +13,14 @@ from .forms import (
     RoleRegistrationForm, ManuscriptSubmissionForm, ReviewEvaluationForm,
     ManuscriptRevisionForm, EditorDecisionForm
 )
+from .emails import (
+    send_author_submission_acknowledgment,
+    send_chief_editor_submission_alert,
+    send_reviewer_invitation,
+    send_user_credentials_email,
+    send_chief_editor_review_completed,
+    send_author_editorial_decision,
+)
 
 
 def get_user_profile(user):
@@ -115,6 +123,10 @@ def submit_manuscript(request):
                 action="Manuscript Submitted",
                 details=f"Initial submission with tracking ID {manuscript.tracking_id}."
             )
+
+            # Automated Triggers (via Brevo / Email): Author Acknowledgment & Chief Editor Alert
+            send_author_submission_acknowledgment(manuscript)
+            send_chief_editor_submission_alert(manuscript)
 
             messages.success(request, f"Your manuscript has been successfully submitted! Reference ID: {manuscript.tracking_id}")
             return redirect('author_manuscript_detail', tracking_id=manuscript.tracking_id)
@@ -294,7 +306,7 @@ def editor_manuscript_review(request, tracking_id):
 
         if reviewer_id:
             reviewer_user = get_object_or_404(User, id=reviewer_id)
-            ReviewAssignment.objects.create(
+            assignment = ReviewAssignment.objects.create(
                 manuscript=manuscript,
                 reviewer=reviewer_user,
                 assigned_by=request.user,
@@ -306,6 +318,9 @@ def editor_manuscript_review(request, tracking_id):
             if manuscript.status in ['submitted', 'revised_submitted']:
                 manuscript.status = 'under_review'
                 manuscript.save()
+
+            # Automated Trigger 3: Send Reviewer Invitation Email (via Brevo)
+            send_reviewer_invitation(assignment)
 
             SubmissionActivityLog.objects.create(
                 manuscript=manuscript,
@@ -352,6 +367,9 @@ def editor_manuscript_review(request, tracking_id):
             # Approve reviewer comments so they are released to author with this decision
             if request.POST.get('approve_reviewer_comments', '1') == '1':
                 manuscript.review_assignments.filter(status='completed').update(is_approved_by_editor=True)
+
+            # Automated Trigger 6: Send Formal Editorial Decision & Moderated Feedback Email to Author (via Brevo)
+            send_author_editorial_decision(manuscript)
 
             decision_display = dict(EditorDecisionForm.DECISION_CHOICES).get(decision, decision)
             SubmissionActivityLog.objects.create(
@@ -475,6 +493,9 @@ def reviewer_evaluate_manuscript(request, assignment_id):
                 action="Peer Review Submitted",
                 details=f"Reviewer submitted recommendation: {review.get_recommendation_display()}."
             )
+
+            # Automated Trigger 5: Alert Chief Editor that Peer Review is complete (via Brevo)
+            send_chief_editor_review_completed(review)
 
             # If all reviews are completed, update manuscript status
             remaining = assignment.manuscript.review_assignments.filter(status__in=['pending', 'accepted']).count()
@@ -650,7 +671,11 @@ def admin_dashboard(request):
             )
 
             role_name = 'Associate Editor' if is_editor else 'Reviewer'
-            messages.success(request, f"Successfully registered {role_name}: {full_name} ({email})! They can now log in.")
+
+            # Automated Trigger 4: Dispatch Login Credentials Email to newly provisioned Reviewer or Associate Editor (via Brevo)
+            send_user_credentials_email(user, password, role_name)
+
+            messages.success(request, f"Successfully registered {role_name}: {full_name} ({email})! Login credentials have been dispatched.")
             return redirect('admin_dashboard')
 
     # Filtering users
@@ -686,11 +711,26 @@ def admin_dashboard(request):
         filter_role = 'all'
         filtered_users = list(users_qs)
 
+    # Author-Centric Queue: All Authors who have submitted manuscripts
+    author_users = User.objects.filter(
+        manuscripts__isnull=False
+    ).distinct().prefetch_related('manuscripts', 'journal_profile').order_by('-date_joined')
+
+    author_cards = []
+    for a in author_users:
+        author_cards.append({
+            'author': a,
+            'profile': getattr(a, 'journal_profile', None),
+            'manuscripts': a.manuscripts.all().order_by('-created_at'),
+            'total_papers': a.manuscripts.count(),
+        })
+
     return render(request, 'submissions/admin_dashboard.html', {
         'profile': profile,
         'users': filtered_users,
         'filter_role': filter_role,
         'counts': counts,
+        'author_cards': author_cards,
     })
 
 

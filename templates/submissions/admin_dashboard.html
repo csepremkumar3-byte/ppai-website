@@ -46,6 +46,239 @@
     color: #0B2417;
   }
 
+  /* Author-Centric Cards Queue */
+  .section-heading-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .section-heading-bar h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0B2417;
+    margin: 0;
+  }
+  .section-heading-bar p {
+    font-size: 13px;
+    color: #5B7065;
+    margin: 3px 0 0 0;
+  }
+
+  .author-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(11, 36, 23, 0.09);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(11, 36, 23, 0.03);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .author-card:hover {
+    box-shadow: 0 6px 22px rgba(11, 36, 23, 0.07);
+    border-color: rgba(0, 178, 114, 0.35);
+  }
+
+  .author-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(11, 36, 23, 0.08);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .author-info-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .author-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00B272, #0B2417);
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(0, 178, 114, 0.2);
+  }
+  .author-details h4 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0B2417;
+    margin: 0 0 3px 0;
+  }
+  .author-details p {
+    font-size: 12.5px;
+    color: #5B7065;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .author-meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #E8F7F0;
+    color: #007C4F;
+    font-weight: 700;
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid rgba(0, 178, 114, 0.2);
+  }
+
+  .author-manuscripts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .manuscript-item-row {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.2s ease;
+  }
+  .manuscript-item-row:hover {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+  }
+  .manuscript-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .manuscript-item-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #0B2417;
+    line-height: 1.35;
+    flex: 1;
+    min-width: 260px;
+  }
+  .tracking-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    background: #EDE9FE;
+    color: #6D28D9;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-right: 6px;
+  }
+  .manuscript-item-meta {
+    font-size: 12px;
+    color: #64746D;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .payment-proof-box {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .payment-proof-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .payment-proof-info strong {
+    color: #92400E;
+    font-weight: 700;
+  }
+  .payment-proof-info code {
+    font-family: monospace;
+    background: rgba(217, 119, 6, 0.12);
+    color: #B45309;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+
+  .manuscript-item-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+  }
+
+  .btn-portal-xs {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  .btn-portal-sm {
+    padding: 7px 14px;
+    font-size: 12.5px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  .btn-portal-primary {
+    background: #00B272;
+    color: #FFFFFF;
+    border: 1px solid #00B272;
+  }
+  .btn-portal-primary:hover {
+    background: #009660;
+    border-color: #009660;
+    color: #FFFFFF;
+  }
+  .btn-portal-secondary {
+    background: #FFFFFF;
+    color: #0B2417;
+    border: 1px solid rgba(11, 36, 23, 0.18);
+  }
+  .btn-portal-secondary:hover {
+    background: #F8FAFC;
+    border-color: rgba(11, 36, 23, 0.35);
+  }
+
   .role-toggle-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -174,12 +407,122 @@
       <span>Authors</span>
       <strong style="color: #2563EB;">{{ counts.authors }}</strong>
     </div>
+    <div class="stat-box">
+      <span>Active Authors with Submissions</span>
+      <strong style="color: #7C3AED;">{{ author_cards|length }}</strong>
+    </div>
+  </div>
+
+  <!-- SECTION 1: AUTHOR-CENTRIC SUBMISSION QUEUE -->
+  <div style="margin-bottom: 36px;">
+    <div class="section-heading-bar">
+      <div>
+        <h3>Submitted Manuscripts &mdash; Author-Centric Queue</h3>
+        <p>All manuscript submissions and payment verification proofs organized per author.</p>
+      </div>
+    </div>
+
+    {% if author_cards %}
+      {% for card in author_cards %}
+      <div class="author-card">
+        <!-- Author Header Bar -->
+        <div class="author-card-header">
+          <div class="author-info-left">
+            <div class="author-avatar">
+              {{ card.author.first_name|first|default:card.author.username|first|upper }}
+            </div>
+            <div class="author-details">
+              <h4>{{ card.author.get_full_name|default:card.author.username }}</h4>
+              <p>
+                <span>{{ card.author.email }}</span>
+                {% if card.profile.affiliation %}
+                <span>&bull; {{ card.profile.affiliation }}</span>
+                {% endif %}
+                <span>&bull; Registered: {{ card.author.date_joined|date:"M d, Y" }}</span>
+              </p>
+            </div>
+          </div>
+          <div>
+            <span class="author-meta-badge">
+              {{ card.total_papers }} Manuscript{{ card.total_papers|pluralize }} Submitted
+            </span>
+          </div>
+        </div>
+
+        <!-- Manuscripts List for This Author -->
+        <div class="author-manuscripts-list">
+          {% for m in card.manuscripts %}
+          <div class="manuscript-item-row">
+            <div class="manuscript-item-top">
+              <div class="manuscript-item-title">
+                <span class="tracking-pill">{{ m.tracking_id }}</span>
+                {{ m.title }}
+              </div>
+              <div>
+                <span class="status-badge {{ m.status }}">
+                  {{ m.get_status_display }}
+                </span>
+              </div>
+            </div>
+
+            <div class="manuscript-item-meta">
+              <span><strong>Submitted:</strong> {{ m.created_at|date:"M d, Y &bull; h:i A" }}</span>
+              <span><strong>Discipline:</strong> {{ m.get_subject_area_display|default:m.subject_area }}</span>
+              <span><strong>Type:</strong> {{ m.get_article_type_display|default:m.article_type }}</span>
+            </div>
+
+            <!-- Payment Verification Details -->
+            <div class="payment-proof-box">
+              <div class="payment-proof-info">
+                <span><strong>Payment Txn ID:</strong> <code>{{ m.payment_transaction_id|default:"Pending Verification" }}</code></span>
+                <span>
+                  <strong>Proof Screenshot:</strong>
+                  {% if m.payment_screenshot %}
+                    <a href="{{ m.payment_screenshot.url }}" target="_blank" class="btn-portal-xs btn-portal-secondary" style="color: #007C4F; font-weight: 700;">
+                      View Payment Proof
+                    </a>
+                  {% else %}
+                    <span style="color: #94A3B8; font-size: 11.5px;">No screenshot uploaded</span>
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="manuscript-item-actions">
+              {% if m.manuscript_file %}
+              <a href="{{ m.manuscript_file.url }}" class="btn-portal-sm btn-portal-secondary" download>
+                Download Manuscript
+              </a>
+              {% endif %}
+              <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-sm btn-portal-primary">
+                Review &amp; Assign Reviewer
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="portal-card" style="text-align: center; padding: 40px 20px;">
+        <p style="font-size: 14px; color: #5B7065; margin: 0;">No manuscripts have been submitted yet.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- SECTION 2: EDITORIAL CREDENTIALS PROVISIONING & USER MANAGEMENT -->
+  <div class="section-heading-bar">
+    <div>
+      <h3>Editorial Credentials Provisioning &amp; User Accounts</h3>
+      <p>Create and dispatch credentials for Associate Editors and Reviewers, and manage all portal accounts.</p>
+    </div>
   </div>
 
   <!-- Two Column Layout: Creation Form (Left) & User List (Right) -->
   <div class="admin-grid-layout">
 
-    <!-- Column 1: Register Associate Editor -->
+    <!-- Column 1: Register Associate Editor / Reviewer -->
     <div class="portal-card">
       <div class="portal-card-header">
         <div>
@@ -191,7 +534,7 @@
         {% csrf_token %}
         <input type="hidden" name="action" value="create_user">
 
-        <!-- Account Role -->
+        <!-- Account Role Selection -->
         <label style="display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: #5B7065; margin-bottom: 6px;">
           Account Role <span style="color:#DC2626">*</span>
         </label>

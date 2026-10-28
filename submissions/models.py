@@ -113,6 +113,10 @@ class Manuscript(models.Model):
     cover_letter = models.TextField(blank=True, help_text="Cover letter to the Editor-in-Chief")
     conflict_of_interest = models.BooleanField(default=False, help_text="Authors declare no conflict of interest")
 
+    # Payment Verification
+    payment_transaction_id = models.CharField(max_length=100, blank=True, null=True, help_text="Payment / UPI / Bank Transaction ID")
+    payment_screenshot = models.FileField(upload_to='submissions/payments/%Y/%m/', blank=True, null=True, help_text="Screenshot proof of payment")
+
     # Workflow & Editorial management
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='submitted', db_index=True)
     assigned_editor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_editor_manuscripts')

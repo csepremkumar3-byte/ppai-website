@@ -148,6 +148,28 @@
         </div>
       </div>
 
+      <div class="portal-card-header" style="margin-bottom: 18px;">
+        <h2>4. Payment Verification Details</h2>
+      </div>
+
+      <div class="portal-form-grid" style="margin-bottom: 24px;">
+        <div class="portal-form-group">
+          <label for="{{ form.payment_transaction_id.id_for_label }}">Payment / Transaction ID</label>
+          {{ form.payment_transaction_id }}
+          <span class="field-hint">e.g. Bank UTR, UPI Reference No., or IMPS Receipt Number</span>
+          {% if form.payment_transaction_id.errors %}<div class="error-text">{{ form.payment_transaction_id.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="portal-form-group">
+          <label for="{{ form.payment_screenshot.id_for_label }}">Payment Screenshot Proof</label>
+          <div class="file-dropzone-styled">
+            {{ form.payment_screenshot }}
+            <p style="font-size: 12px; color: #5B7065; margin-top: 6px;">Screenshot / receipt image (PNG, JPG, PDF).</p>
+          </div>
+          {% if form.payment_screenshot.errors %}<div class="error-text">{{ form.payment_screenshot.errors.0 }}</div>{% endif %}
+        </div>
+      </div>
+
       <div style="margin-bottom: 24px;">
         <label class="portal-checkbox-row">
           {{ form.conflict_of_interest }}

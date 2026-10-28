@@ -76,6 +76,7 @@ class ManuscriptSubmissionForm(forms.ModelForm):
         fields = [
             'article_type', 'subject_area', 'title', 'abstract',
             'keywords', 'co_authors', 'manuscript_file', 'supplementary_file',
+            'payment_transaction_id', 'payment_screenshot',
             'cover_letter', 'conflict_of_interest'
         ]
         widgets = {
@@ -84,7 +85,8 @@ class ManuscriptSubmissionForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'portal-input', 'placeholder': 'Enter full title of the manuscript'}),
             'abstract': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 6, 'placeholder': 'Paste structured or unstructured abstract (up to 350 words)...'}),
             'keywords': forms.TextInput(attrs={'class': 'portal-input', 'placeholder': 'e.g. Spodoptera frugiperda, biopesticides, neem oil, toxicity'}),
-            'co_authors': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 3, 'placeholder': 'Co-authors with email & institution (e.g. Dr. A. Rao, ICAR-IIHR; Dr. P. Singh, TNAU)'}),
+            'co_authors': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 3, 'placeholder': 'Co-authors with email & institution (e.g. Dr. A. Rao, University; Dr. P. Singh, College)'}),
+            'payment_transaction_id': forms.TextInput(attrs={'class': 'portal-input', 'placeholder': 'e.g. UPI/123456789012 or IMPS Reference No.'}),
             'cover_letter': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 4, 'placeholder': 'Brief statement explaining the novel scientific findings and why it fits IJPP scope...'}),
             'conflict_of_interest': forms.CheckboxInput(attrs={'class': 'portal-checkbox'}),
         }
