@@ -1,11 +1,17 @@
 import os
+import logging
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
 
+logger = logging.getLogger(__name__)
+
 
 def get_chief_editor_emails():
     """Returns email addresses of Chief Editors / Superusers."""
+    chief_from_env = getattr(settings, 'CHIEF_EDITOR_EMAIL', '').strip()
+    if chief_from_env:
+        return [chief_from_env]
     emails = list(User.objects.filter(is_superuser=True).exclude(email='').values_list('email', flat=True))
     if not emails:
         emails = ['ijpp1972@yahoo.co.in', 'admin@ppai.org.in']
@@ -51,15 +57,16 @@ Plant Protection Association of India (PPAI)
 https://ppai.org.in
 """
     try:
-        send_mail(
+        sent = send_mail(
             subject=subject,
             message=message,
             from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
             recipient_list=[author_email],
-            fail_silently=True
+            fail_silently=False
         )
-    except Exception:
-        pass
+        logger.info(f"[TRIGGER 1 SUCCESS] Author acknowledgment sent to {author_email} (count: {sent})")
+    except Exception as e:
+        logger.error(f"[TRIGGER 1 FAILED] Author acknowledgment error for {author_email}: {e}")
 
 
 def send_chief_editor_submission_alert(manuscript):
@@ -97,9 +104,10 @@ https://ppai.org.in/portal/admin/
         )
         if manuscript.manuscript_file and os.path.exists(manuscript.manuscript_file.path):
             email.attach_file(manuscript.manuscript_file.path)
-        email.send(fail_silently=True)
-    except Exception:
-        pass
+        email.send(fail_silently=False)
+        logger.info(f"[TRIGGER 2 SUCCESS] Chief Editor alert sent to {chief_emails}")
+    except Exception as e:
+        logger.error(f"[TRIGGER 2 FAILED] Chief Editor alert error: {e}")
 
 
 def send_reviewer_invitation(assignment):
@@ -144,15 +152,16 @@ Plant Protection Association of India (PPAI)
 https://ppai.org.in
 """
     try:
-        send_mail(
+        sent = send_mail(
             subject=subject,
             message=message,
             from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
             recipient_list=[reviewer_email],
-            fail_silently=True
+            fail_silently=False
         )
-    except Exception:
-        pass
+        logger.info(f"[TRIGGER 3 SUCCESS] Reviewer invitation sent to {reviewer_email}")
+    except Exception as e:
+        logger.error(f"[TRIGGER 3 FAILED] Reviewer invitation error for {reviewer_email}: {e}")
 
 
 def send_user_credentials_email(user, raw_password, role_name):
@@ -185,15 +194,16 @@ Indian Journal of Plant Protection (IJPP)
 Plant Protection Association of India (PPAI)
 """
     try:
-        send_mail(
+        sent = send_mail(
             subject=subject,
             message=message,
             from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
             recipient_list=[user_email],
-            fail_silently=True
+            fail_silently=False
         )
-    except Exception:
-        pass
+        logger.info(f"[TRIGGER 4 SUCCESS] Login credentials sent to {user_email}")
+    except Exception as e:
+        logger.error(f"[TRIGGER 4 FAILED] Login credentials error for {user_email}: {e}")
 
 
 def send_chief_editor_review_completed(assignment):
@@ -215,15 +225,16 @@ Editorial Management System
 Indian Journal of Plant Protection (IJPP)
 """
     try:
-        send_mail(
+        sent = send_mail(
             subject=subject,
             message=message,
             from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
             recipient_list=chief_emails,
-            fail_silently=True
+            fail_silently=False
         )
-    except Exception:
-        pass
+        logger.info(f"[TRIGGER 5 SUCCESS] Review completed alert sent to {chief_emails}")
+    except Exception as e:
+        logger.error(f"[TRIGGER 5 FAILED] Review completed alert error: {e}")
 
 
 def send_author_editorial_decision(manuscript):
@@ -265,12 +276,13 @@ Indian Journal of Plant Protection (IJPP)
 Plant Protection Association of India (PPAI)
 """
     try:
-        send_mail(
+        sent = send_mail(
             subject=subject,
             message=message,
             from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'ijpp@ppai.org.in'),
             recipient_list=[author_email],
-            fail_silently=True
+            fail_silently=False
         )
-    except Exception:
-        pass
+        logger.info(f"[TRIGGER 6 SUCCESS] Editorial decision letter sent to {author_email}")
+    except Exception as e:
+        logger.error(f"[TRIGGER 6 FAILED] Editorial decision error for {author_email}: {e}")

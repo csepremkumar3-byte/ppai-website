@@ -25,7 +25,7 @@ if env_path.exists():
                 line = line.strip()
                 if line and not line.startswith('#') and '=' in line:
                     key, val = line.split('=', 1)
-                    os.environ.setdefault(key.strip(), val.strip().strip("'\""))
+                    os.environ[key.strip()] = val.strip().strip("'\"")
     except Exception:
         pass
 
