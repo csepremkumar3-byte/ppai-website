@@ -103,12 +103,15 @@ https://ppai.org.in/portal/admin/
 
 
 def send_reviewer_invitation(assignment):
-    """Trigger 3: Sends peer review invitation with window time to Reviewer."""
+    """Trigger 3: Sends peer review invitation with window time and Accept/Decline actions to Reviewer."""
     reviewer_email = assignment.reviewer.email
     if not reviewer_email:
         return
 
     due_str = assignment.due_date.strftime('%d %B %Y') if assignment.due_date else '14 days from receipt'
+    accept_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/accept/"
+    decline_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/decline/"
+
     subject = f"[IJPP Review Invitation] Peer Review for {assignment.manuscript.tracking_id}"
     message = f"""Dear {assignment.reviewer.get_full_name() or assignment.reviewer.username},
 
@@ -116,19 +119,29 @@ You have been invited by the Chief Editor of the Indian Journal of Plant Protect
 
 Title: {assignment.manuscript.title}
 Discipline: {assignment.manuscript.get_subject_area_display()}
-Review Window Due Date: {due_str}
+Evaluation Window Due Date: {due_str}
 
 ABSTRACT:
 {assignment.manuscript.abstract}
 
-Please log into your Reviewer Console to access the full manuscript files and submit your evaluation:
+============================================================
+REVIEW INVITATION ACTION:
+============================================================
+To ACCEPT this invitation, click:
+{accept_url}
+
+To DECLINE this invitation, click:
+{decline_url}
+
+Alternatively, log into your Reviewer Console to access the manuscript files and manage your review:
 https://ppai.org.in/login/
 
-Thank you for contributing your scientific expertise to peer review.
+Thank you for contributing your scientific expertise to the peer review process.
 
 Chief Editor
 Indian Journal of Plant Protection (IJPP)
 Plant Protection Association of India (PPAI)
+https://ppai.org.in
 """
     try:
         send_mail(

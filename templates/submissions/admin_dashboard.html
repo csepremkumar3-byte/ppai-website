@@ -490,6 +490,9 @@
 
             <!-- Action Controls -->
             <div class="manuscript-item-actions">
+              <button type="button" class="btn-portal-sm btn-portal-secondary" onclick="toggleAbstract('abstract-{{ m.id }}')">
+                View Abstract
+              </button>
               {% if m.manuscript_file %}
               <a href="{{ m.manuscript_file.url }}" class="btn-portal-sm btn-portal-secondary" download>
                 Download Manuscript
@@ -498,6 +501,12 @@
               <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-sm btn-portal-primary">
                 Review &amp; Assign Reviewer
               </a>
+            </div>
+
+            <!-- Collapsible Abstract Preview -->
+            <div id="abstract-{{ m.id }}" style="display: none; background: #FFFFFF; border: 1px solid rgba(11, 36, 23, 0.12); border-radius: 8px; padding: 14px 16px; margin-top: 6px; font-size: 13px; line-height: 1.6; color: #1D2924;">
+              <strong style="display: block; margin-bottom: 6px; color: #0B2417; font-size: 13.5px;">Manuscript Abstract:</strong>
+              {{ m.abstract|linebreaks }}
             </div>
           </div>
           {% endfor %}
@@ -679,4 +688,13 @@
   </div>
 
 </div>
+
+<script>
+function toggleAbstract(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
+  }
+}
+</script>
 {% endblock %}
