@@ -16,6 +16,19 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file if it exists
+env_path = BASE_DIR / '.env'
+if env_path.exists():
+    try:
+        with open(env_path, encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, val = line.split('=', 1)
+                    os.environ.setdefault(key.strip(), val.strip().strip("'\""))
+    except Exception:
+        pass
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -151,14 +164,23 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+# Email Configuration
+# Uses Resend SMTP when RESEND_API_KEY is present in .env, otherwise defaults to console backend
+RESEND_KEY = os.environ.get('RESEND_API_KEY', '').strip()
+if RESEND_KEY:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.resend.com')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 465))
+    EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'True').lower() in ('true', '1')
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False').lower() in ('true', '1')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'resend')
+    EMAIL_HOST_PASSWORD = RESEND_KEY
+else:
+    EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'editor@ppai.org.in')
+CHIEF_EDITOR_EMAIL = os.environ.get('CHIEF_EDITOR_EMAIL', 'editor@ppai.org.in')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
