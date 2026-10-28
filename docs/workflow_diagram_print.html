@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PPAI / IJPP Editorial & Peer-Review Workflow - Executive Summary</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 14mm 16mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #0F172A;
+      background: #FFFFFF;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .header-box {
+      border-bottom: 2.5px solid #00B272;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .org-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #007C4F;
+    }
+    .doc-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0B2417;
+      margin-top: 3px;
+      margin-bottom: 4px;
+    }
+    .doc-sub {
+      font-size: 12.5px;
+      color: #475569;
+    }
+
+    .meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 6px 12px;
+      margin-bottom: 16px;
+      font-size: 11.5px;
+      color: #334155;
+    }
+    .meta-bar strong {
+      color: #0B2417;
+    }
+
+    .notice-box {
+      background: #FEF3C7;
+      border-left: 4px solid #D97706;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      color: #78350F;
+      font-weight: 600;
+    }
+
+    /* Step Card */
+    .step-card {
+      border: 1.5px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+    }
+    .step-card.c-green { border-left: 5px solid #00B272; }
+    .step-card.c-purple { border-left: 5px solid #7C3AED; }
+    .step-card.c-blue { border-left: 5px solid #2563EB; }
+    .step-card.c-amber { border-left: 5px solid #D97706; }
+    .step-card.c-teal { border-left: 5px solid #0D9488; }
+    .step-card.c-dark { border-left: 5px solid #0B2417; }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .step-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0B2417;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #0B2417;
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-green { background: #E8F7F0; color: #007C4F; }
+    .badge-purple { background: #EDE9FE; color: #5B21B6; }
+    .badge-blue { background: #EFF6FF; color: #1D4ED8; }
+    .badge-amber { background: #FEF3C7; color: #B45309; }
+
+    .step-desc {
+      font-size: 12px;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .detail-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+    }
+    .detail-box strong {
+      color: #0B2417;
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11.5px;
+    }
+    .detail-box ul {
+      padding-left: 14px;
+      margin: 0;
+      color: #475569;
+    }
+    .detail-box li {
+      margin-bottom: 2px;
+    }
+
+    .email-strip {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 11.5px;
+      color: #78350F;
+      margin-top: 6px;
+    }
+    .email-strip strong {
+      color: #92400E;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 11px;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #CBD5E1;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #0B2417;
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+    tr:nth-child(even) {
+      background: #F8FAFC;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 10.5px;
+      color: #64746D;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <div class="header-box">
+    <div class="org-title">Plant Protection Association of India (PPAI)</div>
+    <div class="doc-title">Indian Journal of Plant Protection (IJPP) &mdash; Editorial Workflow</div>
+    <div class="doc-sub">Executive Operational Specification: Submission &rarr; Screening &rarr; Peer Review &rarr; Decision Release</div>
+  </div>
+
+  <div class="meta-bar">
+    <div><strong>Target Pipeline:</strong> Author to Chief Editor Direct Flow</div>
+    <div><strong>Document Type:</strong> System Architecture Specification</div>
+    <div><strong>Associate Editor:</strong> Bypassed (Direct to Chief Editor)</div>
+  </div>
+
+  <div class="notice-box">
+    Operational Rule: The Associate Editor tier is currently inactive. All screening, reviewer assignment, credentials provisioning, and moderation release actions are executed directly within the Chief Editor Console (/portal/admin/).
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-card c-green">
+    <div class="step-header">
+      <div class="step-title">
+        <span class="step-num">1</span> Author Manuscript Submission & Payment Upload
+      </div>
+      <span class="badge badge-green">Actor: Author</span>
+    </div>
+    <div class="step-desc">
+      The author submits the manuscript online through the portal form with full bibliographic metadata and mandatory payment details.
+    </div>
+    <div class="detail-grid">
+      <div class="detail-box">
+        <strong>Manuscript Data:</strong>
+        <ul>
+          <li>Unique Tracking ID (e.g. <code>IJPP-2026-XXXX</code>)</li>
+          <li>Title, Structured Abstract &amp; 5&ndash;8 Keywords</li>
+          <li>Subject Discipline (Entomology, Pathology, etc.)</li>
+          <li>Manuscript DOCX/PDF &amp; Supplementary Data</li>
+        </ul>
+      </div>
+      <div class="detail-box">
+        <strong>Payment Information:</strong>
+        <ul>
+          <li>Payment Transaction ID (UPI / Bank UTR)</li>
+          <li>Payment Screenshot (Attached image proof)</li>
+          <li>Submission Declaration &amp; Conflict of Interest</li>
+        </ul>
+      </div>
+    </div>
+    <div class="email-strip">
+      <strong>Automated Trigger 1 &rarr; Email to Author (Acknowledgment):</strong> Immediate delivery of Tracking ID, Paper Title, Abstract, Payment Transaction ID, and confirmation that payment screenshot proof was logged.
+    </div>
+    <div class="email-strip" style="margin-top: 4px;">
+      <strong>Automated Trigger 2 &rarr; Email to Chief Editor:</strong> Full submission alert with Tracking ID, author affiliation, payment transaction ID, payment screenshot link, and the <strong>attached manuscript file</strong> for direct screening.
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-card c-purple">
+    <div class="step-header">
+      <div class="step-title">
+        <span class="step-num">2</span> Chief Editor Console &mdash; Author-Centric Card View (/portal/admin/)
+      </div>
+      <span class="badge badge-purple">Screen: Chief Editor Console</span>
+    </div>
+    <div class="step-desc">
+      Submissions are populated into the Chief Editor Console structured <strong>per Author</strong> rather than detached per-manuscript cards. All submissions and payment proofs by a given author are organized within their dedicated Author Card.
+    </div>
+    <div class="detail-box" style="background: #FDF4FF; border-color: #E879F9;">
+      <strong>Author-Centric Card Display Metrics (Card Set Per Author):</strong>
+      <ul>
+        <li><strong>Author Identity &amp; Profile:</strong> Corresponding Author Name, Registered Email, Institutional Affiliation, and Registration Date.</li>
+        <li><strong>Grouped Author Manuscripts:</strong> All papers lodged by this author listed with Tracking ID, Full Title, Submission Date &amp; Discipline.</li>
+        <li><strong>Payment Verification per Paper:</strong> Direct display of Transaction ID (Bank/UPI) and one-click preview of Payment Screenshot proof.</li>
+        <li><strong>Chief Editor Quick Actions:</strong> Download Full Manuscript, View Abstract, and Initiate Reviewer Assignment per submission.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-card c-blue">
+    <div class="step-header">
+      <div class="step-title">
+        <span class="step-num">3</span> Chief Editor Reviewer Assignment &amp; Window Time
+      </div>
+      <span class="badge badge-blue">Actor: Chief Editor</span>
+    </div>
+    <div class="step-desc">
+      After verifying payment and technical scope from the author's card, the Chief Editor assigns a specialized peer reviewer and defines an explicit evaluation window (e.g. 14 days).
+    </div>
+    <div class="email-strip">
+      <strong>Automated Trigger 3 &rarr; Reviewer Invitation Email (via Brevo):</strong> Sent immediately to reviewer containing paper title, abstract, and acceptance deadline window with interactive "Accept / Decline Review" buttons.
+    </div>
+    <div class="email-strip" style="margin-top: 4px; background: #EFF6FF; border-color: #BFDBFE; color: #1E40AF;">
+      <strong>Automated Timer &amp; Follow-up Reminder:</strong> If the reviewer has not acknowledged within the specified window time, an automated reminder email is dispatched to ensure timely turnaround.
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- STEP 4 -->
+  <div class="step-card c-amber">
+    <div class="step-header">
+      <div class="step-title">
+        <span class="step-num">4</span> Reviewer &amp; Associate Editor Credentials Provisioning
+      </div>
+      <span class="badge badge-amber">Actors: Chief Editor, Reviewer &amp; Associate Editor</span>
+    </div>
+    <div class="step-desc">
+      The Chief Editor creates and provisions portal login credentials directly inside the Chief Editor Console (<code>/portal/admin/</code>) for <strong>both Reviewers and Associate Editors</strong>.
+    </div>
+    <div class="email-strip">
+      <strong>Automated Trigger 4 &rarr; Credentials Email (via Brevo):</strong> Chief Editor registers user with designated role (<em>Associate Editor</em> or <em>Reviewer</em>) &rarr; system dispatches Login Email, Initial Password, and Portal URL (<code>/login/</code>).
+    </div>
+    <div class="detail-box" style="margin-top: 8px;">
+      <strong>Role-Based Login Flow:</strong> Newly provisioned user visits <code>/login/</code>, selects their designated role chip (<strong>Reviewer</strong> or <strong>Associate Editor</strong>) under the username &amp; password fields, signs in, and lands directly on their dedicated dashboard (<code>/portal/reviewer/</code> or <code>/portal/editor/</code>).
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-card c-teal">
+    <div class="step-header">
+      <div class="step-title">
+        <span class="step-num">5</span> Reviewer Evaluation Workspace (/portal/reviewer/evaluate/)
+      </div>
+      <span class="badge badge-green">Screen: Reviewer Workspace</span>
+    </div>
+    <div class="step-desc">
+      Reviewer clicks the manuscript card under "Your Assignments" to enter the peer-review workspace and submit comprehensive feedback.
+    </div>
+    <div class="detail-grid">
+      <div class="detail-box">
+        <strong>1. Standardized Rubric &amp; Decision:</strong>
+        <ul>
+          <li>Originality, Technical Quality, Clarity, Significance (Scores 1 to 5)</li>
+          <li>Overall Recommendation: <em>Accept / Minor Revision / Major Revision / Reject</em></li>
+        </ul>
+      </div>
+      <div class="detail-box">
+        <strong>2. Dual Feedback Channels:</strong>
+        <ul>
+          <li><strong>Comments for Author:</strong> Blinded constructive feedback (held until editor approval).</li>
+          <li><strong>Confidential Remarks:</strong> Visible <em>strictly</em> to Chief Editor only.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step-card c-dark">
+    <div class="step-header">
+      <div class="step-title">
+        <span class="step-num">6</span> Chief Editor Review Moderation &amp; Author Release
+      </div>
+      <span class="badge badge-purple">Final Decision &amp; Release</span>
+    </div>
+    <div class="step-desc">
+      Upon submission by the reviewer, the evaluation flows immediately to the Chief Editor for quality control and final release.
+    </div>
+    <div class="email-strip">
+      <strong>Automated Trigger 5 &rarr; Alert to Chief Editor:</strong> Notifies Chief Editor that the review for [Tracking ID] is completed and ready for inspection.
+    </div>
+    <div class="detail-box" style="margin-top: 6px;">
+      <strong>Chief Editor Approval in Application:</strong>
+      <ul>
+        <li>Chief Editor reviews scores, author comments, and confidential remarks.</li>
+        <li>Chief Editor clicks <strong>Approve &amp; Release Comments to Author</strong> and issues the formal editorial decision.</li>
+      </ul>
+    </div>
+    <div class="email-strip" style="margin-top: 6px;">
+      <strong>Automated Trigger 6 &rarr; Formal Decision Email to Author:</strong> Author receives official editorial letter with moderated review comments. Author portal dashboard updates status simultaneously.
+    </div>
+  </div>
+
+  <!-- Master Process Matrix -->
+  <div style="margin-top: 18px;">
+    <strong style="font-size: 13px; color: #0B2417;">Summary Matrix of Workflow Stages &amp; Triggered Communications</strong>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 14%;">Stage</th>
+          <th style="width: 18%;">Actor &amp; Screen</th>
+          <th style="width: 38%;">Actions &amp; Data Transferred</th>
+          <th style="width: 30%;">Triggered Emails</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Submission</strong></td>
+          <td>Author<br/>(Submission Form)</td>
+          <td>Uploads manuscript files, abstract, keywords, <strong>Payment Txn ID</strong> &amp; <strong>Payment Screenshot</strong>.</td>
+          <td>&bull; <strong>To Author:</strong> Acknowledgment with all data.<br/>&bull; <strong>To Chief Editor:</strong> Alert with paper + payment proof.</td>
+        </tr>
+        <tr>
+          <td><strong>2. Screening</strong></td>
+          <td>Chief Editor<br/>(<code>/portal/admin/</code>)</td>
+          <td>Reviews <strong>Author Cards</strong> (card per author) grouping submitted papers, submission dates, Author profile, Payment Txn ID &amp; Payment Screenshot.</td>
+          <td><em>Internal portal verification</em></td>
+        </tr>
+        <tr>
+          <td><strong>3. Assignment</strong></td>
+          <td>Chief Editor<br/>(<code>/portal/admin/</code>)</td>
+          <td>Assigns Reviewer and sets <strong>Evaluation Deadline Window</strong>.</td>
+          <td>&bull; <strong>To Reviewer (via Brevo):</strong> Invitation with paper details &amp; time window.<br/>&bull; <strong>Auto-Reminder:</strong> Sent if no response.</td>
+        </tr>
+        <tr>
+          <td><strong>4. Credentials</strong></td>
+          <td>Chief Editor<br/>(<code>/portal/admin/</code>)</td>
+          <td>Chief Editor creates credentials for <strong>both Reviewer and Associate Editor</strong>. Users log in at <code>/login/</code>.</td>
+          <td>&bull; <strong>To User (via Brevo):</strong> Login Username, Password &amp; Portal URL.</td>
+        </tr>
+        <tr>
+          <td><strong>5. Evaluation</strong></td>
+          <td>Reviewer<br/>(<code>/portal/reviewer/evaluate/</code>)</td>
+          <td>Submits rubric scores, recommendation, <strong>Author Comments</strong>, and <strong>Confidential Editor Remarks</strong>.</td>
+          <td>Review marked complete; author comments locked pending Chief Editor approval.</td>
+        </tr>
+        <tr>
+          <td><strong>6. Release</strong></td>
+          <td>Chief Editor<br/>(<code>/portal/admin/</code>)</td>
+          <td>Inspects confidential notes &amp; scores. Approves comments and issues formal decision (Accept / Revision / Reject).</td>
+          <td>&bull; <strong>To Chief Editor:</strong> Review complete notice.<br/>&bull; <strong>To Author:</strong> Final decision letter with peer review comments.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Plant Protection Association of India (PPAI) &bull; Indian Journal of Plant Protection (IJPP) &bull; Confidential Operational Workflow
+  </div>
+
+</body>
+</html>
