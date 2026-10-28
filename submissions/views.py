@@ -17,6 +17,8 @@ from .emails import (
     send_author_submission_acknowledgment,
     send_chief_editor_submission_alert,
     send_reviewer_invitation,
+    send_chief_editor_reviewer_response,
+    send_reviewer_acceptance_confirmation,
     send_user_credentials_email,
     send_chief_editor_review_completed,
     send_author_editorial_decision,
@@ -428,7 +430,7 @@ def reviewer_dashboard(request):
     })
 
 
-@login_required(login_url='login')
+@login_required(login_url='portal_login')
 def reviewer_respond_invitation(request, assignment_id, response_action):
     """Allows reviewer to Accept or Decline a review request."""
     assignment = get_object_or_404(ReviewAssignment, id=assignment_id, reviewer=request.user)
@@ -442,6 +444,10 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
             action="Review Invitation Accepted",
             details=f"Reviewer {request.user.get_full_name() or request.user.username} accepted the evaluation."
         )
+        # Notify Chief Editor & send confirmation to Reviewer
+        send_chief_editor_reviewer_response(assignment, action='accepted')
+        send_reviewer_acceptance_confirmation(assignment)
+
         messages.success(request, f"You have accepted the review for {assignment.manuscript.tracking_id}. Please submit your review before {assignment.due_date}.")
         return redirect('reviewer_evaluate_manuscript', assignment_id=assignment.id)
     elif response_action == 'decline':
@@ -453,12 +459,14 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
             action="Review Invitation Declined",
             details=f"Reviewer {request.user.get_full_name() or request.user.username} declined the evaluation."
         )
+        # Notify Chief Editor so they can reassign immediately
+        send_chief_editor_reviewer_response(assignment, action='declined')
         messages.info(request, "Review invitation declined.")
 
     return redirect('reviewer_dashboard')
 
 
-@login_required(login_url='login')
+@login_required(login_url='portal_login')
 def reviewer_evaluate_manuscript(request, assignment_id):
     """Reviewer evaluation form: scores, author comments, confidential editor notes."""
     assignment = get_object_or_404(ReviewAssignment, id=assignment_id, reviewer=request.user)
@@ -477,6 +485,9 @@ def reviewer_evaluate_manuscript(request, assignment_id):
             action="Review Workspace Opened",
             details=f"Reviewer {request.user.get_full_name() or request.user.username} opened review workspace."
         )
+        # Notify Chief Editor & send confirmation to Reviewer
+        send_chief_editor_reviewer_response(assignment, action='accepted')
+        send_reviewer_acceptance_confirmation(assignment)
 
     if request.method == 'POST':
         form = ReviewEvaluationForm(request.POST, request.FILES, instance=assignment)

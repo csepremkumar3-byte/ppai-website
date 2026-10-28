@@ -162,6 +162,90 @@ def send_reviewer_invitation(assignment):
 
 
 # ==============================================================================
+# WORKFLOW TRIGGER 3B: REVIEWER RESPONSE (ACCEPT / DECLINE)
+# ==============================================================================
+
+def send_chief_editor_reviewer_response(assignment, action='accepted'):
+    """
+    Alerts Chief Editor when a Reviewer accepts or declines an invitation.
+    - If accepted: alerts editor that evaluation is underway and due date is set.
+    - If declined: alerts editor so they can reassign an alternate reviewer.
+    """
+    chief_emails = get_chief_editor_emails()
+    if not chief_emails:
+        return
+
+    reviewer = assignment.reviewer
+    reviewer_profile = getattr(reviewer, 'journal_profile', None)
+    reviewer_name = reviewer.get_full_name() or reviewer.username
+    tracking_id = assignment.manuscript.tracking_id
+    due_str = assignment.due_date.strftime('%d %B %Y') if assignment.due_date else '14 days'
+
+    if action == 'accepted':
+        subject = f"[PPAI Review Accepted] {reviewer_name} Accepted Review for {tracking_id}"
+    else:
+        subject = f"[PPAI Review Declined] {reviewer_name} Declined Review for {tracking_id}"
+
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
+
+    context = {
+        'action': action,
+        'manuscript': assignment.manuscript,
+        'reviewer_name': reviewer_name,
+        'reviewer_email': reviewer.email,
+        'reviewer_affiliation': getattr(reviewer_profile, 'affiliation', 'Affiliation Not Provided'),
+        'subject_area_display': assignment.manuscript.get_subject_area_display(),
+        'due_date_str': due_str,
+    }
+
+    html_content = render_to_string('emails/chief_editor_reviewer_response.html', context)
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=chief_emails
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
+
+
+def send_reviewer_acceptance_confirmation(assignment):
+    """
+    Sends confirmation receipt to Reviewer upon accepting peer review request.
+    """
+    reviewer_email = assignment.reviewer.email
+    if not reviewer_email:
+        return
+
+    due_str = assignment.due_date.strftime('%d %B %Y') if assignment.due_date else '14 days'
+    subject = f"[PPAI] Peer Review Commitment Confirmed — {assignment.manuscript.tracking_id}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
+    review_url = f"https://ppai.org.in/portal/reviewer/assignment/{assignment.id}/"
+
+    context = {
+        'manuscript': assignment.manuscript,
+        'reviewer_name': assignment.reviewer.get_full_name() or assignment.reviewer.username,
+        'subject_area_display': assignment.manuscript.get_subject_area_display(),
+        'due_date_str': due_str,
+        'review_url': review_url,
+    }
+
+    html_content = render_to_string('emails/reviewer_acceptance_confirmation.html', context)
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=[reviewer_email]
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
+
+
+# ==============================================================================
 # WORKFLOW TRIGGER 4: CREDENTIALS DISPATCH (STAGE 4)
 # ==============================================================================
 

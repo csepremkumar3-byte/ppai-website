@@ -9,6 +9,8 @@ from submissions.emails import (
     send_author_submission_acknowledgment,
     send_chief_editor_submission_alert,
     send_reviewer_invitation,
+    send_chief_editor_reviewer_response,
+    send_reviewer_acceptance_confirmation,
     send_user_credentials_email,
     send_chief_editor_review_completed,
     send_author_editorial_decision,
@@ -138,6 +140,83 @@ class EmailWorkflowVerificationTests(TestCase):
         self.assertIn(f"/portal/reviewer/invitation/{assignment.id}/accept/", rev_mail.body)
         self.assertIn(f"/portal/reviewer/invitation/{assignment.id}/decline/", rev_mail.body)
         self.assertIn("Evaluation Window Due Date", rev_mail.body)
+
+    def test_stage_3b_reviewer_response_emails(self):
+        """Verify Reviewer Accept/Decline sends confirmation alerts to Chief Editor and Reviewer."""
+        manuscript = Manuscript.objects.create(
+            author=self.author,
+            title="Biocontrol of Fall Armyworm using Metarhizium anisopliae",
+            abstract="Field efficacy trial of entomopathogenic fungus against Spodoptera frugiperda.",
+            subject_area="entomology",
+            manuscript_file=self.dummy_doc,
+            conflict_of_interest=True
+        )
+        assignment = ReviewAssignment.objects.create(
+            manuscript=manuscript,
+            reviewer=self.reviewer,
+            assigned_by=self.chief_editor
+        )
+
+        # 1. Reviewer accepts -> Editor gets notification alert
+        mail.outbox.clear()
+        send_chief_editor_reviewer_response(assignment, action='accepted')
+        self.assertEqual(len(mail.outbox), 1)
+        editor_alert = mail.outbox[0]
+        self.assertIn("editor@ppai.org.in", editor_alert.to)
+        self.assertIn("Review Accepted", editor_alert.subject)
+        self.assertIn(manuscript.tracking_id, editor_alert.subject)
+        self.assertIn(self.reviewer.get_full_name(), editor_alert.body)
+
+        # 2. Reviewer gets confirmation receipt
+        mail.outbox.clear()
+        send_reviewer_acceptance_confirmation(assignment)
+        self.assertEqual(len(mail.outbox), 1)
+        rev_conf = mail.outbox[0]
+        self.assertIn(self.reviewer.email, rev_conf.to)
+        self.assertIn("Peer Review Commitment Confirmed", rev_conf.subject)
+        self.assertIn(manuscript.tracking_id, rev_conf.subject)
+
+        # 3. Reviewer declines -> Editor gets reassign alert
+        mail.outbox.clear()
+        send_chief_editor_reviewer_response(assignment, action='declined')
+        self.assertEqual(len(mail.outbox), 1)
+        decline_alert = mail.outbox[0]
+        self.assertIn("editor@ppai.org.in", decline_alert.to)
+        self.assertIn("Review Declined", decline_alert.subject)
+        self.assertIn(manuscript.tracking_id, decline_alert.subject)
+
+    def test_stage_3c_reviewer_accept_view_triggers_email_to_editor(self):
+        """Verify hitting the accept action view triggers emails to both Editor and Reviewer."""
+        manuscript = Manuscript.objects.create(
+            author=self.author,
+            title="Biocontrol of Fall Armyworm using Metarhizium anisopliae",
+            abstract="Field efficacy trial of entomopathogenic fungus against Spodoptera frugiperda.",
+            subject_area="entomology",
+            manuscript_file=self.dummy_doc,
+            conflict_of_interest=True
+        )
+        assignment = ReviewAssignment.objects.create(
+            manuscript=manuscript,
+            reviewer=self.reviewer,
+            assigned_by=self.chief_editor,
+            status='pending'
+        )
+
+        mail.outbox.clear()
+        self.client.login(username=self.reviewer.username, password='ReviewerPass123!')
+        response = self.client.get(
+            reverse('reviewer_respond_invitation', kwargs={'assignment_id': assignment.id, 'response_action': 'accept'}),
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        assignment.refresh_from_db()
+        self.assertEqual(assignment.status, 'accepted')
+
+        # Check both emails were dispatched: 1 to editor, 1 to reviewer
+        self.assertEqual(len(mail.outbox), 2)
+        recipients = [m.to[0] for m in mail.outbox]
+        self.assertIn('editor@ppai.org.in', recipients)
+        self.assertIn(self.reviewer.email, recipients)
 
     def test_stage_4_credentials_email(self):
         """Verify Email 4 (Login details dispatched for Reviewer or Associate Editor)."""

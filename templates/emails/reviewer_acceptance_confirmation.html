@@ -1,0 +1,59 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Review Commitment Confirmed — {{ manuscript.tracking_id }}{% endblock %}
+
+{% block content %}
+<div style="background-color: #ECFDF5; border-left: 4px solid #00B272; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; font-size: 13.5px; font-weight: 700; color: #065F46;">
+  &#10003; Peer Review Commitment Confirmed
+</div>
+
+<p style="margin: 0 0 16px 0; font-size: 15px;">
+  Dear <strong>{{ reviewer_name }}</strong>,
+</p>
+
+<p style="margin: 0 0 18px 0;">
+  Thank you for agreeing to review the following manuscript for the <strong>Plant Protection Association of India (PPAI)</strong>. Your acceptance has been formally registered with the Chief Editor.
+</p>
+
+<!-- Assignment Summary Card -->
+<div style="background-color: #F8FAFC; border: 1.5px solid #E2E8F0; border-left: 5px solid #00B272; border-radius: 8px; padding: 18px 20px; margin-bottom: 22px;">
+  <div style="margin-bottom: 8px;">
+    <span style="font-family: monospace; font-size: 14px; font-weight: 800; color: #007C4F; background: #E8F7F0; padding: 2px 7px; border-radius: 4px;">{{ manuscript.tracking_id }}</span>
+  </div>
+  <strong style="font-size: 14.5px; color: #0B2417; line-height: 1.4; display: block; margin-bottom: 12px;">
+    {{ manuscript.title }}
+  </strong>
+
+  <table width="100%" border="0" cellpadding="4" cellspacing="0" style="font-size: 13px;">
+    <tr>
+      <td width="30%" style="color: #64746D; font-weight: 700;">Discipline:</td>
+      <td>{{ subject_area_display }}</td>
+    </tr>
+    <tr>
+      <td style="color: #64746D; font-weight: 700;">Evaluation Due:</td>
+      <td><strong style="color: #DC2626;">{{ due_date_str }}</strong></td>
+    </tr>
+  </table>
+</div>
+
+<p style="margin: 0 0 20px 0; font-size: 13.5px; color: #374151;">
+  You can access the full manuscript document, evaluation rubric, and comment submission forms directly through your reviewer console:
+</p>
+
+<!-- CTA Button -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+  <tr>
+    <td align="center">
+      <a href="{{ review_url }}" target="_blank" style="display: inline-block; background-color: #00B272; color: #FFFFFF; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: 700; font-size: 14px; box-shadow: 0 2px 8px rgba(0, 178, 114, 0.3);">
+        Open Review Workspace &rarr;
+      </a>
+    </td>
+  </tr>
+</table>
+
+<p style="margin: 0; font-size: 13px; color: #6B7280;">
+  Sincerely,<br>
+  <strong>Chief Editor</strong><br>
+  Plant Protection Association of India (PPAI) &bull; Editorial Office
+</p>
+{% endblock %}

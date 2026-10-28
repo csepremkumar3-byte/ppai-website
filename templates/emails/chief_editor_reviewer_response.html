@@ -1,0 +1,110 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}
+  {% if action == 'accepted' %}
+    Reviewer Accepted — {{ manuscript.tracking_id }}
+  {% else %}
+    Reviewer Declined — {{ manuscript.tracking_id }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if action == 'accepted' %}
+  <!-- Accepted Status Banner -->
+  <div style="background-color: #ECFDF5; border-left: 4px solid #00B272; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; font-size: 13.5px; font-weight: 700; color: #065F46;">
+    &#10003; Review Invitation Accepted &bull; Peer Review In Progress
+  </div>
+
+  <p style="margin: 0 0 16px 0; font-size: 15px;">
+    Dear <strong>Chief Editor</strong>,
+  </p>
+
+  <p style="margin: 0 0 18px 0;">
+    Reviewer <strong>{{ reviewer_name }}</strong> has <strong>accepted</strong> the invitation to evaluate the following manuscript:
+  </p>
+{% else %}
+  <!-- Declined Status Banner -->
+  <div style="background-color: #FEF2F2; border-left: 4px solid #DC2626; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; font-size: 13.5px; font-weight: 700; color: #991B1B;">
+    &#10007; Review Invitation Declined &bull; Reassignment Required
+  </div>
+
+  <p style="margin: 0 0 16px 0; font-size: 15px;">
+    Dear <strong>Chief Editor</strong>,
+  </p>
+
+  <p style="margin: 0 0 18px 0;">
+    Reviewer <strong>{{ reviewer_name }}</strong> was unable to accept the review invitation for the following manuscript:
+  </p>
+{% endif %}
+
+<!-- Manuscript & Reviewer Card -->
+<div style="background-color: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 18px 20px; margin-bottom: 22px;">
+  <div style="margin-bottom: 8px;">
+    <span style="font-family: monospace; font-size: 14px; font-weight: 800; color: #007C4F; background: #E8F7F0; padding: 2px 7px; border-radius: 4px;">{{ manuscript.tracking_id }}</span>
+  </div>
+  <strong style="font-size: 14.5px; color: #0B2417; line-height: 1.4; display: block; margin-bottom: 12px;">
+    {{ manuscript.title }}
+  </strong>
+
+  <table width="100%" border="0" cellpadding="4" cellspacing="0" style="font-size: 13px;">
+    <tr>
+      <td width="30%" style="color: #64746D; font-weight: 700;">Reviewer:</td>
+      <td><strong>{{ reviewer_name }}</strong></td>
+    </tr>
+    <tr>
+      <td style="color: #64746D; font-weight: 700;">Email:</td>
+      <td><a href="mailto:{{ reviewer_email }}" style="color: #00B272; text-decoration: none;">{{ reviewer_email }}</a></td>
+    </tr>
+    <tr>
+      <td style="color: #64746D; font-weight: 700;">Affiliation:</td>
+      <td>{{ reviewer_affiliation }}</td>
+    </tr>
+    <tr>
+      <td style="color: #64746D; font-weight: 700;">Subject Area:</td>
+      <td>{{ subject_area_display }}</td>
+    </tr>
+    {% if action == 'accepted' %}
+    <tr>
+      <td style="color: #64746D; font-weight: 700;">Due Date:</td>
+      <td><strong style="color: #DC2626;">{{ due_date_str }}</strong></td>
+    </tr>
+    {% endif %}
+  </table>
+</div>
+
+{% if action == 'accepted' %}
+  <p style="margin: 0 0 22px 0; font-size: 13px; color: #4B5563;">
+    The reviewer has been granted workspace access to inspect the manuscript file and record their evaluation scores. You will receive an automated alert as soon as their review rubric and comments are submitted.
+  </p>
+
+  <!-- CTA Button -->
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+    <tr>
+      <td align="center">
+        <a href="https://ppai.org.in/portal/editor/manuscript/{{ manuscript.tracking_id }}/" target="_blank" style="display: inline-block; background-color: #00B272; color: #FFFFFF; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: 700; font-size: 14px;">
+          Track Manuscript in Console &rarr;
+        </a>
+      </td>
+    </tr>
+  </table>
+{% else %}
+  <p style="margin: 0 0 22px 0; font-size: 13px; color: #4B5563;">
+    Please open the Chief Editor Console to select and invite an alternate reviewer from the registered reviewer pool.
+  </p>
+
+  <!-- CTA Button -->
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+    <tr>
+      <td align="center">
+        <a href="https://ppai.org.in/portal/editor/manuscript/{{ manuscript.tracking_id }}/" target="_blank" style="display: inline-block; background-color: #DC2626; color: #FFFFFF; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: 700; font-size: 14px;">
+          Assign Alternate Reviewer &rarr;
+        </a>
+      </td>
+    </tr>
+  </table>
+{% endif %}
+
+<p style="margin: 0; font-size: 13px; color: #6B7280;">
+  Plant Protection Association of India (PPAI) &bull; Editorial Office
+</p>
+{% endblock %}
