@@ -73,7 +73,7 @@ def portal_register(request):
 def portal_logout(request):
     """Logs out and redirects back to portal login."""
     auth_logout(request)
-    messages.info(request, "You have been logged out of the IJPP Editorial Portal.")
+    messages.info(request, "You have been logged out of the PPAI Editorial Portal.")
     return redirect('login')
 
 

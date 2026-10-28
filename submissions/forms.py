@@ -87,7 +87,7 @@ class ManuscriptSubmissionForm(forms.ModelForm):
             'keywords': forms.TextInput(attrs={'class': 'portal-input', 'placeholder': 'e.g. Spodoptera frugiperda, biopesticides, neem oil, toxicity'}),
             'co_authors': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 3, 'placeholder': 'Co-authors with email & institution (e.g. Dr. A. Rao, University; Dr. P. Singh, College)'}),
             'payment_transaction_id': forms.TextInput(attrs={'class': 'portal-input', 'placeholder': 'e.g. UPI/123456789012 or IMPS Reference No.'}),
-            'cover_letter': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 4, 'placeholder': 'Brief statement explaining the novel scientific findings and why it fits IJPP scope...'}),
+            'cover_letter': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 4, 'placeholder': 'Brief statement explaining the novel scientific findings and why it fits PPAI scope...'}),
             'conflict_of_interest': forms.CheckboxInput(attrs={'class': 'portal-checkbox'}),
         }
 

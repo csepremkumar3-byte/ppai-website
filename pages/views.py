@@ -112,12 +112,10 @@ def home(request):
     context = get_common_context()
     context['slides'] = CarouselSlide.objects.filter(is_active=True)
     context['events'] = RECENT_EVENTS
-    context['show_curtain'] = request.GET.get('launch') == '1'
     return render(request, 'pages/home.html', context)
 
 def inauguration(request):
-    context = get_common_context()
-    return render(request, 'pages/inauguration.html', context)
+    return redirect('home')
 
 def about(request):
     context = get_common_context()

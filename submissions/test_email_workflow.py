@@ -17,7 +17,7 @@ from submissions.emails import (
 
 @override_settings(
     EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
-    DEFAULT_FROM_EMAIL='IJPP Editorial Office <editor@ppai.org.in>',
+    DEFAULT_FROM_EMAIL='PPAI Editorial Office <editor@ppai.org.in>',
     CHIEF_EDITOR_EMAIL='editor@ppai.org.in'
 )
 class EmailWorkflowVerificationTests(TestCase):
@@ -37,7 +37,7 @@ class EmailWorkflowVerificationTests(TestCase):
             role='admin',
             is_editor=True,
             is_approved_editor=True,
-            affiliation='IJPP Editorial Headquarters'
+            affiliation='PPAI Editorial Headquarters'
         )
 
         # 2. Author

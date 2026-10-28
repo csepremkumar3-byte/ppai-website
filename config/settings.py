@@ -178,7 +178,7 @@ if RESEND_KEY:
 else:
     EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
 SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'editor@ppai.org.in')
 CHIEF_EDITOR_EMAIL = os.environ.get('CHIEF_EDITOR_EMAIL', 'editor@ppai.org.in')
 

@@ -17,7 +17,7 @@ def get_chief_editor_emails():
         return [chief_from_env]
     emails = list(User.objects.filter(is_superuser=True).exclude(email='').values_list('email', flat=True))
     if not emails:
-        emails = ['editor@ppai.org.in', 'ijpp1972@yahoo.co.in']
+        emails = ['editor@ppai.org.in']
     return emails
 
 
@@ -58,8 +58,8 @@ def send_author_submission_acknowledgment(manuscript):
     if not author_email:
         return
 
-    subject = f"[IJPP] Submission Acknowledgment — {manuscript.tracking_id}"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+    subject = f"[PPAI] Submission Acknowledgment — {manuscript.tracking_id}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
 
     context = {
         'manuscript': manuscript,
@@ -90,8 +90,8 @@ def send_chief_editor_submission_alert(manuscript):
     if not chief_emails:
         return
 
-    subject = f"[IJPP New Submission] {manuscript.tracking_id} — {manuscript.author.get_full_name() or manuscript.author.username}"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+    subject = f"[PPAI New Submission] {manuscript.tracking_id} — {manuscript.author.get_full_name() or manuscript.author.username}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
 
     author_profile = getattr(manuscript.author, 'journal_profile', None)
     context = {
@@ -136,8 +136,8 @@ def send_reviewer_invitation(assignment):
     accept_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/accept/"
     decline_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/decline/"
 
-    subject = f"[IJPP Review Invitation] Peer Review for {assignment.manuscript.tracking_id}"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+    subject = f"[PPAI Review Invitation] Peer Review for {assignment.manuscript.tracking_id}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
 
     context = {
         'manuscript': assignment.manuscript,
@@ -171,8 +171,8 @@ def send_user_credentials_email(user, raw_password, role_name):
     if not user_email:
         return
 
-    subject = f"[IJPP Portal] Your {role_name} Login Credentials"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+    subject = f"[PPAI Portal] Your {role_name} Login Credentials"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
 
     context = {
         'full_name': user.get_full_name() or user.username,
@@ -204,8 +204,8 @@ def send_chief_editor_review_completed(assignment):
     if not chief_emails:
         return
 
-    subject = f"[IJPP Review Complete] Reviewer Feedback Lodged for {assignment.manuscript.tracking_id}"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+    subject = f"[PPAI Review Complete] Reviewer Feedback Lodged for {assignment.manuscript.tracking_id}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
 
     context = {
         'manuscript': assignment.manuscript,
@@ -236,8 +236,8 @@ def send_author_editorial_decision(manuscript):
     if not author_email:
         return
 
-    subject = f"[IJPP Decision] Editorial Decision on Manuscript {manuscript.tracking_id}"
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'IJPP Editorial Office <editor@ppai.org.in>')
+    subject = f"[PPAI Decision] Editorial Decision on Manuscript {manuscript.tracking_id}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
 
     approved_reviews = manuscript.review_assignments.filter(status='completed', is_approved_by_editor=True)
     context = {

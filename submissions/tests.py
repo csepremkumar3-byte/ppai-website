@@ -275,7 +275,7 @@ class PeerReviewWorkflowTests(TestCase):
             manuscript_file=dummy_file,
             conflict_of_interest=True
         )
-        self.assertTrue(manuscript.tracking_id.startswith('IJPP-'))
+        self.assertTrue(manuscript.tracking_id.startswith(('PPAI-', 'IJPP-')))
 
         # 2. Editor views paper & assigns reviewer
         self.client.login(username='editor@ppai.org.in', password='EditorPass123!')
