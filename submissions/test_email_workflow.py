@@ -104,7 +104,7 @@ class EmailWorkflowVerificationTests(TestCase):
         send_chief_editor_submission_alert(manuscript)
         self.assertEqual(len(mail.outbox), 2)
         editor_mail = mail.outbox[1]
-        self.assertIn("chief.editor@ppai.org.in", editor_mail.to)
+        self.assertIn("editor@ppai.org.in", editor_mail.to)
         self.assertIn("New Submission", editor_mail.subject)
         self.assertIn(manuscript.tracking_id, editor_mail.subject)
         self.assertIn("UPI/9876543210/SBI", editor_mail.body)
@@ -172,7 +172,7 @@ class EmailWorkflowVerificationTests(TestCase):
         send_chief_editor_review_completed(assignment)
         self.assertEqual(len(mail.outbox), 1)
         done_mail = mail.outbox[0]
-        self.assertIn("chief.editor@ppai.org.in", done_mail.to)
+        self.assertIn("editor@ppai.org.in", done_mail.to)
         self.assertIn("Review Complete", done_mail.subject)
         self.assertIn(manuscript.tracking_id, done_mail.subject)
         self.assertIn("Minor Revision", done_mail.body)

@@ -94,6 +94,14 @@ class ManuscriptSubmissionForm(forms.ModelForm):
     def clean_manuscript_file(self):
         f = self.cleaned_data.get('manuscript_file')
         validate_file_extension(f)
+        if f and f.size > 5 * 1024 * 1024:
+            raise forms.ValidationError("Manuscript file size must not exceed 5MB. Please compress your document.")
+        return f
+
+    def clean_payment_screenshot(self):
+        f = self.cleaned_data.get('payment_screenshot')
+        if f and f.size > 5 * 1024 * 1024:
+            raise forms.ValidationError("Payment screenshot file size must not exceed 5MB.")
         return f
 
     def clean_supplementary_file(self):
