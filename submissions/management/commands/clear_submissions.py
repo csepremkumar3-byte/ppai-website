@@ -25,34 +25,40 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        from django.core.management import call_command
+
+        # 0. Ensure all database tables exist before clearing
+        try:
+            call_command('migrate', interactive=False)
+        except Exception as e:
+            self.stdout.write(self.style.WARNING(f"Migration note: {e}"))
+
         no_admin = options.get('no_admin', False)
         admin_password = options.get('admin_password', 'AdminPassword123!')
 
+        def safe_delete(model):
+            try:
+                count = model.objects.count()
+                model.objects.all().delete()
+                return count
+            except Exception:
+                return 0
+
         # 1. Clear sessions
-        Session.objects.all().delete()
+        safe_delete(Session)
 
         # 2. Clear editorial & submission data
-        rev_count = ReviewAssignment.objects.count()
-        ReviewAssignment.objects.all().delete()
-
-        rev_sub_count = ManuscriptRevision.objects.count()
-        ManuscriptRevision.objects.all().delete()
-
-        act_count = SubmissionActivityLog.objects.count()
-        SubmissionActivityLog.objects.all().delete()
-
-        manu_count = Manuscript.objects.count()
-        Manuscript.objects.all().delete()
-
-        prof_count = UserProfile.objects.count()
-        UserProfile.objects.all().delete()
+        rev_count = safe_delete(ReviewAssignment)
+        rev_sub_count = safe_delete(ManuscriptRevision)
+        act_count = safe_delete(SubmissionActivityLog)
+        manu_count = safe_delete(Manuscript)
+        prof_count = safe_delete(UserProfile)
 
         # 3. Clear newsletter subscribers
-        news_count = NewsletterSubscriber.objects.count()
-        NewsletterSubscriber.objects.all().delete()
+        news_count = safe_delete(NewsletterSubscriber)
 
         # 4. Clear all user accounts
-        deleted_users, _ = User.objects.all().delete()
+        deleted_users = safe_delete(User)
 
         # 5. Clean media folders for manuscripts and payment screenshots
         media_root = getattr(settings, 'MEDIA_ROOT', None)
