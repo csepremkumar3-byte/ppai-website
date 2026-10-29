@@ -337,7 +337,7 @@
 
           <div class="portal-form-group" style="margin-bottom: 16px;">
             <label for="due_days">Turnaround Window (Days)</label>
-            <input type="number" id="due_days" name="due_days" class="portal-input" value="21" min="7" max="60" required>
+            <input type="number" id="due_days" name="due_days" class="portal-input" value="14" min="7" max="60" required>
           </div>
 
           <button type="submit" class="btn-portal-primary" style="width: 100%;">
@@ -345,7 +345,12 @@
           </button>
         </form>
         {% else %}
-        <p style="font-size: 13px; color: #64746D;">All eligible reviewers have been assigned.</p>
+        <div style="padding: 16px; background: #F8FAF9; border-radius: 8px; border: 1px dashed rgba(11, 36, 23, 0.15); text-align: center;">
+          <p style="font-size: 13px; color: #5B7065; margin: 0 0 10px 0;">No available reviewers in the system.</p>
+          <a href="{% url 'admin_dashboard' %}" class="btn-portal-secondary btn-portal-sm">
+            + Provision Reviewer in Console
+          </a>
+        </div>
         {% endif %}
       </div>
 

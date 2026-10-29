@@ -430,19 +430,42 @@ def reviewer_dashboard(request):
     })
 
 
-@login_required(login_url='portal_login')
 def reviewer_respond_invitation(request, assignment_id, response_action):
-    """Allows reviewer to Accept or Decline a review request."""
-    assignment = get_object_or_404(ReviewAssignment, id=assignment_id, reviewer=request.user)
+    """Allows reviewer to Accept or Decline a review request, directly via signed link or portal."""
+    from django.core.signing import TimestampSigner
+    from django.urls import reverse
+    token = request.GET.get('token')
+    signer = TimestampSigner()
+    assignment = None
+
+    if token:
+        try:
+            unsigned = signer.unsign(token, max_age=86400 * 30)
+            parts = unsigned.split(':')
+            if len(parts) == 2 and int(parts[0]) == assignment_id:
+                assignment = get_object_or_404(ReviewAssignment, id=assignment_id, reviewer_id=int(parts[1]))
+                if not request.user.is_authenticated or request.user.id != assignment.reviewer_id:
+                    auth_login(request, assignment.reviewer, backend='django.contrib.auth.backends.ModelBackend')
+        except Exception:
+            assignment = None
+
+    if not assignment:
+        if not request.user.is_authenticated:
+            return redirect(f"{reverse('portal_login')}?next={request.get_full_path()}")
+        assignment = get_object_or_404(ReviewAssignment, id=assignment_id)
+        if assignment.reviewer != request.user and not request.user.is_superuser:
+            return HttpResponseForbidden("You are not the assigned reviewer for this manuscript.")
+
+    reviewer_user = assignment.reviewer
 
     if response_action == 'accept':
         assignment.status = 'accepted'
         assignment.save()
         SubmissionActivityLog.objects.create(
             manuscript=assignment.manuscript,
-            user=request.user,
+            user=reviewer_user,
             action="Review Invitation Accepted",
-            details=f"Reviewer {request.user.get_full_name() or request.user.username} accepted the evaluation."
+            details=f"Reviewer {reviewer_user.get_full_name() or reviewer_user.username} accepted the evaluation."
         )
         # Notify Chief Editor & send confirmation to Reviewer
         send_chief_editor_reviewer_response(assignment, action='accepted')
@@ -455,13 +478,13 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
         assignment.save()
         SubmissionActivityLog.objects.create(
             manuscript=assignment.manuscript,
-            user=request.user,
+            user=reviewer_user,
             action="Review Invitation Declined",
-            details=f"Reviewer {request.user.get_full_name() or request.user.username} declined the evaluation."
+            details=f"Reviewer {reviewer_user.get_full_name() or reviewer_user.username} declined the evaluation."
         )
         # Notify Chief Editor so they can reassign immediately
         send_chief_editor_reviewer_response(assignment, action='declined')
-        messages.info(request, "Review invitation declined.")
+        messages.info(request, "Review invitation has been declined. Thank you for notifying us.")
 
     return redirect('reviewer_dashboard')
 

@@ -9,6 +9,7 @@ from submissions.emails import (
     send_author_submission_acknowledgment,
     send_chief_editor_submission_alert,
     send_reviewer_invitation,
+    send_reviewer_reminder,
     send_chief_editor_reviewer_response,
     send_reviewer_acceptance_confirmation,
     send_user_credentials_email,
@@ -217,6 +218,71 @@ class EmailWorkflowVerificationTests(TestCase):
         recipients = [m.to[0] for m in mail.outbox]
         self.assertIn('editor@ppai.org.in', recipients)
         self.assertIn(self.reviewer.email, recipients)
+
+    def test_stage_3d_signed_token_one_click_accept_from_email(self):
+        """Verify reviewer clicking signed link in email accepts review without prior active session."""
+        from django.core.signing import TimestampSigner
+        manuscript = Manuscript.objects.create(
+            author=self.author,
+            title="Biocontrol of Fall Armyworm using Metarhizium anisopliae",
+            abstract="Field efficacy trial of entomopathogenic fungus against Spodoptera frugiperda.",
+            subject_area="entomology",
+            manuscript_file=self.dummy_doc,
+            conflict_of_interest=True
+        )
+        assignment = ReviewAssignment.objects.create(
+            manuscript=manuscript,
+            reviewer=self.reviewer,
+            assigned_by=self.chief_editor,
+            status='pending'
+        )
+
+        signer = TimestampSigner()
+        token = signer.sign(f"{assignment.id}:{assignment.reviewer_id}")
+
+        mail.outbox.clear()
+        # Unauthenticated client simulates opening link from external email client
+        anon_client = Client()
+        response = anon_client.get(
+            f"{reverse('reviewer_respond_invitation', kwargs={'assignment_id': assignment.id, 'response_action': 'accept'})}?token={token}",
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        assignment.refresh_from_db()
+        self.assertEqual(assignment.status, 'accepted')
+
+        # Check editor got the notification and reviewer got confirmation
+        self.assertEqual(len(mail.outbox), 2)
+        recipients = [m.to[0] for m in mail.outbox]
+        self.assertIn('editor@ppai.org.in', recipients)
+        self.assertIn(self.reviewer.email, recipients)
+
+    def test_stage_3e_reviewer_reminder_email(self):
+        """Verify Trigger 3 Reminder sends follow-up reminder with accept/decline links."""
+        manuscript = Manuscript.objects.create(
+            author=self.author,
+            title="Biocontrol of Fall Armyworm using Metarhizium anisopliae",
+            abstract="Field efficacy trial of entomopathogenic fungus against Spodoptera frugiperda.",
+            subject_area="entomology",
+            manuscript_file=self.dummy_doc,
+            conflict_of_interest=True
+        )
+        assignment = ReviewAssignment.objects.create(
+            manuscript=manuscript,
+            reviewer=self.reviewer,
+            assigned_by=self.chief_editor,
+            status='pending'
+        )
+
+        mail.outbox.clear()
+        send_reviewer_reminder(assignment)
+        self.assertEqual(len(mail.outbox), 1)
+        rem_mail = mail.outbox[0]
+        self.assertIn(self.reviewer.email, rem_mail.to)
+        self.assertIn("Review Reminder", rem_mail.subject)
+        self.assertIn(manuscript.tracking_id, rem_mail.subject)
+        self.assertIn("Accept URL:", rem_mail.body)
+        self.assertIn("Decline URL:", rem_mail.body)
 
     def test_stage_4_credentials_email(self):
         """Verify Email 4 (Login details dispatched for Reviewer or Associate Editor)."""

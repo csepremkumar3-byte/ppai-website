@@ -1,0 +1,71 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Reminder: Peer Review Invitation — {{ manuscript.tracking_id }}{% endblock %}
+
+{% block content %}
+<div style="background-color: #FFFBEB; border-left: 4px solid #F59E0B; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; font-size: 13.5px; font-weight: 700; color: #92400E;">
+  &#9203; Review Invitation Follow-up &bull; Response Awaited
+</div>
+
+<p style="margin: 0 0 16px 0; font-size: 15px;">
+  Dear <strong>{{ reviewer_name }}</strong>,
+</p>
+
+<p style="margin: 0 0 18px 0;">
+  This is a gentle reminder regarding the peer review invitation sent by the Chief Editor of the <strong>Plant Protection Association of India (PPAI)</strong> for the following manuscript:
+</p>
+
+<!-- Paper Box -->
+<div style="background-color: #F8FAFC; border: 1.5px solid #E2E8F0; border-left: 5px solid #F59E0B; border-radius: 8px; padding: 18px 20px; margin-bottom: 22px;">
+  <div style="margin-bottom: 8px;">
+    <span style="font-family: monospace; font-size: 14px; font-weight: 800; color: #B45309; background: #FEF3C7; padding: 2px 7px; border-radius: 4px;">{{ manuscript.tracking_id }}</span>
+  </div>
+  <strong style="font-size: 15px; color: #0B2417; line-height: 1.4; display: block; margin-bottom: 8px;">
+    {{ manuscript.title }}
+  </strong>
+  <div style="font-size: 12.5px; color: #475569; margin-bottom: 12px;">
+    <strong>Discipline:</strong> {{ subject_area_display }} &bull; 
+    <strong>Evaluation Due Date:</strong> <span style="color: #DC2626; font-weight: 700;">{{ due_date_str }}</span>
+  </div>
+
+  <div>
+    <strong style="font-size: 12px; color: #0B2417; text-transform: uppercase;">Abstract:</strong>
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 4px; padding: 10px 12px; font-size: 12.5px; color: #475569; line-height: 1.5; margin-top: 4px;">
+      {{ manuscript.abstract }}
+    </div>
+  </div>
+</div>
+
+<p style="margin: 0 0 16px 0; font-weight: 700; color: #0B2417;">
+  To ensure timely evaluation turnaround, please indicate whether you can accept or decline this review request:
+</p>
+
+<!-- Action Buttons: Accept & Decline -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+  <tr>
+    <td align="center" style="padding-bottom: 12px;">
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding-right: 12px;">
+            <a href="{{ accept_url }}" target="_blank" style="display: inline-block; background-color: #00B272; color: #FFFFFF; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: 700; font-size: 13.5px; box-shadow: 0 2px 8px rgba(0, 178, 114, 0.3);">
+              &#10003; Accept Review Request
+            </a>
+          </td>
+          <td>
+            <a href="{{ decline_url }}" target="_blank" style="display: inline-block; background-color: #FFFFFF; color: #DC2626; border: 1.5px solid #DC2626; text-decoration: none; padding: 11px 20px; border-radius: 6px; font-weight: 700; font-size: 13.5px;">
+              &#10007; Decline Request
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="margin: 0; font-size: 13px; color: #6B7280;">
+  Thank you for your valuable support of scholarly peer review.<br><br>
+  Sincerely,<br>
+  <strong>Chief Editor</strong><br>
+  Plant Protection Association of India (PPAI) &bull; Editorial Office
+</p>
+{% endblock %}

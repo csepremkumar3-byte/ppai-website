@@ -132,9 +132,13 @@ def send_reviewer_invitation(assignment):
     if not reviewer_email:
         return
 
+    from django.core.signing import TimestampSigner
+    signer = TimestampSigner()
+    token = signer.sign(f"{assignment.id}:{assignment.reviewer_id}")
+
     due_str = assignment.due_date.strftime('%d %B %Y') if assignment.due_date else '14 days from receipt'
-    accept_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/accept/"
-    decline_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/decline/"
+    accept_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/accept/?token={token}"
+    decline_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/decline/?token={token}"
 
     subject = f"[PPAI Review Invitation] Peer Review for {assignment.manuscript.tracking_id}"
     from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
@@ -149,6 +153,45 @@ def send_reviewer_invitation(assignment):
     }
 
     html_content = render_to_string('emails/reviewer_invitation.html', context)
+    text_content = strip_tags(html_content) + f"\n\nAccept URL: {accept_url}\nDecline URL: {decline_url}\nDue Date: {due_str}"
+
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=[reviewer_email]
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
+
+
+def send_reviewer_reminder(assignment):
+    """Trigger 3-Reminder: Sends follow-up reminder if reviewer has not acknowledged invitation within window."""
+    reviewer_email = assignment.reviewer.email
+    if not reviewer_email or assignment.status != 'pending':
+        return
+
+    from django.core.signing import TimestampSigner
+    signer = TimestampSigner()
+    token = signer.sign(f"{assignment.id}:{assignment.reviewer_id}")
+
+    due_str = assignment.due_date.strftime('%d %B %Y') if assignment.due_date else '14 days'
+    accept_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/accept/?token={token}"
+    decline_url = f"https://ppai.org.in/portal/reviewer/invitation/{assignment.id}/decline/?token={token}"
+
+    subject = f"[PPAI Review Reminder] Pending Peer Review Invitation for {assignment.manuscript.tracking_id}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
+
+    context = {
+        'manuscript': assignment.manuscript,
+        'reviewer_name': assignment.reviewer.get_full_name() or assignment.reviewer.username,
+        'subject_area_display': assignment.manuscript.get_subject_area_display(),
+        'due_date_str': due_str,
+        'accept_url': accept_url,
+        'decline_url': decline_url,
+    }
+
+    html_content = render_to_string('emails/reviewer_reminder.html', context)
     text_content = strip_tags(html_content) + f"\n\nAccept URL: {accept_url}\nDecline URL: {decline_url}\nDue Date: {due_str}"
 
     email = EmailMultiAlternatives(

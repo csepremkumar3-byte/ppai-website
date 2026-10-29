@@ -23,7 +23,7 @@ class PeerReviewWorkflowTests(TestCase):
             role='editor',
             is_editor=True,
             is_approved_editor=True,
-            affiliation='IJPP Editorial Office'
+            affiliation='PPAI Editorial Office'
         )
 
         # 2. Setup Reviewer
@@ -248,7 +248,7 @@ class PeerReviewWorkflowTests(TestCase):
             user=ed_admin_user,
             role='editor',
             is_editor=True,
-            affiliation='IJPP Editorial Office'
+            affiliation='PPAI Editorial Office'
         )
         login_editor = self.client.post(reverse('login'), {
             'email': 'admin.editor@ppai.org.in',
@@ -393,7 +393,7 @@ class PeerReviewWorkflowTests(TestCase):
                 'submit_decision': '1',
                 'decision': 'accept',
                 'approve_reviewer_comments': '1',
-                'comments_to_author': 'We are pleased to approve access and accept your revised manuscript for publication in the Indian Journal of Plant Protection (IJPP)!',
+                'comments_to_author': 'We are pleased to approve access and accept your revised manuscript for publication in the Plant Protection Association of India (PPAI)!',
                 'internal_notes': 'Accepted for upcoming volume.'
             },
             follow=True

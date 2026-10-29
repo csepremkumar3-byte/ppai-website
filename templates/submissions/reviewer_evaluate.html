@@ -229,7 +229,7 @@
       <div class="portal-card" style="background: #F8FAF9; border-color: rgba(11, 36, 23, 0.08);">
         <h4 style="font-size: 13.5px; font-weight: 800; color: #0B2417; margin-bottom: 8px;">Review Policy &bull; PPAI</h4>
         <p style="font-size: 12.5px; color: #5B7065; line-height: 1.6; margin: 0;">
-          Your comments for the author will be reviewed by the Associate Editor before release. Confidential remarks remain permanently hidden from the authors.
+          Your comments for the author will be reviewed by the Chief Editor before release. Confidential remarks remain permanently hidden from the authors.
         </p>
       </div>
     </div>
@@ -249,7 +249,7 @@
             <p>Score the manuscript and enter feedback for author and editor</p>
           </div>
           {% if assignment.status == 'completed' %}
-            <span class="status-badge accepted">Submitted to Associate Editor</span>
+            <span class="status-badge accepted">Submitted to Chief Editor</span>
           {% endif %}
         </div>
 
@@ -279,7 +279,7 @@
 
           {% if assignment.confidential_comments_to_editor %}
           <div class="review-callout warning" style="margin-bottom: 16px;">
-            <h4 style="font-size: 13px; font-weight: 800; color: #92400E; margin-bottom: 6px;">Confidential Remarks for Associate Editor Only:</h4>
+            <h4 style="font-size: 13px; font-weight: 800; color: #92400E; margin-bottom: 6px;">Confidential Remarks for Chief Editor Only:</h4>
             <p style="font-size: 13.5px; color: #78350F; line-height: 1.6; white-space: pre-line;">{{ assignment.confidential_comments_to_editor }}</p>
           </div>
           {% endif %}
