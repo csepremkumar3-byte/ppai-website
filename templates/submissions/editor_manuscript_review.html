@@ -271,9 +271,26 @@
               </form>
             </div>
 
+            {% elif r.status == 'expired' %}
+            <div style="background: #FEF2F2; border: 1.5px solid #FECACA; border-radius: 8px; padding: 12px 14px; margin-top: 8px;">
+              <span style="font-weight: 700; color: #DC2626; font-size: 13px;">&#9888; 14-Day Acceptance Window Expired:</span>
+              <p style="font-size: 12.5px; color: #7F1D1D; margin: 4px 0 0 0;">
+                Reviewer did not accept within 14 days. This invitation was automatically expired. Please assign an alternate reviewer from the panel on the right.
+              </p>
+            </div>
+            {% elif r.status == 'declined' %}
+            <div style="background: #FFFBEB; border: 1.5px solid #FDE68A; border-radius: 8px; padding: 12px 14px; margin-top: 8px;">
+              <span style="font-weight: 700; color: #D97706; font-size: 13px;">&#10006; Review Invitation Declined:</span>
+              <p style="font-size: 12.5px; color: #92400E; margin: 4px 0 0 0;">
+                Reviewer declined this invitation. Please assign an alternate reviewer from the panel on the right.
+              </p>
+            </div>
             {% else %}
             <p style="font-size: 13px; color: #64746D;">
               Invited on {{ r.invitation_date|date:"M d, Y" }}. Turnaround due by: <strong>{{ r.due_date|date:"M d, Y" }}</strong>.
+              {% if r.status == 'pending' %}
+                <span style="display: block; font-size: 11.5px; color: #854D0E; margin-top: 4px;">(Pending acceptance &bull; 7-day reminder and 14-day auto-expiry active)</span>
+              {% endif %}
             </p>
             {% endif %}
           </div>

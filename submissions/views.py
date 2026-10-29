@@ -788,10 +788,14 @@ def admin_dashboard(request):
 
             role_name = 'Associate Editor' if is_editor else 'Reviewer'
 
-            # Automated Trigger 4: Dispatch Login Credentials Email to newly provisioned Reviewer or Associate Editor (via Brevo)
-            send_user_credentials_email(user, password, role_name)
-
-            messages.success(request, f"Successfully registered {role_name}: {full_name} ({email})! Login credentials have been dispatched.")
+            if is_editor:
+                # Dispatch credentials only for Associate Editors upon account creation
+                send_user_credentials_email(user, password, 'Associate Editor')
+                messages.success(request, f"Successfully registered Associate Editor: {full_name} ({email})! Login credentials have been dispatched.")
+            else:
+                # Reviewers do NOT receive login credentials upon registration.
+                # Reviewer credentials are ONLY dispatched after the reviewer accepts a peer review invitation.
+                messages.success(request, f"Successfully registered Reviewer: {full_name} ({email}) in reviewer directory. Credentials will only be sent after they accept a review invitation.")
             return redirect('admin_dashboard')
 
     # Filtering users

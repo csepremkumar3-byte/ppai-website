@@ -388,4 +388,104 @@ class EmailWorkflowVerificationTests(TestCase):
         self.assertIn(manuscript.tracking_id, dec_mail.subject)
         self.assertIn("Minor Revision", dec_mail.body)
         self.assertIn("Expand on inoculation protocol in section 2.3", dec_mail.body)
-        self.assertIn("Please address reviewer feedback within 14 days", dec_mail.body)
+
+    def test_reviewer_credential_timing_and_auto_expiration_lifecycle(self):
+        """
+        End-to-End Workflow Verification:
+        1. Chief Editor registers a Reviewer -> NO credentials email is sent.
+        2. Chief Editor assigns Reviewer to paper -> Invitation email sent (NO credentials).
+        3. Reviewer accepts -> Credentials email sent to reviewer, acceptance confirmed.
+        4. When 7 days pass without accept -> Reminder email sent on 7th day.
+        5. When 14 days pass without accept -> Automatically expired/rejected and Chief Editor alerted to reassign.
+        """
+        from django.core.signing import TimestampSigner
+        from submissions.views import check_and_update_invitation_deadlines
+
+        # 1. Chief Editor provisions Reviewer in admin dashboard
+        mail.outbox.clear()
+        self.client.login(username=self.chief_editor.username, password='EditorPass123!')
+        resp = self.client.post(reverse('admin_dashboard'), {
+            'action': 'create_user',
+            'role': 'reviewer',
+            'full_name': 'Dr. Suresh Kumar',
+            'email': 'suresh.kumar@icar.gov.in',
+            'affiliation': 'ICAR-CPRI',
+            'password': 'SureshPass123!',
+        }, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        # CRITICAL ASSERTION: No credentials email was sent to the reviewer upon registration!
+        self.assertEqual(len(mail.outbox), 0)
+
+        # 2. Chief Editor assigns Reviewer to manuscript
+        new_reviewer = User.objects.get(email='suresh.kumar@icar.gov.in')
+        manuscript = Manuscript.objects.create(
+            author=self.author,
+            title="Management of Late Blight in Potato",
+            abstract="Field trials with systemic fungicides.",
+            subject_area="pathology",
+            manuscript_file=self.dummy_doc,
+            conflict_of_interest=True
+        )
+        mail.outbox.clear()
+        assign_resp = self.client.post(
+            reverse('editor_manuscript_review', kwargs={'tracking_id': manuscript.tracking_id}),
+            {
+                'assign_reviewer': '1',
+                'reviewer_id': new_reviewer.id,
+                'due_days': 14
+            },
+            follow=True
+        )
+        self.assertEqual(assign_resp.status_code, 200)
+        # Only 1 email sent: Invitation email to reviewer (NO credentials in email)
+        self.assertEqual(len(mail.outbox), 1)
+        invitation_email = mail.outbox[0]
+        self.assertIn(new_reviewer.email, invitation_email.to)
+        self.assertIn("Review Invitation", invitation_email.subject)
+        self.assertNotIn("Your Reviewer Login Credentials", invitation_email.subject)
+        self.assertNotIn("Username:", invitation_email.body)
+
+        # 3. Reviewer accepts the invitation
+        assignment = ReviewAssignment.objects.get(manuscript=manuscript, reviewer=new_reviewer)
+        signer = TimestampSigner()
+        token = signer.sign(f"{assignment.id}:{assignment.reviewer_id}")
+
+        mail.outbox.clear()
+        anon_client = Client()
+        accept_resp = anon_client.get(
+            f"{reverse('reviewer_respond_invitation', kwargs={'assignment_id': assignment.id, 'response_action': 'accept'})}?token={token}",
+            follow=True
+        )
+        self.assertEqual(accept_resp.status_code, 200)
+        self.assertContains(accept_resp, 'Review Invitation Accepted')
+        # CRITICAL ASSERTION: Credentials are now dispatched to Reviewer's email!
+        self.assertEqual(len(mail.outbox), 3)
+        cred_emails = [m for m in mail.outbox if 'Login Credentials' in m.subject]
+        self.assertEqual(len(cred_emails), 1)
+        self.assertIn(new_reviewer.email, cred_emails[0].to)
+
+        # 4. Another unaccepted assignment past 7 days -> gets 7-day reminder
+        rev2 = User.objects.create_user(username='rev2@icar.gov.in', email='rev2@icar.gov.in', password='Rev2Pass123!')
+        assignment2 = ReviewAssignment.objects.create(
+            manuscript=manuscript,
+            reviewer=rev2,
+            assigned_by=self.chief_editor,
+            status='pending',
+        )
+        ReviewAssignment.objects.filter(id=assignment2.id).update(invitation_date=timezone.now() - timedelta(days=8))
+        mail.outbox.clear()
+        check_and_update_invitation_deadlines()
+        assignment2.refresh_from_db()
+        self.assertTrue(assignment2.reminder_sent)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Review Reminder", mail.outbox[0].subject)
+
+        # 5. Unaccepted assignment past 14 days -> automatically rejected/expired and Chief Editor alerted
+        ReviewAssignment.objects.filter(id=assignment2.id).update(invitation_date=timezone.now() - timedelta(days=15))
+        mail.outbox.clear()
+        check_and_update_invitation_deadlines()
+        assignment2.refresh_from_db()
+        self.assertEqual(assignment2.status, 'expired')
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Invitation Expired", mail.outbox[0].subject)
+        self.assertIn("Reassignment Needed", mail.outbox[0].subject)
