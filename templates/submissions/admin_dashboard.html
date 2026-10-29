@@ -413,114 +413,7 @@
     </div>
   </div>
 
-  <!-- SECTION 1: AUTHOR-CENTRIC SUBMISSION QUEUE -->
-  <div style="margin-bottom: 36px;">
-    <div class="section-heading-bar">
-      <div>
-        <h3>Submitted Manuscripts &mdash; Author-Centric Queue</h3>
-        <p>All manuscript submissions and payment verification proofs organized per author.</p>
-      </div>
-    </div>
-
-    {% if author_cards %}
-      {% for card in author_cards %}
-      <div class="author-card">
-        <!-- Author Header Bar -->
-        <div class="author-card-header">
-          <div class="author-info-left">
-            <div class="author-avatar">
-              {{ card.author.first_name|first|default:card.author.username|first|upper }}
-            </div>
-            <div class="author-details">
-              <h4>{{ card.author.get_full_name|default:card.author.username }}</h4>
-              <p>
-                <span>{{ card.author.email }}</span>
-                {% if card.profile.affiliation %}
-                <span>&bull; {{ card.profile.affiliation }}</span>
-                {% endif %}
-                <span>&bull; Registered: {{ card.author.date_joined|date:"M d, Y" }}</span>
-              </p>
-            </div>
-          </div>
-          <div>
-            <span class="author-meta-badge">
-              {{ card.total_papers }} Manuscript{{ card.total_papers|pluralize }} Submitted
-            </span>
-          </div>
-        </div>
-
-        <!-- Manuscripts List for This Author -->
-        <div class="author-manuscripts-list">
-          {% for m in card.manuscripts %}
-          <div class="manuscript-item-row">
-            <div class="manuscript-item-top">
-              <div class="manuscript-item-title">
-                <span class="tracking-pill">{{ m.tracking_id }}</span>
-                {{ m.title }}
-              </div>
-              <div>
-                <span class="status-badge {{ m.status }}">
-                  {{ m.get_status_display }}
-                </span>
-              </div>
-            </div>
-
-            <div class="manuscript-item-meta">
-              <span><strong>Submitted:</strong> {{ m.created_at|date:"M d, Y &bull; h:i A" }}</span>
-              <span><strong>Discipline:</strong> {{ m.get_subject_area_display|default:m.subject_area }}</span>
-              <span><strong>Type:</strong> {{ m.get_article_type_display|default:m.article_type }}</span>
-            </div>
-
-            <!-- Payment Verification Details -->
-            <div class="payment-proof-box">
-              <div class="payment-proof-info">
-                <span><strong>Payment Txn ID:</strong> <code>{{ m.payment_transaction_id|default:"Pending Verification" }}</code></span>
-                <span>
-                  <strong>Proof Screenshot:</strong>
-                  {% if m.payment_screenshot %}
-                    <a href="{{ m.payment_screenshot.url }}" target="_blank" class="btn-portal-xs btn-portal-secondary" style="color: #007C4F; font-weight: 700;">
-                      View Payment Proof
-                    </a>
-                  {% else %}
-                    <span style="color: #94A3B8; font-size: 11.5px;">No screenshot uploaded</span>
-                  {% endif %}
-                </span>
-              </div>
-            </div>
-
-            <!-- Action Controls -->
-            <div class="manuscript-item-actions">
-              <button type="button" class="btn-portal-sm btn-portal-secondary" onclick="toggleAbstract('abstract-{{ m.id }}')">
-                View Abstract
-              </button>
-              {% if m.manuscript_file %}
-              <a href="{{ m.manuscript_file.url }}" class="btn-portal-sm btn-portal-secondary" download>
-                Download Manuscript
-              </a>
-              {% endif %}
-              <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-sm btn-portal-primary">
-                Review &amp; Assign Reviewer
-              </a>
-            </div>
-
-            <!-- Collapsible Abstract Preview -->
-            <div id="abstract-{{ m.id }}" style="display: none; background: #FFFFFF; border: 1px solid rgba(11, 36, 23, 0.12); border-radius: 8px; padding: 14px 16px; margin-top: 6px; font-size: 13px; line-height: 1.6; color: #1D2924;">
-              <strong style="display: block; margin-bottom: 6px; color: #0B2417; font-size: 13.5px;">Manuscript Abstract:</strong>
-              {{ m.abstract|linebreaks }}
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-      {% endfor %}
-    {% else %}
-      <div class="portal-card" style="text-align: center; padding: 40px 20px;">
-        <p style="font-size: 14px; color: #5B7065; margin: 0;">No manuscripts have been submitted yet.</p>
-      </div>
-    {% endif %}
-  </div>
-
-  <!-- SECTION 2: EDITORIAL CREDENTIALS PROVISIONING & USER MANAGEMENT -->
+  <!-- SECTION 1: EDITORIAL CREDENTIALS PROVISIONING & USER MANAGEMENT -->
   <div class="section-heading-bar">
     <div>
       <h3>Editorial Credentials Provisioning &amp; User Accounts</h3>
@@ -529,7 +422,7 @@
   </div>
 
   <!-- Two Column Layout: Creation Form (Left) & User List (Right) -->
-  <div class="admin-grid-layout">
+  <div class="admin-grid-layout" style="margin-bottom: 40px;">
 
     <!-- Column 1: Register Associate Editor / Reviewer -->
     <div class="portal-card">
@@ -685,6 +578,113 @@
 
     </div>
 
+  </div>
+
+  <!-- SECTION 2: AUTHOR-CENTRIC SUBMISSION QUEUE -->
+  <div style="margin-bottom: 36px;">
+    <div class="section-heading-bar">
+      <div>
+        <h3>Submitted Manuscripts &mdash; Author-Centric Queue</h3>
+        <p>All manuscript submissions and payment verification proofs organized per author.</p>
+      </div>
+    </div>
+
+    {% if author_cards %}
+      {% for card in author_cards %}
+      <div class="author-card">
+        <!-- Author Header Bar -->
+        <div class="author-card-header">
+          <div class="author-info-left">
+            <div class="author-avatar">
+              {{ card.author.first_name|first|default:card.author.username|first|upper }}
+            </div>
+            <div class="author-details">
+              <h4>{{ card.author.get_full_name|default:card.author.username }}</h4>
+              <p>
+                <span>{{ card.author.email }}</span>
+                {% if card.profile.affiliation %}
+                <span>&bull; {{ card.profile.affiliation }}</span>
+                {% endif %}
+                <span>&bull; Registered: {{ card.author.date_joined|date:"M d, Y" }}</span>
+              </p>
+            </div>
+          </div>
+          <div>
+            <span class="author-meta-badge">
+              {{ card.total_papers }} Manuscript{{ card.total_papers|pluralize }} Submitted
+            </span>
+          </div>
+        </div>
+
+        <!-- Manuscripts List for This Author -->
+        <div class="author-manuscripts-list">
+          {% for m in card.manuscripts %}
+          <div class="manuscript-item-row">
+            <div class="manuscript-item-top">
+              <div class="manuscript-item-title">
+                <span class="tracking-pill">{{ m.tracking_id }}</span>
+                {{ m.title }}
+              </div>
+              <div>
+                <span class="status-badge {{ m.status }}">
+                  {{ m.get_status_display }}
+                </span>
+              </div>
+            </div>
+
+            <div class="manuscript-item-meta">
+              <span><strong>Submitted:</strong> {{ m.created_at|date:"M d, Y &bull; h:i A" }}</span>
+              <span><strong>Discipline:</strong> {{ m.get_subject_area_display|default:m.subject_area }}</span>
+              <span><strong>Type:</strong> {{ m.get_article_type_display|default:m.article_type }}</span>
+            </div>
+
+            <!-- Payment Verification Details -->
+            <div class="payment-proof-box">
+              <div class="payment-proof-info">
+                <span><strong>Payment Txn ID:</strong> <code>{{ m.payment_transaction_id|default:"Pending Verification" }}</code></span>
+                <span>
+                  <strong>Proof Screenshot:</strong>
+                  {% if m.payment_screenshot %}
+                    <a href="{{ m.payment_screenshot.url }}" target="_blank" class="btn-portal-xs btn-portal-secondary" style="color: #007C4F; font-weight: 700;">
+                      View Payment Proof
+                    </a>
+                  {% else %}
+                    <span style="color: #94A3B8; font-size: 11.5px;">No screenshot uploaded</span>
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="manuscript-item-actions">
+              <button type="button" class="btn-portal-sm btn-portal-secondary" onclick="toggleAbstract('abstract-{{ m.id }}')">
+                View Abstract
+              </button>
+              {% if m.manuscript_file %}
+              <a href="{{ m.manuscript_file.url }}" class="btn-portal-sm btn-portal-secondary" download>
+                Download Manuscript
+              </a>
+              {% endif %}
+              <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-sm btn-portal-primary">
+                Review &amp; Assign Reviewer
+              </a>
+            </div>
+
+            <!-- Collapsible Abstract Preview -->
+            <div id="abstract-{{ m.id }}" style="display: none; background: #FFFFFF; border: 1px solid rgba(11, 36, 23, 0.12); border-radius: 8px; padding: 14px 16px; margin-top: 6px; font-size: 13px; line-height: 1.6; color: #1D2924;">
+              <strong style="display: block; margin-bottom: 6px; color: #0B2417; font-size: 13.5px;">Manuscript Abstract:</strong>
+              {{ m.abstract|linebreaks }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="portal-card" style="text-align: center; padding: 40px 20px;">
+        <p style="font-size: 14px; color: #5B7065; margin: 0;">No manuscripts have been submitted yet.</p>
+      </div>
+    {% endif %}
   </div>
 
 </div>

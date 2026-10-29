@@ -172,6 +172,7 @@ class ReviewAssignment(models.Model):
         ('pending', 'Invitation Pending'),
         ('accepted', 'Review Accepted / In Progress'),
         ('declined', 'Review Invitation Declined'),
+        ('expired', 'Invitation Expired'),
         ('completed', 'Review Completed & Submitted'),
     ]
 
@@ -181,6 +182,8 @@ class ReviewAssignment(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     due_date = models.DateField(null=True, blank=True)
+    reminder_sent = models.BooleanField(default=False)
+    reminder_date = models.DateTimeField(null=True, blank=True)
 
     # Review Rubric Scores (1=Poor to 5=Excellent)
     originality_score = models.PositiveSmallIntegerField(default=3, help_text="1 (Poor) to 5 (Outstanding)")

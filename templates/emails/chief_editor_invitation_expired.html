@@ -1,0 +1,62 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Review Invitation Expired — {{ manuscript.tracking_id }}{% endblock %}
+
+{% block content %}
+<div style="background-color: #FEF3C7; border-left: 4px solid #D97706; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; font-size: 13.5px; font-weight: 700; color: #92400E;">
+  &#9888; 14-Day Acceptance Window Expired &bull; Reassignment Required
+</div>
+
+<p style="margin: 0 0 16px 0; font-size: 15px;">
+  Dear <strong>Chief Editor</strong>,
+</p>
+
+<p style="margin: 0 0 18px 0;">
+  The peer review invitation for manuscript <strong style="color: #007C4F;">{{ manuscript.tracking_id }}</strong> has expired. The invited reviewer has not acknowledged or accepted the request within the 14-day evaluation window.
+</p>
+
+<!-- Assignment Summary Card -->
+<div style="background-color: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 18px 20px; margin-bottom: 22px;">
+  <div style="margin-bottom: 8px;">
+    <span style="font-family: monospace; font-size: 14px; font-weight: 800; color: #92400E; background: #FEF3C7; padding: 2px 7px; border-radius: 4px;">{{ manuscript.tracking_id }}</span>
+    <span style="display: inline-block; background-color: #FEE2E2; color: #DC2626; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-left: 6px;">Invitation Expired</span>
+  </div>
+  <strong style="font-size: 14.5px; color: #0B2417; line-height: 1.4; display: block; margin-bottom: 12px;">
+    {{ manuscript.title }}
+  </strong>
+
+  <table width="100%" border="0" cellpadding="4" cellspacing="0" style="font-size: 13px;">
+    <tr>
+      <td width="32%" style="color: #64746D; font-weight: 700;">Invited Reviewer:</td>
+      <td>{{ reviewer_name }} ({{ reviewer_email }})</td>
+    </tr>
+    <tr>
+      <td style="color: #64746D; font-weight: 700;">Date Assigned:</td>
+      <td>{{ assigned_date_str }}</td>
+    </tr>
+    <tr>
+      <td style="color: #64746D; font-weight: 700;">Elapsed Time:</td>
+      <td><span style="color: #DC2626; font-weight: 700;">14+ Days (Window Expired)</span></td>
+    </tr>
+  </table>
+</div>
+
+<p style="margin: 0 0 22px 0; font-size: 13px; color: #4B5563;">
+  Please open the Chief Editor Console to select and assign an alternate peer reviewer from the registered reviewer pool to continue the evaluation.
+</p>
+
+<!-- CTA Button -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+  <tr>
+    <td align="center">
+      <a href="https://ppai.org.in/portal/editor/manuscript/{{ manuscript.tracking_id }}/" target="_blank" style="display: inline-block; background-color: #0B2417; color: #FFFFFF; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-weight: 700; font-size: 14px;">
+        Assign Alternate Reviewer &rarr;
+      </a>
+    </td>
+  </tr>
+</table>
+
+<p style="margin: 0; font-size: 13px; color: #6B7280;">
+  Plant Protection Association of India (PPAI) &bull; Editorial Office
+</p>
+{% endblock %}

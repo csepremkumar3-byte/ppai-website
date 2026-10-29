@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+from django.utils import timezone
 from django.test import TestCase, Client, override_settings
 from django.core import mail
 from django.urls import reverse
@@ -213,8 +215,8 @@ class EmailWorkflowVerificationTests(TestCase):
         assignment.refresh_from_db()
         self.assertEqual(assignment.status, 'accepted')
 
-        # Check both emails were dispatched: 1 to editor, 1 to reviewer
-        self.assertEqual(len(mail.outbox), 2)
+        # Check emails were dispatched: Chief Editor notification, Reviewer confirmation, Reviewer credentials
+        self.assertEqual(len(mail.outbox), 3)
         recipients = [m.to[0] for m in mail.outbox]
         self.assertIn('editor@ppai.org.in', recipients)
         self.assertIn(self.reviewer.email, recipients)
@@ -248,14 +250,17 @@ class EmailWorkflowVerificationTests(TestCase):
             follow=True
         )
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Review Invitation Accepted')
         assignment.refresh_from_db()
         self.assertEqual(assignment.status, 'accepted')
 
-        # Check editor got the notification and reviewer got confirmation
-        self.assertEqual(len(mail.outbox), 2)
+        # Check 3 emails dispatched: Chief Editor notification, Reviewer acceptance receipt, and Reviewer login credentials
+        self.assertEqual(len(mail.outbox), 3)
         recipients = [m.to[0] for m in mail.outbox]
         self.assertIn('editor@ppai.org.in', recipients)
         self.assertIn(self.reviewer.email, recipients)
+        cred_emails = [m for m in mail.outbox if 'Login Credentials' in m.subject]
+        self.assertEqual(len(cred_emails), 1)
 
     def test_stage_3e_reviewer_reminder_email(self):
         """Verify Trigger 3 Reminder sends follow-up reminder with accept/decline links."""
@@ -283,6 +288,38 @@ class EmailWorkflowVerificationTests(TestCase):
         self.assertIn(manuscript.tracking_id, rem_mail.subject)
         self.assertIn("Accept URL:", rem_mail.body)
         self.assertIn("Decline URL:", rem_mail.body)
+
+    def test_stage_3f_14_day_expiration_and_chief_editor_alert(self):
+        """Verify invitations pending past 14 days expire and alert Chief Editor."""
+        from submissions.views import check_and_update_invitation_deadlines
+        manuscript = Manuscript.objects.create(
+            author=self.author,
+            title="Biocontrol of Fall Armyworm using Metarhizium anisopliae",
+            abstract="Field efficacy trial of entomopathogenic fungus against Spodoptera frugiperda.",
+            subject_area="entomology",
+            manuscript_file=self.dummy_doc,
+            conflict_of_interest=True
+        )
+        assignment = ReviewAssignment.objects.create(
+            manuscript=manuscript,
+            reviewer=self.reviewer,
+            assigned_by=self.chief_editor,
+            status='pending',
+        )
+        ReviewAssignment.objects.filter(id=assignment.id).update(
+            invitation_date=timezone.now() - timedelta(days=15)
+        )
+
+        mail.outbox.clear()
+        check_and_update_invitation_deadlines()
+
+        assignment.refresh_from_db()
+        self.assertEqual(assignment.status, 'expired')
+        self.assertEqual(len(mail.outbox), 1)
+        exp_mail = mail.outbox[0]
+        self.assertIn('editor@ppai.org.in', exp_mail.to)
+        self.assertIn("Invitation Expired", exp_mail.subject)
+        self.assertIn("Reassignment Needed", exp_mail.subject)
 
     def test_stage_4_credentials_email(self):
         """Verify Email 4 (Login details dispatched for Reviewer or Associate Editor)."""

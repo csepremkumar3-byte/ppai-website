@@ -1,6 +1,8 @@
 from datetime import timedelta
+import secrets
+import string
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -17,12 +19,23 @@ from .emails import (
     send_author_submission_acknowledgment,
     send_chief_editor_submission_alert,
     send_reviewer_invitation,
+    send_reviewer_reminder,
+    send_chief_editor_invitation_expired,
     send_chief_editor_reviewer_response,
     send_reviewer_acceptance_confirmation,
     send_user_credentials_email,
     send_chief_editor_review_completed,
     send_author_editorial_decision,
 )
+
+
+def generate_secure_password(length=10):
+    """Generates a secure temporary password containing uppercase, lowercase, and digits."""
+    chars = string.ascii_letters + string.digits + '!@%'
+    pwd = [secrets.choice(string.ascii_uppercase), secrets.choice(string.digits)]
+    pwd += [secrets.choice(chars) for _ in range(max(0, length - 2))]
+    secrets.SystemRandom().shuffle(pwd)
+    return ''.join(pwd)
 
 
 def get_user_profile(user):
@@ -51,6 +64,57 @@ def get_user_profile(user):
             profile.role = 'editor'
             profile.save()
     return profile
+
+
+def check_and_update_invitation_deadlines():
+    """
+    Self-healing review deadline tracker:
+    1. Past 14 days without acceptance: mark expired and alert Chief Editor to reassign.
+    2. Past 7 days without acceptance: send automated follow-up reminder.
+    """
+    try:
+        now = timezone.now()
+        seven_days_ago = now - timedelta(days=7)
+        fourteen_days_ago = now - timedelta(days=14)
+
+        # 1. 14-Day Expiration
+        expired_assignments = ReviewAssignment.objects.filter(
+            status='pending',
+            invitation_date__lte=fourteen_days_ago
+        ).select_related('manuscript', 'reviewer')
+
+        for assignment in expired_assignments:
+            assignment.status = 'expired'
+            assignment.save()
+            SubmissionActivityLog.objects.create(
+                manuscript=assignment.manuscript,
+                user=assignment.reviewer,
+                action="Invitation Expired",
+                details=f"Reviewer invitation to {assignment.reviewer.get_full_name() or assignment.reviewer.username} expired after 14 days. Alternate reviewer assignment required."
+            )
+            send_chief_editor_invitation_expired(assignment)
+
+        # 2. 7-Day Reminder
+        reminder_assignments = ReviewAssignment.objects.filter(
+            status='pending',
+            invitation_date__lte=seven_days_ago,
+            invitation_date__gt=fourteen_days_ago,
+            reminder_sent=False
+        ).select_related('manuscript', 'reviewer')
+
+        for assignment in reminder_assignments:
+            send_reviewer_reminder(assignment)
+            assignment.reminder_sent = True
+            assignment.reminder_date = now
+            assignment.save()
+            SubmissionActivityLog.objects.create(
+                manuscript=assignment.manuscript,
+                user=assignment.reviewer,
+                action="Review Reminder Sent",
+                details=f"Automated 7-day reminder sent to reviewer {assignment.reviewer.get_full_name() or assignment.reviewer.username}."
+            )
+    except Exception:
+        pass
 
 
 def portal_login(request):
@@ -257,13 +321,16 @@ def editor_manuscript_review(request, tracking_id):
     if not (profile.is_editor or request.user.is_staff or request.user.is_superuser):
         return HttpResponseForbidden("Editorial access required.")
 
+    # Check and process pending reviewer deadlines (7-day reminder, 14-day expiration)
+    check_and_update_invitation_deadlines()
+
     manuscript = get_object_or_404(Manuscript, tracking_id=tracking_id)
     reviews = manuscript.review_assignments.all().select_related('reviewer')
     revisions = manuscript.revisions.all()
     activity_logs = manuscript.activity_logs.all()
 
-    # Available reviewers in the system (excluding the author)
-    assigned_reviewer_ids = reviews.values_list('reviewer_id', flat=True)
+    # Available reviewers in the system (excluding author and currently active reviewers)
+    assigned_reviewer_ids = reviews.exclude(status__in=['expired', 'declined']).values_list('reviewer_id', flat=True)
     available_reviewers = UserProfile.objects.filter(
         Q(is_reviewer=True) | Q(role='reviewer')
     ).exclude(user=manuscript.author).exclude(user_id__in=assigned_reviewer_ids).select_related('user')
@@ -444,8 +511,6 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
             parts = unsigned.split(':')
             if len(parts) == 2 and int(parts[0]) == assignment_id:
                 assignment = get_object_or_404(ReviewAssignment, id=assignment_id, reviewer_id=int(parts[1]))
-                if not request.user.is_authenticated or request.user.id != assignment.reviewer_id:
-                    auth_login(request, assignment.reviewer, backend='django.contrib.auth.backends.ModelBackend')
         except Exception:
             assignment = None
 
@@ -467,12 +532,23 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
             action="Review Invitation Accepted",
             details=f"Reviewer {reviewer_user.get_full_name() or reviewer_user.username} accepted the evaluation."
         )
-        # Notify Chief Editor & send confirmation to Reviewer
+
+        # Trigger 4: Provision/reset password & dispatch credentials to Reviewer so they can sign in
+        temp_password = generate_secure_password(length=10)
+        reviewer_user.set_password(temp_password)
+        reviewer_user.save()
+        if request.user.is_authenticated and request.user.id == reviewer_user.id:
+            update_session_auth_hash(request, reviewer_user)
+
+        # Automated Email Dispatches (via Brevo): Credentials (Email 4), alert to Chief Editor, confirmation to Reviewer
+        send_user_credentials_email(reviewer_user, temp_password, 'Reviewer')
         send_chief_editor_reviewer_response(assignment, action='accepted')
         send_reviewer_acceptance_confirmation(assignment)
 
-        messages.success(request, f"You have accepted the review for {assignment.manuscript.tracking_id}. Please submit your review before {assignment.due_date}.")
-        return redirect('reviewer_evaluate_manuscript', assignment_id=assignment.id)
+        return render(request, 'submissions/invitation_response.html', {
+            'assignment': assignment,
+            'action': 'accept',
+        })
     elif response_action == 'decline':
         assignment.status = 'declined'
         assignment.save()
@@ -484,7 +560,10 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
         )
         # Notify Chief Editor so they can reassign immediately
         send_chief_editor_reviewer_response(assignment, action='declined')
-        messages.info(request, "Review invitation has been declined. Thank you for notifying us.")
+        return render(request, 'submissions/invitation_response.html', {
+            'assignment': assignment,
+            'action': 'decline',
+        })
 
     return redirect('reviewer_dashboard')
 
@@ -653,6 +732,9 @@ def admin_dashboard(request):
     if not (request.user.is_superuser or getattr(profile, 'role', '') == 'admin'):
         messages.error(request, "Access restricted to Administrators.")
         return redirect('portal_login')
+
+    # Self-healing check for 7-day reminders and 14-day auto-expirations
+    check_and_update_invitation_deadlines()
 
     if request.method == 'POST' and request.POST.get('action') == 'create_user':
         role = request.POST.get('role', 'reviewer').strip().lower()

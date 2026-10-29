@@ -254,6 +254,43 @@ def send_chief_editor_reviewer_response(assignment, action='accepted'):
     dispatch_email_message(email)
 
 
+def send_chief_editor_invitation_expired(assignment):
+    """
+    Alerts Chief Editor when an invited Reviewer has not accepted within 14 days,
+    prompting them to reassign an alternate reviewer.
+    """
+    chief_emails = get_chief_editor_emails()
+    if not chief_emails:
+        return
+
+    reviewer = assignment.reviewer
+    reviewer_name = reviewer.get_full_name() or reviewer.username
+    tracking_id = assignment.manuscript.tracking_id
+    assigned_date_str = assignment.invitation_date.strftime('%d %B %Y') if assignment.invitation_date else '14 days ago'
+
+    subject = f"[PPAI Review Expired] Invitation Expired for {tracking_id} — Reassignment Needed"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
+
+    context = {
+        'manuscript': assignment.manuscript,
+        'reviewer_name': reviewer_name,
+        'reviewer_email': reviewer.email,
+        'assigned_date_str': assigned_date_str,
+    }
+
+    html_content = render_to_string('emails/chief_editor_invitation_expired.html', context)
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=chief_emails
+    )
+    email.attach_alternative(html_content, "text/html")
+    dispatch_email_message(email)
+
+
 def send_reviewer_acceptance_confirmation(assignment):
     """
     Sends confirmation receipt to Reviewer upon accepting peer review request.
