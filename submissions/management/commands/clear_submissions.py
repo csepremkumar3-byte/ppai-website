@@ -91,41 +91,28 @@ class Command(BaseCommand):
 
         # 6. Recreate clean default Chief Editor / Admin
         if not no_admin:
-            # Primary admin user: admin@ppai.org.in
+            # Clean primary admin/Chief Editor account
             admin_user = User.objects.create_superuser(
-                username='admin@ppai.org.in',
-                email='admin@ppai.org.in',
-                password=admin_password,
-                first_name='Chief',
-                last_name='Editor'
-            )
-            p1, _ = UserProfile.objects.get_or_create(user=admin_user)
-            p1.role = 'editor'
-            p1.is_editor = True
-            p1.is_author = True
-            p1.affiliation = 'Plant Protection Association of India (PPAI)'
-            p1.save()
-
-            # Username alias: admin
-            admin_alias = User.objects.create_superuser(
                 username='admin',
                 email='admin@ppai.org.in',
                 password=admin_password,
                 first_name='Chief',
                 last_name='Editor'
             )
-            p2, _ = UserProfile.objects.get_or_create(user=admin_alias)
-            p2.role = 'editor'
-            p2.is_editor = True
-            p2.is_author = True
-            p2.affiliation = 'Plant Protection Association of India (PPAI)'
-            p2.save()
+            p1, _ = UserProfile.objects.get_or_create(user=admin_user)
+            p1.role = 'admin'
+            p1.is_editor = False
+            p1.is_reviewer = False
+            p1.is_author = False
+            p1.affiliation = 'Plant Protection Association of India (PPAI)'
+            p1.save()
 
             msg += (
                 f"\nClean Chief Editor / Admin account restored:\n"
-                f"  Username / Email: admin@ppai.org.in (or 'admin')\n"
-                f"  Password:         {admin_password}\n"
-                f"  Role:             Chief Editor / Superuser"
+                f"  Username: admin\n"
+                f"  Email:    admin@ppai.org.in\n"
+                f"  Password: {admin_password}\n"
+                f"  Role:     Chief Editor / Superuser"
             )
 
         self.stdout.write(self.style.SUCCESS(msg))

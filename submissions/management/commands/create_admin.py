@@ -7,8 +7,7 @@ class Command(BaseCommand):
     help = "Creates or resets default admin/editor superuser account"
 
     def handle(self, *args, **options):
-        # Create/reset admin@ppai.org.in
-        user, _ = User.objects.get_or_create(username='admin@ppai.org.in', defaults={'email': 'admin@ppai.org.in'})
+        user, _ = User.objects.get_or_create(username='admin', defaults={'email': 'admin@ppai.org.in'})
         user.email = 'admin@ppai.org.in'
         user.set_password('AdminPassword123!')
         user.is_staff = True
@@ -18,30 +17,17 @@ class Command(BaseCommand):
         user.save()
 
         profile, _ = UserProfile.objects.get_or_create(user=user)
-        profile.role = 'editor'
-        profile.is_editor = True
-        profile.is_author = True
+        profile.role = 'admin'
+        profile.is_editor = False
+        profile.is_reviewer = False
+        profile.is_author = False
         profile.affiliation = 'Plant Protection Association of India (PPAI)'
         profile.save()
 
-        # Also create 'admin' alias
-        user_alias, _ = User.objects.get_or_create(username='admin', defaults={'email': 'admin@ppai.org.in'})
-        user_alias.email = 'admin@ppai.org.in'
-        user_alias.set_password('AdminPassword123!')
-        user_alias.is_staff = True
-        user_alias.is_superuser = True
-        user_alias.save()
-
-        profile_alias, _ = UserProfile.objects.get_or_create(user=user_alias)
-        profile_alias.role = 'editor'
-        profile_alias.is_editor = True
-        profile_alias.is_author = True
-        profile_alias.affiliation = 'Plant Protection Association of India (PPAI)'
-        profile_alias.save()
-
         self.stdout.write(self.style.SUCCESS(
-            "Admin superuser ready:\n"
-            "  Username / Email : admin@ppai.org.in (or admin)\n"
-            "  Password         : AdminPassword123!\n"
-            "  Role             : Editor / Superuser"
+            "Chief Editor admin superuser ready:\n"
+            "  Username : admin\n"
+            "  Email    : admin@ppai.org.in\n"
+            "  Password : AdminPassword123!\n"
+            "  Role     : Chief Editor / Superuser"
         ))
