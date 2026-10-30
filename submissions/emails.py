@@ -118,6 +118,8 @@ def send_chief_editor_submission_alert(manuscript):
 
     if manuscript.manuscript_file and os.path.exists(manuscript.manuscript_file.path):
         email.attach_file(manuscript.manuscript_file.path)
+    if manuscript.payment_screenshot and os.path.exists(manuscript.payment_screenshot.path):
+        email.attach_file(manuscript.payment_screenshot.path)
 
     dispatch_email_message(email)
 
