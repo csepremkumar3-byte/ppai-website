@@ -174,6 +174,7 @@ class ManuscriptRevisionForm(forms.ModelForm):
 class EditorDecisionForm(forms.Form):
     DECISION_CHOICES = [
         ('accept', 'Accept for Publication'),
+        ('publish', 'Publish Manuscript'),
         ('minor_revision', 'Request Minor Revisions'),
         ('major_revision', 'Request Major Revisions'),
         ('reject', 'Reject Manuscript'),

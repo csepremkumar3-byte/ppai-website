@@ -544,3 +544,94 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertNotContains(resp_rev, '30MB')
         self.client.logout()
 
+    def test_17_chief_editor_console_workflow_stats_and_table(self):
+        """Test Chief Editor Console manuscript stats (7 workflow states) and uncluttered table."""
+        # Create manuscripts across various workflow statuses
+        m_received = Manuscript.objects.create(
+            author=self.author_user,
+            title="Received Manuscript Title",
+            abstract="Abstract 1",
+            status="submitted"
+        )
+        m_under_review = Manuscript.objects.create(
+            author=self.author_user,
+            title="Under Review Manuscript Title",
+            abstract="Abstract 2",
+            status="under_review"
+        )
+        m_2nd_review = Manuscript.objects.create(
+            author=self.author_user,
+            title="Under 2nd Review Manuscript Title",
+            abstract="Abstract 3",
+            status="revised_submitted"
+        )
+        m_sent_back = Manuscript.objects.create(
+            author=self.author_user,
+            title="Sent Back Manuscript Title",
+            abstract="Abstract 4",
+            status="revisions_requested"
+        )
+        m_accepted = Manuscript.objects.create(
+            author=self.author_user,
+            title="Accepted Manuscript Title",
+            abstract="Abstract 5",
+            status="accepted"
+        )
+        m_rejected = Manuscript.objects.create(
+            author=self.author_user,
+            title="Rejected Manuscript Title",
+            abstract="Abstract 6",
+            status="rejected"
+        )
+        m_published = Manuscript.objects.create(
+            author=self.author_user,
+            title="Published Manuscript Title",
+            abstract="Abstract 7",
+            status="published"
+        )
+
+        # Log in as Chief Editor
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        resp = self.client.get(reverse('admin_dashboard'))
+        self.assertEqual(resp.status_code, 200)
+
+        # 1. Verify 7 workflow stats are present in context
+        stats = resp.context['manuscript_stats']
+        self.assertEqual(stats['received'], 1)
+        self.assertEqual(stats['under_review'], 1)
+        self.assertEqual(stats['under_2nd_review'], 1)
+        self.assertEqual(stats['sent_back_to_author'], 1)
+        self.assertEqual(stats['accepted'], 1)
+        self.assertEqual(stats['rejected'], 1)
+        self.assertEqual(stats['published'], 1)
+
+        # 2. Verify stats cards and table column headers in HTML
+        self.assertContains(resp, 'Received')
+        self.assertContains(resp, 'Under Review')
+        self.assertContains(resp, 'Under 2nd Review')
+        self.assertContains(resp, 'Sent Back to Author')
+        self.assertContains(resp, 'Accepted')
+        self.assertContains(resp, 'Rejected')
+        self.assertContains(resp, 'Published')
+
+        # Verify table column headers
+        self.assertContains(resp, 'Current Status')
+        self.assertContains(resp, 'Date of Submission')
+        self.assertContains(resp, 'Last Updated')
+
+        # 3. Verify status filtering works
+        resp_filter_rec = self.client.get(reverse('admin_dashboard') + '?status=received')
+        self.assertEqual(len(resp_filter_rec.context['manuscripts']), 1)
+        self.assertEqual(resp_filter_rec.context['manuscripts'][0].tracking_id, m_received.tracking_id)
+
+        resp_filter_pub = self.client.get(reverse('admin_dashboard') + '?status=published')
+        self.assertEqual(len(resp_filter_pub.context['manuscripts']), 1)
+        self.assertEqual(resp_filter_pub.context['manuscripts'][0].tracking_id, m_published.tracking_id)
+
+        # 4. Verify search filtering works
+        resp_search = self.client.get(reverse('admin_dashboard') + f'?q={m_accepted.tracking_id}')
+        self.assertEqual(len(resp_search.context['manuscripts']), 1)
+        self.assertEqual(resp_search.context['manuscripts'][0].tracking_id, m_accepted.tracking_id)
+        self.client.logout()
+
+

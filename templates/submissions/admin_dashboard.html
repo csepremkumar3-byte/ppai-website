@@ -46,7 +46,173 @@
     color: #0B2417;
   }
 
-  /* Author-Centric Cards Queue */
+  /* Workflow Stats Grid - 7 Columns */
+  .workflow-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  @media (min-width: 1200px) {
+    .workflow-stats-grid {
+      grid-template-columns: repeat(7, 1fr);
+    }
+  }
+  .workflow-stat-card {
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 14px 14px 12px 14px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(11, 36, 23, 0.03);
+    position: relative;
+  }
+  .workflow-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(11, 36, 23, 0.08);
+  }
+  .workflow-stat-card.active {
+    box-shadow: 0 0 0 2px var(--active-border, #00B272), 0 6px 16px rgba(11, 36, 23, 0.08);
+  }
+  .workflow-stat-card .stat-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .workflow-stat-card .stat-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .workflow-stat-card .stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #475569;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .workflow-stat-card .stat-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0B2417;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .workflow-stat-card .stat-desc {
+    font-size: 11px;
+    color: #64746D;
+    line-height: 1.2;
+  }
+
+  /* Specific Card Color Accents */
+  .workflow-stat-card.received {
+    border-color: #DBEAFE;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  }
+  .workflow-stat-card.received .stat-indicator { background: #2563EB; }
+  .workflow-stat-card.received .stat-number { color: #1E40AF; }
+  .workflow-stat-card.received.active { --active-border: #2563EB; }
+
+  .workflow-stat-card.under-review {
+    border-color: #FDE68A;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FFFBEB 100%);
+  }
+  .workflow-stat-card.under-review .stat-indicator { background: #D97706; }
+  .workflow-stat-card.under-review .stat-number { color: #B45309; }
+  .workflow-stat-card.under-review.active { --active-border: #D97706; }
+
+  .workflow-stat-card.second-review {
+    border-color: #DDD6FE;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%);
+  }
+  .workflow-stat-card.second-review .stat-indicator { background: #7C3AED; }
+  .workflow-stat-card.second-review .stat-number { color: #6D28D9; }
+  .workflow-stat-card.second-review.active { --active-border: #7C3AED; }
+
+  .workflow-stat-card.sent-back {
+    border-color: #FFEDD5;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+  }
+  .workflow-stat-card.sent-back .stat-indicator { background: #EA580C; }
+  .workflow-stat-card.sent-back .stat-number { color: #C2410C; }
+  .workflow-stat-card.sent-back.active { --active-border: #EA580C; }
+
+  .workflow-stat-card.accepted {
+    border-color: #A7F3D0;
+    background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%);
+  }
+  .workflow-stat-card.accepted .stat-indicator { background: #00B272; }
+  .workflow-stat-card.accepted .stat-number { color: #047857; }
+  .workflow-stat-card.accepted.active { --active-border: #00B272; }
+
+  .workflow-stat-card.rejected {
+    border-color: #FECACA;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FEF2F2 100%);
+  }
+  .workflow-stat-card.rejected .stat-indicator { background: #DC2626; }
+  .workflow-stat-card.rejected .stat-number { color: #B91C1C; }
+  .workflow-stat-card.rejected.active { --active-border: #DC2626; }
+
+  .workflow-stat-card.published {
+    border-color: #CCFBF1;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F0FDFA 100%);
+  }
+  .workflow-stat-card.published .stat-indicator { background: #0D9488; }
+  .workflow-stat-card.published .stat-number { color: #0F766E; }
+  .workflow-stat-card.published.active { --active-border: #0D9488; }
+
+  /* User summary strip */
+  .users-summary-strip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    font-size: 12px;
+  }
+  .user-summary-badge {
+    background: #FFFFFF;
+    border: 1px solid rgba(11, 36, 23, 0.1);
+    padding: 4px 10px;
+    border-radius: 8px;
+    color: #475569;
+  }
+  .user-summary-badge strong {
+    color: #0B2417;
+    font-size: 13px;
+  }
+
+  /* Table styling */
+  .table-manuscript-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0B2417;
+    text-decoration: none;
+    line-height: 1.4;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .table-manuscript-title:hover {
+    color: #00B272;
+  }
+  .table-manuscript-meta {
+    font-size: 11.5px;
+    color: #64746D;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  /* Section Headings */
   .section-heading-bar {
     display: flex;
     justify-content: space-between;
@@ -389,28 +555,70 @@
   </div>
   {% endif %}
 
-  <!-- Quick Stats -->
-  <div class="stat-strip">
-    <div class="stat-box">
-      <span>Total Users</span>
-      <strong>{{ counts.all }}</strong>
-    </div>
-    <div class="stat-box">
-      <span>Associate Editors</span>
-      <strong style="color: #00B272;">{{ counts.editors }}</strong>
-    </div>
-    <div class="stat-box">
-      <span>Reviewers</span>
-      <strong style="color: #D97706;">{{ counts.reviewers }}</strong>
-    </div>
-    <div class="stat-box">
-      <span>Authors</span>
-      <strong style="color: #2563EB;">{{ counts.authors }}</strong>
-    </div>
-    <div class="stat-box">
-      <span>Active Authors with Submissions</span>
-      <strong style="color: #7C3AED;">{{ author_cards|length }}</strong>
-    </div>
+  <!-- Manuscript Editorial Workflow Statistics (7 Requested Metrics) -->
+  <div class="workflow-stats-grid">
+    <a href="{% url 'admin_dashboard' %}?status=received#manuscripts-section" class="workflow-stat-card received {% if filter_status == 'received' %}active{% endif %}" title="View received initial submissions">
+      <div class="stat-top">
+        <span class="stat-indicator"></span>
+        <span class="stat-label">Received</span>
+      </div>
+      <div class="stat-number">{{ manuscript_stats.received }}</div>
+      <div class="stat-desc">Initial Submissions</div>
+    </a>
+
+    <a href="{% url 'admin_dashboard' %}?status=under_review#manuscripts-section" class="workflow-stat-card under-review {% if filter_status == 'under_review' %}active{% endif %}" title="View manuscripts under active peer review">
+      <div class="stat-top">
+        <span class="stat-indicator"></span>
+        <span class="stat-label">Under Review</span>
+      </div>
+      <div class="stat-number">{{ manuscript_stats.under_review }}</div>
+      <div class="stat-desc">Peer Review in Progress</div>
+    </a>
+
+    <a href="{% url 'admin_dashboard' %}?status=under_2nd_review#manuscripts-section" class="workflow-stat-card second-review {% if filter_status == 'under_2nd_review' %}active{% endif %}" title="View revised manuscripts under 2nd review">
+      <div class="stat-top">
+        <span class="stat-indicator"></span>
+        <span class="stat-label">Under 2nd Review</span>
+      </div>
+      <div class="stat-number">{{ manuscript_stats.under_2nd_review }}</div>
+      <div class="stat-desc">Revised Re-Evaluation</div>
+    </a>
+
+    <a href="{% url 'admin_dashboard' %}?status=sent_back#manuscripts-section" class="workflow-stat-card sent-back {% if filter_status == 'sent_back' or filter_status == 'sent_back_to_author' %}active{% endif %}" title="View manuscripts returned to authors for revisions">
+      <div class="stat-top">
+        <span class="stat-indicator"></span>
+        <span class="stat-label">Sent Back to Author</span>
+      </div>
+      <div class="stat-number">{{ manuscript_stats.sent_back_to_author }}</div>
+      <div class="stat-desc">Revisions Requested</div>
+    </a>
+
+    <a href="{% url 'admin_dashboard' %}?status=accepted#manuscripts-section" class="workflow-stat-card accepted {% if filter_status == 'accepted' %}active{% endif %}" title="View accepted manuscripts">
+      <div class="stat-top">
+        <span class="stat-indicator"></span>
+        <span class="stat-label">Accepted</span>
+      </div>
+      <div class="stat-number">{{ manuscript_stats.accepted }}</div>
+      <div class="stat-desc">Approved for Publication</div>
+    </a>
+
+    <a href="{% url 'admin_dashboard' %}?status=rejected#manuscripts-section" class="workflow-stat-card rejected {% if filter_status == 'rejected' %}active{% endif %}" title="View rejected manuscripts">
+      <div class="stat-top">
+        <span class="stat-indicator"></span>
+        <span class="stat-label">Rejected</span>
+      </div>
+      <div class="stat-number">{{ manuscript_stats.rejected }}</div>
+      <div class="stat-desc">Not Accepted</div>
+    </a>
+
+    <a href="{% url 'admin_dashboard' %}?status=published#manuscripts-section" class="workflow-stat-card published {% if filter_status == 'published' %}active{% endif %}" title="View published manuscripts">
+      <div class="stat-top">
+        <span class="stat-indicator"></span>
+        <span class="stat-label">Published</span>
+      </div>
+      <div class="stat-number">{{ manuscript_stats.published }}</div>
+      <div class="stat-desc">Formally Published</div>
+    </a>
   </div>
 
   <!-- SECTION 1: EDITORIAL CREDENTIALS PROVISIONING & USER MANAGEMENT -->
@@ -418,6 +626,13 @@
     <div>
       <h3>Editorial Credentials Provisioning &amp; User Accounts</h3>
       <p>Create and dispatch credentials for Associate Editors and Reviewers, and manage all portal accounts.</p>
+    </div>
+    <!-- Quick Accounts Summary -->
+    <div class="users-summary-strip">
+      <span class="user-summary-badge"><strong>{{ counts.all }}</strong> Total Accounts</span>
+      <span class="user-summary-badge" style="color: #00B272;"><strong>{{ counts.editors }}</strong> Associate Editors</span>
+      <span class="user-summary-badge" style="color: #D97706;"><strong>{{ counts.reviewers }}</strong> Reviewers</span>
+      <span class="user-summary-badge" style="color: #2563EB;"><strong>{{ counts.authors }}</strong> Authors</span>
     </div>
   </div>
 
@@ -592,110 +807,146 @@
 
   </div>
 
-  <!-- SECTION 2: AUTHOR-CENTRIC SUBMISSION QUEUE -->
-  <div style="margin-bottom: 36px;">
-    <div class="section-heading-bar">
+  <!-- SECTION 2: SUBMITTED MANUSCRIPTS TABLE -->
+  <div class="portal-card" id="manuscripts-section" style="margin-bottom: 36px;">
+    <div class="portal-card-header" style="flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;">
       <div>
-        <h3>Submitted Manuscripts &mdash; Author-Centric Queue</h3>
-        <p>All manuscript submissions and payment verification proofs organized per author.</p>
+        <h2>Submitted Manuscripts</h2>
+        <p>Complete log of manuscripts across all peer-review workflow stages.</p>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <!-- Search Bar -->
+        <form method="GET" action="{% url 'admin_dashboard' %}#manuscripts-section" style="display: flex; gap: 8px;">
+          {% if filter_status and filter_status != 'all' %}
+            <input type="hidden" name="status" value="{{ filter_status }}">
+          {% endif %}
+          {% if filter_role and filter_role != 'all' %}
+            <input type="hidden" name="role" value="{{ filter_role }}">
+          {% endif %}
+          <div style="position: relative;">
+            <input type="text" name="q" value="{{ search_q|default:'' }}" placeholder="Search ID, title, author..." class="portal-input" style="padding-left: 32px; padding-top: 6px; padding-bottom: 6px; font-size: 13px; width: 230px; height: 36px;">
+            <svg style="position: absolute; left: 10px; top: 10px; color: #94A3B8;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </div>
+          {% if search_q %}
+            <a href="{% url 'admin_dashboard' %}?status={{ filter_status }}#manuscripts-section" class="btn-portal-secondary btn-portal-sm" style="height: 36px; padding: 0 10px; line-height: 34px;" title="Clear search">&times;</a>
+          {% endif %}
+        </form>
       </div>
     </div>
 
-    {% if author_cards %}
-      {% for card in author_cards %}
-      <div class="author-card">
-        <!-- Author Header Bar -->
-        <div class="author-card-header">
-          <div class="author-info-left">
-            <div class="author-avatar">
-              {{ card.author.first_name|first|default:card.author.username|first|upper }}
-            </div>
-            <div class="author-details">
-              <h4>{{ card.author.get_full_name|default:card.author.username }}</h4>
-              <p>
-                <span>{{ card.author.email }}</span>
-                {% if card.profile.affiliation %}
-                <span>&bull; {{ card.profile.affiliation }}</span>
-                {% endif %}
-                <span>&bull; Registered: {{ card.author.date_joined|date:"M d, Y" }}</span>
-              </p>
-            </div>
-          </div>
-          <div>
-            <span class="author-meta-badge">
-              {{ card.total_papers }} Manuscript{{ card.total_papers|pluralize }} Submitted
-            </span>
-          </div>
-        </div>
+    <!-- Filter Pills for Manuscript Status -->
+    <div class="filter-pill-nav" style="margin-top: 4px; margin-bottom: 20px;">
+      <a href="{% url 'admin_dashboard' %}?status=all#manuscripts-section" class="filter-pill-btn {% if filter_status == 'all' %}active{% endif %}">
+        All Manuscripts ({{ manuscript_stats.total }})
+      </a>
+      <a href="{% url 'admin_dashboard' %}?status=received#manuscripts-section" class="filter-pill-btn {% if filter_status == 'received' %}active{% endif %}">
+        Received ({{ manuscript_stats.received }})
+      </a>
+      <a href="{% url 'admin_dashboard' %}?status=under_review#manuscripts-section" class="filter-pill-btn {% if filter_status == 'under_review' %}active{% endif %}">
+        Under Review ({{ manuscript_stats.under_review }})
+      </a>
+      <a href="{% url 'admin_dashboard' %}?status=under_2nd_review#manuscripts-section" class="filter-pill-btn {% if filter_status == 'under_2nd_review' %}active{% endif %}">
+        Under 2nd Review ({{ manuscript_stats.under_2nd_review }})
+      </a>
+      <a href="{% url 'admin_dashboard' %}?status=sent_back#manuscripts-section" class="filter-pill-btn {% if filter_status == 'sent_back' or filter_status == 'sent_back_to_author' %}active{% endif %}">
+        Sent Back to Author ({{ manuscript_stats.sent_back_to_author }})
+      </a>
+      <a href="{% url 'admin_dashboard' %}?status=accepted#manuscripts-section" class="filter-pill-btn {% if filter_status == 'accepted' %}active{% endif %}">
+        Accepted ({{ manuscript_stats.accepted }})
+      </a>
+      <a href="{% url 'admin_dashboard' %}?status=rejected#manuscripts-section" class="filter-pill-btn {% if filter_status == 'rejected' %}active{% endif %}">
+        Rejected ({{ manuscript_stats.rejected }})
+      </a>
+      <a href="{% url 'admin_dashboard' %}?status=published#manuscripts-section" class="filter-pill-btn {% if filter_status == 'published' %}active{% endif %}">
+        Published ({{ manuscript_stats.published }})
+      </a>
+    </div>
 
-        <!-- Manuscripts List for This Author -->
-        <div class="author-manuscripts-list">
-          {% for m in card.manuscripts %}
-          <div class="manuscript-item-row">
-            <div class="manuscript-item-top">
-              <div class="manuscript-item-title">
-                <span class="tracking-pill">{{ m.tracking_id }}</span>
+    {% if manuscripts %}
+    <div class="table-responsive">
+      <table class="portal-table">
+        <thead>
+          <tr>
+            <th style="width: 140px;">ID</th>
+            <th>Title</th>
+            <th style="width: 170px;">Current Status</th>
+            <th style="width: 150px;">Date of Submission</th>
+            <th style="width: 160px;">Last Updated</th>
+            <th style="text-align: right; width: 170px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in manuscripts %}
+          <tr>
+            <!-- ID -->
+            <td>
+              <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="tracking-pill" title="Review manuscript {{ m.tracking_id }}">
+                {{ m.tracking_id }}
+              </a>
+            </td>
+
+            <!-- Title -->
+            <td>
+              <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="table-manuscript-title">
                 {{ m.title }}
-              </div>
-              <div>
-                <span class="status-badge {{ m.status }}">
-                  {{ m.get_status_display }}
-                </span>
-              </div>
-            </div>
-
-            <div class="manuscript-item-meta">
-              <span><strong>Submitted:</strong> {{ m.created_at|date:"M d, Y &bull; h:i A" }}</span>
-              <span><strong>Discipline:</strong> {{ m.get_subject_area_display|default:m.subject_area }}</span>
-              <span><strong>Type:</strong> {{ m.get_article_type_display|default:m.article_type }}</span>
-            </div>
-
-            <!-- Payment Verification Details -->
-            <div class="payment-proof-box">
-              <div class="payment-proof-info">
-                <span><strong>Payment Txn ID:</strong> <code>{{ m.payment_transaction_id|default:"Pending Verification" }}</code></span>
-                <span>
-                  <strong>Proof Screenshot:</strong>
-                  {% if m.payment_screenshot %}
-                    <a href="{{ m.payment_screenshot.url }}" target="_blank" class="btn-portal-xs btn-portal-secondary" style="color: #007C4F; font-weight: 700;">
-                      View Payment Proof
-                    </a>
-                  {% else %}
-                    <span style="color: #94A3B8; font-size: 11.5px;">No screenshot uploaded</span>
-                  {% endif %}
-                </span>
-              </div>
-            </div>
-
-            <!-- Action Controls -->
-            <div class="manuscript-item-actions">
-              <button type="button" class="btn-portal-sm btn-portal-secondary" onclick="toggleAbstract('abstract-{{ m.id }}')">
-                View Abstract
-              </button>
-              {% if m.manuscript_file %}
-              <a href="{{ m.manuscript_file.url }}" class="btn-portal-sm btn-portal-secondary" download>
-                Download Manuscript
               </a>
-              {% endif %}
-              <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-sm btn-portal-primary">
-                Review &amp; Assign Reviewer
-              </a>
-            </div>
+              <div class="table-manuscript-meta">
+                <span><strong>Author:</strong> {{ m.author.get_full_name|default:m.author.username }}</span>
+                {% if m.author.journal_profile.affiliation %}
+                  <span>&bull; {{ m.author.journal_profile.affiliation }}</span>
+                {% endif %}
+                <span>&bull; <span style="color: #6D28D9; font-weight: 600;">{{ m.get_article_type_display|default:m.article_type }}</span></span>
+              </div>
+            </td>
 
-            <!-- Collapsible Abstract Preview -->
-            <div id="abstract-{{ m.id }}" style="display: none; background: #FFFFFF; border: 1px solid rgba(11, 36, 23, 0.12); border-radius: 8px; padding: 14px 16px; margin-top: 6px; font-size: 13px; line-height: 1.6; color: #1D2924;">
-              <strong style="display: block; margin-bottom: 6px; color: #0B2417; font-size: 13.5px;">Manuscript Abstract:</strong>
-              {{ m.abstract|linebreaks }}
-            </div>
-          </div>
+            <!-- Current Status -->
+            <td>
+              <span class="status-badge {{ m.workflow_status_css }}">
+                {{ m.workflow_status_label }}
+              </span>
+            </td>
+
+            <!-- Date of Submission -->
+            <td>
+              <div style="font-weight: 600; color: #0B2417; font-size: 13px;">{{ m.created_at|date:"M d, Y" }}</div>
+              <div style="font-size: 11px; color: #64746D;">{{ m.created_at|date:"h:i A" }}</div>
+            </td>
+
+            <!-- Last Updated -->
+            <td>
+              <div style="font-weight: 600; color: #0B2417; font-size: 13px;">{{ m.updated_at|date:"M d, Y" }}</div>
+              <div style="font-size: 11px; color: #64746D;">{{ m.updated_at|date:"h:i A" }}</div>
+            </td>
+
+            <!-- Action -->
+            <td style="text-align: right; white-space: nowrap;">
+              <div style="display: inline-flex; align-items: center; gap: 6px;">
+                {% if m.manuscript_file %}
+                <a href="{{ m.manuscript_file.url }}" download class="btn-portal-secondary btn-portal-sm" title="Download Manuscript Document" style="padding: 7px 10px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </a>
+                {% endif %}
+                {% if m.payment_screenshot %}
+                <a href="{{ m.payment_screenshot.url }}" target="_blank" class="btn-portal-secondary btn-portal-sm" title="View Payment Proof" style="padding: 7px 10px; color: #007C4F;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                </a>
+                {% endif %}
+                <a href="{% url 'editor_manuscript_review' m.tracking_id %}" class="btn-portal-primary btn-portal-sm">
+                  Review &amp; Assign
+                </a>
+              </div>
+            </td>
+          </tr>
           {% endfor %}
-        </div>
-      </div>
-      {% endfor %}
+        </tbody>
+      </table>
+    </div>
     {% else %}
-      <div class="portal-card" style="text-align: center; padding: 40px 20px;">
-        <p style="font-size: 14px; color: #5B7065; margin: 0;">No manuscripts have been submitted yet.</p>
-      </div>
+    <div style="text-align: center; padding: 48px 20px;">
+      <svg style="margin: 0 auto 12px auto; color: #94A3B8; display: block;" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+      <p style="font-size: 14.5px; font-weight: 600; color: #1D2924; margin: 0 0 4px 0;">No manuscripts found</p>
+      <p style="font-size: 13px; color: #64746D; margin: 0;">No manuscripts match the selected status filter or search query.</p>
+    </div>
     {% endif %}
   </div>
 

@@ -419,6 +419,7 @@ def editor_manuscript_review(request, tracking_id):
 
         status_mapping = {
             'accept': 'accepted',
+            'publish': 'published',
             'minor_revision': 'revisions_requested',
             'major_revision': 'revisions_requested',
             'reject': 'rejected',
@@ -848,12 +849,63 @@ def admin_dashboard(request):
             'total_papers': a.manuscripts.count(),
         })
 
+    # Manuscript Workflow Statistics & Filtering
+    all_manuscripts = Manuscript.objects.all().select_related(
+        'author', 'author__journal_profile', 'assigned_editor'
+    ).order_by('-created_at')
+
+    manuscript_stats = {
+        'total': all_manuscripts.count(),
+        'received': all_manuscripts.filter(status='submitted').count(),
+        'under_review': all_manuscripts.filter(status__in=['under_review', 'review_completed']).count(),
+        'under_2nd_review': all_manuscripts.filter(status='revised_submitted').count(),
+        'sent_back_to_author': all_manuscripts.filter(status='revisions_requested').count(),
+        'accepted': all_manuscripts.filter(status='accepted').count(),
+        'rejected': all_manuscripts.filter(status='rejected').count(),
+        'published': all_manuscripts.filter(status='published').count(),
+    }
+
+    filter_status = request.GET.get('status', 'all').strip().lower()
+    search_q = request.GET.get('q', '').strip()
+
+    filtered_manuscripts = all_manuscripts
+    if filter_status == 'received':
+        filtered_manuscripts = filtered_manuscripts.filter(status='submitted')
+    elif filter_status == 'under_review':
+        filtered_manuscripts = filtered_manuscripts.filter(status__in=['under_review', 'review_completed'])
+    elif filter_status == 'under_2nd_review':
+        filtered_manuscripts = filtered_manuscripts.filter(status='revised_submitted')
+    elif filter_status in ['sent_back_to_author', 'sent_back']:
+        filtered_manuscripts = filtered_manuscripts.filter(status='revisions_requested')
+    elif filter_status == 'accepted':
+        filtered_manuscripts = filtered_manuscripts.filter(status='accepted')
+    elif filter_status == 'rejected':
+        filtered_manuscripts = filtered_manuscripts.filter(status='rejected')
+    elif filter_status == 'published':
+        filtered_manuscripts = filtered_manuscripts.filter(status='published')
+    else:
+        filter_status = 'all'
+
+    if search_q:
+        filtered_manuscripts = filtered_manuscripts.filter(
+            Q(tracking_id__icontains=search_q) |
+            Q(title__icontains=search_q) |
+            Q(author__first_name__icontains=search_q) |
+            Q(author__last_name__icontains=search_q) |
+            Q(author__email__icontains=search_q) |
+            Q(keywords__icontains=search_q)
+        )
+
     return render(request, 'submissions/admin_dashboard.html', {
         'profile': profile,
         'users': filtered_users,
         'filter_role': filter_role,
         'counts': counts,
         'author_cards': author_cards,
+        'manuscripts': filtered_manuscripts,
+        'manuscript_stats': manuscript_stats,
+        'filter_status': filter_status,
+        'search_q': search_q,
     })
 
 

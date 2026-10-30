@@ -76,6 +76,7 @@ class Manuscript(models.Model):
         ('revised_submitted', 'Revised Manuscript Submitted'),
         ('accepted', 'Accepted for Publication'),
         ('rejected', 'Rejected'),
+        ('published', 'Published'),
         ('withdrawn', 'Withdrawn by Author'),
     ]
 
@@ -126,6 +127,7 @@ class Manuscript(models.Model):
         choices=[
             ('pending', 'Pending Decision'),
             ('accept', 'Accept Manuscript'),
+            ('publish', 'Publish Manuscript'),
             ('minor_revision', 'Request Minor Revisions'),
             ('major_revision', 'Request Major Revisions'),
             ('reject', 'Reject Manuscript'),
@@ -138,6 +140,42 @@ class Manuscript(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def workflow_status_label(self):
+        if self.status == 'submitted':
+            return 'Received'
+        elif self.status in ['under_review', 'review_completed']:
+            return 'Under Review'
+        elif self.status == 'revised_submitted':
+            return 'Under 2nd Review'
+        elif self.status == 'revisions_requested':
+            return 'Sent Back to Author'
+        elif self.status == 'accepted':
+            return 'Accepted'
+        elif self.status == 'rejected':
+            return 'Rejected'
+        elif self.status == 'published':
+            return 'Published'
+        return self.get_status_display()
+
+    @property
+    def workflow_status_css(self):
+        if self.status == 'submitted':
+            return 'submitted'
+        elif self.status in ['under_review', 'review_completed']:
+            return 'under_review'
+        elif self.status == 'revised_submitted':
+            return 'revised_submitted'
+        elif self.status == 'revisions_requested':
+            return 'revisions_requested'
+        elif self.status == 'accepted':
+            return 'accepted'
+        elif self.status == 'rejected':
+            return 'rejected'
+        elif self.status == 'published':
+            return 'published'
+        return self.status
 
     class Meta:
         ordering = ['-created_at']

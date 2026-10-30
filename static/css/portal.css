@@ -204,6 +204,13 @@
 }
 .status-badge.rejected::before { background: #EF4444; }
 
+.status-badge.published {
+  background: #F0FDFA;
+  color: #0F766E;
+  border: 1px solid #CCFBF1;
+}
+.status-badge.published::before { background: #0D9488; }
+
 .status-badge.withdrawn {
   background: #F3F4F6;
   color: #4B5563;

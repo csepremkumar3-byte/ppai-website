@@ -114,9 +114,11 @@ class EmailWorkflowVerificationTests(TestCase):
         self.assertIn(manuscript.tracking_id, editor_mail.subject)
         self.assertIn("UPI/9876543210/SBI", editor_mail.body)
         self.assertIn("ICAR-IARI Division of Plant Pathology", editor_mail.body)
-        # Check manuscript file is attached
-        self.assertEqual(len(editor_mail.attachments), 1)
-        self.assertTrue(editor_mail.attachments[0][0].endswith("research_paper.pdf"))
+        # Check manuscript file and payment screenshot are attached
+        self.assertEqual(len(editor_mail.attachments), 2)
+        attachment_names = [att[0] for att in editor_mail.attachments]
+        self.assertTrue(any("research_paper" in name for name in attachment_names))
+        self.assertTrue(any("payment_receipt" in name for name in attachment_names))
 
     def test_stage_3_reviewer_invitation_email(self):
         """Verify Email 3 (Reviewer Invitation with window time and interactive Accept/Decline links)."""
