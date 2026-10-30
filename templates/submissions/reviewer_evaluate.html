@@ -366,9 +366,10 @@
             <!-- Optional Annotated File -->
             <div class="portal-form-group" style="margin-bottom: 24px;">
               <label for="{{ form.annotated_file.id_for_label }}">
-                5. Upload Annotated Manuscript (Optional Word/PDF)
+                5. Upload Annotated Manuscript (Optional Word .docx or PDF, <strong>Max 5MB</strong>)
               </label>
               {{ form.annotated_file }}
+              <span class="field-hint" style="display:block; margin-top:4px;">Attach line-by-line comments or tracked changes copy (Max 5MB).</span>
               {% if form.annotated_file.errors %}<div class="error-text">{{ form.annotated_file.errors.0 }}</div>{% endif %}
             </div>
 
@@ -388,4 +389,31 @@
   </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('input[type="file"]').forEach(function(input) {
+    input.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
+        const maxBytes = 5 * 1024 * 1024; // 5MB
+        let msgEl = this.parentElement.querySelector('.file-validation-msg');
+        if (!msgEl) {
+          msgEl = document.createElement('div');
+          msgEl.className = 'file-validation-msg';
+          this.parentElement.appendChild(msgEl);
+        }
+        if (file.size > maxBytes) {
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+          msgEl.textContent = `File "${file.name}" is too large (${sizeMb}MB). Maximum allowed upload size is 5MB.`;
+          msgEl.style.display = 'block';
+          this.value = '';
+        } else {
+          msgEl.style.display = 'none';
+        }
+      }
+    });
+  });
+});
+</script>
 {% endblock %}

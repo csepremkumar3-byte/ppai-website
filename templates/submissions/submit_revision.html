@@ -92,7 +92,7 @@
           <label for="{{ form.revised_file.id_for_label }}">Revised Manuscript File (Word .docx or PDF) <span style="color:#DC2626">*</span></label>
           <div class="file-dropzone-styled">
             {{ form.revised_file }}
-            <p style="font-size: 12px; color: #5B7065; margin-top: 8px;">Upload clean version or tracked changes version (max 30MB).</p>
+            <p style="font-size: 12px; color: #5B7065; margin-top: 8px;">Upload clean version or tracked changes version (Word .docx or PDF, <strong>Max 5MB</strong>).</p>
           </div>
           {% if form.revised_file.errors %}<div class="error-text">{{ form.revised_file.errors.0 }}</div>{% endif %}
         </div>
@@ -116,4 +116,31 @@
   </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('input[type="file"]').forEach(function(input) {
+    input.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
+        const maxBytes = 5 * 1024 * 1024; // 5MB
+        let msgEl = this.parentElement.querySelector('.file-validation-msg');
+        if (!msgEl) {
+          msgEl = document.createElement('div');
+          msgEl.className = 'file-validation-msg';
+          this.parentElement.appendChild(msgEl);
+        }
+        if (file.size > maxBytes) {
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+          msgEl.textContent = `File "${file.name}" is too large (${sizeMb}MB). Maximum allowed upload size is 5MB.`;
+          msgEl.style.display = 'block';
+          this.value = '';
+        } else {
+          msgEl.style.display = 'none';
+        }
+      }
+    });
+  });
+});
+</script>
 {% endblock %}

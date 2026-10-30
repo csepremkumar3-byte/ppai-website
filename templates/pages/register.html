@@ -156,6 +156,56 @@
       border-color: var(--vibrant-green);
     }
 
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .password-input-wrapper input {
+      padding-right: 42px !important;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #718279;
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: color 0.15s ease, background-color 0.15s ease;
+      z-index: 3;
+    }
+
+    .password-toggle-btn:hover {
+      color: var(--vibrant-green);
+      background-color: rgba(0, 178, 114, 0.08);
+    }
+
+    .password-toggle-btn .eye-open-icon {
+      display: none;
+    }
+
+    .password-toggle-btn .eye-closed-icon {
+      display: block;
+    }
+
+    .password-toggle-btn.is-revealed .eye-open-icon {
+      display: block;
+    }
+
+    .password-toggle-btn.is-revealed .eye-closed-icon {
+      display: none;
+    }
+
     .field-hint {
       font-size: 11px;
       color: var(--text-muted);
@@ -282,12 +332,36 @@
       <div class="form-grid-row">
         <div class="input-group">
           <label class="input-label" for="password">Password <span style="color:#DC2626">*</span></label>
-          <input type="password" id="password" name="password" class="input-field" placeholder="At least 8 chars" required minlength="8" autocomplete="new-password">
+          <div class="password-input-wrapper">
+            <input type="password" id="password" name="password" class="input-field" placeholder="At least 8 chars" required minlength="8" autocomplete="new-password">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility(this)" aria-label="Show password" title="Toggle password visibility">
+              <svg class="eye-closed-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+              <svg class="eye-open-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
           <div class="field-error" id="passwordError">Must be &ge;8 chars with uppercase, letters &amp; numbers.</div>
         </div>
         <div class="input-group">
           <label class="input-label" for="confirm_password">Confirm Password <span style="color:#DC2626">*</span></label>
-          <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm password" required minlength="8" autocomplete="new-password">
+          <div class="password-input-wrapper">
+            <input type="password" id="confirm_password" name="confirm_password" class="input-field" placeholder="Confirm password" required minlength="8" autocomplete="new-password">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility(this)" aria-label="Show password" title="Toggle password visibility">
+              <svg class="eye-closed-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+              <svg class="eye-open-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
           <div class="field-error" id="matchError">Passwords do not match.</div>
         </div>
       </div>
@@ -305,6 +379,23 @@
   </div>
 
   <script>
+    function togglePasswordVisibility(btn) {
+      const wrapper = btn.closest('.password-input-wrapper') || btn.parentElement;
+      const input = wrapper.querySelector('input');
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.classList.add('is-revealed');
+        btn.setAttribute('aria-label', 'Hide password');
+        btn.setAttribute('title', 'Hide password');
+      } else {
+        input.type = 'password';
+        btn.classList.remove('is-revealed');
+        btn.setAttribute('aria-label', 'Show password');
+        btn.setAttribute('title', 'Show password');
+      }
+    }
+
     const form = document.getElementById('registerForm');
     const emailInput = document.getElementById('email');
     const emailError = document.getElementById('emailError');

@@ -497,3 +497,50 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertContains(del_resp, "was successfully deleted")
         self.assertFalse(User.objects.filter(email='vikram.reviewer@icar.gov.in').exists())
         self.client.logout()
+
+    def test_16_upload_5mb_validation_and_password_toggle(self):
+        """Test that file uploads enforce 5MB maximum limit, and password fields have privacy toggle."""
+        from django.core.exceptions import ValidationError
+        from submissions.forms import validate_file_extension, ManuscriptSubmissionForm
+
+        # 1. 6MB file rejected by validate_file_extension
+        large_file = SimpleUploadedFile("oversized.pdf", b"x" * (6 * 1024 * 1024), content_type="application/pdf")
+        with self.assertRaises(ValidationError) as ctx:
+            validate_file_extension(large_file)
+        self.assertIn("5MB", str(ctx.exception))
+
+        # 2. 1MB file accepted
+        valid_file = SimpleUploadedFile("valid.pdf", b"x" * (1024 * 1024), content_type="application/pdf")
+        try:
+            validate_file_extension(valid_file)
+        except ValidationError:
+            self.fail("validate_file_extension raised ValidationError unexpectedly for 1MB file!")
+
+        # 3. Check login and register pages render password privacy toggle button
+        resp_login = self.client.get(reverse('login'))
+        self.assertContains(resp_login, 'password-toggle-btn')
+        self.assertContains(resp_login, 'togglePasswordVisibility')
+
+        resp_register = self.client.get(reverse('register'))
+        self.assertContains(resp_register, 'password-toggle-btn')
+        self.assertContains(resp_register, 'togglePasswordVisibility')
+
+        # 4. Check submit manuscript and submit revision templates render 5MB hints
+        self.client.force_login(self.author_user)
+        resp_submit = self.client.get(reverse('submit_manuscript'))
+        self.assertEqual(resp_submit.status_code, 200)
+        self.assertContains(resp_submit, '5MB')
+
+        m = Manuscript.objects.create(
+            author=self.author_user,
+            title="Bio-efficacy test",
+            abstract="Abstract content",
+            keywords="test",
+            status="revisions_requested"
+        )
+        resp_rev = self.client.get(reverse('author_submit_revision', kwargs={'tracking_id': m.tracking_id}))
+        self.assertEqual(resp_rev.status_code, 200)
+        self.assertContains(resp_rev, '5MB')
+        self.assertNotContains(resp_rev, '30MB')
+        self.client.logout()
+

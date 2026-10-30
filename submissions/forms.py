@@ -7,14 +7,14 @@ from .models import UserProfile, Manuscript, ReviewAssignment, ManuscriptRevisio
 ALLOWED_MANUSCRIPT_EXTENSIONS = ['.pdf', '.doc', '.docx']
 
 
-def validate_file_extension(file_obj):
+def validate_file_extension(file_obj, max_mb=5):
     if file_obj:
         ext = os.path.splitext(file_obj.name)[1].lower()
         if ext not in ALLOWED_MANUSCRIPT_EXTENSIONS:
             raise forms.ValidationError(f"Unsupported file format ({ext}). Please upload a Microsoft Word (.doc, .docx) or PDF (.pdf) file.")
-        # 30 MB limit
-        if file_obj.size > 30 * 1024 * 1024:
-            raise forms.ValidationError("File size exceeds 30MB limit.")
+        # 5 MB limit
+        if file_obj.size > max_mb * 1024 * 1024:
+            raise forms.ValidationError(f"File size exceeds {max_mb}MB limit. Please upload a compressed document up to {max_mb}MB.")
 
 
 class RoleRegistrationForm(forms.Form):
@@ -56,10 +56,24 @@ class RoleRegistrationForm(forms.Form):
     }))
 
     def clean_email(self):
-        email = self.cleaned_data.get('email').strip().lower()
+        email = self.cleaned_data.get('email', '').strip().lower()
+        import re
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            raise forms.ValidationError("Please enter a valid email address (e.g. user@institution.edu.in).")
         if User.objects.filter(email__iexact=email).exists() or User.objects.filter(username__iexact=email).exists():
             raise forms.ValidationError("An account with this email address already exists. Please log in.")
         return email
+
+    def clean_password(self):
+        p1 = self.cleaned_data.get('password')
+        if p1:
+            if len(p1) < 8:
+                raise forms.ValidationError("Password must be at least 8 characters long.")
+            if not any(c.isupper() for c in p1):
+                raise forms.ValidationError("Password must contain at least one uppercase letter.")
+            if not (any(c.isalpha() for c in p1) and any(c.isdigit() for c in p1)):
+                raise forms.ValidationError("Password must contain both letters and numbers for security.")
+        return p1
 
     def clean(self):
         cleaned_data = super().clean()
@@ -100,8 +114,12 @@ class ManuscriptSubmissionForm(forms.ModelForm):
 
     def clean_payment_screenshot(self):
         f = self.cleaned_data.get('payment_screenshot')
-        if f and f.size > 5 * 1024 * 1024:
-            raise forms.ValidationError("Payment screenshot file size must not exceed 5MB.")
+        if f:
+            ext = os.path.splitext(f.name)[1].lower()
+            if ext not in ['.jpg', '.jpeg', '.png', '.webp', '.pdf']:
+                raise forms.ValidationError("Payment screenshot must be an image (.jpg, .jpeg, .png, .webp) or PDF (.pdf).")
+            if f.size > 5 * 1024 * 1024:
+                raise forms.ValidationError("Payment screenshot file size must not exceed 5MB.")
         return f
 
     def clean_supplementary_file(self):

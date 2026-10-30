@@ -134,7 +134,7 @@
           <label for="{{ form.manuscript_file.id_for_label }}">Manuscript File (DOCX or PDF) <span style="color:#DC2626">*</span></label>
           <div class="file-dropzone-styled">
             {{ form.manuscript_file }}
-            <p style="font-size: 12px; color: #5B7065; margin-top: 6px;">Main text including title, abstract, tables, and figures.</p>
+            <p style="font-size: 12px; color: #5B7065; margin-top: 6px;">Main text including title, abstract, tables, and figures (Word .docx or PDF, <strong>Max 5MB</strong>).</p>
           </div>
           {% if form.manuscript_file.errors %}<div class="error-text">{{ form.manuscript_file.errors.0 }}</div>{% endif %}
         </div>
@@ -143,6 +143,7 @@
           <label for="{{ form.supplementary_file.id_for_label }}">Supplementary Data (Optional)</label>
           <div class="file-dropzone-styled">
             {{ form.supplementary_file }}
+            <p style="font-size: 12px; color: #5B7065; margin-top: 6px;">Supplementary figures, datasets or questionnaires (Word .docx or PDF, <strong>Max 5MB</strong>).</p>
           </div>
           {% if form.supplementary_file.errors %}<div class="error-text">{{ form.supplementary_file.errors.0 }}</div>{% endif %}
         </div>
@@ -164,7 +165,7 @@
           <label for="{{ form.payment_screenshot.id_for_label }}">Payment Screenshot Proof</label>
           <div class="file-dropzone-styled">
             {{ form.payment_screenshot }}
-            <p style="font-size: 12px; color: #5B7065; margin-top: 6px;">Screenshot / receipt image (PNG, JPG, PDF).</p>
+            <p style="font-size: 12px; color: #5B7065; margin-top: 6px;">Screenshot / receipt image (PNG, JPG, PDF, <strong>Max 5MB</strong>).</p>
           </div>
           {% if form.payment_screenshot.errors %}<div class="error-text">{{ form.payment_screenshot.errors.0 }}</div>{% endif %}
         </div>
@@ -191,4 +192,31 @@
   </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('input[type="file"]').forEach(function(input) {
+    input.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
+        const maxBytes = 5 * 1024 * 1024; // 5MB
+        let msgEl = this.parentElement.querySelector('.file-validation-msg');
+        if (!msgEl) {
+          msgEl = document.createElement('div');
+          msgEl.className = 'file-validation-msg';
+          this.parentElement.appendChild(msgEl);
+        }
+        if (file.size > maxBytes) {
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+          msgEl.textContent = `File "${file.name}" is too large (${sizeMb}MB). Maximum allowed upload size is 5MB.`;
+          msgEl.style.display = 'block';
+          this.value = '';
+        } else {
+          msgEl.style.display = 'none';
+        }
+      }
+    });
+  });
+});
+</script>
 {% endblock %}

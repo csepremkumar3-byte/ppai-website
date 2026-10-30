@@ -744,8 +744,11 @@ def admin_dashboard(request):
         specialization = request.POST.get('specialization', '').strip()
         password = request.POST.get('password', '').strip()
 
+        import re
         if not full_name or not email or not password or not affiliation:
             messages.error(request, "Full name, email, affiliation, and password are required.")
+        elif not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            messages.error(request, "Please enter a valid email address format (e.g. user@institution.edu.in).")
         elif User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
             messages.error(request, f"Registration Alert: An account with email {email} already exists. Two users cannot share the same login credentials.")
         elif len(password) < 6:
