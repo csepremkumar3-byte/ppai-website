@@ -288,12 +288,16 @@
 
   <div class="auth-card">
     <!-- Brand Header -->
-    <div class="brand-header" style="border-bottom: none; margin-bottom: 8px; padding-bottom: 0;">
+    <div class="brand-header" style="border-bottom: none; margin-bottom: 14px; padding-bottom: 0; text-align: center;">
       {% if site_settings and site_settings.logo %}
         <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" class="brand-logo" style="height: 52px; margin-bottom: 4px;">
       {% else %}
         <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" class="brand-logo" style="height: 52px; margin-bottom: 4px;">
       {% endif %}
+      <div class="brand-address" style="margin-top: 4px; line-height: 1.4;">
+        <span style="font-size: 13.5px; font-weight: 800; color: #0B2417; display: block; letter-spacing: -0.01em;">Plant Protection Association of India (PPAI)</span>
+        <span style="font-size: 11.5px; color: #64746D; display: block; margin-top: 2px;">ICAR-NBPGR Regional Station, Rajendranagar, Hyderabad &ndash; 500030, Telangana, India</span>
+      </div>
     </div>
 
     <h1 class="form-title" style="margin-bottom: 18px;">Author Registration</h1>

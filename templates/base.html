@@ -72,12 +72,22 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       color: var(--text-main);
       line-height: 1.5;
+      min-height: 100%;
     }
 
     body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       background: linear-gradient(180deg, #FFFFFF 0%, #E1F0E8 100%);
       background-attachment: fixed;
       overflow-x: hidden;
+    }
+
+    main {
+      flex: 1 0 auto;
+      min-height: 100vh;
+      min-height: 100dvh;
     }
 
     a {
