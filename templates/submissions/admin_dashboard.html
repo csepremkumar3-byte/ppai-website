@@ -38,7 +38,7 @@
   .users-table-container {
     flex: 1 1 auto;
     display: block;
-    min-height: 0;
+    min-height: 488px;
     height: 100%;
     margin-bottom: 0;
     overflow-x: hidden;
@@ -48,6 +48,8 @@
   }
   @media (max-width: 992px) {
     .users-table-container {
+      min-height: 440px;
+      height: 440px;
       max-height: 440px;
     }
   }
@@ -62,7 +64,7 @@
     font-size: 12.5px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    padding: 13px 14px;
+    padding: 14px 16px;
     border-bottom: 1.5px solid rgba(11, 36, 23, 0.1);
     box-sizing: border-box;
     word-break: break-word !important;
@@ -80,6 +82,7 @@
   }
 
   .users-table tbody tr {
+    height: 74px;
     box-sizing: border-box;
     transition: background 0.15s ease;
   }
@@ -89,8 +92,8 @@
   }
 
   .users-table td {
-    height: 66px;
-    padding: 8px 14px;
+    height: 74px;
+    padding: 12px 16px;
     border-bottom: 1px solid rgba(11, 36, 23, 0.06);
     vertical-align: middle;
     color: #1D2924;
@@ -101,7 +104,7 @@
   }
 
   .users-table th {
-    padding: 13px 14px;
+    padding: 14px 16px;
     word-break: break-word !important;
     overflow-wrap: anywhere !important;
     white-space: normal !important;
@@ -846,11 +849,11 @@
         <table class="portal-table users-table">
           <thead>
             <tr>
-              <th style="width: 29%;">User &amp; Email</th>
-              <th style="width: 17%;">Role</th>
-              <th style="width: 27%;">Institution / Affiliation</th>
-              <th style="width: 14%;">Registered</th>
-              <th style="text-align: right; width: 13%;">Action</th>
+              <th style="width: 32%;">User &amp; Email</th>
+              <th style="width: 16%;">Role</th>
+              <th style="width: 28%;">Institution / Affiliation</th>
+              <th style="width: 12%;">Registered</th>
+              <th style="text-align: right; width: 12%;">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -1090,7 +1093,7 @@ function alignChiefEditorTable() {
   var containerHeight = container.clientHeight;
   var headerHeight = thead.offsetHeight || 44;
   var availableHeight = containerHeight - headerHeight;
-  if (availableHeight > 180) {
+  if (availableHeight >= 400) {
     var rows = tbody.querySelectorAll('tr');
     if (rows.length >= 6) {
       var targetRowHeight = Math.floor(availableHeight / 6);
@@ -1098,8 +1101,8 @@ function alignChiefEditorTable() {
         var cells = r.querySelectorAll('td');
         cells.forEach(function(td) {
           td.style.height = targetRowHeight + 'px';
-          td.style.paddingTop = '6px';
-          td.style.paddingBottom = '6px';
+          td.style.paddingTop = '12px';
+          td.style.paddingBottom = '12px';
         });
       });
     }
