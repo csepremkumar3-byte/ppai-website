@@ -389,14 +389,6 @@ def election(request):
 
 def register(request):
     context = get_common_context()
-    if request.user.is_authenticated:
-        from submissions.views import get_user_profile
-        profile = get_user_profile(request.user)
-        if profile.is_editor or request.user.is_staff or request.user.is_superuser:
-            return redirect('editor_dashboard')
-        elif profile.is_reviewer:
-            return redirect('reviewer_dashboard')
-        return redirect('author_dashboard')
 
     if request.method == 'POST':
         full_name = request.POST.get('full_name', '').strip()
