@@ -8,9 +8,12 @@
 <style>
   .admin-grid-layout {
     display: grid;
-    grid-template-columns: 420px 1fr;
+    grid-template-columns: 420px minmax(0, 1fr);
     gap: 24px;
     align-items: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 28px !important;
   }
   @media (max-width: 992px) {
     .admin-grid-layout {
@@ -24,6 +27,8 @@
     flex-direction: column;
     margin-bottom: 0 !important;
     height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
 
   .admin-col-card .portal-card-header {
@@ -32,13 +37,16 @@
 
   .users-table-scroll {
     flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
     min-height: 0;
-    max-height: 418px; /* Displays 6 entries; remaining entries scrollable */
+    height: 100%;
     overflow-y: auto;
     overflow-x: auto;
-    border: 1px solid rgba(11, 36, 23, 0.08);
-    border-radius: 10px;
+    border: 1px solid rgba(11, 36, 23, 0.1);
+    border-radius: 12px;
     background: #FFFFFF;
+    margin-bottom: 0;
   }
 
   .users-table-scroll thead th {
@@ -46,16 +54,35 @@
     top: 0;
     z-index: 2;
     background: #F8FAF9;
-    box-shadow: 0 1px 0 rgba(11, 36, 23, 0.1);
+    box-shadow: 0 1px 0 rgba(11, 36, 23, 0.12);
+    font-size: 13px;
+    font-weight: 800;
+    color: #0B2417;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 13px 16px;
+  }
+
+  .users-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 0;
   }
 
   .users-table td {
-    padding: 11px 14px;
+    padding: 14px 16px;
     vertical-align: middle;
+    border-bottom: 1px solid rgba(11, 36, 23, 0.07);
   }
 
   .users-table th {
-    padding: 10px 14px;
+    padding: 12px 16px;
+  }
+
+  #manuscripts-section {
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .users-table-scroll::-webkit-scrollbar {
@@ -683,7 +710,7 @@
   </div>
 
   <!-- Two Column Layout: Creation Form (Left) & User List (Right) -->
-  <div class="admin-grid-layout" style="margin-bottom: 40px;">
+  <div class="admin-grid-layout" style="margin-bottom: 28px;">
 
     <!-- Column 1: Register Associate Editor / Reviewer -->
     <div class="portal-card admin-col-card">
@@ -804,38 +831,38 @@
             {% for u in users %}
             <tr>
               <td>
-                <strong style="color: #0B2417; font-size: 13.5px;">{{ u.get_full_name|default:u.username }}</strong>
-                <div style="font-size: 12px; color: #5B7065;">{{ u.email|default:u.username }}</div>
+                <strong style="color: #0B2417; font-size: 14.5px; font-weight: 800; display: block; line-height: 1.35;">{{ u.get_full_name|default:u.username }}</strong>
+                <div style="font-size: 12.5px; font-weight: 600; color: #475569; margin-top: 2px;">{{ u.email|default:u.username }}</div>
               </td>
               <td>
                 {% if u.is_superuser %}
-                  <span class="role-badge admin">Chief Editor</span>
+                  <span class="role-badge admin" style="font-size: 12px; font-weight: 800; padding: 4px 10px;">Chief Editor</span>
                 {% elif u.journal_profile.is_editor %}
-                  <span class="role-badge editor">Associate Editor</span>
+                  <span class="role-badge editor" style="font-size: 12px; font-weight: 800; padding: 4px 10px;">Associate Editor</span>
                 {% elif u.journal_profile.is_reviewer %}
-                  <span class="role-badge reviewer">Reviewer</span>
+                  <span class="role-badge reviewer" style="font-size: 12px; font-weight: 800; padding: 4px 10px;">Reviewer</span>
                 {% else %}
-                  <span class="role-badge author">Author</span>
+                  <span class="role-badge author" style="font-size: 12px; font-weight: 800; padding: 4px 10px;">Author</span>
                 {% endif %}
               </td>
               <td style="max-width: 220px;">
-                <span style="font-size: 12.5px; color: #1D2924;">
+                <span style="font-size: 13.5px; font-weight: 700; color: #1E293B; display: block; line-height: 1.35;">
                   {{ u.journal_profile.affiliation|default:"&mdash;" }}
                 </span>
                 {% if u.journal_profile.specialization %}
-                  <div style="font-size: 11px; color: #64746D;">{{ u.journal_profile.specialization }}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #64748B; margin-top: 2px;">{{ u.journal_profile.specialization }}</div>
                 {% endif %}
               </td>
               <td>
-                <span style="font-size: 12px; color: #5B7065;">{{ u.date_joined|date:"M d, Y" }}</span>
+                <span style="font-size: 13px; font-weight: 700; color: #334155;">{{ u.date_joined|date:"M d, Y" }}</span>
               </td>
               <td style="text-align: right; white-space: nowrap;">
                 {% if u.id != request.user.id %}
-                <a href="{% url 'admin_delete_user' u.id %}" onclick="return confirm('Are you sure you want to delete user \'{{ u.username }}\'?');" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3);">
+                <a href="{% url 'admin_delete_user' u.id %}" onclick="return confirm('Are you sure you want to delete user \'{{ u.username }}\'?');" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-weight: 700; padding: 5px 12px; font-size: 12px;">
                   Delete
                 </a>
                 {% else %}
-                <span style="font-size: 11px; color: #00B272; font-weight: 700;">Current User</span>
+                <span style="font-size: 12px; color: #00B272; font-weight: 800;">Current User</span>
                 {% endif %}
               </td>
             </tr>
