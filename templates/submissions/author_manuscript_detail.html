@@ -75,38 +75,50 @@
   </div>
   {% endif %}
 
-  <!-- Workflow Progress Stepper (Clean & Symbol-Safe) -->
-  <div class="portal-card" style="padding: 20px 24px; margin-bottom: 22px;">
+  <!-- Workflow Progress Stepper (Submitted -> Peer Review -> Decision) -->
+  <div class="portal-card" style="padding: 24px 28px; margin-bottom: 22px;">
     <div class="workflow-stepper">
-      <!-- Step 1 -->
+      <!-- Step 1: Submitted (Always completed green upon submission) -->
       <div class="step-node completed">
         <div class="step-circle">&#10003;</div>
         <div class="step-label">Submitted</div>
       </div>
 
-      <!-- Step 2 -->
-      <div class="step-node {% if manuscript.status in 'under_review,review_completed,revisions_requested,revised_submitted,accepted' %}completed{% else %}active{% endif %}">
-        <div class="step-circle">
-          {% if manuscript.status in 'under_review,review_completed,revisions_requested,revised_submitted,accepted' %}&#10003;{% else %}2{% endif %}
-        </div>
-        <div class="step-label">Editorial Review</div>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="step-node {% if manuscript.status in 'review_completed,revisions_requested,revised_submitted,accepted' %}completed{% elif manuscript.status == 'under_review' %}active{% endif %}">
-        <div class="step-circle">
-          {% if manuscript.status in 'review_completed,revisions_requested,revised_submitted,accepted' %}&#10003;{% else %}3{% endif %}
-        </div>
+      <!-- Step 2: Peer Review (Yellow when paper is submitted/under review; Green after reviewer & chief decision) -->
+      {% if manuscript.status in 'review_completed,revisions_requested,accepted,rejected,published' or manuscript.editor_decision != 'pending' %}
+      <div class="step-node completed">
+        <div class="step-circle">&#10003;</div>
         <div class="step-label">Peer Review</div>
       </div>
+      {% else %}
+      <div class="step-node yellow in-progress active">
+        <div class="step-circle">2</div>
+        <div class="step-label">Peer Review</div>
+      </div>
+      {% endif %}
 
-      <!-- Step 4 -->
-      <div class="step-node {% if manuscript.status == 'revisions_requested' or manuscript.status == 'revised_submitted' %}active{% elif manuscript.status == 'accepted' %}completed{% elif manuscript.status == 'rejected' %}rejected{% endif %}">
-        <div class="step-circle">
-          {% if manuscript.status == 'accepted' %}&#10003;{% elif manuscript.status == 'rejected' %}&#10007;{% else %}4{% endif %}
-        </div>
+      <!-- Step 3: Decision (Green when accepted/published; Yellow when revisions requested; Red when rejected) -->
+      {% if manuscript.status in 'accepted,published' or manuscript.editor_decision in 'accept,publish' %}
+      <div class="step-node completed">
+        <div class="step-circle">&#10003;</div>
         <div class="step-label">Decision</div>
       </div>
+      {% elif manuscript.status == 'rejected' or manuscript.editor_decision == 'reject' %}
+      <div class="step-node rejected">
+        <div class="step-circle">&#10007;</div>
+        <div class="step-label">Decision</div>
+      </div>
+      {% elif manuscript.status in 'revisions_requested,revised_submitted,review_completed' %}
+      <div class="step-node yellow in-progress active">
+        <div class="step-circle">3</div>
+        <div class="step-label">Decision</div>
+      </div>
+      {% else %}
+      <div class="step-node">
+        <div class="step-circle">3</div>
+        <div class="step-label">Decision</div>
+      </div>
+      {% endif %}
     </div>
   </div>
 
