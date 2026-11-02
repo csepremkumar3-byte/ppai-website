@@ -40,13 +40,14 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    height: 100%;
+    height: 426px; /* Exactly 6 rows visible first (42px header + 6 * 64px rows = 426px) */
+    max-height: 426px;
     border: 1px solid rgba(11, 36, 23, 0.1);
     border-radius: 12px;
     background: #FFFFFF;
     margin-bottom: 0;
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: auto !important; /* Vertical scrolling inside it for remaining entries */
     scrollbar-width: thin;
     scrollbar-color: #CBD5E1 #F1F5F3;
   }
@@ -57,15 +58,17 @@
     z-index: 2;
     background: #F8FAF9;
     box-shadow: 0 1px 0 rgba(11, 36, 23, 0.12);
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 800;
     color: #0B2417;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    padding: 12px 14px;
-    height: 44px;
+    padding: 10px 12px;
+    height: 42px;
     box-sizing: border-box;
-    white-space: nowrap;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
   }
 
   .users-table {
@@ -76,14 +79,20 @@
     margin-bottom: 0;
   }
 
+  .users-table tbody tr {
+    height: 64px;
+    min-height: 64px;
+    box-sizing: border-box;
+  }
+
   .users-table td {
-    padding: 12px 14px;
+    padding: 8px 12px;
     vertical-align: middle;
     border-bottom: 1px solid rgba(11, 36, 23, 0.07);
     box-sizing: border-box;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-    white-space: normal;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
   }
 
   .users-table tbody tr:last-child td {
@@ -91,7 +100,10 @@
   }
 
   .users-table th {
-    padding: 12px 14px;
+    padding: 10px 12px;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
   }
 
   #manuscripts-section {
@@ -868,9 +880,9 @@
                 {% endif %}
               </td>
               <td>
-                <span style="font-size: 12.5px; font-weight: 700; color: #334155; white-space: nowrap;">{{ u.date_joined|date:"M d, Y" }}</span>
+                <span style="font-size: 12px; font-weight: 700; color: #334155; word-break: break-word; overflow-wrap: anywhere;">{{ u.date_joined|date:"M d, Y" }}</span>
               </td>
-              <td style="text-align: right; white-space: nowrap;">
+              <td style="text-align: right;">
                 {% if u.id != request.user.id %}
                   {% if u.journal_profile.is_reviewer or filter_role == 'reviewer' %}
                     <span style="font-size: 13px; color: #94A3B8; font-weight: 600;">&mdash;</span>
