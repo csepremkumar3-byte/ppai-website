@@ -132,8 +132,9 @@
         </div>
 
         <div class="portal-form-group" style="margin-bottom: 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <label for="password">Password</label>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label for="password" style="margin-bottom: 0;">Password</label>
+            <a href="{% url 'portal_forgot_password' %}" style="font-size: 12px; font-weight: 700; color: #00B272; text-decoration: none;">Forgot Password?</a>
           </div>
           <div class="password-input-wrapper">
             <input type="password" id="password" name="password" class="portal-input" placeholder="Enter your password" required>

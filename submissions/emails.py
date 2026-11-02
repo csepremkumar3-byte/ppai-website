@@ -424,3 +424,35 @@ def send_author_editorial_decision(manuscript):
     )
     email.attach_alternative(html_content, "text/html")
     dispatch_email_message(email)
+
+# ==============================================================================
+# WORKFLOW TRIGGER 7: PASSWORD RESET OTP DISPATCH
+# ==============================================================================
+
+def send_password_reset_otp_email(user, email, otp_code, role_name='Author'):
+    """Sends 6-digit OTP verification code for password reset and credential retrieval."""
+    if not email:
+        return
+
+    subject = f"[PPAI Portal] Password Reset OTP Verification Code: {otp_code}"
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'PPAI Editorial Office <editor@ppai.org.in>')
+
+    context = {
+        'full_name': user.get_full_name() or user.username if user else email,
+        'email': email,
+        'otp_code': otp_code,
+        'role_name': role_name,
+    }
+
+    html_content = render_to_string('emails/password_reset_otp.html', context)
+    text_content = strip_tags(html_content) + f"\n\nYour OTP Code: {otp_code}\nValid for 10 minutes."
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=from_email,
+        to=[email]
+    )
+    msg.attach_alternative(html_content, "text/html")
+    dispatch_email_message(msg)
+

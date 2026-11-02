@@ -277,3 +277,24 @@ class SubmissionActivityLog(models.Model):
 
     def __str__(self):
         return f"[{self.manuscript.tracking_id}] {self.action} at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
+
+
+class PasswordResetOTP(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reset_otps')
+    email = models.EmailField()
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    is_used = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Password Reset OTP"
+        verbose_name_plural = "Password Reset OTPs"
+
+    def is_valid(self):
+        return not self.is_used and timezone.now() <= self.expires_at
+
+    def __str__(self):
+        return f"OTP {self.otp_code} for {self.email} ({'Valid' if self.is_valid() else 'Expired/Used'})"
+

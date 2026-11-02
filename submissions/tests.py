@@ -797,3 +797,147 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(dash_resp.context['manuscript_stats']['under_2nd_review'], 1)
         self.client.logout()
 
+    def test_20_forgot_password_and_otp_credential_workflow(self):
+        """Verify forgot password OTP flow and credential dispatch for authors, reviewers, and associate editors."""
+        from django.core import mail
+        from submissions.models import PasswordResetOTP
+
+        # 1. Non-existent email should be rejected
+        resp_nonexistent = self.client.post(reverse('portal_forgot_password'), {
+            'email': 'unknown.person@nonexistent.org',
+            'role': 'author',
+        })
+        self.assertContains(resp_nonexistent, 'No registered account found')
+
+        # 2. Reviewer reset attempted with non-reviewer account must be rejected
+        resp_invalid_reviewer = self.client.post(reverse('portal_forgot_password'), {
+            'email': 'author@university.edu',
+            'role': 'reviewer',
+        })
+        self.assertContains(resp_invalid_reviewer, 'not registered as a Reviewer in the Chief Editor Console')
+
+        # 3. Associate Editor reset attempted with non-editor account must be rejected
+        resp_invalid_editor = self.client.post(reverse('portal_forgot_password'), {
+            'email': 'author@university.edu',
+            'role': 'associate_editor',
+        })
+        self.assertContains(resp_invalid_editor, 'not registered as an Associate Editor in the Chief Editor Console')
+
+        # 4. Author Forgot Password Workflow: OTP verification then new password set
+        mail.outbox.clear()
+        resp_author_otp = self.client.post(reverse('portal_forgot_password'), {
+            'email': 'author@university.edu',
+            'role': 'author',
+        }, follow=True)
+        self.assertEqual(resp_author_otp.status_code, 200)
+
+        # Check OTP email received
+        otp_emails = [m for m in mail.outbox if 'Password Reset OTP Verification Code' in m.subject]
+        self.assertEqual(len(otp_emails), 1)
+
+        author_otp = PasswordResetOTP.objects.filter(email='author@university.edu', is_used=False).first()
+        self.assertIsNotNone(author_otp)
+
+        # Verify invalid OTP fails
+        resp_bad_otp = self.client.post(reverse('portal_verify_otp'), {'otp': '000000'})
+        self.assertContains(resp_bad_otp, 'Invalid or expired OTP code')
+
+        # Verify valid OTP succeeds and leads to reset password page
+        resp_good_otp = self.client.post(reverse('portal_verify_otp'), {'otp': author_otp.otp_code}, follow=True)
+        self.assertEqual(resp_good_otp.status_code, 200)
+        self.assertContains(resp_good_otp, 'Set New Password')
+
+        # Author sets new password
+        resp_new_pwd = self.client.post(reverse('portal_reset_password'), {
+            'password': 'NewAuthorPass@2026',
+            'confirm_password': 'NewAuthorPass@2026',
+        }, follow=True)
+        self.assertEqual(resp_new_pwd.status_code, 200)
+
+        # Verify Author logs in with new password
+        author_login = self.client.login(username='author@university.edu', password='NewAuthorPass@2026')
+        self.assertTrue(author_login)
+        self.client.logout()
+
+        # 5. Reviewer Reset Password Flow: Registered in Chief Editor dashboard, first OTP sent, THEN credentials dispatched
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        self.client.post(reverse('admin_dashboard'), {
+            'action': 'create_user',
+            'role': 'reviewer',
+            'full_name': 'Dr. Suresh Reviewer',
+            'email': 'suresh.reviewer@icar.gov.in',
+            'affiliation': 'ICAR-CPRI',
+            'specialization': 'Virology',
+            'password': 'SureshSecret@2026',
+        }, follow=True)
+        self.client.logout()
+
+        # Reviewer requests password reset
+        mail.outbox.clear()
+        req_rev_resp = self.client.post(reverse('portal_forgot_password'), {
+            'email': 'suresh.reviewer@icar.gov.in',
+            'role': 'reviewer',
+        }, follow=True)
+        self.assertEqual(req_rev_resp.status_code, 200)
+
+        # Verify ONLY OTP email is sent first (credentials NOT yet sent!)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Password Reset OTP Verification Code', mail.outbox[0].subject)
+
+        rev_otp = PasswordResetOTP.objects.filter(email='suresh.reviewer@icar.gov.in', is_used=False).first()
+        self.assertIsNotNone(rev_otp)
+
+        # Reviewer enters OTP -> credentials are now dispatched with the exact initial password!
+        verify_rev_resp = self.client.post(reverse('portal_verify_otp'), {'otp': rev_otp.otp_code}, follow=True)
+        self.assertEqual(verify_rev_resp.status_code, 200)
+
+        # Verify credential email is dispatched
+        cred_emails = [m for m in mail.outbox if 'Login Credentials' in m.subject]
+        self.assertEqual(len(cred_emails), 1)
+        self.assertIn('SureshSecret@2026', cred_emails[0].body)
+
+        # Reviewer can log in with SureshSecret@2026
+        rev_login = self.client.login(username='suresh.reviewer@icar.gov.in', password='SureshSecret@2026')
+        self.assertTrue(rev_login)
+        self.client.logout()
+
+        # 6. Associate Editor Reset Password Flow: Registered in Chief Editor dashboard, first OTP sent, THEN credentials dispatched
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        self.client.post(reverse('admin_dashboard'), {
+            'action': 'create_user',
+            'role': 'editor',
+            'full_name': 'Dr. Anita Associate Editor',
+            'email': 'anita.assoc@icar.gov.in',
+            'affiliation': 'ICAR-IIHR',
+            'specialization': 'Entomology',
+            'password': 'AnitaSecret@2026',
+        }, follow=True)
+        self.client.logout()
+
+        mail.outbox.clear()
+        req_ed_resp = self.client.post(reverse('portal_forgot_password'), {
+            'email': 'anita.assoc@icar.gov.in',
+            'role': 'associate_editor',
+        }, follow=True)
+        self.assertEqual(req_ed_resp.status_code, 200)
+
+        # Verify ONLY OTP sent first
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Password Reset OTP Verification Code', mail.outbox[0].subject)
+
+        ed_otp = PasswordResetOTP.objects.filter(email='anita.assoc@icar.gov.in', is_used=False).first()
+        self.assertIsNotNone(ed_otp)
+
+        # Enter OTP -> credentials dispatched with exact initial password
+        verify_ed_resp = self.client.post(reverse('portal_verify_otp'), {'otp': ed_otp.otp_code}, follow=True)
+        self.assertEqual(verify_ed_resp.status_code, 200)
+
+        cred_emails_ed = [m for m in mail.outbox if 'Associate Editor Login Credentials' in m.subject]
+        self.assertEqual(len(cred_emails_ed), 1)
+        self.assertIn('AnitaSecret@2026', cred_emails_ed[0].body)
+
+        # Associate Editor can log in with AnitaSecret@2026
+        ed_login = self.client.login(username='anita.assoc@icar.gov.in', password='AnitaSecret@2026')
+        self.assertTrue(ed_login)
+        self.client.logout()
+

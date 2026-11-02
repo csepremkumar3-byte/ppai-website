@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.db.models import Count, Q
 from django.http import HttpResponseForbidden, Http404
 
-from .models import UserProfile, Manuscript, ReviewAssignment, ManuscriptRevision, SubmissionActivityLog
+from .models import UserProfile, Manuscript, ReviewAssignment, ManuscriptRevision, SubmissionActivityLog, PasswordResetOTP
 from .forms import (
     RoleRegistrationForm, ManuscriptSubmissionForm, ReviewEvaluationForm,
     ManuscriptRevisionForm, EditorDecisionForm
@@ -26,6 +26,7 @@ from .emails import (
     send_user_credentials_email,
     send_chief_editor_review_completed,
     send_author_editorial_decision,
+    send_password_reset_otp_email,
 )
 
 
@@ -936,4 +937,232 @@ def admin_delete_user(request, user_id):
     target_user.delete()
     messages.success(request, f"User '{username}' was successfully deleted.")
     return redirect('admin_dashboard')
+
+# ==============================================================================
+# FORGOT & RESET PASSWORD WITH 6-DIGIT OTP VERIFICATION WORKFLOW
+# ==============================================================================
+
+def portal_forgot_password(request):
+    """Forgot password request: validates email and role against database
+    (specifically verifying Reviewers & Associate Editors are registered in the Chief Editor Console),
+    then sends a secure 6-digit OTP to their email.
+    """
+    selected_role = request.GET.get('role', request.POST.get('role', 'author')).strip().lower()
+
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip().lower()
+        role = request.POST.get('role', selected_role).strip().lower()
+
+        if not email:
+            messages.error(request, "Please enter your registered email address.")
+            return render(request, 'submissions/forgot_password.html', {'email': email, 'selected_role': role})
+
+        user = User.objects.filter(Q(email__iexact=email) | Q(username__iexact=email)).first()
+        if not user:
+            messages.error(request, f"No registered account found with email '{email}'. Please check your spelling or register.")
+            return render(request, 'submissions/forgot_password.html', {'email': email, 'selected_role': role})
+
+        profile = getattr(user, 'journal_profile', None)
+        if not profile:
+            profile = get_user_profile(user)
+
+        is_editor = (profile.is_editor or user.is_staff) and not user.is_superuser
+        is_reviewer = profile.is_reviewer
+        is_author = profile.is_author or (not is_editor and not is_reviewer)
+
+        # Validate that Reviewers & Associate Editors are present in Chief Editor Console
+        if role in ['associate_editor', 'editor']:
+            if not is_editor:
+                messages.error(
+                    request,
+                    f"Registration Alert: '{email}' is not registered as an Associate Editor in the Chief Editor Console. Password reset cannot proceed."
+                )
+                return render(request, 'submissions/forgot_password.html', {'email': email, 'selected_role': role})
+            role_name = 'Associate Editor'
+        elif role == 'reviewer':
+            if not is_reviewer:
+                messages.error(
+                    request,
+                    f"Registration Alert: '{email}' is not registered as a Reviewer in the Chief Editor Console. Password reset cannot proceed."
+                )
+                return render(request, 'submissions/forgot_password.html', {'email': email, 'selected_role': role})
+            role_name = 'Reviewer'
+        else:
+            if is_editor:
+                role_name = 'Associate Editor'
+            elif is_reviewer:
+                role_name = 'Reviewer'
+            else:
+                role_name = 'Author'
+
+        # Generate a random 6-digit OTP
+        import random
+        otp_code = f"{random.randint(100000, 999999)}"
+
+        # Invalidate any prior unused OTPs for this user
+        PasswordResetOTP.objects.filter(user=user, is_used=False).update(is_used=True)
+
+        # Create new OTP valid for 10 minutes
+        expires_at = timezone.now() + timedelta(minutes=10)
+        PasswordResetOTP.objects.create(
+            user=user,
+            email=email,
+            otp_code=otp_code,
+            expires_at=expires_at
+        )
+
+        request.session['reset_email'] = email
+        request.session['reset_user_id'] = user.id
+        request.session['reset_role_name'] = role_name
+        request.session['otp_verified'] = False
+
+        # Send OTP email
+        send_password_reset_otp_email(user, email, otp_code, role_name)
+
+        messages.success(request, f"A 6-digit verification OTP has been sent to {email}. Please enter it below.")
+        return redirect('portal_verify_otp')
+
+    return render(request, 'submissions/forgot_password.html', {
+        'selected_role': selected_role
+    })
+
+
+def portal_verify_otp(request):
+    """Verifies the 6-digit OTP entered by the user.
+    Once verified:
+    - For Associate Editors & Reviewers: their login credentials (username & password) are immediately dispatched to their email.
+    - For Authors: directs to new password entry.
+    """
+    reset_email = request.session.get('reset_email')
+    user_id = request.session.get('reset_user_id')
+    role_name = request.session.get('reset_role_name', 'User')
+
+    if not reset_email or not user_id:
+        messages.warning(request, "Please enter your email to request a verification OTP.")
+        return redirect('portal_forgot_password')
+
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'resend':
+            import random
+            otp_code = f"{random.randint(100000, 999999)}"
+            PasswordResetOTP.objects.filter(user=user, is_used=False).update(is_used=True)
+            expires_at = timezone.now() + timedelta(minutes=10)
+            PasswordResetOTP.objects.create(
+                user=user,
+                email=reset_email,
+                otp_code=otp_code,
+                expires_at=expires_at
+            )
+            send_password_reset_otp_email(user, reset_email, otp_code, role_name)
+            messages.info(request, f"A fresh 6-digit OTP has been sent to {reset_email}.")
+            return redirect('portal_verify_otp')
+
+        otp_input = request.POST.get('otp', '').strip()
+        if not otp_input or len(otp_input) != 6:
+            messages.error(request, "Please enter the complete 6-digit verification code.")
+            return render(request, 'submissions/verify_otp.html', {
+                'email': reset_email,
+                'role_name': role_name
+            })
+
+        otp_record = PasswordResetOTP.objects.filter(
+            user=user,
+            otp_code=otp_input,
+            is_used=False
+        ).order_by('-created_at').first()
+
+        if not otp_record or not otp_record.is_valid():
+            messages.error(request, "Invalid or expired OTP code. Please enter the current code or click 'Resend OTP'.")
+            return render(request, 'submissions/verify_otp.html', {
+                'email': reset_email,
+                'role_name': role_name
+            })
+
+        # Mark OTP as successfully used
+        otp_record.is_used = True
+        otp_record.save()
+        request.session['otp_verified'] = True
+
+        profile = getattr(user, 'journal_profile', None)
+
+        # For Associate Editors and Reviewers: DISPATCH LOGIN CREDENTIALS ONLY NOW AFTER OTP VERIFICATION
+        if role_name in ['Associate Editor', 'Reviewer']:
+            pwd_to_send = getattr(profile, 'initial_password', None)
+            if not pwd_to_send:
+                pwd_to_send = generate_secure_password(10)
+                user.set_password(pwd_to_send)
+                user.save()
+                if profile:
+                    profile.initial_password = pwd_to_send
+                    profile.save()
+            else:
+                user.set_password(pwd_to_send)
+                user.save()
+
+            send_user_credentials_email(user, pwd_to_send, role_name)
+            messages.success(
+                request,
+                f"OTP Verified! Your {role_name} login credentials have been dispatched to {reset_email}. You can also reset your password below if you wish."
+            )
+            return redirect('portal_reset_password')
+        else:
+            # For Authors: proceed to create new password
+            messages.success(request, "OTP Verified successfully! Please choose your new password below.")
+            return redirect('portal_reset_password')
+
+    return render(request, 'submissions/verify_otp.html', {
+        'email': reset_email,
+        'role_name': role_name
+    })
+
+
+def portal_reset_password(request):
+    """Allows user to set a new password after successful OTP verification."""
+    if not request.session.get('otp_verified') or not request.session.get('reset_user_id'):
+        messages.error(request, "Please verify your OTP code before accessing password reset.")
+        return redirect('portal_forgot_password')
+
+    user = get_object_or_404(User, id=request.session['reset_user_id'])
+    reset_email = request.session.get('reset_email', user.email)
+    role_name = request.session.get('reset_role_name', 'Author')
+    profile = getattr(user, 'journal_profile', None)
+
+    if request.method == 'POST':
+        password = request.POST.get('password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
+
+        if len(password) < 6:
+            messages.error(request, "Password must be at least 6 characters long.")
+        elif not any(c.isupper() for c in password):
+            messages.error(request, "Password must contain at least one uppercase letter.")
+        elif password != confirm_password:
+            messages.error(request, "Passwords do not match. Please re-enter identical passwords.")
+        else:
+            user.set_password(password)
+            user.save()
+            if profile:
+                profile.initial_password = password
+                profile.save()
+
+            # Dispatch updated credentials email
+            send_user_credentials_email(user, password, role_name)
+
+            # Clear session
+            request.session.pop('reset_email', None)
+            request.session.pop('reset_user_id', None)
+            request.session.pop('reset_role_name', None)
+            request.session.pop('otp_verified', None)
+
+            messages.success(request, f"Password successfully updated! Your updated {role_name} credentials have been emailed to {reset_email}. You can now sign in.")
+            return redirect('portal_login')
+
+    return render(request, 'submissions/reset_password.html', {
+        'email': reset_email,
+        'role_name': role_name,
+        'credentials_sent': (role_name in ['Associate Editor', 'Reviewer']),
+    })
 

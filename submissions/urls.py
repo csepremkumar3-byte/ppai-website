@@ -7,6 +7,9 @@ urlpatterns = [
     path('portal/login/', views.portal_login, name='portal_login'),
     path('portal/register/', views.portal_register, name='portal_register'),
     path('portal/logout/', views.portal_logout, name='portal_logout'),
+    path('portal/forgot-password/', views.portal_forgot_password, name='portal_forgot_password'),
+    path('portal/verify-otp/', views.portal_verify_otp, name='portal_verify_otp'),
+    path('portal/reset-password/', views.portal_reset_password, name='portal_reset_password'),
 
     # Author Workflow
     path('portal/author/', views.author_dashboard, name='author_dashboard'),

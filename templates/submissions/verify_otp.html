@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Verify OTP — PPAI Portal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+<style>
+  .portal-login-container {
+    max-width: 480px;
+    margin: 40px auto 80px auto;
+  }
+  .portal-auth-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(11, 36, 23, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 36px rgba(11, 36, 23, 0.07);
+    padding: 36px 32px;
+  }
+  .portal-auth-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .portal-auth-header .portal-badge {
+    display: inline-block;
+    background: rgba(0, 178, 114, 0.1);
+    color: #00B272;
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .portal-auth-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0B2417;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .portal-auth-header p {
+    font-size: 13.5px;
+    color: #5B7065;
+    line-height: 1.5;
+  }
+
+  .otp-input-field {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 8px;
+    text-align: center;
+    padding: 12px 16px;
+    border: 2px solid #00B272;
+    border-radius: 10px;
+    background: #F8FAF9;
+    color: #0B2417;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .otp-input-field:focus {
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(0, 178, 114, 0.15);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portal-wrapper">
+  <div class="portal-login-container">
+
+    {% if messages %}
+    <div class="portal-messages" style="margin-bottom: 20px;">
+      {% for message in messages %}
+      <div class="portal-alert {{ message.tags }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ message }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="portal-auth-card">
+      <div class="portal-auth-header">
+        <span class="portal-badge">Security Verification</span>
+        <h1>Enter Verification Code</h1>
+        <p>
+          We've sent a 6-digit OTP to<br>
+          <strong style="color: #0B2417; font-size: 14.5px;">{{ email }}</strong>
+        </p>
+      </div>
+
+      <form method="POST" action="{% url 'portal_verify_otp' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="verify">
+
+        <div class="portal-form-group" style="margin-bottom: 24px; text-align: center;">
+          <label for="otpInput" style="display: block; margin-bottom: 10px; font-weight: 700; color: #1E293B;">6-Digit OTP Code</label>
+          <input type="text" id="otpInput" name="otp" class="otp-input-field" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="------" autocomplete="one-time-code" required autofocus>
+          <div style="font-size: 12px; color: #64746D; margin-top: 8px;">
+            Valid for 10 minutes. Do not share this code.
+          </div>
+        </div>
+
+        <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 13px; font-size: 15px; justify-content: center;">
+          Verify OTP &rarr;
+        </button>
+      </form>
+
+      <!-- Resend OTP Form -->
+      <form method="POST" action="{% url 'portal_verify_otp' %}" style="text-align: center; margin-top: 18px;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="resend">
+        <span style="font-size: 13px; color: #64748B;">Didn't receive the email? </span>
+        <button type="submit" style="background: none; border: none; color: #00B272; font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 13px; padding: 0;">
+          Resend Code
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(11, 36, 23, 0.08);">
+        <p style="font-size: 13px; color: #5B7065; margin: 0;">
+          Entered wrong email?
+          <a href="{% url 'portal_forgot_password' %}" style="color: #00B272; font-weight: 700;">Change email</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
