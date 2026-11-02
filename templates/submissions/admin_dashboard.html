@@ -40,14 +40,13 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    height: 448px;
-    max-height: 448px; /* Exactly 6 rows visible */
-    overflow-y: auto;
-    overflow-x: auto;
+    height: 100%;
     border: 1px solid rgba(11, 36, 23, 0.1);
     border-radius: 12px;
     background: #FFFFFF;
     margin-bottom: 0;
+    overflow-x: auto;
+    overflow-y: auto;
   }
 
   .users-table-scroll thead th {
@@ -68,16 +67,31 @@
 
   .users-table {
     width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    display: table;
     border-collapse: separate;
     border-spacing: 0;
     margin-bottom: 0;
   }
 
+  .users-table tbody {
+    height: calc(100% - 44px);
+  }
+
+  .users-table tbody tr {
+    height: calc(100% / 6);
+  }
+
   .users-table td {
-    padding: 14.5px 16px;
+    padding: 12px 16px;
     vertical-align: middle;
     border-bottom: 1px solid rgba(11, 36, 23, 0.07);
     box-sizing: border-box;
+  }
+
+  .users-table tbody tr:last-child td {
+    border-bottom: none;
   }
 
   .users-table th {
@@ -832,7 +846,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for u in users %}
+            {% for u in users|slice:":6" %}
             <tr>
               <td>
                 <strong style="color: #0B2417; font-size: 14.5px; font-weight: 800; display: block; line-height: 1.35;">{{ u.get_full_name|default:u.username }}</strong>
