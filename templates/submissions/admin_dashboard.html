@@ -35,35 +35,36 @@
     flex-shrink: 0;
   }
 
-  .users-table-container {
+  .users-table-scroll {
     flex: 1 1 auto;
-    display: block;
+    display: flex;
+    flex-direction: column;
     min-height: 0;
-    height: 100%;
+    height: 426px; /* Exactly 6 rows visible first (42px header + 6 * 64px rows = 426px) */
+    max-height: 426px;
+    border: 1px solid rgba(11, 36, 23, 0.1);
+    border-radius: 12px;
+    background: #FFFFFF;
     margin-bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto !important;
+    overflow-x: auto;
+    overflow-y: auto !important; /* Vertical scrolling inside it for remaining entries */
     scrollbar-width: thin;
-    scrollbar-color: #CBD5E1 transparent;
-  }
-  @media (max-width: 992px) {
-    .users-table-container {
-      max-height: 440px;
-    }
+    scrollbar-color: #CBD5E1 #F1F5F3;
   }
 
-  .users-table-container thead th {
+  .users-table-scroll thead th {
     position: sticky;
     top: 0;
     z-index: 2;
     background: #F8FAF9;
+    box-shadow: 0 1px 0 rgba(11, 36, 23, 0.12);
+    font-size: 12px;
+    font-weight: 800;
     color: #0B2417;
-    font-weight: 700;
-    font-size: 12.5px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    padding: 13px 14px;
-    border-bottom: 1.5px solid rgba(11, 36, 23, 0.1);
+    padding: 10px 12px;
+    height: 42px;
     box-sizing: border-box;
     word-break: break-word !important;
     overflow-wrap: anywhere !important;
@@ -73,35 +74,33 @@
   .users-table {
     width: 100%;
     table-layout: fixed;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-bottom: 0;
-    font-size: 13.5px;
-    text-align: left;
   }
 
   .users-table tbody tr {
+    height: 64px;
+    min-height: 64px;
     box-sizing: border-box;
-    transition: background 0.15s ease;
-  }
-
-  .users-table tbody tr:hover td {
-    background: rgba(0, 178, 114, 0.03);
   }
 
   .users-table td {
-    height: 66px;
-    padding: 8px 14px;
-    border-bottom: 1px solid rgba(11, 36, 23, 0.06);
+    padding: 8px 12px;
     vertical-align: middle;
-    color: #1D2924;
+    border-bottom: 1px solid rgba(11, 36, 23, 0.07);
     box-sizing: border-box;
     word-break: break-word !important;
     overflow-wrap: anywhere !important;
     white-space: normal !important;
   }
 
+  .users-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
   .users-table th {
-    padding: 13px 14px;
+    padding: 10px 12px;
     word-break: break-word !important;
     overflow-wrap: anywhere !important;
     white-space: normal !important;
@@ -112,18 +111,19 @@
     box-sizing: border-box;
   }
 
-  .users-table-container::-webkit-scrollbar {
+  .users-table-scroll::-webkit-scrollbar {
     width: 6px;
-    height: 0px;
+    height: 6px;
   }
-  .users-table-container::-webkit-scrollbar-track {
-    background: transparent;
+  .users-table-scroll::-webkit-scrollbar-track {
+    background: #F1F5F3;
+    border-radius: 4px;
   }
-  .users-table-container::-webkit-scrollbar-thumb {
+  .users-table-scroll::-webkit-scrollbar-thumb {
     background: #CBD5E1;
     border-radius: 4px;
   }
-  .users-table-container::-webkit-scrollbar-thumb:hover {
+  .users-table-scroll::-webkit-scrollbar-thumb:hover {
     background: #94A3B8;
   }
 
@@ -842,7 +842,7 @@
       </div>
 
       {% if users %}
-      <div class="table-responsive users-table-container">
+      <div class="table-responsive users-table-scroll">
         <table class="portal-table users-table">
           <thead>
             <tr>
@@ -1078,39 +1078,6 @@ function toggleAbstract(id) {
   if (el) {
     el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
   }
-}
-
-function alignChiefEditorTable() {
-  var container = document.querySelector('.users-table-container');
-  if (!container) return;
-  var thead = container.querySelector('thead');
-  var tbody = container.querySelector('tbody');
-  if (!thead || !tbody) return;
-
-  var containerHeight = container.clientHeight;
-  var headerHeight = thead.offsetHeight || 44;
-  var availableHeight = containerHeight - headerHeight;
-  if (availableHeight > 180) {
-    var rows = tbody.querySelectorAll('tr');
-    if (rows.length >= 6) {
-      var targetRowHeight = Math.floor(availableHeight / 6);
-      rows.forEach(function(r) {
-        var cells = r.querySelectorAll('td');
-        cells.forEach(function(td) {
-          td.style.height = targetRowHeight + 'px';
-          td.style.paddingTop = '6px';
-          td.style.paddingBottom = '6px';
-        });
-      });
-    }
-  }
-}
-
-window.addEventListener('DOMContentLoaded', alignChiefEditorTable);
-window.addEventListener('load', alignChiefEditorTable);
-window.addEventListener('resize', alignChiefEditorTable);
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  alignChiefEditorTable();
 }
 </script>
 {% endblock %}
