@@ -536,9 +536,6 @@
     </div>
 
     <div class="portal-header-actions">
-      <a href="/admin/" target="_blank" class="portal-tab-pill">
-        <span>Admin</span>
-      </a>
       <a href="{% url 'portal_logout' %}" class="portal-tab-pill danger">
         Sign Out
       </a>
@@ -626,13 +623,6 @@
     <div>
       <h3>Editorial Credentials Provisioning &amp; User Accounts</h3>
       <p>Create and dispatch credentials for Associate Editors and Reviewers, and manage all portal accounts.</p>
-    </div>
-    <!-- Quick Accounts Summary -->
-    <div class="users-summary-strip">
-      <span class="user-summary-badge"><strong>{{ counts.all }}</strong> Total Accounts</span>
-      <span class="user-summary-badge" style="color: #00B272;"><strong>{{ counts.editors }}</strong> Associate Editors</span>
-      <span class="user-summary-badge" style="color: #D97706;"><strong>{{ counts.reviewers }}</strong> Reviewers</span>
-      <span class="user-summary-badge" style="color: #2563EB;"><strong>{{ counts.authors }}</strong> Authors</span>
     </div>
   </div>
 
