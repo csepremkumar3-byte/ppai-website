@@ -158,7 +158,7 @@ def author_dashboard(request):
 
     stats = {
         'total': manuscripts.count(),
-        'under_review': manuscripts.filter(status__in=['submitted', 'under_review', 'revised_submitted']).count(),
+        'under_review': manuscripts.filter(status__in=['submitted', 'under_review', 'revised_submitted', 'under_2nd_review']).count(),
         'needs_revision': manuscripts.filter(status='revisions_requested').count(),
         'accepted': manuscripts.filter(status='accepted').count(),
     }
@@ -301,7 +301,7 @@ def editor_dashboard(request):
         'under_review': Manuscript.objects.filter(status='under_review').count(),
         'review_completed': Manuscript.objects.filter(status='review_completed').count(),
         'revisions_requested': Manuscript.objects.filter(status='revisions_requested').count(),
-        'revised_submitted': Manuscript.objects.filter(status='revised_submitted').count(),
+        'revised_submitted': Manuscript.objects.filter(status__in=['revised_submitted', 'under_2nd_review']).count(),
         'accepted': Manuscript.objects.filter(status='accepted').count(),
         'rejected': Manuscript.objects.filter(status='rejected').count(),
     }
@@ -329,11 +329,11 @@ def editor_manuscript_review(request, tracking_id):
     revisions = manuscript.revisions.all()
     activity_logs = manuscript.activity_logs.all()
 
-    # Available reviewers in the system (excluding author and currently active reviewers)
-    assigned_reviewer_ids = reviews.exclude(status__in=['expired', 'declined']).values_list('reviewer_id', flat=True)
+    # Available reviewers in the system (excluding author and currently active pending/accepted reviewers)
+    active_reviewer_ids = reviews.filter(status__in=['pending', 'accepted']).values_list('reviewer_id', flat=True)
     available_reviewers = UserProfile.objects.filter(
         Q(is_reviewer=True) | Q(role='reviewer')
-    ).exclude(user=manuscript.author).exclude(user_id__in=assigned_reviewer_ids).select_related('user')
+    ).exclude(user=manuscript.author).exclude(user_id__in=active_reviewer_ids).select_related('user')
 
     # Handle Editor Editing Manuscript Details (view and edit access)
     if request.method == 'POST' and 'edit_manuscript' in request.POST:
@@ -375,16 +375,23 @@ def editor_manuscript_review(request, tracking_id):
 
         if reviewer_id:
             reviewer_user = get_object_or_404(User, id=reviewer_id)
+            prev_assignment = ReviewAssignment.objects.filter(manuscript=manuscript, reviewer=reviewer_user).order_by('-round').first()
+            assignment_round = (prev_assignment.round + 1) if prev_assignment else (2 if (manuscript.status == 'revised_submitted' or manuscript.revisions.exists()) else 1)
+
             assignment = ReviewAssignment.objects.create(
                 manuscript=manuscript,
                 reviewer=reviewer_user,
                 assigned_by=request.user,
                 due_date=due_date,
-                status='pending'
+                status='pending',
+                round=assignment_round
             )
 
-            # Update status to under review
-            if manuscript.status in ['submitted', 'revised_submitted']:
+            # Update status to under 2nd review if revision exists, or under review if initial
+            if manuscript.status == 'revised_submitted' or manuscript.revisions.exists():
+                manuscript.status = 'under_2nd_review'
+                manuscript.save()
+            elif manuscript.status == 'submitted':
                 manuscript.status = 'under_review'
                 manuscript.save()
 
@@ -535,14 +542,15 @@ def reviewer_respond_invitation(request, assignment_id, response_action):
         )
 
         # Trigger 4: Provision/reset password & dispatch credentials to Reviewer so they can sign in
-        temp_password = generate_secure_password(length=10)
-        reviewer_user.set_password(temp_password)
+        profile = getattr(reviewer_user, 'journal_profile', None)
+        password_to_send = profile.initial_password if (profile and profile.initial_password) else generate_secure_password(length=10)
+        reviewer_user.set_password(password_to_send)
         reviewer_user.save()
         if request.user.is_authenticated and request.user.id == reviewer_user.id:
             update_session_auth_hash(request, reviewer_user)
 
         # Automated Email Dispatches (via Brevo): Credentials (Email 4), alert to Chief Editor, confirmation to Reviewer
-        send_user_credentials_email(reviewer_user, temp_password, 'Reviewer')
+        send_user_credentials_email(reviewer_user, password_to_send, 'Reviewer')
         send_chief_editor_reviewer_response(assignment, action='accepted')
         send_reviewer_acceptance_confirmation(assignment)
 
@@ -709,6 +717,7 @@ def editor_add_user(request):
                 'is_approved_editor': is_editor,
                 'affiliation': affiliation,
                 'specialization': specialization,
+                'initial_password': password,
             }
         )
 
@@ -787,6 +796,7 @@ def admin_dashboard(request):
                     'is_approved_editor': is_editor,
                     'affiliation': affiliation,
                     'specialization': specialization,
+                    'initial_password': password,
                 }
             )
 
@@ -857,8 +867,8 @@ def admin_dashboard(request):
     manuscript_stats = {
         'total': all_manuscripts.count(),
         'received': all_manuscripts.filter(status='submitted').count(),
-        'under_review': all_manuscripts.filter(status__in=['under_review', 'review_completed']).count(),
-        'under_2nd_review': all_manuscripts.filter(status='revised_submitted').count(),
+        'under_review': all_manuscripts.filter(status__in=['under_review', 'review_completed']).exclude(status='under_2nd_review').exclude(revisions__isnull=False).distinct().count(),
+        'under_2nd_review': all_manuscripts.filter(Q(status__in=['revised_submitted', 'under_2nd_review']) | Q(status='review_completed', revisions__isnull=False)).distinct().count(),
         'sent_back_to_author': all_manuscripts.filter(status='revisions_requested').count(),
         'accepted': all_manuscripts.filter(status='accepted').count(),
         'rejected': all_manuscripts.filter(status='rejected').count(),
@@ -872,9 +882,9 @@ def admin_dashboard(request):
     if filter_status == 'received':
         filtered_manuscripts = filtered_manuscripts.filter(status='submitted')
     elif filter_status == 'under_review':
-        filtered_manuscripts = filtered_manuscripts.filter(status__in=['under_review', 'review_completed'])
+        filtered_manuscripts = filtered_manuscripts.filter(status__in=['under_review', 'review_completed']).exclude(status='under_2nd_review').exclude(revisions__isnull=False).distinct()
     elif filter_status == 'under_2nd_review':
-        filtered_manuscripts = filtered_manuscripts.filter(status='revised_submitted')
+        filtered_manuscripts = filtered_manuscripts.filter(Q(status__in=['revised_submitted', 'under_2nd_review']) | Q(status='review_completed', revisions__isnull=False)).distinct()
     elif filter_status in ['sent_back_to_author', 'sent_back']:
         filtered_manuscripts = filtered_manuscripts.filter(status='revisions_requested')
     elif filter_status == 'accepted':

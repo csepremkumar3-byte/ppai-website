@@ -44,6 +44,7 @@ class UserProfile(models.Model):
 
     is_approved_reviewer = models.BooleanField(default=True, help_text="Allows user to be assigned papers as a reviewer")
     is_approved_editor = models.BooleanField(default=False, help_text="Admin approval required for editorial access")
+    initial_password = models.CharField(max_length=255, blank=True, null=True, help_text="Stored password for credentials dispatch")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -74,6 +75,7 @@ class Manuscript(models.Model):
         ('review_completed', 'Review Completed - Pending Decision'),
         ('revisions_requested', 'Revisions Requested'),
         ('revised_submitted', 'Revised Manuscript Submitted'),
+        ('under_2nd_review', 'Under 2nd Peer Review'),
         ('accepted', 'Accepted for Publication'),
         ('rejected', 'Rejected'),
         ('published', 'Published'),
@@ -145,10 +147,12 @@ class Manuscript(models.Model):
     def workflow_status_label(self):
         if self.status == 'submitted':
             return 'Received'
+        elif self.status in ['revised_submitted', 'under_2nd_review']:
+            return 'Under 2nd Review'
+        elif self.status == 'review_completed' and self.revisions.exists():
+            return 'Under 2nd Review'
         elif self.status in ['under_review', 'review_completed']:
             return 'Under Review'
-        elif self.status == 'revised_submitted':
-            return 'Under 2nd Review'
         elif self.status == 'revisions_requested':
             return 'Sent Back to Author'
         elif self.status == 'accepted':
@@ -163,10 +167,10 @@ class Manuscript(models.Model):
     def workflow_status_css(self):
         if self.status == 'submitted':
             return 'submitted'
+        elif self.status in ['revised_submitted', 'under_2nd_review'] or (self.status == 'review_completed' and self.revisions.exists()):
+            return 'revised_submitted'
         elif self.status in ['under_review', 'review_completed']:
             return 'under_review'
-        elif self.status == 'revised_submitted':
-            return 'revised_submitted'
         elif self.status == 'revisions_requested':
             return 'revisions_requested'
         elif self.status == 'accepted':
@@ -235,11 +239,12 @@ class ReviewAssignment(models.Model):
     annotated_file = models.FileField(upload_to=reviewer_annotated_path, blank=True, null=True, help_text="Optional manuscript copy with reviewer comments/track changes")
 
     is_approved_by_editor = models.BooleanField(default=False, help_text="Editor approves releasing comments to author")
+    round = models.PositiveSmallIntegerField(default=1, help_text="Review round (1=Initial, 2=Second review, etc.)")
     invitation_date = models.DateTimeField(auto_now_add=True)
     completed_date = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('manuscript', 'reviewer')
+        unique_together = ('manuscript', 'reviewer', 'round')
         ordering = ['-invitation_date']
 
     def __str__(self):

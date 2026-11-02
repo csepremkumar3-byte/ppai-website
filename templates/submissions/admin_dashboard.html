@@ -38,8 +38,7 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    height: 430px;
-    max-height: 430px;
+    flex: 1 1 auto;
     margin-bottom: 0;
     overflow-x: hidden;
     overflow-y: auto !important;
@@ -843,10 +842,10 @@
           <thead>
             <tr>
               <th style="width: 28%;">User &amp; Email</th>
-              <th style="width: 125px; white-space: nowrap;">Role</th>
-              <th style="width: 28%;">Institution / Affiliation</th>
-              <th style="width: 110px; white-space: nowrap;">Registered</th>
-              <th style="text-align: right; width: 95px; white-space: nowrap;">Action</th>
+              <th style="width: 125px; white-space: nowrap; word-break: keep-all;">Role</th>
+              <th style="width: 27%;">Institution / Affiliation</th>
+              <th style="width: 115px; white-space: nowrap; word-break: keep-all;">Registered</th>
+              <th style="text-align: right; width: 100px; white-space: nowrap; word-break: keep-all;">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -883,7 +882,7 @@
                   {% if u.journal_profile.is_reviewer or filter_role == 'reviewer' %}
                     <span style="font-size: 13px; color: #94A3B8; font-weight: 600; display: inline-block; padding-right: 8px;">&mdash;</span>
                   {% else %}
-                    <a href="{% url 'admin_delete_user' u.id %}" onclick="return confirm('Are you sure you want to delete user \'{{ u.username }}\'?');" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-weight: 700; padding: 4px 10px; font-size: 11.5px; white-space: nowrap; display: inline-block;">
+                    <a href="{% url 'admin_delete_user' u.id %}" onclick="return confirm('Are you sure you want to delete user \'{{ u.username }}\'?');" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-weight: 700; padding: 4px 12px; font-size: 11.5px; white-space: nowrap !important; word-break: keep-all !important; display: inline-flex; align-items: center; justify-content: center; min-width: 65px;">
                       Delete
                     </a>
                   {% endif %}
@@ -1086,29 +1085,24 @@ function alignChiefEditorTable() {
   var tbody = tableContainer.querySelector('tbody');
   if (!thead || !tbody) return;
 
+  // Match editorCard height to the natural height of regCard
   var regCardHeight = regCard.offsetHeight;
   if (regCardHeight > 300) {
     editorCard.style.height = regCardHeight + 'px';
 
-    var header = editorCard.querySelector('.portal-card-header');
-    var filterNav = editorCard.querySelector('.filter-pill-nav');
-    var cardStyle = window.getComputedStyle(editorCard);
-    var padTop = parseFloat(cardStyle.paddingTop) || 26;
-    var padBottom = parseFloat(cardStyle.paddingBottom) || 26;
-    var headerH = header ? header.offsetHeight : 42;
-    var filterNavH = filterNav ? (filterNav.offsetHeight + parseFloat(window.getComputedStyle(filterNav).marginBottom || 16)) : 54;
-
-    var targetContainerH = regCardHeight - padTop - padBottom - headerH - filterNavH;
-    if (targetContainerH > 180) {
-      tableContainer.style.height = targetContainerH + 'px';
-      tableContainer.style.maxHeight = targetContainerH + 'px';
+    // The table container flexes to fill down to the bottom of the card
+    var containerH = tableContainer.clientHeight;
+    if (containerH > 180) {
+      tableContainer.style.height = containerH + 'px';
+      tableContainer.style.maxHeight = containerH + 'px';
 
       var thH = thead.offsetHeight || 42;
-      var availRowH = targetContainerH - thH;
+      var availRowH = containerH - thH;
       var rows = tbody.querySelectorAll('tr');
       if (rows.length >= 6) {
+        // Exactly 6 rows visible, remaining scroll internally
         var rowH = Math.floor(availRowH / 6);
-        var pad = Math.max(Math.floor((rowH - 36) / 2), 4);
+        var pad = Math.max(Math.floor((rowH - 34) / 2), 4);
         rows.forEach(function(r) {
           r.style.height = rowH + 'px';
           var cells = r.querySelectorAll('td');

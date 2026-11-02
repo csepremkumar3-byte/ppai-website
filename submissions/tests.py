@@ -673,5 +673,127 @@ class PeerReviewWorkflowTests(TestCase):
         )
         self.assertTrue(form_with_declaration.is_valid(), form_with_declaration.errors)
 
+    def test_19_second_review_workflow_and_credentials_dispatch(self):
+        """Verify credential password dispatch as entered, and second review reassignment flow."""
+        from submissions.models import ReviewAssignment, Manuscript, ManuscriptRevision
+        from django.core import mail
+        from django.core.files.uploadedfile import SimpleUploadedFile
 
+        # 1. Chief Editor registers reviewer with custom password
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        reg_resp = self.client.post(reverse('admin_dashboard'), {
+            'action': 'create_user',
+            'role': 'reviewer',
+            'full_name': 'Dr. Expert Reviewer',
+            'email': 'expert.reviewer@icar.gov.in',
+            'affiliation': 'ICAR-IARI',
+            'specialization': 'Mycology',
+            'password': 'CustomSecret@2026',
+        }, follow=True)
+        self.assertEqual(reg_resp.status_code, 200)
+
+        reviewer = User.objects.get(email='expert.reviewer@icar.gov.in')
+        self.assertEqual(reviewer.journal_profile.initial_password, 'CustomSecret@2026')
+
+        # Create a submitted manuscript
+        manuscript = Manuscript.objects.create(
+            title="Biocontrol of Fusarium Wilt",
+            abstract="Study on Trichoderma efficacy",
+            author=self.author_user,
+            article_type="research_article",
+            status="submitted"
+        )
+
+        # 2. Assign reviewer
+        assign_resp = self.client.post(reverse('editor_manuscript_review', kwargs={'tracking_id': manuscript.tracking_id}), {
+            'assign_reviewer': '1',
+            'reviewer_id': str(reviewer.id),
+            'due_days': '21',
+        }, follow=True)
+        self.assertEqual(assign_resp.status_code, 200)
+
+        assignment = ReviewAssignment.objects.get(manuscript=manuscript, reviewer=reviewer, round=1)
+        self.assertEqual(assignment.status, 'pending')
+
+        # 3. Reviewer accepts invitation -> initial password is dispatched as entered
+        mail.outbox.clear()
+        self.client.logout()
+        from django.core.signing import TimestampSigner
+        signer = TimestampSigner()
+        token = signer.sign(f"{assignment.id}:{reviewer.id}")
+        accept_resp = self.client.get(
+            reverse('reviewer_respond_invitation', kwargs={'assignment_id': assignment.id, 'response_action': 'accept'}) + f"?token={token}"
+        )
+        self.assertEqual(accept_resp.status_code, 200)
+
+        # Verify credentials email dispatched with the exact password created by Chief Editor
+        cred_emails = [m for m in mail.outbox if 'Login Credentials' in m.subject]
+        self.assertEqual(len(cred_emails), 1)
+        self.assertIn('CustomSecret@2026', cred_emails[0].body)
+
+        # Verify reviewer can log in with CustomSecret@2026
+        login_success = self.client.login(username='expert.reviewer@icar.gov.in', password='CustomSecret@2026')
+        self.assertTrue(login_success)
+
+        # Reviewer submits review with minor revision recommendation
+        eval_resp = self.client.post(reverse('reviewer_evaluate_manuscript', kwargs={'assignment_id': assignment.id}), {
+            'originality_score': 4,
+            'technical_quality_score': 4,
+            'clarity_score': 4,
+            'significance_score': 4,
+            'recommendation': 'minor_revision',
+            'comments_for_author': 'Please improve methodology details.',
+            'confidential_comments_to_editor': 'Solid paper once revised.',
+        }, follow=True)
+        self.assertEqual(eval_resp.status_code, 200)
+        self.client.logout()
+
+        # 4. Chief Editor requests revisions
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        dec_resp = self.client.post(reverse('editor_manuscript_review', kwargs={'tracking_id': manuscript.tracking_id}), {
+            'submit_decision': '1',
+            'decision': 'minor_revision',
+            'comments_to_author': 'Please address reviewer comments.',
+            'internal_notes': 'Awaiting revised version.',
+            'approve_reviewer_comments': '1',
+        }, follow=True)
+        self.assertEqual(dec_resp.status_code, 200)
+        manuscript.refresh_from_db()
+        self.assertEqual(manuscript.status, 'revisions_requested')
+        self.client.logout()
+
+        # 5. Author submits revised manuscript
+        self.client.login(username='author@university.edu', password='AuthorPass123!')
+        rev_file = SimpleUploadedFile("revised_fusarium.pdf", b"%PDF-1.4 revised manuscript content", content_type="application/pdf")
+        sub_rev_resp = self.client.post(reverse('author_submit_revision', kwargs={'tracking_id': manuscript.tracking_id}), {
+            'response_to_reviewers': 'Addressed all reviewer comments on methodology.',
+            'revised_file': rev_file,
+        }, follow=True)
+        self.assertEqual(sub_rev_resp.status_code, 200)
+        manuscript.refresh_from_db()
+        self.assertEqual(manuscript.status, 'revised_submitted')
+        self.client.logout()
+
+        # 6. Chief Editor reassigns the SAME reviewer for round 2
+        self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
+        reassign_resp = self.client.post(reverse('editor_manuscript_review', kwargs={'tracking_id': manuscript.tracking_id}), {
+            'assign_reviewer': '1',
+            'reviewer_id': str(reviewer.id),
+            'due_days': '14',
+        }, follow=True)
+        self.assertEqual(reassign_resp.status_code, 200)
+
+        # Verify round 2 assignment exists
+        round2_assignment = ReviewAssignment.objects.get(manuscript=manuscript, reviewer=reviewer, round=2)
+        self.assertEqual(round2_assignment.status, 'pending')
+
+        # Verify manuscript is under 2nd review
+        manuscript.refresh_from_db()
+        self.assertEqual(manuscript.status, 'under_2nd_review')
+        self.assertEqual(manuscript.workflow_status_label, 'Under 2nd Review')
+
+        # Verify dashboard stats update
+        dash_resp = self.client.get(reverse('admin_dashboard'))
+        self.assertEqual(dash_resp.context['manuscript_stats']['under_2nd_review'], 1)
+        self.client.logout()
 
