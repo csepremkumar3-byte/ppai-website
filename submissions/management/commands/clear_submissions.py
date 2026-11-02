@@ -20,8 +20,8 @@ class Command(BaseCommand):
         parser.add_argument(
             '--admin-password',
             type=str,
-            default='AdminPassword123!',
-            help='Password for the restored admin account (default: AdminPassword123!).',
+            default='IJpp@1972',
+            help='Password for the restored admin account (default: IJpp@1972).',
         )
 
     def handle(self, *args, **options):
@@ -91,15 +91,15 @@ class Command(BaseCommand):
 
         # 6. Recreate clean default Chief Editor / Admin
         if not no_admin:
-            # Clean primary admin/Chief Editor account
-            admin_user = User.objects.create_superuser(
-                username='admin',
-                email='admin@ppai.org.in',
+            # Clean primary editor/Chief Editor account
+            editor_user = User.objects.create_superuser(
+                username='editor',
+                email='editor@ppai.org.in',
                 password=admin_password,
                 first_name='Chief',
                 last_name='Editor'
             )
-            p1, _ = UserProfile.objects.get_or_create(user=admin_user)
+            p1, _ = UserProfile.objects.get_or_create(user=editor_user)
             p1.role = 'admin'
             p1.is_editor = False
             p1.is_reviewer = False
@@ -107,10 +107,26 @@ class Command(BaseCommand):
             p1.affiliation = 'Plant Protection Association of India (PPAI)'
             p1.save()
 
+            # Also maintain admin account
+            admin_user = User.objects.create_superuser(
+                username='admin',
+                email='admin@ppai.org.in',
+                password=admin_password,
+                first_name='Chief',
+                last_name='Editor'
+            )
+            p2, _ = UserProfile.objects.get_or_create(user=admin_user)
+            p2.role = 'admin'
+            p2.is_editor = False
+            p2.is_reviewer = False
+            p2.is_author = False
+            p2.affiliation = 'Plant Protection Association of India (PPAI)'
+            p2.save()
+
             msg += (
-                f"\nClean Chief Editor / Admin account restored:\n"
-                f"  Username: admin\n"
-                f"  Email:    admin@ppai.org.in\n"
+                f"\nClean Chief Editor / Admin accounts restored:\n"
+                f"  Username: editor (or admin)\n"
+                f"  Email:    editor@ppai.org.in\n"
                 f"  Password: {admin_password}\n"
                 f"  Role:     Chief Editor / Superuser"
             )

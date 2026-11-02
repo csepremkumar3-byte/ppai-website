@@ -47,7 +47,8 @@ class Command(BaseCommand):
         User.objects.filter(username='admin@ppai.org.in').exclude(username='admin').delete()
 
         # Helper to create/update user
-        def get_or_setup_user(username, email, first_name, last_name, role, is_staff=False, is_super=False, affiliation=""):
+        def get_or_setup_user(username, email, first_name, last_name, role, user_password=None, is_staff=False, is_super=False, affiliation=""):
+            pwd = user_password or password
             user, created = User.objects.get_or_create(
                 username=username,
                 defaults={'email': email}
@@ -57,7 +58,7 @@ class Command(BaseCommand):
             user.last_name = last_name
             user.is_staff = is_staff
             user.is_superuser = is_super
-            user.set_password(password)
+            user.set_password(pwd)
             user.save()
 
             profile, _ = UserProfile.objects.get_or_create(user=user)
@@ -85,15 +86,29 @@ class Command(BaseCommand):
             return user
 
         # -------------------------------------------------------------
-        # 1. Provision 4 Test Accounts
+        # 1. Provision Test Accounts
         # -------------------------------------------------------------
-        # Chief Editor
+        # Chief Editor (Username: editor / Password: IJpp@1972)
         chief_editor = get_or_setup_user(
-            username='admin',
-            email='admin@ppai.org.in',
+            username='editor',
+            email='editor@ppai.org.in',
             first_name='Dr. Chief',
             last_name='Editor',
             role='admin',
+            user_password='IJpp@1972',
+            is_staff=True,
+            is_super=True,
+            affiliation='Plant Protection Association of India (PPAI)'
+        )
+
+        # Also configure 'admin' username with IJpp@1972
+        get_or_setup_user(
+            username='admin',
+            email='admin@ppai.org.in',
+            first_name='Chief',
+            last_name='Editor',
+            role='admin',
+            user_password='IJpp@1972',
             is_staff=True,
             is_super=True,
             affiliation='Plant Protection Association of India (PPAI)'
@@ -319,10 +334,11 @@ class Command(BaseCommand):
             "\n" + "=" * 70 + "\n"
             " SUCCESS: Test Profiles & Sample Workflow Data Provisioned!\n"
             "=" * 70 + "\n\n"
-            "Standard Test Password for ALL accounts: " + password + "\n\n"
+            "Standard Password for Associate Editor, Reviewer, and Author: " + password + "\n\n"
             "1. CHIEF EDITOR / ADMIN\n"
-            "   - Login (Email)    : admin@ppai.org.in (or username: admin)\n"
-            "   - Password         : " + password + "\n"
+            "   - Username         : editor (or admin)\n"
+            "   - Login (Email)    : editor@ppai.org.in (or admin@ppai.org.in)\n"
+            "   - Password         : IJpp@1972\n"
             "   - Role Selected    : Chief Editor\n"
             "   - Target Dashboard : /portal/admin/\n"
             "   - Capabilities     : Workflow stats, assign editors/reviewers, accept/reject/publish\n\n"

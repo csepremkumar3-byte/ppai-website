@@ -122,17 +122,18 @@ class Command(BaseCommand):
         # -------------------------------------------------------------
         self.stdout.write("\n4. Verifying Chief Editor / Admin Profile & Console...")
         client.logout()
+        admin_password = 'IJpp@1972'
         login_resp = client.post('/login/', {
-            'email': 'admin@ppai.org.in',
-            'password': password,
+            'email': 'editor',
+            'password': admin_password,
             'selected_role': 'chief_editor'
         }, follow=True)
 
         if login_resp.status_code != 200 or not login_resp.wsgi_request.user.is_authenticated:
-            errors.append("Chief Editor login failed.")
-            self.stdout.write(self.style.ERROR("   [FAIL] Chief Editor login failed."))
+            errors.append("Chief Editor login failed with username 'editor'.")
+            self.stdout.write(self.style.ERROR("   [FAIL] Chief Editor login failed with username 'editor'."))
         else:
-            self.stdout.write(self.style.SUCCESS("   [PASS] Chief Editor authenticated successfully."))
+            self.stdout.write(self.style.SUCCESS("   [PASS] Chief Editor authenticated successfully with username 'editor' and password 'IJpp@1972'."))
 
         admin_dash_resp = client.get('/portal/admin/')
         if admin_dash_resp.status_code == 200:
@@ -177,8 +178,8 @@ class Command(BaseCommand):
 
         # Chief Editor tries to log in as Author
         fake_author = client.post('/login/', {
-            'email': 'admin@ppai.org.in',
-            'password': password,
+            'email': 'editor',
+            'password': admin_password,
             'selected_role': 'author'
         })
         if "Role Validation Alert" in fake_author.content.decode('utf-8'):
