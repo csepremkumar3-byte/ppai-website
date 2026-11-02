@@ -171,14 +171,19 @@
         </div>
       </div>
 
-      <div style="margin-bottom: 24px;">
-        <label class="portal-checkbox-row">
+      <div style="margin-bottom: 24px; background: #F8FAF9; border: 1.5px solid {% if form.conflict_of_interest.errors %}#EF4444{% else %}rgba(11, 36, 23, 0.12){% endif %}; border-radius: 10px; padding: 16px 18px;">
+        <label class="portal-checkbox-row" style="cursor: pointer; display: flex; align-items: flex-start; gap: 12px; margin: 0;">
           {{ form.conflict_of_interest }}
-          <span style="font-size: 13px; color: #0B2417; line-height: 1.5;">
-            <strong>Declaration:</strong> I confirm that this manuscript is original, has not been published previously, and all co-authors have approved its submission to the Plant Protection Association of India.
+          <span style="font-size: 13.5px; color: #0B2417; line-height: 1.5;">
+            <strong style="color: #0B2417;">Declaration <span style="color: #DC2626;">*</span>:</strong>
+            I confirm that this manuscript is original, has not been published previously, and all co-authors have approved its submission to the Plant Protection Association of India.
           </span>
         </label>
-        {% if form.conflict_of_interest.errors %}<div class="error-text">{{ form.conflict_of_interest.errors.0 }}</div>{% endif %}
+        {% if form.conflict_of_interest.errors %}
+          <div class="error-text" style="margin-top: 8px; font-weight: 700; color: #DC2626;">
+            {{ form.conflict_of_interest.errors.0 }}
+          </div>
+        {% endif %}
       </div>
 
       <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-end;">

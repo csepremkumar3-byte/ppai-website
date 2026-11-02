@@ -85,6 +85,14 @@ class RoleRegistrationForm(forms.Form):
 
 
 class ManuscriptSubmissionForm(forms.ModelForm):
+    conflict_of_interest = forms.BooleanField(
+        required=True,
+        widget=forms.CheckboxInput(attrs={'class': 'portal-checkbox', 'required': 'required'}),
+        error_messages={
+            'required': 'You must agree to the Declaration before submitting the manuscript.'
+        }
+    )
+
     class Meta:
         model = Manuscript
         fields = [
@@ -102,8 +110,13 @@ class ManuscriptSubmissionForm(forms.ModelForm):
             'co_authors': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 3, 'placeholder': 'Co-authors with email & institution (e.g. Dr. A. Rao, University; Dr. P. Singh, College)'}),
             'payment_transaction_id': forms.TextInput(attrs={'class': 'portal-input', 'placeholder': 'e.g. UPI/123456789012 or IMPS Reference No.'}),
             'cover_letter': forms.Textarea(attrs={'class': 'portal-textarea', 'rows': 4, 'placeholder': 'Brief statement explaining the novel scientific findings and why it fits PPAI scope...'}),
-            'conflict_of_interest': forms.CheckboxInput(attrs={'class': 'portal-checkbox'}),
         }
+
+    def clean_conflict_of_interest(self):
+        agreed = self.cleaned_data.get('conflict_of_interest')
+        if not agreed:
+            raise forms.ValidationError("You must confirm and accept the Declaration before submitting your manuscript.")
+        return agreed
 
     def clean_manuscript_file(self):
         f = self.cleaned_data.get('manuscript_file')

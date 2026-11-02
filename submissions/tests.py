@@ -634,4 +634,44 @@ class PeerReviewWorkflowTests(TestCase):
         self.assertEqual(resp_search.context['manuscripts'][0].tracking_id, m_accepted.tracking_id)
         self.client.logout()
 
+    def test_18_declaration_mandatory_validation(self):
+        """Verify that manuscript submission strictly requires confirming the Declaration checkbox."""
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from submissions.forms import ManuscriptSubmissionForm
+
+        dummy_doc = SimpleUploadedFile("test_paper.pdf", b"%PDF-1.4 Mock manuscript content", content_type="application/pdf")
+
+        # 1. Submission WITHOUT declaration checkbox
+        form_no_declaration = ManuscriptSubmissionForm(
+            data={
+                'article_type': 'research_article',
+                'subject_area': 'pathology',
+                'title': 'Evaluation of Biopesticides against Plant Wilt',
+                'abstract': 'Detailed field analysis of Trichoderma applications.',
+                'keywords': 'biopesticides, wilt, agriculture',
+            },
+            files={'manuscript_file': dummy_doc}
+        )
+        self.assertFalse(form_no_declaration.is_valid())
+        self.assertIn('conflict_of_interest', form_no_declaration.errors)
+        self.assertTrue(
+            any("Declaration" in str(err) for err in form_no_declaration.errors['conflict_of_interest'])
+        )
+
+        # 2. Submission WITH declaration checkbox
+        dummy_doc_valid = SimpleUploadedFile("test_paper_valid.pdf", b"%PDF-1.4 Mock manuscript content", content_type="application/pdf")
+        form_with_declaration = ManuscriptSubmissionForm(
+            data={
+                'article_type': 'research_article',
+                'subject_area': 'pathology',
+                'title': 'Evaluation of Biopesticides against Plant Wilt',
+                'abstract': 'Detailed field analysis of Trichoderma applications.',
+                'keywords': 'biopesticides, wilt, agriculture',
+                'conflict_of_interest': True,
+            },
+            files={'manuscript_file': dummy_doc_valid}
+        )
+        self.assertTrue(form_with_declaration.is_valid(), form_with_declaration.errors)
+
+
 
