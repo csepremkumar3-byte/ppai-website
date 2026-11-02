@@ -10,12 +10,68 @@
     display: grid;
     grid-template-columns: 420px 1fr;
     gap: 24px;
-    align-items: start;
+    align-items: stretch;
   }
   @media (max-width: 992px) {
     .admin-grid-layout {
       grid-template-columns: 1fr;
+      align-items: start;
     }
+  }
+
+  .admin-col-card {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0 !important;
+    height: 100%;
+  }
+
+  .admin-col-card .portal-card-header {
+    flex-shrink: 0;
+  }
+
+  .users-table-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 418px; /* Displays 6 entries; remaining entries scrollable */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid rgba(11, 36, 23, 0.08);
+    border-radius: 10px;
+    background: #FFFFFF;
+  }
+
+  .users-table-scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #F8FAF9;
+    box-shadow: 0 1px 0 rgba(11, 36, 23, 0.1);
+  }
+
+  .users-table td {
+    padding: 11px 14px;
+    vertical-align: middle;
+  }
+
+  .users-table th {
+    padding: 10px 14px;
+  }
+
+  .users-table-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .users-table-scroll::-webkit-scrollbar-track {
+    background: #F1F5F3;
+    border-radius: 4px;
+  }
+  .users-table-scroll::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+  }
+  .users-table-scroll::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
   }
 
   .stat-strip {
@@ -630,14 +686,14 @@
   <div class="admin-grid-layout" style="margin-bottom: 40px;">
 
     <!-- Column 1: Register Associate Editor / Reviewer -->
-    <div class="portal-card">
+    <div class="portal-card admin-col-card">
       <div class="portal-card-header">
         <div>
           <h2>Register</h2>
         </div>
       </div>
 
-      <form method="POST" action="{% url 'admin_dashboard' %}">
+      <form method="POST" action="{% url 'admin_dashboard' %}" style="display: flex; flex-direction: column; flex: 1;">
         {% csrf_token %}
         <input type="hidden" name="action" value="create_user">
 
@@ -702,14 +758,14 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-portal-primary" style="width: 100%; justify-content: center; padding: 12px;">
+        <button type="submit" class="btn-portal-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: auto;">
           Register
         </button>
       </form>
     </div>
 
     <!-- Column 2: User List and Management -->
-    <div class="portal-card">
+    <div class="portal-card admin-col-card">
       <div class="portal-card-header">
         <div>
           <h2>Chief Editor Console</h2>
@@ -717,7 +773,7 @@
       </div>
 
       <!-- Filter Tabs -->
-      <div class="filter-pill-nav">
+      <div class="filter-pill-nav" style="flex-shrink: 0; margin-bottom: 16px;">
         <a href="{% url 'admin_dashboard' %}?role=all" class="filter-pill-btn {% if filter_role == 'all' %}active{% endif %}">
           All Users ({{ counts.all }})
         </a>
@@ -733,15 +789,15 @@
       </div>
 
       {% if users %}
-      <div class="table-responsive">
-        <table class="portal-table">
+      <div class="table-responsive users-table-scroll">
+        <table class="portal-table users-table">
           <thead>
             <tr>
-              <th>User &amp; Email</th>
-              <th>Role</th>
-              <th>Institution / Affiliation</th>
-              <th>Registered</th>
-              <th style="text-align: right;">Action</th>
+              <th style="min-width: 170px;">User &amp; Email</th>
+              <th style="min-width: 120px;">Role</th>
+              <th style="min-width: 160px;">Institution / Affiliation</th>
+              <th style="min-width: 95px;">Registered</th>
+              <th style="text-align: right; min-width: 80px;">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -788,8 +844,8 @@
         </table>
       </div>
       {% else %}
-      <div style="text-align: center; padding: 40px 20px;">
-        <p style="font-size: 14px; color: #5B7065;">No users found matching this filter.</p>
+      <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; border: 1px dashed rgba(11, 36, 23, 0.15); border-radius: 10px;">
+        <p style="font-size: 14px; color: #5B7065; margin: 0;">No users found matching this filter.</p>
       </div>
       {% endif %}
 
