@@ -530,11 +530,10 @@ def login_view(request):
         try:
             user = authenticate(request, username=email, password=password)
             if user is None:
-                try:
-                    user_obj = User.objects.get(email__iexact=email)
-                    user = authenticate(request, username=user_obj.username, password=password)
-                except (User.DoesNotExist, User.MultipleObjectsReturned):
-                    user = None
+                for candidate in User.objects.filter(email__iexact=email):
+                    user = authenticate(request, username=candidate.username, password=password)
+                    if user is not None:
+                        break
 
             if user is not None:
                 selected_role = request.POST.get('selected_role', '').strip().lower()
