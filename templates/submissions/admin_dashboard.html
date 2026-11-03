@@ -38,9 +38,9 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    flex: 1 1 auto;
+    flex: 1 1 0% !important;
     margin-bottom: 0;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto !important;
     scrollbar-width: thin;
     scrollbar-color: #CBD5E1 transparent;
@@ -58,23 +58,21 @@
     background: #F8FAF9;
     color: #0B2417;
     font-weight: 700;
-    font-size: 12.5px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    padding: 12px 14px;
+    padding: 11px 14px;
     border-bottom: 1.5px solid rgba(11, 36, 23, 0.1);
     box-sizing: border-box;
-    word-break: break-word !important;
-    overflow-wrap: anywhere !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
   }
 
   .users-table {
     width: 100%;
-    table-layout: fixed;
+    min-width: 660px;
     border-collapse: collapse;
     margin-bottom: 0;
-    font-size: 13.5px;
+    font-size: 13px;
     text-align: left;
   }
 
@@ -88,7 +86,7 @@
   }
 
   .users-table td {
-    padding: 10px 14px;
+    padding: 8px 14px;
     border-bottom: 1px solid rgba(11, 36, 23, 0.06);
     vertical-align: middle;
     color: #1D2924;
@@ -96,10 +94,13 @@
   }
 
   .users-table th {
-    padding: 12px 14px;
-    word-break: break-word !important;
-    overflow-wrap: anywhere !important;
-    white-space: normal !important;
+    padding: 11px 14px;
+    white-space: nowrap !important;
+  }
+
+  .role-badge {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
   }
 
   #manuscripts-section {
@@ -841,53 +842,53 @@
         <table class="portal-table users-table">
           <thead>
             <tr>
-              <th style="width: 28%;">User &amp; Email</th>
-              <th style="width: 125px; white-space: nowrap; word-break: keep-all;">Role</th>
-              <th style="width: 27%;">Institution / Affiliation</th>
-              <th style="width: 115px; white-space: nowrap; word-break: keep-all;">Registered</th>
-              <th style="text-align: right; width: 100px; white-space: nowrap; word-break: keep-all;">Action</th>
+              <th style="min-width: 170px; width: 30%; white-space: nowrap;">User &amp; Email</th>
+              <th style="min-width: 130px; width: 130px; white-space: nowrap;">Role</th>
+              <th style="min-width: 180px; width: 32%;">Institution / Affiliation</th>
+              <th style="min-width: 110px; width: 110px; white-space: nowrap;">Registered</th>
+              <th style="min-width: 90px; width: 90px; text-align: center; white-space: nowrap;">Action</th>
             </tr>
           </thead>
           <tbody>
             {% for u in users %}
             <tr>
-              <td style="word-break: break-word; overflow-wrap: anywhere;">
-                <strong style="color: #0B2417; font-size: 13.5px; font-weight: 700; display: block; line-height: 1.35; word-break: break-word;">{{ u.get_full_name|default:u.username }}</strong>
-                <div style="font-size: 12px; font-weight: 500; color: #64748B; margin-top: 2px; word-break: break-all;">{{ u.email|default:u.username }}</div>
+              <td style="vertical-align: middle;">
+                <strong style="color: #0B2417; font-size: 13.5px; font-weight: 700; display: block; line-height: 1.35;">{{ u.get_full_name|default:u.username }}</strong>
+                <div style="font-size: 12px; font-weight: 500; color: #64748B; margin-top: 2px;">{{ u.email|default:u.username }}</div>
               </td>
-              <td style="white-space: nowrap;">
+              <td style="white-space: nowrap; vertical-align: middle;">
                 {% if u.is_superuser %}
-                  <span class="role-badge admin" style="font-size: 11.5px; font-weight: 700; padding: 4px 9px; white-space: nowrap; display: inline-block;">Chief Editor</span>
+                  <span class="role-badge admin" style="font-size: 11.5px; font-weight: 700; padding: 4px 10px; white-space: nowrap !important; display: inline-block;">Chief Editor</span>
                 {% elif u.journal_profile.is_editor %}
-                  <span class="role-badge editor" style="font-size: 11.5px; font-weight: 700; padding: 4px 9px; white-space: nowrap; display: inline-block;">Associate Editor</span>
+                  <span class="role-badge editor" style="font-size: 11.5px; font-weight: 700; padding: 4px 10px; white-space: nowrap !important; display: inline-block;">Associate Editor</span>
                 {% elif u.journal_profile.is_reviewer %}
-                  <span class="role-badge reviewer" style="font-size: 11.5px; font-weight: 700; padding: 4px 9px; white-space: nowrap; display: inline-block;">Reviewer</span>
+                  <span class="role-badge reviewer" style="font-size: 11.5px; font-weight: 700; padding: 4px 10px; white-space: nowrap !important; display: inline-block;">Reviewer</span>
                 {% else %}
-                  <span class="role-badge author" style="font-size: 11.5px; font-weight: 700; padding: 4px 9px; white-space: nowrap; display: inline-block;">Author</span>
+                  <span class="role-badge author" style="font-size: 11.5px; font-weight: 700; padding: 4px 10px; white-space: nowrap !important; display: inline-block;">Author</span>
                 {% endif %}
               </td>
-              <td style="word-break: break-word; overflow-wrap: anywhere;">
-                <span style="font-size: 13px; font-weight: 600; color: #1E293B; display: block; line-height: 1.35; word-break: break-word;">
+              <td style="vertical-align: middle;">
+                <span style="font-size: 13px; font-weight: 600; color: #1E293B; display: block; line-height: 1.35;">
                   {{ u.journal_profile.affiliation|default:"&mdash;" }}
                 </span>
                 {% if u.journal_profile.specialization %}
-                  <div style="font-size: 11.5px; font-weight: 500; color: #64748B; margin-top: 2px; word-break: break-word;">{{ u.journal_profile.specialization }}</div>
+                  <div style="font-size: 11.5px; font-weight: 500; color: #64748B; margin-top: 2px;">{{ u.journal_profile.specialization }}</div>
                 {% endif %}
               </td>
-              <td style="white-space: nowrap;">
-                <span style="font-size: 12px; font-weight: 600; color: #334155; white-space: nowrap; display: inline-block;">{{ u.date_joined|date:"M d, Y" }}</span>
+              <td style="white-space: nowrap; vertical-align: middle;">
+                <span style="font-size: 12px; font-weight: 600; color: #334155; white-space: nowrap !important; word-break: keep-all !important; display: inline-block;">{{ u.date_joined|date:"M d, Y" }}</span>
               </td>
-              <td style="text-align: right; white-space: nowrap;">
+              <td style="text-align: center; white-space: nowrap; vertical-align: middle;">
                 {% if u.id != request.user.id %}
                   {% if u.journal_profile.is_reviewer or filter_role == 'reviewer' %}
-                    <span style="font-size: 13px; color: #94A3B8; font-weight: 600; display: inline-block; padding-right: 8px;">&mdash;</span>
+                    <span style="font-size: 13px; color: #94A3B8; font-weight: 600; display: inline-block;">&mdash;</span>
                   {% else %}
-                    <a href="{% url 'admin_delete_user' u.id %}" onclick="return confirm('Are you sure you want to delete user \'{{ u.username }}\'?');" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.3); font-weight: 700; padding: 4px 12px; font-size: 11.5px; white-space: nowrap !important; word-break: keep-all !important; display: inline-flex; align-items: center; justify-content: center; min-width: 65px;">
+                    <a href="{% url 'admin_delete_user' u.id %}" onclick="return confirm('Are you sure you want to delete user \'{{ u.username|escapejs }}\'?');" class="btn-portal-secondary btn-portal-sm" style="color: #DC2626; border-color: rgba(220, 38, 38, 0.35); background: #FFF; font-weight: 700; padding: 4px 14px; font-size: 11.5px; white-space: nowrap !important; word-break: normal !important; overflow-wrap: normal !important; display: inline-flex; align-items: center; justify-content: center; min-width: 65px; border-radius: 6px; text-decoration: none;">
                       Delete
                     </a>
                   {% endif %}
                 {% else %}
-                <span style="font-size: 12px; color: #00B272; font-weight: 800; white-space: nowrap; display: inline-block;">Current User</span>
+                <span style="font-size: 12px; color: #00B272; font-weight: 800; white-space: nowrap !important; word-break: normal !important; display: inline-block;">Current User</span>
                 {% endif %}
               </td>
             </tr>
@@ -1076,50 +1077,72 @@ function toggleAbstract(id) {
 }
 
 function alignChiefEditorTable() {
-  var regCard = document.querySelectorAll('.admin-col-card')[0];
-  var editorCard = document.querySelectorAll('.admin-col-card')[1];
+  var regCard = document.querySelector('.admin-grid-layout > .admin-col-card:first-child');
+  var editorCard = document.querySelector('.admin-grid-layout > .admin-col-card:last-child');
   var tableContainer = document.querySelector('.users-table-container');
-  if (!regCard || !editorCard || !tableContainer) return;
+  if (!regCard || !editorCard) return;
 
-  var thead = tableContainer.querySelector('thead');
-  var tbody = tableContainer.querySelector('tbody');
-  if (!thead || !tbody) return;
+  if (window.innerWidth > 992) {
+    // Reset heights so regCard remains strictly in its untouched natural state
+    editorCard.style.height = '';
+    editorCard.style.maxHeight = '';
 
-  // Match editorCard height to the natural height of regCard
-  var regCardHeight = regCard.offsetHeight;
-  if (regCardHeight > 300) {
-    editorCard.style.height = regCardHeight + 'px';
+    var regHeight = regCard.offsetHeight;
+    if (regHeight > 300) {
+      editorCard.style.height = regHeight + 'px';
+      editorCard.style.maxHeight = regHeight + 'px';
+      editorCard.style.boxSizing = 'border-box';
+      editorCard.style.display = 'flex';
+      editorCard.style.flexDirection = 'column';
+      editorCard.style.overflow = 'hidden';
 
-    // The table container flexes to fill down to the bottom of the card
-    var containerH = tableContainer.clientHeight;
-    if (containerH > 180) {
-      tableContainer.style.height = containerH + 'px';
-      tableContainer.style.maxHeight = containerH + 'px';
+      if (tableContainer) {
+        tableContainer.style.flex = '1 1 0%';
+        tableContainer.style.minHeight = '0';
+        tableContainer.style.overflowY = 'auto';
 
-      var thH = thead.offsetHeight || 42;
-      var availRowH = containerH - thH;
-      var rows = tbody.querySelectorAll('tr');
-      if (rows.length >= 6) {
-        // Exactly 6 rows visible, remaining scroll internally
-        var rowH = Math.floor(availRowH / 6);
-        var pad = Math.max(Math.floor((rowH - 34) / 2), 4);
-        rows.forEach(function(r) {
-          r.style.height = rowH + 'px';
-          var cells = r.querySelectorAll('td');
-          cells.forEach(function(td) {
-            td.style.height = rowH + 'px';
-            td.style.paddingTop = pad + 'px';
-            td.style.paddingBottom = pad + 'px';
-          });
-        });
+        var thead = tableContainer.querySelector('thead');
+        var tbody = tableContainer.querySelector('tbody');
+        if (thead && tbody) {
+          var containerHeight = tableContainer.clientHeight;
+          var theadHeight = thead.offsetHeight || 42;
+          var availHeight = containerHeight - theadHeight;
+          var rows = tbody.querySelectorAll('tr');
+
+          if (availHeight > 180) {
+            // When 6 or more entries exist, set exact row height so exactly 6 rows are in full view
+            // and row 7+ scroll internally.
+            // If fewer than 6 rows, keep the same spacious row height for design consistency.
+            var rowHeight = Math.floor(availHeight / 6);
+            if (rowHeight < 56) rowHeight = 56;
+
+            rows.forEach(function(r) {
+              r.style.height = rowHeight + 'px';
+              r.querySelectorAll('td').forEach(function(td) {
+                td.style.height = rowHeight + 'px';
+                td.style.paddingTop = '8px';
+                td.style.paddingBottom = '8px';
+              });
+            });
+          }
+        }
       }
     }
+  } else {
+    editorCard.style.height = '';
+    editorCard.style.maxHeight = '';
   }
 }
 
 window.addEventListener('DOMContentLoaded', alignChiefEditorTable);
 window.addEventListener('load', alignChiefEditorTable);
 window.addEventListener('resize', alignChiefEditorTable);
+if (window.ResizeObserver) {
+  var regCardEl = document.querySelector('.admin-grid-layout > .admin-col-card:first-child');
+  if (regCardEl) {
+    new ResizeObserver(alignChiefEditorTable).observe(regCardEl);
+  }
+}
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   alignChiefEditorTable();
 }
