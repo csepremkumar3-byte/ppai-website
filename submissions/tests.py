@@ -887,21 +887,34 @@ class PeerReviewWorkflowTests(TestCase):
         rev_otp = PasswordResetOTP.objects.filter(email='suresh.reviewer@icar.gov.in', is_used=False).first()
         self.assertIsNotNone(rev_otp)
 
-        # Reviewer enters OTP -> credentials are now dispatched with the exact initial password!
+        # Reviewer enters OTP -> verified, leads directly to Set New Password without premature credential dispatch
         verify_rev_resp = self.client.post(reverse('portal_verify_otp'), {'otp': rev_otp.otp_code}, follow=True)
         self.assertEqual(verify_rev_resp.status_code, 200)
+        self.assertContains(verify_rev_resp, 'Set New Password')
 
-        # Verify credential email is dispatched
+        # Verify NO credential email dispatched yet upon OTP validation
+        cred_emails_before = [m for m in mail.outbox if 'Login Credentials' in m.subject]
+        self.assertEqual(len(cred_emails_before), 0)
+
+        # Reviewer sets new password -> credentials dispatched only now with the new password
+        mail.outbox.clear()
+        reset_rev_resp = self.client.post(reverse('portal_reset_password'), {
+            'password': 'SureshNewPass@2026',
+            'confirm_password': 'SureshNewPass@2026',
+        }, follow=True)
+        self.assertEqual(reset_rev_resp.status_code, 200)
+
+        # Verify credential email is dispatched with the newly reset password
         cred_emails = [m for m in mail.outbox if 'Login Credentials' in m.subject]
         self.assertEqual(len(cred_emails), 1)
-        self.assertIn('SureshSecret@2026', cred_emails[0].body)
+        self.assertIn('SureshNewPass@2026', cred_emails[0].body)
 
-        # Reviewer can log in with SureshSecret@2026
-        rev_login = self.client.login(username='suresh.reviewer@icar.gov.in', password='SureshSecret@2026')
+        # Reviewer can log in with SureshNewPass@2026
+        rev_login = self.client.login(username='suresh.reviewer@icar.gov.in', password='SureshNewPass@2026')
         self.assertTrue(rev_login)
         self.client.logout()
 
-        # 6. Associate Editor Reset Password Flow: Registered in Chief Editor dashboard, first OTP sent, THEN credentials dispatched
+        # 6. Associate Editor Reset Password Flow: Registered in Chief Editor dashboard, OTP sent, credentials sent only after password reset
         self.client.login(username='admin@ppai.org.in', password='AdminPass123!')
         self.client.post(reverse('admin_dashboard'), {
             'action': 'create_user',
@@ -928,16 +941,29 @@ class PeerReviewWorkflowTests(TestCase):
         ed_otp = PasswordResetOTP.objects.filter(email='anita.assoc@icar.gov.in', is_used=False).first()
         self.assertIsNotNone(ed_otp)
 
-        # Enter OTP -> credentials dispatched with exact initial password
+        # Enter OTP -> leads directly to Set New Password without premature credential dispatch
         verify_ed_resp = self.client.post(reverse('portal_verify_otp'), {'otp': ed_otp.otp_code}, follow=True)
         self.assertEqual(verify_ed_resp.status_code, 200)
+        self.assertContains(verify_ed_resp, 'Set New Password')
+
+        # Verify NO credential email dispatched yet upon OTP validation
+        cred_emails_ed_before = [m for m in mail.outbox if 'Login Credentials' in m.subject]
+        self.assertEqual(len(cred_emails_ed_before), 0)
+
+        # Associate Editor sets new password -> credentials dispatched only now with the new password
+        mail.outbox.clear()
+        reset_ed_resp = self.client.post(reverse('portal_reset_password'), {
+            'password': 'AnitaNewPass@2026',
+            'confirm_password': 'AnitaNewPass@2026',
+        }, follow=True)
+        self.assertEqual(reset_ed_resp.status_code, 200)
 
         cred_emails_ed = [m for m in mail.outbox if 'Associate Editor Login Credentials' in m.subject]
         self.assertEqual(len(cred_emails_ed), 1)
-        self.assertIn('AnitaSecret@2026', cred_emails_ed[0].body)
+        self.assertIn('AnitaNewPass@2026', cred_emails_ed[0].body)
 
-        # Associate Editor can log in with AnitaSecret@2026
-        ed_login = self.client.login(username='anita.assoc@icar.gov.in', password='AnitaSecret@2026')
+        # Associate Editor can log in with AnitaNewPass@2026
+        ed_login = self.client.login(username='anita.assoc@icar.gov.in', password='AnitaNewPass@2026')
         self.assertTrue(ed_login)
         self.client.logout()
 

@@ -1,42 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Verify OTP — PPAI Portal{% endblock %}
+{% block title %}Verify OTP &mdash; PPAI Portal{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
 <style>
   .portal-login-container {
-    max-width: 480px;
+    max-width: 460px;
     margin: 40px auto 80px auto;
   }
   .portal-auth-card {
     background: #FFFFFF;
-    border: 1px solid rgba(11, 36, 23, 0.1);
-    border-radius: 18px;
-    box-shadow: 0 12px 36px rgba(11, 36, 23, 0.07);
-    padding: 36px 32px;
+    border: 1px solid rgba(11, 36, 23, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(11, 36, 23, 0.06);
+    padding: 38px 34px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .portal-auth-header {
     text-align: center;
     margin-bottom: 24px;
   }
-  .portal-auth-header .portal-badge {
-    display: inline-block;
-    background: rgba(0, 178, 114, 0.1);
-    color: #00B272;
-    font-size: 11.5px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 4px 12px;
-    border-radius: 100px;
-    margin-bottom: 12px;
-  }
   .portal-auth-header h1 {
-    font-size: 24px;
+    font-size: 23px;
     font-weight: 800;
     color: #0B2417;
+    margin-top: 12px;
     margin-bottom: 6px;
     letter-spacing: -0.02em;
   }
@@ -44,6 +34,7 @@
     font-size: 13.5px;
     color: #5B7065;
     line-height: 1.5;
+    margin: 0;
   }
 
   .otp-input-field {
@@ -90,7 +81,17 @@
 
     <div class="portal-auth-card">
       <div class="portal-auth-header">
-        <span class="portal-badge">Security Verification</span>
+        <div style="margin-bottom: 6px;">
+          {% if site_settings and site_settings.logo %}
+            <img src="{{ site_settings.logo.url }}" alt="PPAI Logo" style="height: 52px; margin-bottom: 6px;">
+          {% else %}
+            <img src="{% static 'images/ppai_logo.png' %}" alt="PPAI Logo" style="height: 52px; margin-bottom: 6px;">
+          {% endif %}
+          <div style="line-height: 1.45;">
+            <span style="font-size: 13.5px; font-weight: 800; color: #0B2417; display: block;">Plant Protection Association of India (PPAI)</span>
+            <span style="font-size: 11.5px; color: #64746D; display: block; margin-top: 2px;">ICAR-NBPGR Regional Station, Rajendranagar, Hyderabad &ndash; 500030, Telangana, India</span>
+          </div>
+        </div>
         <h1>Enter Verification Code</h1>
         <p>
           We've sent a 6-digit OTP to<br>
@@ -110,8 +111,8 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 13px; font-size: 15px; justify-content: center;">
-          Verify OTP &rarr;
+        <button type="submit" class="btn-portal-primary" style="width: 100%; padding: 13px; font-size: 15px; font-weight: 700; justify-content: center; border-radius: 10px;">
+          Verify OTP
         </button>
       </form>
 

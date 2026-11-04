@@ -1087,32 +1087,8 @@ def portal_verify_otp(request):
         otp_record.save()
         request.session['otp_verified'] = True
 
-        profile = getattr(user, 'journal_profile', None)
-
-        # For Associate Editors and Reviewers: DISPATCH LOGIN CREDENTIALS ONLY NOW AFTER OTP VERIFICATION
-        if role_name in ['Associate Editor', 'Reviewer']:
-            pwd_to_send = getattr(profile, 'initial_password', None)
-            if not pwd_to_send:
-                pwd_to_send = generate_secure_password(10)
-                user.set_password(pwd_to_send)
-                user.save()
-                if profile:
-                    profile.initial_password = pwd_to_send
-                    profile.save()
-            else:
-                user.set_password(pwd_to_send)
-                user.save()
-
-            send_user_credentials_email(user, pwd_to_send, role_name)
-            messages.success(
-                request,
-                f"OTP Verified! Your {role_name} login credentials have been dispatched to {reset_email}. You can also reset your password below if you wish."
-            )
-            return redirect('portal_reset_password')
-        else:
-            # For Authors: proceed to create new password
-            messages.success(request, "OTP Verified successfully! Please choose your new password below.")
-            return redirect('portal_reset_password')
+        messages.success(request, "OTP verified successfully! Please enter your new password below.")
+        return redirect('portal_reset_password')
 
     return render(request, 'submissions/verify_otp.html', {
         'email': reset_email,
@@ -1163,6 +1139,5 @@ def portal_reset_password(request):
     return render(request, 'submissions/reset_password.html', {
         'email': reset_email,
         'role_name': role_name,
-        'credentials_sent': (role_name in ['Associate Editor', 'Reviewer']),
     })
 
