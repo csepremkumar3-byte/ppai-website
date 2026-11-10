@@ -44,15 +44,15 @@ class ElectionRegistrationTests(TestCase):
         self.assertNotIn('e.g. 9876543210 or +91 9876543210', content)
         self.assertNotIn('Enter 6 numeric digits', content)
 
-        # Check Organization Address fields from handwritten drawing
-        self.assertIn('Org Name', content)
+        # Check Organization Address label and fields
+        self.assertIn('Organization Name', content)
         self.assertIn('id_org_name', content)
         self.assertIn('id_org_address', content)
         self.assertIn('id_org_state', content)
         self.assertIn('id_org_city', content)
         self.assertIn('id_org_pincode', content)
 
-        # Check Residential Address fields from handwritten drawing
+        # Check Residential Address fields
         self.assertIn('Address 1', content)
         self.assertIn('id_res_address', content)
         self.assertIn('id_res_state', content)
@@ -109,11 +109,11 @@ class ElectionRegistrationTests(TestCase):
             'org_name': 'Cornell University',
             'org_address': 'Department of Plant Pathology',
             'org_state': 'Other / International',
-            'org_city': 'Ithaca',
+            'org_city': 'Other / International City',
             'org_pincode': '148500',
             'res_address': '123 University Ave',
             'res_state': 'Other / International',
-            'res_city': 'Ithaca',
+            'res_city': 'Other / International City',
             'res_pincode': '148500',
         }
         response = self.client.post(reverse('election_registration'), data=payload)
@@ -147,8 +147,57 @@ class ElectionRegistrationTests(TestCase):
         self.assertIn('Phone Number must be exactly 10 digits.', content)
         self.assertEqual(ElectionRegistration.objects.count(), 0)
 
-    def test_election_registration_pincode_validation(self):
-        # Invalid 4-digit pincode
+    def test_city_not_available_in_state_validation(self):
+        # User selects Telangana but inputs Chennai (which belongs to Tamil Nadu)
+        payload = {
+            'registration_type': 'annual',
+            'name': 'Ramesh Verma',
+            'phone': '9876543210',
+            'email': 'ramesh@icar.gov.in',
+            'designation': 'Scientist',
+            'org_name': 'ICAR',
+            'org_address': 'Campus',
+            'org_state': 'Telangana',
+            'org_city': 'Chennai',  # Invalid for Telangana
+            'org_pincode': '500030',
+            'res_address': 'Street 1',
+            'res_state': 'Telangana',
+            'res_city': 'Hyderabad',
+            'res_pincode': '500030',
+        }
+        response = self.client.post(reverse('election_registration'), data=payload)
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode('utf-8')
+        self.assertIn("is not available in Telangana.", content)
+        self.assertIn("Chennai", content)
+        self.assertEqual(ElectionRegistration.objects.count(), 0)
+
+    def test_pincode_not_related_to_city_validation(self):
+        # User selects Hyderabad (prefixes 500, 501) but enters 110012 (Delhi PIN)
+        payload = {
+            'registration_type': 'annual',
+            'name': 'Ramesh Verma',
+            'phone': '9876543210',
+            'email': 'ramesh@icar.gov.in',
+            'designation': 'Scientist',
+            'org_name': 'ICAR',
+            'org_address': 'Campus',
+            'org_state': 'Telangana',
+            'org_city': 'Hyderabad',
+            'org_pincode': '110012',  # Delhi PIN code for Hyderabad
+            'res_address': 'Street 1',
+            'res_state': 'Telangana',
+            'res_city': 'Hyderabad',
+            'res_pincode': '500030',
+        }
+        response = self.client.post(reverse('election_registration'), data=payload)
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode('utf-8')
+        self.assertIn('PIN Code 110012 does not relate to Hyderabad, Telangana', content)
+        self.assertEqual(ElectionRegistration.objects.count(), 0)
+
+    def test_election_registration_pincode_digits_validation(self):
+        # Invalid non-6-digit pincode
         payload = {
             'registration_type': 'annual',
             'name': 'Ramesh Verma',

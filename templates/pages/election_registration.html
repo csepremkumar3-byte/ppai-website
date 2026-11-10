@@ -155,6 +155,23 @@
     background: #FFFFFF;
   }
 
+  .el-hint-error {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #dc2626;
+    margin-top: 6px;
+    display: none;
+    line-height: 1.4;
+  }
+
+  .el-field input:disabled,
+  .el-field select:disabled {
+    background-color: #F8FAF9;
+    border-color: #E2ECE5;
+    color: #8C9E95;
+    cursor: not-allowed;
+  }
+
   .el-field input:disabled {
     background-color: #F8FAF9;
     border-color: #E2ECE5;
@@ -469,12 +486,12 @@
             </div>
           </div>
 
-          <!-- Section 2: Organization Address (State must be verified/chosen before City) -->
+          <!-- Section 2: Organization Address (State must be chosen before City) -->
           <div class="el-form-section">
             <div class="el-section-title">Organization with Full Address</div>
 
             <div class="el-field">
-              <label for="id_org_name">Org Name <span class="required">*</span></label>
+              <label for="id_org_name">Organization Name <span class="required">*</span></label>
               <input type="text" name="org_name" id="id_org_name" placeholder="Organization / Institute Name" value="{{ form_data.org_name|default:'' }}" required>
             </div>
 
@@ -486,7 +503,7 @@
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_org_state">State <span class="required">*</span></label>
-                <select name="org_state" id="id_org_state" required onchange="handleStateChange('id_org_state', 'id_org_city')">
+                <select name="org_state" id="id_org_state" required onchange="handleStateSelection('id_org_state', 'id_org_city', 'id_org_pincode', 'org_pincode_feedback')">
                   <option value="" disabled {% if not form_data.org_state %}selected{% endif %}>Select State</option>
                   {% for st in indian_states %}
                     <option value="{{ st }}" {% if form_data.org_state == st %}selected{% endif %}>{{ st }}</option>
@@ -496,17 +513,21 @@
 
               <div class="el-field" id="wrap_org_city">
                 <label for="id_org_city">City <span class="required">*</span></label>
-                <input type="text" name="org_city" id="id_org_city" placeholder="City" value="{{ form_data.org_city|default:'' }}" required {% if not form_data.org_state %}disabled{% endif %}>
+                <select name="org_city" id="id_org_city" required onchange="handleCitySelection('id_org_state', 'id_org_city', 'id_org_pincode', 'org_pincode_feedback')" {% if not form_data.org_state %}disabled{% endif %}>
+                  <option value="">{% if form_data.org_state %}-- Select City --{% else %}-- Select State First --{% endif %}</option>
+                </select>
+                <div id="org_city_feedback" class="el-hint-error"></div>
               </div>
             </div>
 
             <div class="el-field" style="max-width: 320px;">
               <label for="id_org_pincode">Pin Code <span class="required">*</span></label>
-              <input type="text" name="org_pincode" id="id_org_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.org_pincode|default:'' }}" required>
+              <input type="text" name="org_pincode" id="id_org_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.org_pincode|default:'' }}" required oninput="validatePincodeRealtime('id_org_state', 'id_org_city', 'id_org_pincode', 'org_pincode_feedback')">
+              <div id="org_pincode_feedback" class="el-hint-error"></div>
             </div>
           </div>
 
-          <!-- Section 3: Residential Address (State must be verified/chosen before City) -->
+          <!-- Section 3: Residential Address (State must be chosen before City) -->
           <div class="el-form-section">
             <div class="el-section-title">Residence with Full Address</div>
 
@@ -518,7 +539,7 @@
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_res_state">State <span class="required">*</span></label>
-                <select name="res_state" id="id_res_state" required onchange="handleStateChange('id_res_state', 'id_res_city')">
+                <select name="res_state" id="id_res_state" required onchange="handleStateSelection('id_res_state', 'id_res_city', 'id_res_pincode', 'res_pincode_feedback')">
                   <option value="" disabled {% if not form_data.res_state %}selected{% endif %}>Select State</option>
                   {% for st in indian_states %}
                     <option value="{{ st }}" {% if form_data.res_state == st %}selected{% endif %}>{{ st }}</option>
@@ -528,13 +549,17 @@
 
               <div class="el-field" id="wrap_res_city">
                 <label for="id_res_city">City <span class="required">*</span></label>
-                <input type="text" name="res_city" id="id_res_city" placeholder="City" value="{{ form_data.res_city|default:'' }}" required {% if not form_data.res_state %}disabled{% endif %}>
+                <select name="res_city" id="id_res_city" required onchange="handleCitySelection('id_res_state', 'id_res_city', 'id_res_pincode', 'res_pincode_feedback')" {% if not form_data.res_state %}disabled{% endif %}>
+                  <option value="">{% if form_data.res_state %}-- Select City --{% else %}-- Select State First --{% endif %}</option>
+                </select>
+                <div id="res_city_feedback" class="el-hint-error"></div>
               </div>
             </div>
 
             <div class="el-field" style="max-width: 320px;">
               <label for="id_res_pincode">Pin Code <span class="required">*</span></label>
-              <input type="text" name="res_pincode" id="id_res_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.res_pincode|default:'' }}" required>
+              <input type="text" name="res_pincode" id="id_res_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.res_pincode|default:'' }}" required oninput="validatePincodeRealtime('id_res_state', 'id_res_city', 'id_res_pincode', 'res_pincode_feedback')">
+              <div id="res_pincode_feedback" class="el-hint-error"></div>
             </div>
           </div>
 
@@ -553,30 +578,160 @@
 </div>
 
 <script>
-  // Enable / unlock City only after State is selected
-  function handleStateChange(stateId, cityId) {
+  const STATE_CITY_DATA = {{ state_city_json|safe }};
+
+  function populateCities(stateId, cityId, preselectedValue) {
     const stateEl = document.getElementById(stateId);
     const cityEl = document.getElementById(cityId);
-    if (stateEl && cityEl) {
-      if (stateEl.value && stateEl.value.trim() !== '') {
-        cityEl.disabled = false;
-        cityEl.focus();
-        stateEl.style.borderColor = '#00875A';
-      } else {
-        cityEl.disabled = true;
-        cityEl.value = '';
+    if (!stateEl || !cityEl) return;
+
+    const state = stateEl.value;
+    cityEl.innerHTML = '';
+
+    if (!state || !STATE_CITY_DATA[state]) {
+      cityEl.disabled = true;
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = '-- Select State First --';
+      cityEl.appendChild(opt);
+      return;
+    }
+
+    cityEl.disabled = false;
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = '-- Select City --';
+    cityEl.appendChild(defaultOpt);
+
+    const cities = STATE_CITY_DATA[state].cities || {};
+    let matched = false;
+    for (const cityName in cities) {
+      const opt = document.createElement('option');
+      opt.value = cityName;
+      opt.textContent = cityName;
+      if (preselectedValue && cityName.toLowerCase() === preselectedValue.toLowerCase()) {
+        opt.selected = true;
+        matched = true;
       }
+      cityEl.appendChild(opt);
+    }
+
+    if (preselectedValue && !matched) {
+      const opt = document.createElement('option');
+      opt.value = preselectedValue;
+      opt.textContent = preselectedValue;
+      opt.selected = true;
+      cityEl.appendChild(opt);
     }
   }
 
-  // Guide user to State if they click City before selecting State
+  function handleStateSelection(stateId, cityId, pinId, pinFeedbackId) {
+    const stateEl = document.getElementById(stateId);
+    const cityEl = document.getElementById(cityId);
+    if (stateEl && stateEl.value) {
+      stateEl.style.borderColor = '#00875A';
+    }
+    populateCities(stateId, cityId, '');
+    if (cityEl) {
+      cityEl.focus();
+      cityEl.style.borderColor = '';
+    }
+    validatePincodeRealtime(stateId, cityId, pinId, pinFeedbackId);
+  }
+
+  function handleCitySelection(stateId, cityId, pinId, pinFeedbackId) {
+    const cityEl = document.getElementById(cityId);
+    if (cityEl && cityEl.value) {
+      cityEl.style.borderColor = '#00875A';
+    }
+    validatePincodeRealtime(stateId, cityId, pinId, pinFeedbackId);
+  }
+
+  function validatePincodeRealtime(stateId, cityId, pinId, feedbackId) {
+    const stateEl = document.getElementById(stateId);
+    const cityEl = document.getElementById(cityId);
+    const pinEl = document.getElementById(pinId);
+    const feedbackEl = document.getElementById(feedbackId);
+
+    if (!pinEl || !feedbackEl) return true;
+
+    const pin = pinEl.value.trim();
+    const state = stateEl ? stateEl.value : '';
+    const city = cityEl ? cityEl.value : '';
+
+    feedbackEl.style.display = 'none';
+    feedbackEl.textContent = '';
+    pinEl.style.borderColor = '';
+
+    if (!pin) return false;
+
+    // International state check
+    if (state === 'Other / International') {
+      pinEl.style.borderColor = '#00875A';
+      return true;
+    }
+
+    // Check 6 numeric digits
+    if (!/^\d{6}$/.test(pin)) {
+      if (pin.length === 6 && !/^\d+$/.test(pin)) {
+        feedbackEl.textContent = 'PIN Code must contain numbers only.';
+        feedbackEl.style.display = 'block';
+        pinEl.style.borderColor = '#dc2626';
+        return false;
+      }
+      if (pin.length < 6) {
+        return false;
+      }
+    }
+
+    // Check city and state correlation
+    if (!state) {
+      feedbackEl.textContent = 'Please select a State first.';
+      feedbackEl.style.display = 'block';
+      pinEl.style.borderColor = '#dc2626';
+      return false;
+    }
+
+    const stateObj = STATE_CITY_DATA[state];
+    if (!stateObj) return true;
+
+    if (city && stateObj.cities && stateObj.cities[city]) {
+      const cityPrefixes = stateObj.cities[city];
+      if (cityPrefixes && cityPrefixes.length > 0) {
+        const matchesCity = cityPrefixes.some(pfx => pin.startsWith(pfx));
+        if (!matchesCity) {
+          feedbackEl.textContent = `PIN Code ${pin} does not relate to ${city}, ${state} (expected to start with ${cityPrefixes.join(', ')}).`;
+          feedbackEl.style.display = 'block';
+          pinEl.style.borderColor = '#dc2626';
+          return false;
+        }
+      }
+    } else {
+      const statePrefixes = stateObj.prefixes || [];
+      if (statePrefixes.length > 0) {
+        const matchesState = statePrefixes.some(pfx => pin.startsWith(pfx));
+        if (!matchesState) {
+          feedbackEl.textContent = `PIN Code ${pin} does not relate to ${state} (expected to start with ${statePrefixes.join(', ')}).`;
+          feedbackEl.style.display = 'block';
+          pinEl.style.borderColor = '#dc2626';
+          return false;
+        }
+      }
+    }
+
+    // Valid PIN code
+    pinEl.style.borderColor = '#00875A';
+    return true;
+  }
+
+  // Guide user to State if they click disabled City
   [['wrap_org_city', 'id_org_state'], ['wrap_res_city', 'id_res_state']].forEach(function(pair) {
     const wrap = document.getElementById(pair[0]);
     const state = document.getElementById(pair[1]);
     if (wrap && state) {
       wrap.addEventListener('click', function() {
-        const input = wrap.querySelector('input');
-        if (input && input.disabled) {
+        const select = wrap.querySelector('select');
+        if (select && select.disabled) {
           state.focus();
           state.style.borderColor = '#dc2626';
           setTimeout(function() {
@@ -587,15 +742,20 @@
     }
   });
 
-  // Enforce strictly 10 digits for Phone Number
+  // Strictly 10 digits for Phone Number
   const phoneEl = document.getElementById('id_phone');
   if (phoneEl) {
     phoneEl.addEventListener('input', function() {
       this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+      if (this.value.length === 10) {
+        this.style.borderColor = '#00875A';
+      } else {
+        this.style.borderColor = '';
+      }
     });
   }
 
-  // Enforce strictly 6 digits for Pin codes
+  // Strictly 6 digits for Pin codes
   ['id_org_pincode', 'id_res_pincode'].forEach(function(id) {
     const el = document.getElementById(id);
     if (el) {
@@ -605,42 +765,67 @@
     }
   });
 
-  // Client-side validation on form submit
+  // Initialize dropdowns on page load
+  window.addEventListener('DOMContentLoaded', function() {
+    populateCities('id_org_state', 'id_org_city', '{{ form_data.org_city|default:""|escapejs }}');
+    populateCities('id_res_state', 'id_res_city', '{{ form_data.res_city|default:""|escapejs }}');
+    if ('{{ form_data.org_pincode|default:""|escapejs }}') {
+      validatePincodeRealtime('id_org_state', 'id_org_city', 'id_org_pincode', 'org_pincode_feedback');
+    }
+    if ('{{ form_data.res_pincode|default:""|escapejs }}') {
+      validatePincodeRealtime('id_res_state', 'id_res_city', 'id_res_pincode', 'res_pincode_feedback');
+    }
+  });
+
+  // Form submit validation
   const form = document.getElementById('electionForm');
   if (form) {
     form.addEventListener('submit', function(e) {
       let firstInvalid = null;
 
-      // Validate State and City pairing
-      [['id_org_state', 'id_org_city', 'wrap_org_city'], ['id_res_state', 'id_res_city', 'wrap_res_city']].forEach(function(trip) {
-        const stateEl = document.getElementById(trip[0]);
-        const cityEl = document.getElementById(trip[1]);
-        if (stateEl && (!stateEl.value || !stateEl.value.trim())) {
-          stateEl.style.borderColor = '#dc2626';
-          if (!firstInvalid) firstInvalid = stateEl;
-        }
-        if (cityEl && (!cityEl.value || !cityEl.value.trim() || cityEl.disabled)) {
-          cityEl.style.borderColor = '#dc2626';
-          if (!firstInvalid) firstInvalid = stateEl && !stateEl.value ? stateEl : cityEl;
-        }
-      });
-
-      // Phone validation: exactly 10 digits
+      // Validate Phone: exactly 10 digits
       if (phoneEl && phoneEl.value.trim().length !== 10) {
         phoneEl.style.borderColor = '#dc2626';
         if (!firstInvalid) firstInvalid = phoneEl;
       }
 
-      // PIN code validation: exactly 6 digits
-      ['id_org_pincode', 'id_res_pincode'].forEach(function(id) {
-        const pin = document.getElementById(id);
-        if (pin && pin.value.trim().length !== 6) {
-          pin.style.borderColor = '#dc2626';
-          if (!firstInvalid) firstInvalid = pin;
-        }
-      });
+      // Validate Organization Location
+      const orgStateEl = document.getElementById('id_org_state');
+      const orgCityEl = document.getElementById('id_org_city');
+      const orgPinEl = document.getElementById('id_org_pincode');
 
-      // All required inputs
+      if (orgStateEl && !orgStateEl.value) {
+        orgStateEl.style.borderColor = '#dc2626';
+        if (!firstInvalid) firstInvalid = orgStateEl;
+      }
+      if (orgCityEl && (!orgCityEl.value || orgCityEl.disabled)) {
+        orgCityEl.style.borderColor = '#dc2626';
+        if (!firstInvalid) firstInvalid = orgCityEl;
+      }
+      if (!validatePincodeRealtime('id_org_state', 'id_org_city', 'id_org_pincode', 'org_pincode_feedback')) {
+        if (orgPinEl) orgPinEl.style.borderColor = '#dc2626';
+        if (!firstInvalid) firstInvalid = orgPinEl;
+      }
+
+      // Validate Residential Location
+      const resStateEl = document.getElementById('id_res_state');
+      const resCityEl = document.getElementById('id_res_city');
+      const resPinEl = document.getElementById('id_res_pincode');
+
+      if (resStateEl && !resStateEl.value) {
+        resStateEl.style.borderColor = '#dc2626';
+        if (!firstInvalid) firstInvalid = resStateEl;
+      }
+      if (resCityEl && (!resCityEl.value || resCityEl.disabled)) {
+        resCityEl.style.borderColor = '#dc2626';
+        if (!firstInvalid) firstInvalid = resCityEl;
+      }
+      if (!validatePincodeRealtime('id_res_state', 'id_res_city', 'id_res_pincode', 'res_pincode_feedback')) {
+        if (resPinEl) resPinEl.style.borderColor = '#dc2626';
+        if (!firstInvalid) firstInvalid = resPinEl;
+      }
+
+      // All other required fields
       const requiredInputs = form.querySelectorAll('input[required]:not(:disabled), select[required]');
       requiredInputs.forEach(function(input) {
         if (!input.value || !input.value.trim()) {

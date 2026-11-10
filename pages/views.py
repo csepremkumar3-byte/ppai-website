@@ -9,6 +9,8 @@ from .models import (
     EditorialBoardMember, PublicationBook, ConferenceEvent,
     SocietyAward, JournalVolume, JournalArticle, ElectionRegistration
 )
+from .location_data import STATE_CITY_DATA, INDIAN_STATES, validate_location
+
 
 RECENT_EVENTS = [
     {
@@ -396,20 +398,8 @@ def election_registration(request):
     """
     context = get_common_context()
     context['registration_type_choices'] = ElectionRegistration.REGISTRATION_TYPE_CHOICES
-    
-    indian_states = [
-        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-        "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
-        "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
-        "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
-        "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
-        "Uttar Pradesh", "Uttarakhand", "West Bengal",
-        "Andaman and Nicobar Islands", "Chandigarh",
-        "Dadra and Nagar Haveli and Daman and Diu", "Delhi (NCT)",
-        "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
-        "Other / International"
-    ]
-    context['indian_states'] = indian_states
+    context['indian_states'] = INDIAN_STATES
+    context['state_city_json'] = json.dumps(STATE_CITY_DATA)
 
     if request.method == 'POST':
         registration_type = request.POST.get('registration_type', 'life').strip().lower()
@@ -488,26 +478,18 @@ def election_registration(request):
             errors.append("Organization Name is required.")
         if not org_address:
             errors.append("Organization Address is required.")
-        if not org_city:
-            errors.append("Organization City is required.")
-        if not org_state:
-            errors.append("Please select an Organization State.")
-        if not org_pincode:
-            errors.append("Organization PIN Code is required.")
-        elif org_state != "Other / International" and not re.match(r'^\d{6}$', org_pincode):
-            errors.append("Organization PIN Code must be exactly 6 numeric digits.")
+
+        is_org_loc_valid, org_loc_err = validate_location(org_state, org_city, org_pincode, "Organization")
+        if not is_org_loc_valid:
+            errors.append(org_loc_err)
 
         # Residential Address Validations
         if not res_address:
             errors.append("Residential Address is required.")
-        if not res_state:
-            errors.append("Please select a Residential State.")
-        if not res_city:
-            errors.append("Residential City is required.")
-        if not res_pincode:
-            errors.append("Residential PIN Code is required.")
-        elif res_state != "Other / International" and not re.match(r'^\d{6}$', res_pincode):
-            errors.append("Residential PIN Code must be exactly 6 numeric digits.")
+
+        is_res_loc_valid, res_loc_err = validate_location(res_state, res_city, res_pincode, "Residential")
+        if not is_res_loc_valid:
+            errors.append(res_loc_err)
 
         if errors:
             context['errors'] = errors
