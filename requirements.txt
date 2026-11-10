@@ -5,3 +5,4 @@ tzdata==2026.4
 gunicorn
 psycopg2-binary
 Pillow
+openpyxl

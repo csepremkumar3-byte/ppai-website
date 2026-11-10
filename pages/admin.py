@@ -3,9 +3,6 @@ import csv
 import io
 from django.http import HttpResponse
 from django.urls import path
-import openpyxl
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-from openpyxl.utils import get_column_letter
 
 from .models import (
     SiteSetting, CarouselSlide, ExecutiveMember, PastBearer,
@@ -84,73 +81,104 @@ class JournalArticleAdmin(admin.ModelAdmin):
 
 
 def generate_election_registrations_excel(queryset):
-    """Helper to generate an Excel (.xlsx) workbook response for election registrations."""
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = "Election 2026 Registrations"
-
+    """
+    Helper to generate an Excel (.xlsx or Excel CSV) response for election registrations.
+    Uses openpyxl when installed, otherwise falls back gracefully to Excel-compatible CSV.
+    """
     headers = [
         'ID', 'Member Category', 'Registration Type', 'Name', 
         'Phone Number', 'Email ID', 'Designation', 
         'Organization with Full Address', 'Residence with Full Address', 'Registration Date'
     ]
-    ws.append(headers)
 
-    header_fill = PatternFill(start_color="00875A", end_color="00875A", fill_type="solid")
-    header_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
-    thin_border = Border(
-        left=Side(style='thin', color='D0D7D3'),
-        right=Side(style='thin', color='D0D7D3'),
-        top=Side(style='thin', color='D0D7D3'),
-        bottom=Side(style='thin', color='D0D7D3')
-    )
+    try:
+        import openpyxl
+        from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+        from openpyxl.utils import get_column_letter
 
-    for cell in ws[1]:
-        cell.fill = header_fill
-        cell.font = header_font
-        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Election 2026 Registrations"
 
-    ws.row_dimensions[1].height = 28
+        ws.append(headers)
 
-    for reg in queryset:
-        ws.append([
-            reg.id,
-            reg.get_member_category_display(),
-            reg.get_registration_type_display(),
-            reg.name,
-            reg.phone,
-            reg.email,
-            reg.designation,
-            reg.organization_address,
-            reg.residence_address,
-            reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
-        ])
+        header_fill = PatternFill(start_color="00875A", end_color="00875A", fill_type="solid")
+        header_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+        thin_border = Border(
+            left=Side(style='thin', color='D0D7D3'),
+            right=Side(style='thin', color='D0D7D3'),
+            top=Side(style='thin', color='D0D7D3'),
+            bottom=Side(style='thin', color='D0D7D3')
+        )
 
-    for row in ws.iter_rows(min_row=2, max_col=10):
-        for cell in row:
-            cell.border = thin_border
-            cell.alignment = Alignment(vertical="center", wrap_text=True)
+        for cell in ws[1]:
+            cell.fill = header_fill
+            cell.font = header_font
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
-    for col in ws.columns:
-        max_len = 0
-        col_letter = get_column_letter(col[0].column)
-        for cell in col:
-            val = str(cell.value or '')
-            if '\n' in val:
-                val = max(val.split('\n'), key=len)
-            max_len = max(max_len, len(val))
-        ws.column_dimensions[col_letter].width = min(max(max_len + 3, 14), 45)
+        ws.row_dimensions[1].height = 28
 
-    output = io.BytesIO()
-    wb.save(output)
-    output.seek(0)
+        for reg in queryset:
+            ws.append([
+                reg.id,
+                reg.get_member_category_display(),
+                reg.get_registration_type_display(),
+                reg.name,
+                reg.phone,
+                reg.email,
+                reg.designation,
+                reg.organization_address,
+                reg.residence_address,
+                reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
+            ])
 
-    response = HttpResponse(
-        output.getvalue(),
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
-    response['Content-Disposition'] = 'attachment; filename="PPAI_Election_2026_Registrations.xlsx"'
-    return response
+        for row in ws.iter_rows(min_row=2, max_col=10):
+            for cell in row:
+                cell.border = thin_border
+                cell.alignment = Alignment(vertical="center", wrap_text=True)
+
+        for col in ws.columns:
+            max_len = 0
+            col_letter = get_column_letter(col[0].column)
+            for cell in col:
+                val = str(cell.value or '')
+                if '\n' in val:
+                    val = max(val.split('\n'), key=len)
+                max_len = max(max_len, len(val))
+            ws.column_dimensions[col_letter].width = min(max(max_len + 3, 14), 45)
+
+        output = io.BytesIO()
+        wb.save(output)
+        output.seek(0)
+
+        response = HttpResponse(
+            output.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename="PPAI_Election_2026_Registrations.xlsx"'
+        return response
+
+    except ImportError:
+        # Fallback to UTF-8 BOM Excel CSV so Microsoft Excel opens cleanly without any installation
+        response = HttpResponse(content_type='application/vnd.ms-excel; charset=utf-8')
+        response['Content-Disposition'] = 'attachment; filename="PPAI_Election_2026_Registrations.csv"'
+        response.write('\ufeff')
+        writer = csv.writer(response)
+        writer.writerow(headers)
+        for reg in queryset:
+            writer.writerow([
+                reg.id,
+                reg.get_member_category_display(),
+                reg.get_registration_type_display(),
+                reg.name,
+                reg.phone,
+                reg.email,
+                reg.designation,
+                reg.organization_address,
+                reg.residence_address,
+                reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
+            ])
+        return response
 
 
 @admin.action(description="Download selected registrations in Excel (.xlsx)")
