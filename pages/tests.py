@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.auth.models import User
 from pages.models import ElectionRegistration
+from pages.admin import generate_election_registrations_excel
 
 class ElectionRegistrationTests(TestCase):
     def setUp(self):
@@ -39,6 +41,11 @@ class ElectionRegistrationTests(TestCase):
         self.assertIn('Designation', content)
         self.assertIn('Organization with Full Address', content)
         self.assertIn('Residence with Full Address', content)
+        # Check that subtitle clutter paragraph is removed
+        self.assertNotIn('Register your membership credentials for participation', content)
+        # Check that center wrap submit button is used
+        self.assertIn('el-submit-wrap', content)
+        self.assertIn('el-submit-btn', content)
 
     def test_election_registration_post_success(self):
         payload = {
@@ -94,3 +101,28 @@ class ElectionRegistrationTests(TestCase):
         self.assertIn('Phone number is required.', content)
         self.assertIn('Email ID is required.', content)
         self.assertEqual(ElectionRegistration.objects.count(), 0)
+
+    def test_admin_excel_export_action(self):
+        ElectionRegistration.objects.create(
+            member_category='indian',
+            registration_type='life',
+            name='Dr. Test Scientist',
+            phone='9999999999',
+            email='test@ppai.org.in',
+            designation='Scientist',
+            organization_address='Test Org',
+            residence_address='Test Res'
+        )
+        qs = ElectionRegistration.objects.all()
+        response = generate_election_registrations_excel(qs)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        self.assertIn('PPAI_Election_2026_Registrations.xlsx', response['Content-Disposition'])
+        self.assertGreater(len(response.content), 1000)
+
+    def test_admin_excel_download_view(self):
+        admin_user = User.objects.create_superuser('adminuser', 'admin@ppai.org.in', 'AdminPass123!')
+        self.client.force_login(admin_user)
+        response = self.client.get('/admin/pages/electionregistration/export-excel/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

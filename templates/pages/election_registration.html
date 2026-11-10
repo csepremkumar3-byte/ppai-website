@@ -29,31 +29,10 @@
     margin: 0 auto;
   }
 
-  /* Breadcrumb & Header */
+  /* Header */
   .el-header {
     text-align: center;
-    margin-bottom: clamp(22px, 3vh, 32px);
-  }
-
-  .el-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #e8f5e9;
-    color: #0f5132;
-    border: 1px solid #c8e6c9;
-    padding: 6px 16px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .el-badge svg {
-    width: 14px;
-    height: 14px;
+    margin-bottom: clamp(20px, 2.5vh, 28px);
   }
 
   .el-header h1 {
@@ -61,15 +40,7 @@
     font-weight: 800;
     color: var(--el-dark);
     letter-spacing: -0.02em;
-    margin: 0 0 8px;
-  }
-
-  .el-header p {
-    font-size: clamp(14px, 1.05vw, 16px);
-    color: var(--el-text-muted);
-    max-width: 580px;
-    margin: 0 auto;
-    line-height: 1.55;
+    margin: 0;
   }
 
   /* Card */
@@ -100,113 +71,81 @@
 
   /* Form Elements */
   .el-form-section {
-    margin-bottom: 28px;
-    padding-bottom: 24px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
     border-bottom: 1px dashed var(--el-border);
   }
 
   .el-form-section:last-of-type {
     border-bottom: none;
     padding-bottom: 0;
-    margin-bottom: 28px;
+    margin-bottom: 16px;
   }
 
   .el-section-title {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--el-dark);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    margin-bottom: 14px;
   }
 
-  .el-section-title .step-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--el-primary);
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 800;
-  }
-
-  /* Radio Group - Modern Segmented Cards */
+  /* Category Cards - Clean Pill/Card Toggles without Radio Dots */
   .el-radio-group {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 16px;
     margin-bottom: 20px;
   }
 
   @media (max-width: 580px) {
     .el-radio-group {
       grid-template-columns: 1fr;
+      gap: 10px;
     }
   }
 
-  .el-radio-label {
+  .el-category-card {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
     padding: 16px 20px;
-    border: 2px solid var(--el-border);
-    border-radius: 14px;
+    border: 2px solid #D5E2D9;
+    border-radius: 12px;
     background: #FFFFFF;
+    color: #1D2924;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     user-select: none;
-  }
-
-  .el-radio-label:hover {
-    border-color: var(--el-primary-border);
-    background: #fbfdfc;
-  }
-
-  .el-radio-label input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #94A3B8;
-    border-radius: 50%;
-    margin: 0;
-    outline: none;
-    transition: all 0.2s ease;
+    text-align: center;
     position: relative;
-    flex-shrink: 0;
   }
 
-  .el-radio-label input[type="radio"]:checked {
-    border-color: var(--el-primary);
-    background: var(--el-primary);
-    box-shadow: inset 0 0 0 3px #ffffff;
+  .el-category-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
   }
 
-  .el-radio-label:has(input[type="radio"]:checked) {
-    border-color: var(--el-primary);
-    background: #F0FDF4;
-    box-shadow: 0 4px 12px rgba(0, 135, 90, 0.12);
-  }
-
-  .el-radio-text {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .el-radio-title {
-    font-size: 15px;
+  .el-category-name {
+    font-size: 15.5px;
     font-weight: 700;
-    color: var(--el-dark);
+    letter-spacing: -0.01em;
   }
 
-  .el-radio-desc {
-    font-size: 12.5px;
-    color: var(--el-text-muted);
-    margin-top: 2px;
+  .el-category-card:hover {
+    border-color: #81C784;
+    background: #F8FCF9;
+    transform: translateY(-1px);
+  }
+
+  .el-category-card.active,
+  .el-category-card:has(input[type="radio"]:checked) {
+    border-color: #00875A;
+    background: #E8F5E9;
+    color: #006644;
+    box-shadow: 0 4px 14px rgba(0, 135, 90, 0.15);
   }
 
   /* Form Fields */
@@ -283,20 +222,28 @@
     }
   }
 
-  /* Submit Button */
-  .el-submit-btn {
+  /* Center Wrap Submit Button */
+  .el-submit-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
     width: 100%;
-    padding: 14px 28px;
+  }
+
+  .el-submit-btn {
+    width: auto;
+    max-width: fit-content;
+    padding: 13px 36px;
     background: linear-gradient(135deg, #00875A 0%, #006644 100%);
     color: #FFFFFF;
     border: none;
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius: 999px;
+    font-size: 15.5px;
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 4px 14px rgba(0, 135, 90, 0.25);
     transition: all 0.2s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
@@ -443,14 +390,9 @@
 <div class="el-wrapper">
   <div class="el-container">
 
-    <!-- Header Section -->
+    <!-- Header Section (Clean, without clutter or badge) -->
     <div class="el-header">
-      <div class="el-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
-        Election 2026 &bull; PPAI
-      </div>
       <h1>Membership Registration</h1>
-      <p>Register your membership credentials for participation in the Plant Protection Association of India (PPAI) Election 2026.</p>
     </div>
 
     <!-- Main Card -->
@@ -462,7 +404,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
           <h2 class="el-success-title">Membership Registration Submitted!</h2>
-          <p style="color: var(--el-text-muted); font-size: 15px;">Your registration details have been securely recorded for Election 2026.</p>
+          <p style="color: var(--el-text-muted); font-size: 15px;">Your registration details have been securely recorded in the database.</p>
           
           <div class="el-success-ref">
             Reference Number: {{ reference_id }}
@@ -529,30 +471,21 @@
           </div>
         {% endif %}
 
-        <form method="POST" action="{% url 'election_registration' %}" novalidate>
+        <form method="POST" action="{% url 'election_registration' %}" novalidate id="electionForm">
           {% csrf_token %}
 
-          <!-- Section 1: Member Category (Two Radio Buttons) -->
+          <!-- Section 1: Member Category (Clean Dual Cards, No Radio Dots, No Inside Descriptions) -->
           <div class="el-form-section">
-            <div class="el-section-title">
-              <span class="step-number">1</span>
-              <span>Membership Category</span>
-            </div>
+            <div class="el-section-title">Membership Category</div>
             <div class="el-radio-group">
-              <label class="el-radio-label">
+              <label class="el-category-card {% if form_data.member_category == 'indian' or not form_data.member_category %}active{% endif %}" id="cardIndian">
                 <input type="radio" name="member_category" value="indian" {% if form_data.member_category == 'indian' or not form_data.member_category %}checked{% endif %}>
-                <div class="el-radio-text">
-                  <span class="el-radio-title">Indian Member</span>
-                  <span class="el-radio-desc">For resident Indian scientists, researchers, &amp; students</span>
-                </div>
+                <span class="el-category-name">Indian Member</span>
               </label>
 
-              <label class="el-radio-label">
+              <label class="el-category-card {% if form_data.member_category == 'foreign' %}active{% endif %}" id="cardForeign">
                 <input type="radio" name="member_category" value="foreign" {% if form_data.member_category == 'foreign' %}checked{% endif %}>
-                <div class="el-radio-text">
-                  <span class="el-radio-title">Foreign Member</span>
-                  <span class="el-radio-desc">For international researchers &amp; overseas affiliates</span>
-                </div>
+                <span class="el-category-name">Foreign Member</span>
               </label>
             </div>
 
@@ -570,55 +503,70 @@
 
           <!-- Section 2: Registration Details -->
           <div class="el-form-section">
-            <div class="el-section-title">
-              <span class="step-number">2</span>
-              <span>Registration Details</span>
-            </div>
+            <div class="el-section-title">Registration Details</div>
 
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_name">Name <span class="required">*</span></label>
-                <input type="text" name="name" id="id_name" placeholder="Full Name (with Title/Prefix)" value="{{ form_data.name|default:'' }}" required>
+                <input type="text" name="name" id="id_name" placeholder="Full Name" value="{{ form_data.name|default:'' }}" required>
               </div>
 
               <div class="el-field">
                 <label for="id_phone">Phone Number <span class="required">*</span></label>
-                <input type="tel" name="phone" id="id_phone" placeholder="Mobile / WhatsApp number" value="{{ form_data.phone|default:'' }}" required>
+                <input type="tel" name="phone" id="id_phone" placeholder="Phone Number" value="{{ form_data.phone|default:'' }}" required>
               </div>
             </div>
 
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_email">Email ID <span class="required">*</span></label>
-                <input type="email" name="email" id="id_email" placeholder="example@university.edu / email@domain.com" value="{{ form_data.email|default:'' }}" required>
+                <input type="email" name="email" id="id_email" placeholder="Email Address" value="{{ form_data.email|default:'' }}" required>
               </div>
 
               <div class="el-field">
                 <label for="id_designation">Designation <span class="required">*</span></label>
-                <input type="text" name="designation" id="id_designation" placeholder="e.g. Principal Scientist / Professor / Student" value="{{ form_data.designation|default:'' }}" required>
+                <input type="text" name="designation" id="id_designation" placeholder="Designation" value="{{ form_data.designation|default:'' }}" required>
               </div>
             </div>
 
             <div class="el-field">
               <label for="id_org_address">Organization with Full Address <span class="required">*</span></label>
-              <textarea name="organization_address" id="id_org_address" placeholder="Institute / University / Department name, Street, City, State, PIN/ZIP, Country" required>{{ form_data.organization_address|default:'' }}</textarea>
+              <textarea name="organization_address" id="id_org_address" placeholder="Organization name and full address" required>{{ form_data.organization_address|default:'' }}</textarea>
             </div>
 
             <div class="el-field">
               <label for="id_res_address">Residence with Full Address <span class="required">*</span></label>
-              <textarea name="residence_address" id="id_res_address" placeholder="Residential Flat/House No., Street/Area, City, State, PIN/ZIP, Country" required>{{ form_data.residence_address|default:'' }}</textarea>
+              <textarea name="residence_address" id="id_res_address" placeholder="Residential full address" required>{{ form_data.residence_address|default:'' }}</textarea>
             </div>
           </div>
 
-          <!-- Submit Button -->
-          <button type="submit" class="el-submit-btn">
-            <span>Submit Membership Registration</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </button>
+          <!-- Centered Wrap-Around Submit Button -->
+          <div class="el-submit-wrap">
+            <button type="submit" class="el-submit-btn">
+              <span>Submit Membership Registration</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
         </form>
       {% endif %}
     </div>
 
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.el-category-card');
+    cards.forEach(card => {
+      card.addEventListener('click', function() {
+        cards.forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        const radio = this.querySelector('input[type="radio"]');
+        if (radio) {
+          radio.checked = true;
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

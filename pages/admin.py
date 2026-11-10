@@ -1,6 +1,12 @@
 from django.contrib import admin
 import csv
+import io
 from django.http import HttpResponse
+from django.urls import path
+import openpyxl
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
+
 from .models import (
     SiteSetting, CarouselSlide, ExecutiveMember, PastBearer,
     EditorialBoardMember, PublicationBook, ConferenceEvent,
@@ -77,6 +83,86 @@ class JournalArticleAdmin(admin.ModelAdmin):
     search_fields = ('title', 'authors')
 
 
+def generate_election_registrations_excel(queryset):
+    """Helper to generate an Excel (.xlsx) workbook response for election registrations."""
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Election 2026 Registrations"
+
+    headers = [
+        'ID', 'Member Category', 'Registration Type', 'Name', 
+        'Phone Number', 'Email ID', 'Designation', 
+        'Organization with Full Address', 'Residence with Full Address', 'Registration Date'
+    ]
+    ws.append(headers)
+
+    header_fill = PatternFill(start_color="00875A", end_color="00875A", fill_type="solid")
+    header_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+    thin_border = Border(
+        left=Side(style='thin', color='D0D7D3'),
+        right=Side(style='thin', color='D0D7D3'),
+        top=Side(style='thin', color='D0D7D3'),
+        bottom=Side(style='thin', color='D0D7D3')
+    )
+
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+
+    ws.row_dimensions[1].height = 28
+
+    for reg in queryset:
+        ws.append([
+            reg.id,
+            reg.get_member_category_display(),
+            reg.get_registration_type_display(),
+            reg.name,
+            reg.phone,
+            reg.email,
+            reg.designation,
+            reg.organization_address,
+            reg.residence_address,
+            reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
+        ])
+
+    for row in ws.iter_rows(min_row=2, max_col=10):
+        for cell in row:
+            cell.border = thin_border
+            cell.alignment = Alignment(vertical="center", wrap_text=True)
+
+    for col in ws.columns:
+        max_len = 0
+        col_letter = get_column_letter(col[0].column)
+        for cell in col:
+            val = str(cell.value or '')
+            if '\n' in val:
+                val = max(val.split('\n'), key=len)
+            max_len = max(max_len, len(val))
+        ws.column_dimensions[col_letter].width = min(max(max_len + 3, 14), 45)
+
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="PPAI_Election_2026_Registrations.xlsx"'
+    return response
+
+
+@admin.action(description="Download selected registrations in Excel (.xlsx)")
+def export_election_registrations_excel(modeladmin, request, queryset):
+    return generate_election_registrations_excel(queryset)
+
+
+@admin.action(description="Download ALL registrations in Excel (.xlsx)")
+def export_all_election_registrations_excel(modeladmin, request, queryset):
+    all_qs = ElectionRegistration.objects.all().order_by('-created_at')
+    return generate_election_registrations_excel(all_qs)
+
 
 @admin.action(description="Export selected election registrations as CSV")
 def export_election_registrations_csv(modeladmin, request, queryset):
@@ -99,13 +185,26 @@ def export_election_registrations_csv(modeladmin, request, queryset):
             reg.designation,
             reg.organization_address,
             reg.residence_address,
-            reg.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
         ])
     return response
 
+
 @admin.register(ElectionRegistration)
 class ElectionRegistrationAdmin(admin.ModelAdmin):
+    change_list_template = "admin/pages/electionregistration/change_list.html"
     list_display = ('name', 'member_category', 'registration_type', 'designation', 'phone', 'email', 'created_at')
     list_filter = ('member_category', 'registration_type', 'created_at')
     search_fields = ('name', 'email', 'phone', 'designation', 'organization_address')
-    actions = [export_election_registrations_csv]
+    actions = [export_election_registrations_excel, export_all_election_registrations_excel, export_election_registrations_csv]
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('export-excel/', self.admin_site.admin_view(self.export_all_excel_view), name='election_registration_export_excel'),
+        ]
+        return custom_urls + urls
+
+    def export_all_excel_view(self, request):
+        qs = ElectionRegistration.objects.all().order_by('-created_at')
+        return generate_election_registrations_excel(qs)
