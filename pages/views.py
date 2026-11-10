@@ -460,12 +460,14 @@ def election_registration(request):
         if not name or len(name) < 2:
             errors.append("Please enter your full Name (at least 2 characters).")
 
-        # Phone validation: digits, plus, hyphens, spaces, 7 to 15 chars
-        cleaned_phone = re.sub(r'[\s\-()]', '', phone)
+        # Phone validation: strictly 10 digits
+        cleaned_phone = re.sub(r'\D', '', phone)
         if not phone:
             errors.append("Phone Number is required.")
-        elif not re.match(r'^\+?[0-9]{7,15}$', cleaned_phone):
-            errors.append("Please enter a valid Phone Number (e.g. 10-digit mobile or international with country code).")
+        elif len(cleaned_phone) != 10:
+            errors.append("Phone Number must be exactly 10 digits.")
+        else:
+            phone = cleaned_phone
 
         # Email validation
         if not email:

@@ -104,6 +104,7 @@
   /* Form Fields */
   .el-field {
     margin-bottom: 18px;
+    position: relative;
   }
 
   .el-field label {
@@ -154,11 +155,11 @@
     background: #FFFFFF;
   }
 
-  .el-field .field-hint {
-    font-size: 11.5px;
-    color: var(--el-text-muted);
-    margin-top: 4px;
-    display: block;
+  .el-field input:disabled {
+    background-color: #F8FAF9;
+    border-color: #E2ECE5;
+    color: #8C9E95;
+    cursor: not-allowed;
   }
 
   /* Grid 2-column layout */
@@ -451,75 +452,73 @@
 
               <div class="el-field">
                 <label for="id_phone">Phone Number <span class="required">*</span></label>
-                <input type="tel" name="phone" id="id_phone" placeholder="Mobile / WhatsApp number" value="{{ form_data.phone|default:'' }}" required pattern="[0-9+ \-]{7,15}">
-                <span class="field-hint">e.g. 9876543210 or +91 9876543210</span>
+                <input type="tel" name="phone" id="id_phone" placeholder="10-digit Phone Number" value="{{ form_data.phone|default:'' }}" required maxlength="10" pattern="[0-9]{10}" inputmode="numeric">
               </div>
             </div>
 
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_email">Email ID <span class="required">*</span></label>
-                <input type="email" name="email" id="id_email" placeholder="example@domain.com" value="{{ form_data.email|default:'' }}" required>
+                <input type="email" name="email" id="id_email" placeholder="Email Address" value="{{ form_data.email|default:'' }}" required>
               </div>
 
               <div class="el-field">
                 <label for="id_designation">Designation <span class="required">*</span></label>
-                <input type="text" name="designation" id="id_designation" placeholder="e.g. Principal Scientist / Professor / Student" value="{{ form_data.designation|default:'' }}" required>
+                <input type="text" name="designation" id="id_designation" placeholder="Designation" value="{{ form_data.designation|default:'' }}" required>
               </div>
             </div>
           </div>
 
-          <!-- Section 2: Organization Address (Matching Handwritten Drawing) -->
+          <!-- Section 2: Organization Address (State must be verified/chosen before City) -->
           <div class="el-form-section">
             <div class="el-section-title">Organization with Full Address</div>
 
             <div class="el-field">
               <label for="id_org_name">Org Name <span class="required">*</span></label>
-              <input type="text" name="org_name" id="id_org_name" placeholder="Institute / University / Department / Company Name" value="{{ form_data.org_name|default:'' }}" required>
+              <input type="text" name="org_name" id="id_org_name" placeholder="Organization / Institute Name" value="{{ form_data.org_name|default:'' }}" required>
             </div>
 
             <div class="el-field">
               <label for="id_org_address">Address <span class="required">*</span></label>
-              <input type="text" name="org_address" id="id_org_address" placeholder="Campus / Street / Building Address" value="{{ form_data.org_address|default:'' }}" required>
+              <input type="text" name="org_address" id="id_org_address" placeholder="Address" value="{{ form_data.org_address|default:'' }}" required>
             </div>
 
             <div class="el-grid-2">
               <div class="el-field">
-                <label for="id_org_city">City <span class="required">*</span></label>
-                <input type="text" name="org_city" id="id_org_city" placeholder="City" value="{{ form_data.org_city|default:'' }}" required>
-              </div>
-
-              <div class="el-field">
                 <label for="id_org_state">State <span class="required">*</span></label>
-                <select name="org_state" id="id_org_state" required>
+                <select name="org_state" id="id_org_state" required onchange="handleStateChange('id_org_state', 'id_org_city')">
                   <option value="" disabled {% if not form_data.org_state %}selected{% endif %}>Select State</option>
                   {% for st in indian_states %}
                     <option value="{{ st }}" {% if form_data.org_state == st %}selected{% endif %}>{{ st }}</option>
                   {% endfor %}
                 </select>
               </div>
+
+              <div class="el-field" id="wrap_org_city">
+                <label for="id_org_city">City <span class="required">*</span></label>
+                <input type="text" name="org_city" id="id_org_city" placeholder="City" value="{{ form_data.org_city|default:'' }}" required {% if not form_data.org_state %}disabled{% endif %}>
+              </div>
             </div>
 
             <div class="el-field" style="max-width: 320px;">
               <label for="id_org_pincode">Pin Code <span class="required">*</span></label>
               <input type="text" name="org_pincode" id="id_org_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.org_pincode|default:'' }}" required>
-              <span class="field-hint">Enter 6 numeric digits</span>
             </div>
           </div>
 
-          <!-- Section 3: Residential Address (Matching Handwritten Drawing) -->
+          <!-- Section 3: Residential Address (State must be verified/chosen before City) -->
           <div class="el-form-section">
             <div class="el-section-title">Residence with Full Address</div>
 
             <div class="el-field">
               <label for="id_res_address">Address 1 <span class="required">*</span></label>
-              <input type="text" name="res_address" id="id_res_address" placeholder="House / Flat No., Street / Area Address" value="{{ form_data.res_address|default:'' }}" required>
+              <input type="text" name="res_address" id="id_res_address" placeholder="Residential Address" value="{{ form_data.res_address|default:'' }}" required>
             </div>
 
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_res_state">State <span class="required">*</span></label>
-                <select name="res_state" id="id_res_state" required>
+                <select name="res_state" id="id_res_state" required onchange="handleStateChange('id_res_state', 'id_res_city')">
                   <option value="" disabled {% if not form_data.res_state %}selected{% endif %}>Select State</option>
                   {% for st in indian_states %}
                     <option value="{{ st }}" {% if form_data.res_state == st %}selected{% endif %}>{{ st }}</option>
@@ -527,16 +526,15 @@
                 </select>
               </div>
 
-              <div class="el-field">
+              <div class="el-field" id="wrap_res_city">
                 <label for="id_res_city">City <span class="required">*</span></label>
-                <input type="text" name="res_city" id="id_res_city" placeholder="City" value="{{ form_data.res_city|default:'' }}" required>
+                <input type="text" name="res_city" id="id_res_city" placeholder="City" value="{{ form_data.res_city|default:'' }}" required {% if not form_data.res_state %}disabled{% endif %}>
               </div>
             </div>
 
             <div class="el-field" style="max-width: 320px;">
               <label for="id_res_pincode">Pin Code <span class="required">*</span></label>
               <input type="text" name="res_pincode" id="id_res_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.res_pincode|default:'' }}" required>
-              <span class="field-hint">Enter 6 numeric digits</span>
             </div>
           </div>
 
@@ -555,7 +553,49 @@
 </div>
 
 <script>
-  // Enforce numeric only on PIN codes
+  // Enable / unlock City only after State is selected
+  function handleStateChange(stateId, cityId) {
+    const stateEl = document.getElementById(stateId);
+    const cityEl = document.getElementById(cityId);
+    if (stateEl && cityEl) {
+      if (stateEl.value && stateEl.value.trim() !== '') {
+        cityEl.disabled = false;
+        cityEl.focus();
+        stateEl.style.borderColor = '#00875A';
+      } else {
+        cityEl.disabled = true;
+        cityEl.value = '';
+      }
+    }
+  }
+
+  // Guide user to State if they click City before selecting State
+  [['wrap_org_city', 'id_org_state'], ['wrap_res_city', 'id_res_state']].forEach(function(pair) {
+    const wrap = document.getElementById(pair[0]);
+    const state = document.getElementById(pair[1]);
+    if (wrap && state) {
+      wrap.addEventListener('click', function() {
+        const input = wrap.querySelector('input');
+        if (input && input.disabled) {
+          state.focus();
+          state.style.borderColor = '#dc2626';
+          setTimeout(function() {
+            state.style.borderColor = '';
+          }, 1500);
+        }
+      });
+    }
+  });
+
+  // Enforce strictly 10 digits for Phone Number
+  const phoneEl = document.getElementById('id_phone');
+  if (phoneEl) {
+    phoneEl.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
+  }
+
+  // Enforce strictly 6 digits for Pin codes
   ['id_org_pincode', 'id_res_pincode'].forEach(function(id) {
     const el = document.getElementById(id);
     if (el) {
@@ -565,27 +605,47 @@
     }
   });
 
-  // Client-side quick validation on submit
+  // Client-side validation on form submit
   const form = document.getElementById('electionForm');
   if (form) {
     form.addEventListener('submit', function(e) {
       let firstInvalid = null;
-      const requiredInputs = form.querySelectorAll('input[required], select[required]');
-      
-      requiredInputs.forEach(function(input) {
-        input.style.borderColor = '';
-        if (!input.value || !input.value.trim()) {
-          input.style.borderColor = '#dc2626';
-          if (!firstInvalid) firstInvalid = input;
+
+      // Validate State and City pairing
+      [['id_org_state', 'id_org_city', 'wrap_org_city'], ['id_res_state', 'id_res_city', 'wrap_res_city']].forEach(function(trip) {
+        const stateEl = document.getElementById(trip[0]);
+        const cityEl = document.getElementById(trip[1]);
+        if (stateEl && (!stateEl.value || !stateEl.value.trim())) {
+          stateEl.style.borderColor = '#dc2626';
+          if (!firstInvalid) firstInvalid = stateEl;
+        }
+        if (cityEl && (!cityEl.value || !cityEl.value.trim() || cityEl.disabled)) {
+          cityEl.style.borderColor = '#dc2626';
+          if (!firstInvalid) firstInvalid = stateEl && !stateEl.value ? stateEl : cityEl;
         }
       });
 
-      // Pin code checks
+      // Phone validation: exactly 10 digits
+      if (phoneEl && phoneEl.value.trim().length !== 10) {
+        phoneEl.style.borderColor = '#dc2626';
+        if (!firstInvalid) firstInvalid = phoneEl;
+      }
+
+      // PIN code validation: exactly 6 digits
       ['id_org_pincode', 'id_res_pincode'].forEach(function(id) {
         const pin = document.getElementById(id);
-        if (pin && pin.value && pin.value.trim().length !== 6) {
+        if (pin && pin.value.trim().length !== 6) {
           pin.style.borderColor = '#dc2626';
           if (!firstInvalid) firstInvalid = pin;
+        }
+      });
+
+      // All required inputs
+      const requiredInputs = form.querySelectorAll('input[required]:not(:disabled), select[required]');
+      requiredInputs.forEach(function(input) {
+        if (!input.value || !input.value.trim()) {
+          input.style.borderColor = '#dc2626';
+          if (!firstInvalid) firstInvalid = input;
         }
       });
 

@@ -40,12 +40,16 @@ class ElectionRegistrationTests(TestCase):
         self.assertNotIn('el-category-card', content)
         self.assertNotIn('Membership Category', content)
 
+        # Check that hint texts were removed as requested
+        self.assertNotIn('e.g. 9876543210 or +91 9876543210', content)
+        self.assertNotIn('Enter 6 numeric digits', content)
+
         # Check Organization Address fields from handwritten drawing
         self.assertIn('Org Name', content)
         self.assertIn('id_org_name', content)
         self.assertIn('id_org_address', content)
-        self.assertIn('id_org_city', content)
         self.assertIn('id_org_state', content)
+        self.assertIn('id_org_city', content)
         self.assertIn('id_org_pincode', content)
 
         # Check Residential Address fields from handwritten drawing
@@ -68,8 +72,8 @@ class ElectionRegistrationTests(TestCase):
             'designation': 'Principal Scientist',
             'org_name': 'ICAR-IARI',
             'org_address': 'Pusa Campus',
-            'org_city': 'New Delhi',
             'org_state': 'Delhi (NCT)',
+            'org_city': 'New Delhi',
             'org_pincode': '110012',
             'res_address': 'Flat 402, Scientist Enclave',
             'res_state': 'Delhi (NCT)',
@@ -89,6 +93,7 @@ class ElectionRegistrationTests(TestCase):
         self.assertEqual(reg.name, 'Dr. Suresh Kumar')
         self.assertEqual(reg.registration_type, 'life')
         self.assertEqual(reg.get_registration_type_display(), 'Life Member')
+        self.assertEqual(reg.phone, '9876543210')
         self.assertEqual(reg.email, 'suresh.kumar@icar.gov.in')
         self.assertEqual(reg.org_name, 'ICAR-IARI')
         self.assertEqual(reg.org_pincode, '110012')
@@ -98,13 +103,13 @@ class ElectionRegistrationTests(TestCase):
         payload = {
             'registration_type': 'foreign',
             'name': 'Dr. Jane Smith',
-            'phone': '+15551234567',
+            'phone': '9876543210',
             'email': 'jane.smith@cornell.edu',
             'designation': 'Associate Professor',
             'org_name': 'Cornell University',
             'org_address': 'Department of Plant Pathology',
-            'org_city': 'Ithaca',
             'org_state': 'Other / International',
+            'org_city': 'Ithaca',
             'org_pincode': '148500',
             'res_address': '123 University Ave',
             'res_state': 'Other / International',
@@ -118,17 +123,28 @@ class ElectionRegistrationTests(TestCase):
         self.assertEqual(reg.get_registration_type_display(), 'Foreign Member')
         self.assertEqual(reg.member_category, 'foreign')
 
-    def test_election_registration_validation_errors(self):
-        # Empty payload
-        response = self.client.post(reverse('election_registration'), data={})
+    def test_election_registration_phone_10_digits_validation(self):
+        # Test less than 10 digits
+        payload = {
+            'registration_type': 'annual',
+            'name': 'Ramesh Verma',
+            'phone': '98765',  # only 5 digits
+            'email': 'ramesh@icar.gov.in',
+            'designation': 'Scientist',
+            'org_name': 'ICAR',
+            'org_address': 'Campus',
+            'org_state': 'Telangana',
+            'org_city': 'Hyderabad',
+            'org_pincode': '500030',
+            'res_address': 'Street 1',
+            'res_state': 'Telangana',
+            'res_city': 'Hyderabad',
+            'res_pincode': '500030',
+        }
+        response = self.client.post(reverse('election_registration'), data=payload)
         self.assertEqual(response.status_code, 200)
         content = response.content.decode('utf-8')
-        self.assertIn('Please resolve the following', content)
-        self.assertIn('Name', content)
-        self.assertIn('Phone Number is required.', content)
-        self.assertIn('Email ID is required.', content)
-        self.assertIn('Organization Name is required.', content)
-        self.assertIn('Residential Address is required.', content)
+        self.assertIn('Phone Number must be exactly 10 digits.', content)
         self.assertEqual(ElectionRegistration.objects.count(), 0)
 
     def test_election_registration_pincode_validation(self):
@@ -141,8 +157,8 @@ class ElectionRegistrationTests(TestCase):
             'designation': 'Scientist',
             'org_name': 'ICAR',
             'org_address': 'Campus',
-            'org_city': 'Hyderabad',
             'org_state': 'Telangana',
+            'org_city': 'Hyderabad',
             'org_pincode': '1234',  # invalid
             'res_address': 'Street 1',
             'res_state': 'Telangana',
