@@ -86,9 +86,11 @@ def generate_election_registrations_excel(queryset):
     Uses openpyxl when installed, otherwise falls back gracefully to Excel-compatible CSV.
     """
     headers = [
-        'ID', 'Member Category', 'Registration Type', 'Name', 
+        'ID', 'Registration Type', 'Name', 
         'Phone Number', 'Email ID', 'Designation', 
-        'Organization with Full Address', 'Residence with Full Address', 'Registration Date'
+        'Organization Name', 'Organization Address', 'Organization City', 'Organization State', 'Organization PIN',
+        'Residential Address', 'Residential State', 'Residential City', 'Residential PIN',
+        'Registration Date'
     ]
 
     try:
@@ -121,18 +123,24 @@ def generate_election_registrations_excel(queryset):
         for reg in queryset:
             ws.append([
                 reg.id,
-                reg.get_member_category_display(),
                 reg.get_registration_type_display(),
                 reg.name,
                 reg.phone,
                 reg.email,
                 reg.designation,
-                reg.organization_address,
-                reg.residence_address,
+                reg.org_name or reg.organization_address,
+                reg.org_address,
+                reg.org_city,
+                reg.org_state,
+                reg.org_pincode,
+                reg.res_address or reg.residence_address,
+                reg.res_state,
+                reg.res_city,
+                reg.res_pincode,
                 reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
             ])
 
-        for row in ws.iter_rows(min_row=2, max_col=10):
+        for row in ws.iter_rows(min_row=2, max_col=len(headers)):
             for cell in row:
                 cell.border = thin_border
                 cell.alignment = Alignment(vertical="center", wrap_text=True)
@@ -168,14 +176,20 @@ def generate_election_registrations_excel(queryset):
         for reg in queryset:
             writer.writerow([
                 reg.id,
-                reg.get_member_category_display(),
                 reg.get_registration_type_display(),
                 reg.name,
                 reg.phone,
                 reg.email,
                 reg.designation,
-                reg.organization_address,
-                reg.residence_address,
+                reg.org_name or reg.organization_address,
+                reg.org_address,
+                reg.org_city,
+                reg.org_state,
+                reg.org_pincode,
+                reg.res_address or reg.residence_address,
+                reg.res_state,
+                reg.res_city,
+                reg.res_pincode,
                 reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
             ])
         return response
@@ -198,21 +212,29 @@ def export_election_registrations_csv(modeladmin, request, queryset):
     response['Content-Disposition'] = 'attachment; filename="ppai_election_2026_registrations.csv"'
     writer = csv.writer(response)
     writer.writerow([
-        'ID', 'Member Category', 'Registration Type', 'Name', 
+        'ID', 'Registration Type', 'Name', 
         'Phone Number', 'Email ID', 'Designation', 
-        'Organization Address', 'Residence Address', 'Registered At'
+        'Organization Name', 'Organization Address', 'Organization City', 'Organization State', 'Organization PIN',
+        'Residential Address', 'Residential State', 'Residential City', 'Residential PIN',
+        'Registration Date'
     ])
     for reg in queryset:
         writer.writerow([
             reg.id,
-            reg.get_member_category_display(),
             reg.get_registration_type_display(),
             reg.name,
             reg.phone,
             reg.email,
             reg.designation,
-            reg.organization_address,
-            reg.residence_address,
+            reg.org_name or reg.organization_address,
+            reg.org_address,
+            reg.org_city,
+            reg.org_state,
+            reg.org_pincode,
+            reg.res_address or reg.residence_address,
+            reg.res_state,
+            reg.res_city,
+            reg.res_pincode,
             reg.created_at.strftime('%Y-%m-%d %H:%M:%S') if reg.created_at else '',
         ])
     return response
@@ -221,9 +243,9 @@ def export_election_registrations_csv(modeladmin, request, queryset):
 @admin.register(ElectionRegistration)
 class ElectionRegistrationAdmin(admin.ModelAdmin):
     change_list_template = "admin/pages/electionregistration/change_list.html"
-    list_display = ('name', 'member_category', 'registration_type', 'designation', 'phone', 'email', 'created_at')
-    list_filter = ('member_category', 'registration_type', 'created_at')
-    search_fields = ('name', 'email', 'phone', 'designation', 'organization_address')
+    list_display = ('name', 'registration_type', 'designation', 'org_name', 'org_city', 'org_state', 'phone', 'email', 'created_at')
+    list_filter = ('registration_type', 'org_state', 'res_state', 'created_at')
+    search_fields = ('name', 'email', 'phone', 'designation', 'org_name', 'org_city', 'res_city')
     actions = [export_election_registrations_excel, export_all_election_registrations_excel, export_election_registrations_csv]
 
     def get_urls(self):

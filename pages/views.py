@@ -389,48 +389,134 @@ def election(request):
 
 
 def election_registration(request):
+    """
+    Election 2026 Membership Registration view.
+    Accepts Registration Type (Life Member, Annual Member, Institutional Member, Student Member, Foreign Member),
+    Personal Details, Structured Organization Address, and Structured Residential Address.
+    """
     context = get_common_context()
+    context['registration_type_choices'] = ElectionRegistration.REGISTRATION_TYPE_CHOICES
     
+    indian_states = [
+        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+        "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+        "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+        "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+        "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+        "Uttar Pradesh", "Uttarakhand", "West Bengal",
+        "Andaman and Nicobar Islands", "Chandigarh",
+        "Dadra and Nagar Haveli and Daman and Diu", "Delhi (NCT)",
+        "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
+        "Other / International"
+    ]
+    context['indian_states'] = indian_states
+
     if request.method == 'POST':
-        member_category = request.POST.get('member_category', 'indian').strip()
-        registration_type = request.POST.get('registration_type', 'life').strip()
+        registration_type = request.POST.get('registration_type', 'life').strip().lower()
         name = request.POST.get('name', '').strip()
         phone = request.POST.get('phone', '').strip()
-        email = request.POST.get('email', '').strip()
+        email = request.POST.get('email', '').strip().lower()
         designation = request.POST.get('designation', '').strip()
-        organization_address = request.POST.get('organization_address', '').strip()
-        residence_address = request.POST.get('residence_address', '').strip()
 
-        context.update({
-            'member_category': member_category,
+        # Organization Address fields
+        org_name = request.POST.get('org_name', '').strip()
+        org_address = request.POST.get('org_address', '').strip()
+        org_city = request.POST.get('org_city', '').strip()
+        org_state = request.POST.get('org_state', '').strip()
+        org_pincode = request.POST.get('org_pincode', '').strip()
+
+        # Residential Address fields
+        res_address = request.POST.get('res_address', '').strip()
+        res_state = request.POST.get('res_state', '').strip()
+        res_city = request.POST.get('res_city', '').strip()
+        res_pincode = request.POST.get('res_pincode', '').strip()
+
+        # Retain form values in case of validation errors
+        form_data = {
             'registration_type': registration_type,
             'name': name,
             'phone': phone,
             'email': email,
             'designation': designation,
-            'organization_address': organization_address,
-            'residence_address': residence_address,
-        })
+            'org_name': org_name,
+            'org_address': org_address,
+            'org_city': org_city,
+            'org_state': org_state,
+            'org_pincode': org_pincode,
+            'res_address': res_address,
+            'res_state': res_state,
+            'res_city': res_city,
+            'res_pincode': res_pincode,
+        }
+        context['form_data'] = form_data
 
-        if not name:
-            messages.error(request, "Please enter your Name.")
-            return render(request, 'pages/election_registration.html', context)
+        # Comprehensive Field Validations
+        errors = []
+
+        valid_types = [t[0] for t in ElectionRegistration.REGISTRATION_TYPE_CHOICES]
+        if not registration_type or registration_type not in valid_types:
+            errors.append("Please select a valid Registration Type.")
+
+        if not name or len(name) < 2:
+            errors.append("Please enter your full Name (at least 2 characters).")
+
+        # Phone validation: digits, plus, hyphens, spaces, 7 to 15 chars
+        cleaned_phone = re.sub(r'[\s\-()]', '', phone)
         if not phone:
-            messages.error(request, "Please enter your Phone Number.")
-            return render(request, 'pages/election_registration.html', context)
+            errors.append("Phone Number is required.")
+        elif not re.match(r'^\+?[0-9]{7,15}$', cleaned_phone):
+            errors.append("Please enter a valid Phone Number (e.g. 10-digit mobile or international with country code).")
+
+        # Email validation
         if not email:
-            messages.error(request, "Please enter your Email ID.")
-            return render(request, 'pages/election_registration.html', context)
-        if not designation:
-            messages.error(request, "Please enter your Designation.")
-            return render(request, 'pages/election_registration.html', context)
-        if not organization_address:
-            messages.error(request, "Please enter your Organization with full address.")
-            return render(request, 'pages/election_registration.html', context)
-        if not residence_address:
-            messages.error(request, "Please enter your Residence with full address.")
+            errors.append("Email ID is required.")
+        elif not EMAIL_REGEX.match(email):
+            errors.append("Please enter a valid email address.")
+        else:
+            try:
+                validate_email(email)
+            except ValidationError:
+                errors.append("Please enter a valid email address.")
+
+        if not designation or len(designation) < 2:
+            errors.append("Designation is required.")
+
+        # Organization Address Validations
+        if not org_name:
+            errors.append("Organization Name is required.")
+        if not org_address:
+            errors.append("Organization Address is required.")
+        if not org_city:
+            errors.append("Organization City is required.")
+        if not org_state:
+            errors.append("Please select an Organization State.")
+        if not org_pincode:
+            errors.append("Organization PIN Code is required.")
+        elif org_state != "Other / International" and not re.match(r'^\d{6}$', org_pincode):
+            errors.append("Organization PIN Code must be exactly 6 numeric digits.")
+
+        # Residential Address Validations
+        if not res_address:
+            errors.append("Residential Address is required.")
+        if not res_state:
+            errors.append("Please select a Residential State.")
+        if not res_city:
+            errors.append("Residential City is required.")
+        if not res_pincode:
+            errors.append("Residential PIN Code is required.")
+        elif res_state != "Other / International" and not re.match(r'^\d{6}$', res_pincode):
+            errors.append("Residential PIN Code must be exactly 6 numeric digits.")
+
+        if errors:
+            context['errors'] = errors
             return render(request, 'pages/election_registration.html', context)
 
+        # Build combined address representations
+        organization_address = f"{org_name}, {org_address}, {org_city}, {org_state} - {org_pincode}"
+        residence_address = f"{res_address}, {res_city}, {res_state} - {res_pincode}"
+        member_category = 'foreign' if registration_type == 'foreign' else 'indian'
+
+        # Save record in database
         registration = ElectionRegistration.objects.create(
             member_category=member_category,
             registration_type=registration_type,
@@ -438,13 +524,23 @@ def election_registration(request):
             phone=phone,
             email=email,
             designation=designation,
+            org_name=org_name,
+            org_address=org_address,
+            org_city=org_city,
+            org_state=org_state,
+            org_pincode=org_pincode,
             organization_address=organization_address,
-            residence_address=residence_address
+            res_address=res_address,
+            res_city=res_city,
+            res_state=res_state,
+            res_pincode=res_pincode,
+            residence_address=residence_address,
         )
 
+        context['success'] = True
         context['registration'] = registration
-        context['submitted_successfully'] = True
-        messages.success(request, f"Membership registration for Election 2026 successfully submitted! Reference ID: PPAI-EL26-{registration.id:04d}")
+        context['reference_id'] = f"PPAI-EL26-{registration.id:04d}"
+        messages.success(request, f"Membership registration for Election 2026 successfully submitted! Reference ID: {context['reference_id']}")
         return render(request, 'pages/election_registration.html', context)
 
     return render(request, 'pages/election_registration.html', context)
@@ -728,94 +824,3 @@ def subscribe_newsletter(request):
     # Register new subscriber
     NewsletterSubscriber.objects.create(email=email)
     return JsonResponse({'status': 'success', 'message': 'Subscribed successfully!'})
-
-
-
-
-
-from .models import ElectionRegistration
-
-def election_registration(request):
-    """
-    Election 2026 Membership Registration view.
-    Accepts category (Indian/Foreign), registration type (Life, Ordinary, Institutional, Students),
-    and personal/institutional details.
-    """
-    context = get_common_context()
-    context['category_choices'] = ElectionRegistration.CATEGORY_CHOICES
-    context['registration_type_choices'] = ElectionRegistration.REGISTRATION_TYPE_CHOICES
-
-    if request.method == 'POST':
-        member_category = request.POST.get('member_category', 'indian').strip().lower()
-        registration_type = request.POST.get('registration_type', 'life').strip().lower()
-        name = request.POST.get('name', '').strip()
-        phone = request.POST.get('phone', '').strip()
-        email = request.POST.get('email', '').strip().lower()
-        designation = request.POST.get('designation', '').strip()
-        organization_address = request.POST.get('organization_address', '').strip()
-        residence_address = request.POST.get('residence_address', '').strip()
-
-        # Retain form values in case of validation errors
-        form_data = {
-            'member_category': member_category,
-            'registration_type': registration_type,
-            'name': name,
-            'phone': phone,
-            'email': email,
-            'designation': designation,
-            'organization_address': organization_address,
-            'residence_address': residence_address,
-        }
-        context['form_data'] = form_data
-
-        # Validations
-        errors = []
-        if not member_category or member_category not in ['indian', 'foreign']:
-            errors.append("Please select a valid membership category (Indian Member or Foreign Member).")
-
-        valid_types = [t[0] for t in ElectionRegistration.REGISTRATION_TYPE_CHOICES]
-        if not registration_type or registration_type not in valid_types:
-            errors.append("Please choose a valid Registration Type.")
-
-        if not name:
-            errors.append("Name is required.")
-        if not phone:
-            errors.append("Phone number is required.")
-        if not email:
-            errors.append("Email ID is required.")
-        else:
-            try:
-                validate_email(email)
-            except ValidationError:
-                errors.append("Please enter a valid email address.")
-
-        if not designation:
-            errors.append("Designation is required.")
-        if not organization_address:
-            errors.append("Organization with full address is required.")
-        if not residence_address:
-            errors.append("Residence with full address is required.")
-
-        if errors:
-            context['errors'] = errors
-            return render(request, 'pages/election_registration.html', context)
-
-        # Save record
-        registration = ElectionRegistration.objects.create(
-            member_category=member_category,
-            registration_type=registration_type,
-            name=name,
-            phone=phone,
-            email=email,
-            designation=designation,
-            organization_address=organization_address,
-            residence_address=residence_address,
-        )
-
-        context['success'] = True
-        context['registration'] = registration
-        context['reference_id'] = f"PPAI-EL26-{registration.id:04d}"
-        messages.success(request, f"Membership registration for Election 2026 successfully submitted! Reference ID: {context['reference_id']}")
-        return render(request, 'pages/election_registration.html', context)
-
-    return render(request, 'pages/election_registration.html', context)

@@ -25,7 +25,7 @@
   }
 
   .el-container {
-    max-width: 820px;
+    max-width: 840px;
     margin: 0 auto;
   }
 
@@ -69,11 +69,11 @@
     padding: 0;
   }
 
-  /* Form Elements */
+  /* Form Section */
   .el-form-section {
     margin-bottom: 24px;
     padding-bottom: 20px;
-    border-bottom: 1px dashed var(--el-border);
+    border-bottom: 1.5px solid #EDF3F0;
   }
 
   .el-form-section:last-of-type {
@@ -83,69 +83,22 @@
   }
 
   .el-section-title {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: 800;
     color: var(--el-dark);
-    margin-bottom: 14px;
-  }
-
-  /* Category Cards - Clean Pill/Card Toggles without Radio Dots */
-  .el-radio-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  @media (max-width: 580px) {
-    .el-radio-group {
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-  }
-
-  .el-category-card {
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 16px 20px;
-    border: 2px solid #D5E2D9;
-    border-radius: 12px;
-    background: #FFFFFF;
-    color: #1D2924;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-    user-select: none;
-    text-align: center;
-    position: relative;
+    gap: 8px;
   }
 
-  .el-category-card input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    width: 0;
-    height: 0;
-  }
-
-  .el-category-name {
-    font-size: 15.5px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-
-  .el-category-card:hover {
-    border-color: #81C784;
-    background: #F8FCF9;
-    transform: translateY(-1px);
-  }
-
-  .el-category-card.active,
-  .el-category-card:has(input[type="radio"]:checked) {
-    border-color: #00875A;
-    background: #E8F5E9;
-    color: #006644;
-    box-shadow: 0 4px 14px rgba(0, 135, 90, 0.15);
+  .el-section-title::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--el-primary);
+    border-radius: 2px;
   }
 
   /* Form Fields */
@@ -169,8 +122,7 @@
   .el-field select,
   .el-field input[type="text"],
   .el-field input[type="email"],
-  .el-field input[type="tel"],
-  .el-field textarea {
+  .el-field input[type="tel"] {
     width: 100%;
     padding: 12px 16px;
     font-family: inherit;
@@ -187,7 +139,7 @@
   .el-field select {
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B7065' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300875A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 14px center;
     background-size: 16px;
@@ -196,19 +148,20 @@
   }
 
   .el-field select:focus,
-  .el-field input:focus,
-  .el-field textarea:focus {
+  .el-field input:focus {
     border-color: var(--el-primary);
     box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.15);
     background: #FFFFFF;
   }
 
-  .el-field textarea {
-    min-height: 90px;
-    resize: vertical;
-    line-height: 1.5;
+  .el-field .field-hint {
+    font-size: 11.5px;
+    color: var(--el-text-muted);
+    margin-top: 4px;
+    display: block;
   }
 
+  /* Grid 2-column layout */
   .el-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -226,14 +179,14 @@
   .el-submit-wrap {
     display: flex;
     justify-content: center;
-    margin-top: 24px;
+    margin-top: 28px;
     width: 100%;
   }
 
   .el-submit-btn {
     width: auto;
     max-width: fit-content;
-    padding: 13px 36px;
+    padding: 13px 40px;
     background: linear-gradient(135deg, #00875A 0%, #006644 100%);
     color: #FFFFFF;
     border: none;
@@ -315,7 +268,7 @@
 
   .el-summary-row {
     display: grid;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 200px 1fr;
     padding: 8px 0;
     border-bottom: 1px solid #EEF3F0;
     font-size: 14px;
@@ -412,10 +365,6 @@
 
           <div class="el-summary-box">
             <div class="el-summary-row">
-              <span class="el-summary-label">Member Category</span>
-              <span class="el-summary-value">{{ registration.get_member_category_display }}</span>
-            </div>
-            <div class="el-summary-row">
               <span class="el-summary-label">Registration Type</span>
               <span class="el-summary-value">{{ registration.get_registration_type_display }}</span>
             </div>
@@ -436,12 +385,16 @@
               <span class="el-summary-value">{{ registration.designation }}</span>
             </div>
             <div class="el-summary-row">
-              <span class="el-summary-label">Organization Address</span>
-              <span class="el-summary-value">{{ registration.organization_address }}</span>
+              <span class="el-summary-label">Organization Name</span>
+              <span class="el-summary-value">{{ registration.org_name }}</span>
             </div>
             <div class="el-summary-row">
-              <span class="el-summary-label">Residence Address</span>
-              <span class="el-summary-value">{{ registration.residence_address }}</span>
+              <span class="el-summary-label">Organization Address</span>
+              <span class="el-summary-value">{{ registration.org_address }}, {{ registration.org_city }}, {{ registration.org_state }} - {{ registration.org_pincode }}</span>
+            </div>
+            <div class="el-summary-row">
+              <span class="el-summary-label">Residential Address</span>
+              <span class="el-summary-value">{{ registration.res_address }}, {{ registration.res_city }}, {{ registration.res_state }} - {{ registration.res_pincode }}</span>
             </div>
           </div>
 
@@ -474,76 +427,123 @@
         <form method="POST" action="{% url 'election_registration' %}" novalidate id="electionForm">
           {% csrf_token %}
 
-          <!-- Section 1: Member Category (Clean Dual Cards, No Radio Dots, No Inside Descriptions) -->
+          <!-- Section 1: Registration Details & Registration Type Dropdown -->
           <div class="el-form-section">
-            <div class="el-section-title">Membership Category</div>
-            <div class="el-radio-group">
-              <label class="el-category-card {% if form_data.member_category == 'indian' or not form_data.member_category %}active{% endif %}" id="cardIndian">
-                <input type="radio" name="member_category" value="indian" {% if form_data.member_category == 'indian' or not form_data.member_category %}checked{% endif %}>
-                <span class="el-category-name">Indian Member</span>
-              </label>
+            <div class="el-section-title">Registration Details</div>
 
-              <label class="el-category-card {% if form_data.member_category == 'foreign' %}active{% endif %}" id="cardForeign">
-                <input type="radio" name="member_category" value="foreign" {% if form_data.member_category == 'foreign' %}checked{% endif %}>
-                <span class="el-category-name">Foreign Member</span>
-              </label>
-            </div>
-
-            <!-- Registration Type Dropdown -->
+            <!-- Registration Type Dropdown: Life Member, Annual Member, Institutional Member, Student Member, Foreign Member -->
             <div class="el-field">
               <label for="id_registration_type">Registration Type <span class="required">*</span></label>
               <select name="registration_type" id="id_registration_type" required>
-                <option value="life" {% if form_data.registration_type == 'life' or not form_data.registration_type %}selected{% endif %}>Life</option>
-                <option value="ordinary" {% if form_data.registration_type == 'ordinary' %}selected{% endif %}>Ordinary (Annual)</option>
-                <option value="institutional" {% if form_data.registration_type == 'institutional' %}selected{% endif %}>Institutional (Annual)</option>
-                <option value="students" {% if form_data.registration_type == 'students' %}selected{% endif %}>Students</option>
+                <option value="life" {% if form_data.registration_type == 'life' or not form_data.registration_type %}selected{% endif %}>Life Member</option>
+                <option value="annual" {% if form_data.registration_type == 'annual' %}selected{% endif %}>Annual Member</option>
+                <option value="institutional" {% if form_data.registration_type == 'institutional' %}selected{% endif %}>Institutional Member</option>
+                <option value="student" {% if form_data.registration_type == 'student' %}selected{% endif %}>Student Member</option>
+                <option value="foreign" {% if form_data.registration_type == 'foreign' %}selected{% endif %}>Foreign Member</option>
               </select>
             </div>
-          </div>
-
-          <!-- Section 2: Registration Details -->
-          <div class="el-form-section">
-            <div class="el-section-title">Registration Details</div>
 
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_name">Name <span class="required">*</span></label>
-                <input type="text" name="name" id="id_name" placeholder="Full Name" value="{{ form_data.name|default:'' }}" required>
+                <input type="text" name="name" id="id_name" placeholder="Full Name" value="{{ form_data.name|default:'' }}" required minlength="2">
               </div>
 
               <div class="el-field">
                 <label for="id_phone">Phone Number <span class="required">*</span></label>
-                <input type="tel" name="phone" id="id_phone" placeholder="Phone Number" value="{{ form_data.phone|default:'' }}" required>
+                <input type="tel" name="phone" id="id_phone" placeholder="Mobile / WhatsApp number" value="{{ form_data.phone|default:'' }}" required pattern="[0-9+ \-]{7,15}">
+                <span class="field-hint">e.g. 9876543210 or +91 9876543210</span>
               </div>
             </div>
 
             <div class="el-grid-2">
               <div class="el-field">
                 <label for="id_email">Email ID <span class="required">*</span></label>
-                <input type="email" name="email" id="id_email" placeholder="Email Address" value="{{ form_data.email|default:'' }}" required>
+                <input type="email" name="email" id="id_email" placeholder="example@domain.com" value="{{ form_data.email|default:'' }}" required>
               </div>
 
               <div class="el-field">
                 <label for="id_designation">Designation <span class="required">*</span></label>
-                <input type="text" name="designation" id="id_designation" placeholder="Designation" value="{{ form_data.designation|default:'' }}" required>
+                <input type="text" name="designation" id="id_designation" placeholder="e.g. Principal Scientist / Professor / Student" value="{{ form_data.designation|default:'' }}" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Organization Address (Matching Handwritten Drawing) -->
+          <div class="el-form-section">
+            <div class="el-section-title">Organization with Full Address</div>
+
+            <div class="el-field">
+              <label for="id_org_name">Org Name <span class="required">*</span></label>
+              <input type="text" name="org_name" id="id_org_name" placeholder="Institute / University / Department / Company Name" value="{{ form_data.org_name|default:'' }}" required>
+            </div>
+
+            <div class="el-field">
+              <label for="id_org_address">Address <span class="required">*</span></label>
+              <input type="text" name="org_address" id="id_org_address" placeholder="Campus / Street / Building Address" value="{{ form_data.org_address|default:'' }}" required>
+            </div>
+
+            <div class="el-grid-2">
+              <div class="el-field">
+                <label for="id_org_city">City <span class="required">*</span></label>
+                <input type="text" name="org_city" id="id_org_city" placeholder="City" value="{{ form_data.org_city|default:'' }}" required>
+              </div>
+
+              <div class="el-field">
+                <label for="id_org_state">State <span class="required">*</span></label>
+                <select name="org_state" id="id_org_state" required>
+                  <option value="" disabled {% if not form_data.org_state %}selected{% endif %}>Select State</option>
+                  {% for st in indian_states %}
+                    <option value="{{ st }}" {% if form_data.org_state == st %}selected{% endif %}>{{ st }}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
 
-            <div class="el-field">
-              <label for="id_org_address">Organization with Full Address <span class="required">*</span></label>
-              <textarea name="organization_address" id="id_org_address" placeholder="Organization name and full address" required>{{ form_data.organization_address|default:'' }}</textarea>
+            <div class="el-field" style="max-width: 320px;">
+              <label for="id_org_pincode">Pin Code <span class="required">*</span></label>
+              <input type="text" name="org_pincode" id="id_org_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.org_pincode|default:'' }}" required>
+              <span class="field-hint">Enter 6 numeric digits</span>
             </div>
+          </div>
+
+          <!-- Section 3: Residential Address (Matching Handwritten Drawing) -->
+          <div class="el-form-section">
+            <div class="el-section-title">Residence with Full Address</div>
 
             <div class="el-field">
-              <label for="id_res_address">Residence with Full Address <span class="required">*</span></label>
-              <textarea name="residence_address" id="id_res_address" placeholder="Residential full address" required>{{ form_data.residence_address|default:'' }}</textarea>
+              <label for="id_res_address">Address 1 <span class="required">*</span></label>
+              <input type="text" name="res_address" id="id_res_address" placeholder="House / Flat No., Street / Area Address" value="{{ form_data.res_address|default:'' }}" required>
+            </div>
+
+            <div class="el-grid-2">
+              <div class="el-field">
+                <label for="id_res_state">State <span class="required">*</span></label>
+                <select name="res_state" id="id_res_state" required>
+                  <option value="" disabled {% if not form_data.res_state %}selected{% endif %}>Select State</option>
+                  {% for st in indian_states %}
+                    <option value="{{ st }}" {% if form_data.res_state == st %}selected{% endif %}>{{ st }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="el-field">
+                <label for="id_res_city">City <span class="required">*</span></label>
+                <input type="text" name="res_city" id="id_res_city" placeholder="City" value="{{ form_data.res_city|default:'' }}" required>
+              </div>
+            </div>
+
+            <div class="el-field" style="max-width: 320px;">
+              <label for="id_res_pincode">Pin Code <span class="required">*</span></label>
+              <input type="text" name="res_pincode" id="id_res_pincode" placeholder="6-digit PIN Code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" value="{{ form_data.res_pincode|default:'' }}" required>
+              <span class="field-hint">Enter 6 numeric digits</span>
             </div>
           </div>
 
           <!-- Centered Wrap-Around Submit Button -->
           <div class="el-submit-wrap">
             <button type="submit" class="el-submit-btn">
-              <span>Submit Membership Registration</span>
+              <span>Submit Registration</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
           </div>
@@ -555,18 +555,46 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.el-category-card');
-    cards.forEach(card => {
-      card.addEventListener('click', function() {
-        cards.forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-        const radio = this.querySelector('input[type="radio"]');
-        if (radio) {
-          radio.checked = true;
+  // Enforce numeric only on PIN codes
+  ['id_org_pincode', 'id_res_pincode'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+      });
+    }
+  });
+
+  // Client-side quick validation on submit
+  const form = document.getElementById('electionForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      let firstInvalid = null;
+      const requiredInputs = form.querySelectorAll('input[required], select[required]');
+      
+      requiredInputs.forEach(function(input) {
+        input.style.borderColor = '';
+        if (!input.value || !input.value.trim()) {
+          input.style.borderColor = '#dc2626';
+          if (!firstInvalid) firstInvalid = input;
         }
       });
+
+      // Pin code checks
+      ['id_org_pincode', 'id_res_pincode'].forEach(function(id) {
+        const pin = document.getElementById(id);
+        if (pin && pin.value && pin.value.trim().length !== 6) {
+          pin.style.borderColor = '#dc2626';
+          if (!firstInvalid) firstInvalid = pin;
+        }
+      });
+
+      if (firstInvalid) {
+        e.preventDefault();
+        firstInvalid.focus();
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     });
-  });
+  }
 </script>
 {% endblock %}

@@ -195,16 +195,18 @@ class ElectionRegistration(models.Model):
         ('foreign', 'Foreign Member'),
     ]
     REGISTRATION_TYPE_CHOICES = [
-        ('life', 'Life'),
-        ('ordinary', 'Ordinary (Annual)'),
-        ('institutional', 'Institutional (Annual)'),
-        ('students', 'Students'),
+        ('life', 'Life Member'),
+        ('annual', 'Annual Member'),
+        ('institutional', 'Institutional Member'),
+        ('student', 'Student Member'),
+        ('foreign', 'Foreign Member'),
     ]
 
     member_category = models.CharField(
         max_length=20,
         choices=CATEGORY_CHOICES,
         default='indian',
+        blank=True,
         verbose_name="Member Category"
     )
     registration_type = models.CharField(
@@ -217,8 +219,22 @@ class ElectionRegistration(models.Model):
     phone = models.CharField(max_length=50, verbose_name="Phone Number")
     email = models.EmailField(verbose_name="Email ID")
     designation = models.CharField(max_length=200, verbose_name="Designation")
-    organization_address = models.TextField(verbose_name="Organization with Full Address")
-    residence_address = models.TextField(verbose_name="Residence with Full Address")
+
+    # Structured Organization Address
+    org_name = models.CharField(max_length=255, verbose_name="Organization Name", blank=True, default='')
+    org_address = models.CharField(max_length=255, verbose_name="Organization Address", blank=True, default='')
+    org_city = models.CharField(max_length=100, verbose_name="Organization City", blank=True, default='')
+    org_state = models.CharField(max_length=100, verbose_name="Organization State", blank=True, default='')
+    org_pincode = models.CharField(max_length=20, verbose_name="Organization Pin Code", blank=True, default='')
+    organization_address = models.TextField(verbose_name="Organization with Full Address", blank=True, default='')
+
+    # Structured Residential Address
+    res_address = models.CharField(max_length=255, verbose_name="Residential Address", blank=True, default='')
+    res_city = models.CharField(max_length=100, verbose_name="Residential City", blank=True, default='')
+    res_state = models.CharField(max_length=100, verbose_name="Residential State", blank=True, default='')
+    res_pincode = models.CharField(max_length=20, verbose_name="Residential Pin Code", blank=True, default='')
+    residence_address = models.TextField(verbose_name="Residence with Full Address", blank=True, default='')
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Registration Date")
 
     class Meta:
@@ -227,4 +243,4 @@ class ElectionRegistration(models.Model):
         verbose_name_plural = 'Election 2026 Registrations'
 
     def __str__(self):
-        return f"{self.name} - {self.get_registration_type_display()} ({self.get_member_category_display()})"
+        return f"{self.name} - {self.get_registration_type_display()}"
