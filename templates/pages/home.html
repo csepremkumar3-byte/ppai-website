@@ -169,10 +169,35 @@
       flex-shrink: 0;
     }
 
-    .header-auth-buttons {
+        .header-auth-buttons {
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    .btn-auth-election {
+      padding: 7px 18px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #0f5132;
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      border: 1.5px solid #2e7d32;
+      box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    .btn-auth-election:hover {
+      background: #2e7d32;
+      color: #ffffff;
+      border-color: #2e7d32;
+      box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
+      transform: translateY(-1px);
     }
 
     .btn-auth-login {
@@ -1311,6 +1336,7 @@
 
         <div class="header-auth">
           <div class="header-auth-buttons">
+            <a href="{% url 'election_registration' %}" class="btn-auth-election">Election 2026</a>
             <a href="{% url 'login' %}" class="btn-auth-login">Login</a>
             <a href="{% url 'register' %}" class="btn-auth-register">Register</a>
           </div>
@@ -1370,6 +1396,7 @@
             <div class="dropdown">
               <a href="{% url 'membership_info' %}">Membership Information</a>
               <a href="{% url 'membership_directory' %}">Membership Directory</a>
+              <a href="{% url 'election_registration' %}">Election 2026 Registration</a>
             </div>
           </div>
 
@@ -1390,7 +1417,8 @@
             <div class="dropdown">
               <a href="{% url 'conferences' %}">Conferences &amp; Seminars</a>
               <a href="{% url 'other_publications' %}">Other Publications</a>
-              <a href="{% url 'election' %}">Election</a>
+              <a href="{% url 'election' %}">Election Guidelines</a>
+              <a href="{% url 'election_registration' %}">Election 2026 Registration</a>
             </div>
           </div>
         </div>

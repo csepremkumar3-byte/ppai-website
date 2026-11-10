@@ -16,16 +16,16 @@ urlpatterns = [
     path('journal/books/', views.books, name='books'),
     path('membership/info/', views.membership_info, name='membership_info'),
     path('membership/directory/', views.membership_directory, name='membership_directory'),
+    path('membership/registration/', views.election_registration, name='membership_registration'),
     path('awards/', views.awards, name='awards'),
     path('awards/nomination/', views.awards_nomination, name='awards_nomination'),
     path('conferences/', views.conferences, name='conferences'),
     path('events/other-publications/', views.other_publications, name='other_publications'),
     path('events/election/', views.election, name='election'),
+    path('election-2026/', views.election_registration, name='election_registration'),
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
     path('search/', views.search_view, name='search'),
     path('contact/', views.contact, name='contact'),
     path('subscribe-newsletter/', views.subscribe_newsletter, name='subscribe_newsletter'),
 ]
-
-

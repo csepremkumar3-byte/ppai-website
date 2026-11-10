@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import (
     SiteSetting, CarouselSlide, ExecutiveMember, PastBearer,
     EditorialBoardMember, PublicationBook, ConferenceEvent,
-    SocietyAward, JournalVolume, JournalArticle, NewsletterSubscriber
+    SocietyAward, JournalVolume, JournalArticle, NewsletterSubscriber, ElectionRegistration
 )
 
 @admin.action(description="Export selected subscribers as CSV (for Zoho Campaigns / Email Broadcasts)")
@@ -76,3 +76,36 @@ class JournalArticleAdmin(admin.ModelAdmin):
     list_filter = ('volume', 'issue', 'year')
     search_fields = ('title', 'authors')
 
+
+
+@admin.action(description="Export selected election registrations as CSV")
+def export_election_registrations_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="ppai_election_2026_registrations.csv"'
+    writer = csv.writer(response)
+    writer.writerow([
+        'ID', 'Member Category', 'Registration Type', 'Name', 
+        'Phone Number', 'Email ID', 'Designation', 
+        'Organization Address', 'Residence Address', 'Registered At'
+    ])
+    for reg in queryset:
+        writer.writerow([
+            reg.id,
+            reg.get_member_category_display(),
+            reg.get_registration_type_display(),
+            reg.name,
+            reg.phone,
+            reg.email,
+            reg.designation,
+            reg.organization_address,
+            reg.residence_address,
+            reg.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        ])
+    return response
+
+@admin.register(ElectionRegistration)
+class ElectionRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'member_category', 'registration_type', 'designation', 'phone', 'email', 'created_at')
+    list_filter = ('member_category', 'registration_type', 'created_at')
+    search_fields = ('name', 'email', 'phone', 'designation', 'organization_address')
+    actions = [export_election_registrations_csv]
