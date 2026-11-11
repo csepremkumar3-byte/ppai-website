@@ -53,7 +53,8 @@ class ElectionRegistrationTests(TestCase):
         self.assertIn('id_org_pincode', content)
 
         # Check Residential Address fields
-        self.assertIn('Address 1', content)
+        self.assertIn('id_res_address', content)
+        self.assertNotIn('Address 1', content)
         self.assertIn('id_res_address', content)
         self.assertIn('id_res_state', content)
         self.assertIn('id_res_city', content)
